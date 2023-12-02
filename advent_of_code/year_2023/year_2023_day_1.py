@@ -29,7 +29,7 @@ def compute_part_2():
 
 
 def load_input_text_file():
-    input_path = "resources/advent_of_code/year_2023/input_day_1.txt"
+    input_path = "resources/advent_of_code/year_2023/input_year_2023_day_1.txt"
     input_path = Path(input_path)
     assert input_path.is_file()
     text = input_path.read_text()
