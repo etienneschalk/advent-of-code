@@ -1,9 +1,9 @@
 from advent_of_code.year_2023.year_2023_day_1 import (
-    build_part_2_mapping,
-    correct_input_year_2023_day_1,
-    parse_input_year_2023_day_1,
+    build_part_2_mappings,
+    correct_input_for_part_2,
+    parse_text_input,
     recover_calibration_value,
-    substitute_spelled_calibration_digits,
+    replace_first_last_spelled_digits,
 )
 
 
@@ -16,7 +16,7 @@ a1b2c3d4e5f
 treb7uchet
 
 """
-    words = parse_input_year_2023_day_1(test_input)
+    words = parse_text_input(test_input)
 
     assert len(words) == 4
     assert recover_calibration_value(words[0]) == 12
@@ -37,11 +37,11 @@ zoneight234
 7pqrstsixteen
 
 """
-    words = parse_input_year_2023_day_1(test_input)
+    words = parse_text_input(test_input)
 
     assert len(words) == 7
 
-    corrected = correct_input_year_2023_day_1(words)
+    corrected = correct_input_for_part_2(words)
 
     assert len(corrected) == 7
     assert recover_calibration_value(corrected[0]) == 29
@@ -52,58 +52,17 @@ zoneight234
     assert recover_calibration_value(corrected[5]) == 14
     assert recover_calibration_value(corrected[6]) == 76
 
-    assert correct_input_year_2023_day_1(
-        [
-            "fourtrkdhszg4pjh2goneone",
-            "fclsdrjrthreebvjspsoneonefivenpfszjfqcd1",
-            # "zheightwotwo5threeqrgbr"
-            # "7fjkhndseventwotwonine8four"
-            # "qtwone4dffhkjhjrqtwotwo"
-            # "298xqtwotwo4fourhhhcblpg"
-        ]
-    ) == [
-        # "4trkdhszg4pjh2gone1",
-        "4trkdhszg4pjh2g11",
-        "fclsdrjr3bvjspsoneonefivenpfszjfqcd1",
-    ]
-    # assert recover_calibration_value("fourtrkdhszg4pjh2goneone") == 41
-    # assert recover_calibration_value("fclsdrjrthreebvjspsoneonefivenpfszjfqcd1") == 31
-    # assert recover_calibration_value("zheightwotwo5threeqrgbr") == 0
-    # assert recover_calibration_value("7fjkhndseventwotwonine8four") == 0
-    # assert recover_calibration_value("qtwone4dffhkjhjrqtwotwo") == 0
-    # assert recover_calibration_value("298xqtwotwo4fourhhhcblpg") == 0
 
+def test_do_not_substitute_too_much():
+    mappings = build_part_2_mappings()
 
-def test_wrong_logic():
-    mapping = build_part_2_mapping()
-
-    oneight_list = [
-        "soneightninetwo161vhmf",
-        "voneightcqkcdvhxh4eight",
-        "9qzbqxmqonefiveknrnzpxoneightrq",
-        "4btqghfcqx25fivetwo95oneightxf",
-        "bgoneightkhgvqbfivefour1seven",
-        "tvoneight3xtbvffvthreezcbrgk85eightsixbdgqspftkr",
-        "15qhpvsevensixoneightt",
-        "7fiveeightoneightvs",
-        "fivesevenfour9jslninesevenjtttt7oneightssr",
-        "koneightkk7dbtkdmmbf",
-        "4ssskfrfqhz9eightfour37oneightjm",
-        "25sixjrjqgl5fivekhtxstwovgxzfpvzfmoneightb",
-        "onetwonine4noneightvk",
-        "honeight5one",
-        "mzoneight9995five2bdg",
-    ]
-    word = oneight_list[0]
     word = "4ssskfrfqhz9eightfour37oneightjm"
-    substituted = substitute_spelled_calibration_digits(word, mapping)
-    # assert substituted != "4ssskfrfqhz98four37on8jm"
-    # assert substituted == "4ssskfrfqhz9eightfour37on8jm"
-    assert substituted == "4ssskfrfqhz98four37on8jm"
+    substituted = replace_first_last_spelled_digits(word, mappings)
+    assert substituted == "4ssskfrfqhz9eightfour37on8jm"
 
     word = "onetwonine4noneightvk"
-    substituted = substitute_spelled_calibration_digits(word, mapping)
-    # assert substituted != "1twonine4n1ightvk"
+    substituted = replace_first_last_spelled_digits(word, mappings)
 
     # Passing this test is the key
+    # oneight
     assert substituted == "1twonine4non8vk"
