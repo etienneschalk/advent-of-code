@@ -9,6 +9,10 @@ class Handful:  # poignée
     green: int = 0
     blue: int = 0
 
+    @property
+    def power(self) -> int:
+        return self.red * self.green * self.blue
+
 
 @dataclass(frozen=True, kw_only=True)
 class Game:
@@ -24,6 +28,7 @@ def main():
 
 def compute_part_1():
     games = load_input_text_file()
+
     # 12 red cubes, 13 green cubes, and 14 blue cubes
     # a bag is a handful too
     reference_bag = Handful(red=12, green=13, blue=14)
@@ -35,7 +40,10 @@ def compute_part_1():
 
 
 def compute_part_2():
-    ...
+    games = load_input_text_file()
+
+    minimal_handfuls = [compute_minimal_required_handful(game) for game in games]
+    return sum(h.power for h in minimal_handfuls)
 
 
 def load_input_text_file() -> list[Game]:
@@ -84,6 +92,14 @@ def is_handful_possible(bag: Handful, handful: Handful) -> bool:
         or handful.blue > bag.blue
         or sum((handful.red, handful.blue, handful.green))
         > sum((bag.red, bag.green, bag.blue))
+    )
+
+
+def compute_minimal_required_handful(game: Game) -> Handful:
+    return Handful(
+        red=max(handful.red for handful in game.handfuls),
+        green=max(handful.green for handful in game.handfuls),
+        blue=max(handful.blue for handful in game.handfuls),
     )
 
 

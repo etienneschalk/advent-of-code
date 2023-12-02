@@ -1,13 +1,12 @@
 from advent_of_code.year_2023.year_2023_day_2 import (
+    compute_minimal_required_handful,
     compute_possible_games,
     parse_text_input,
     Game,
     Handful,
 )
 
-
-def test_year_2023_day_2_part_1():
-    test_input = """
+EXAMPLE_INPUT = """
     
 Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
 Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
@@ -16,6 +15,10 @@ Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
 Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
 
 """
+
+
+def test_year_2023_day_2_part_1():
+    test_input = EXAMPLE_INPUT
     games = parse_text_input(test_input)
 
     assert len(games) == 5
@@ -65,3 +68,25 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
     possible_games_identifiers = [g.identifier for g in possible_games]
     assert possible_games_identifiers == [1, 2, 5]
     assert sum(possible_games_identifiers) == 8
+
+
+def test_year_2023_day_2_part_1():
+    test_input = EXAMPLE_INPUT
+    games = parse_text_input(test_input)
+
+    # 12 red cubes, 13 green cubes, and 14 blue cubes
+    # a bag is a handful too
+    reference_bag = Handful(red=12, green=13, blue=14)
+    expected_minimal_handfuls = [
+        Handful(red=4, green=2, blue=6),
+        Handful(red=1, green=3, blue=4),
+        Handful(red=20, green=13, blue=6),
+        Handful(red=14, green=3, blue=15),
+        Handful(red=6, green=3, blue=2),
+    ]
+
+    for game, expected_minimal_handful in zip(games, expected_minimal_handfuls):
+        assert compute_minimal_required_handful(game) == expected_minimal_handful
+
+    expected_powers = [48, 12, 1560, 630, 36]
+    assert [h.power for h in expected_minimal_handfuls] == expected_powers
