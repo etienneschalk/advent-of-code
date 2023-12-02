@@ -1,4 +1,9 @@
-from advent_of_code.year_2023.year_2023_day_2 import parse_text_input, Game, Handful
+from advent_of_code.year_2023.year_2023_day_2 import (
+    compute_possible_games,
+    parse_text_input,
+    Game,
+    Handful,
+)
 
 
 def test_year_2023_day_2_part_1():
@@ -52,3 +57,11 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
             handfuls=[Handful(red=6, green=3, blue=1), Handful(red=1, green=2, blue=2)],
         ),
     ]
+
+    # 12 red cubes, 13 green cubes, and 14 blue cubes
+    # a bag is a handful too
+    reference_bag = Handful(red=12, green=13, blue=14)
+    possible_games = compute_possible_games(reference_bag, games)
+    possible_games_identifiers = [g.identifier for g in possible_games]
+    assert possible_games_identifiers == [1, 2, 5]
+    assert sum(possible_games_identifiers) == 8

@@ -24,6 +24,14 @@ def main():
 
 def compute_part_1():
     games = load_input_text_file()
+    # 12 red cubes, 13 green cubes, and 14 blue cubes
+    # a bag is a handful too
+    reference_bag = Handful(red=12, green=13, blue=14)
+    possible_games = compute_possible_games(reference_bag, games)
+    possible_games_identifiers = [g.identifier for g in possible_games]
+    print(possible_games_identifiers)
+    answer = sum(possible_games_identifiers)
+    return answer
 
 
 def compute_part_2():
@@ -59,3 +67,25 @@ def parse_handful_str(handful_str: str) -> Handful:
     mapping = dict(part.split(" ")[::-1] for part in parts)
     mapping = {k: int(v) for k, v in mapping.items()}
     return Handful(**mapping)
+
+
+def compute_possible_games(bag: Handful, candidate_games: list[Game]) -> list[Game]:
+    possible_games: list[Game] = []
+    for game in candidate_games:
+        if all(is_handful_possible(bag, handful) for handful in game.handfuls):
+            possible_games.append(game)
+    return possible_games
+
+
+def is_handful_possible(bag: Handful, handful: Handful) -> bool:
+    return not (
+        handful.red > bag.red
+        or handful.green > bag.green
+        or handful.blue > bag.blue
+        or sum((handful.red, handful.blue, handful.green))
+        > sum((bag.red, bag.green, bag.blue))
+    )
+
+
+if __name__ == "__main__":
+    main()
