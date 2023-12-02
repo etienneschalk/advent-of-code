@@ -1,7 +1,9 @@
 from advent_of_code.year_2023.year_2023_day_1 import (
+    build_part_2_mapping,
     correct_input_year_2023_day_1,
     parse_input_year_2023_day_1,
     recover_calibration_value,
+    substitute_spelled_calibration_digits,
 )
 
 
@@ -70,3 +72,38 @@ zoneight234
     # assert recover_calibration_value("7fjkhndseventwotwonine8four") == 0
     # assert recover_calibration_value("qtwone4dffhkjhjrqtwotwo") == 0
     # assert recover_calibration_value("298xqtwotwo4fourhhhcblpg") == 0
+
+
+def test_wrong_logic():
+    mapping = build_part_2_mapping()
+
+    oneight_list = [
+        "soneightninetwo161vhmf",
+        "voneightcqkcdvhxh4eight",
+        "9qzbqxmqonefiveknrnzpxoneightrq",
+        "4btqghfcqx25fivetwo95oneightxf",
+        "bgoneightkhgvqbfivefour1seven",
+        "tvoneight3xtbvffvthreezcbrgk85eightsixbdgqspftkr",
+        "15qhpvsevensixoneightt",
+        "7fiveeightoneightvs",
+        "fivesevenfour9jslninesevenjtttt7oneightssr",
+        "koneightkk7dbtkdmmbf",
+        "4ssskfrfqhz9eightfour37oneightjm",
+        "25sixjrjqgl5fivekhtxstwovgxzfpvzfmoneightb",
+        "onetwonine4noneightvk",
+        "honeight5one",
+        "mzoneight9995five2bdg",
+    ]
+    word = oneight_list[0]
+    word = "4ssskfrfqhz9eightfour37oneightjm"
+    substituted = substitute_spelled_calibration_digits(word, mapping)
+    # assert substituted != "4ssskfrfqhz98four37on8jm"
+    # assert substituted == "4ssskfrfqhz9eightfour37on8jm"
+    assert substituted == "4ssskfrfqhz98four37on8jm"
+
+    word = "onetwonine4noneightvk"
+    substituted = substitute_spelled_calibration_digits(word, mapping)
+    # assert substituted != "1twonine4n1ightvk"
+
+    # Passing this test is the key
+    assert substituted == "1twonine4non8vk"

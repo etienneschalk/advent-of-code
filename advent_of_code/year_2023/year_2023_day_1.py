@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 
@@ -36,9 +37,25 @@ def load_input_data():
 
 
 def substitute_spelled_calibration_digits(word: str, mapping: dict[str, str]) -> str:
-    word = substitute_spelled_calibration_digits_step(word, mapping, False)
-    word = substitute_spelled_calibration_digits_step(word, mapping, True)
-    return word
+    if word == "4gbdzqtddmt4eightsixfive":
+        ...
+    word1, dk1 = substitute_spelled_calibration_digits_step_v2(word, mapping, False)
+    word2, dk2 = substitute_spelled_calibration_digits_step_v2(word1, mapping, True)
+
+    print(
+        json.dumps(
+            {
+                "word": word,
+                "dk1": dk1,
+                "word1": word1,
+                "dk2": dk2,
+                "word2": word2,
+                "recovered": recover_calibration_value(word2),
+            },
+            indent=4,
+        )
+    )
+    return word2
 
 
 def substitute_spelled_calibration_digits_step(
@@ -49,9 +66,45 @@ def substitute_spelled_calibration_digits_step(
         word_dict[source] = word.replace(source, target)
     rank_mapping = {k: find_first_digit_index(v, reverse) for k, v in word_dict.items()}
     rank_mapping = {k: v for k, v in rank_mapping.items() if v is not None}
+
+    # No need to substitute if not needed!
+    if len(set(rank_mapping.values())) == 1:
+        return word, None
+
     correct_digit_key = min(rank_mapping, key=rank_mapping.get)
     corrected_word = word_dict[correct_digit_key]
-    return corrected_word
+    return corrected_word, correct_digit_key
+
+
+def substitute_spelled_calibration_digits_step_v2(
+    word: str, mapping: dict[str, str], reverse: bool
+) -> str:
+    word_dict = {}
+
+    if reverse:
+        word = word[::-1]
+        mapping = {k[::-1]: v for k, v in mapping.items()}
+
+    for source, target in mapping.items():
+        # The 1 is very important to only replace what's needed!
+        word_dict[source] = word.replace(source, target, 1)
+    rank_mapping = {k: find_first_digit_index(v, False) for k, v in word_dict.items()}
+    rank_mapping = {k: v for k, v in rank_mapping.items() if v is not None}
+
+    # No need to substitute if not needed!
+    if len(set(rank_mapping.values())) == 1:
+        if reverse:
+            word = word[::-1]
+        return word, None
+
+    correct_digit_key = min(rank_mapping, key=rank_mapping.get)
+    corrected_word = word_dict[correct_digit_key]
+
+    if reverse:
+        corrected_word = corrected_word[::-1]
+        correct_digit_key = correct_digit_key[::-1]
+
+    return corrected_word, correct_digit_key
 
 
 def find_first_digit_index(word: str, reverse: bool):
@@ -95,7 +148,7 @@ def compute_part_1():
 def compute_part_2():
     words = load_input_data()
     corrected = correct_input_year_2023_day_1(words)
-    print(corrected)
+    # print(corrected)
     return compute_calibration_sum(corrected)
 
 
@@ -103,6 +156,11 @@ def main():
     result_part_1 = compute_part_1()
     result_part_2 = compute_part_2()
 
+    # TODO do not work!
+    # Autre approche: bourrin et manuel, iterateur le long des char qui teste les chaines.
+    # A l'endroit, et a l'envers, eg one -> eno
+    # 54729 too low
+    # 54771 too high
     print({1: result_part_1, 2: result_part_2})
 
 
