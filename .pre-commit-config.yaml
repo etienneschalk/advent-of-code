@@ -15,6 +15,7 @@ repos:
     rev: 5.12.0
     hooks:
       - id: isort
+        # Crucial otherwise the pre-commit hook will indefinitely update the files
         args: ["--profile", "black"]
   - repo: https://github.com/psf/black
     rev: 23.10.1
@@ -28,14 +29,13 @@ repos:
     rev: 6.1.0
     hooks:
       - id: flake8
+    # MyPy is too aggressive, and does not support valid Python >=3.10 code
+    # eg "dict" is not subscriptable, use "typing.Dict" instead  [misc]
   # - repo: https://github.com/pre-commit/mirrors-mypy
-  #   rev: v1.6.1
+  #   rev: v1.7.1
   #   hooks:
   #     - id: mypy
-  #       # Copied from setup.cfg
-  #       exclude: "properties|asv_bench|docs"
   #       additional_dependencies: [
-  #           # Dependencies that are typed
-  #           numpy,
-  #           typing-extensions>=4.1.0,
-  #         ]
+  #         numpy,
+  #         typing-extensions>=4.1.0,
+  #       ]
