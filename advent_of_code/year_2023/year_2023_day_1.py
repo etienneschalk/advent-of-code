@@ -8,8 +8,6 @@ def main():
     result_part_1 = compute_part_1()
     result_part_2 = compute_part_2()
 
-    # TODO do not work!
-    # Autre approche: bourrin et manuel, iterateur le long des char qui teste les chaines.
     # A l'endroit, et a l'envers, eg one -> eno
     # 54729 too low
     # 54771 too high

@@ -9,7 +9,7 @@ from advent_of_code.year_2023.year_2023_day_1 import (
 
 def test_year_2023_day_1_part_1():
     test_input = """
-    
+
 1abc2
 pqr3stu8vwx
 a1b2c3d4e5f
@@ -27,7 +27,7 @@ treb7uchet
 
 def test_year_2023_day_1_part_2():
     test_input = """
-    
+
 two1nine
 eightwothree
 abcone2threexyz
