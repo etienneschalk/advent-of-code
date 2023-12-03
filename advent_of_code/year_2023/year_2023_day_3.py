@@ -38,7 +38,7 @@ def load_input_text_file() -> DataType:
     assert input_path.is_file()
     text = input_path.read_text()
     games = parse_text_input(text)
-    assert len(games) == 140 + 2
+    assert len(games) == 140 + 2  # + 2 comes from padding
     return games
 
 
@@ -51,6 +51,7 @@ def parse_text_input(text: str) -> DataType:
     return padded_array
 
 
+# Part 1
 def find_part_numbers(array: DataType) -> list[int]:
     adjacent_numbers_for_row = [
         [t[0] for t in detect_adjacent_numbers_in_line(array, row_index)]
@@ -60,6 +61,7 @@ def find_part_numbers(array: DataType) -> list[int]:
     return flattened
 
 
+# Part 2
 def find_part_numbers_and_gears(array: DataType) -> list[int]:
     adjacent_numbers_for_row = [
         detect_adjacent_numbers_in_line(array, row_index)

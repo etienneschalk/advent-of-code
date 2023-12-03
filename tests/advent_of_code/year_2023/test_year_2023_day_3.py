@@ -37,9 +37,14 @@ def test_year_2023_day_2_part_2():
     array = parse_text_input(test_input)
 
     gear_part_numbers_tuples = find_part_numbers_and_gears(array)
+
     assert gear_part_numbers_tuples == [(467, 35), (755, 598)]
+
     gear_ratios = [t[0] * t[1] for t in gear_part_numbers_tuples]
+
     assert gear_ratios[0] == 16345
     assert gear_ratios[1] == 451490
+
     sum_of_gear_ratios = sum(gear_ratios)
+
     assert sum_of_gear_ratios == 467835
