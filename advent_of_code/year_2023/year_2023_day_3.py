@@ -1,3 +1,4 @@
+from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
@@ -14,16 +15,20 @@ def main():
 
 def compute_part_1():
     array = load_input_text_file()
-    flattened = compute_adjacent_numbers(array)
+    flattened = find_part_numbers(array)
     print(flattened)
     answer = sum(flattened)
     return answer
 
 
 def compute_part_2():
-    # games = load_input_text_file()
-
-    answer = None
+    array = load_input_text_file()
+    gear_part_numbers_tuples = find_part_numbers_and_gears(array)
+    print(gear_part_numbers_tuples)
+    gear_ratios = [t[0] * t[1] for t in gear_part_numbers_tuples]
+    print(gear_ratios)
+    sum_of_gear_ratios = sum(gear_ratios)
+    answer = sum_of_gear_ratios
     return answer
 
 
@@ -46,13 +51,31 @@ def parse_text_input(text: str) -> DataType:
     return padded_array
 
 
-def compute_adjacent_numbers(array: DataType) -> list[int]:
+def find_part_numbers(array: DataType) -> list[int]:
+    adjacent_numbers_for_row = [
+        [t[0] for t in detect_adjacent_numbers_in_line(array, row_index)]
+        for row_index in range(array.shape[0])
+    ]
+    flattened = [j for i in adjacent_numbers_for_row for j in i]
+    return flattened
+
+
+def find_part_numbers_and_gears(array: DataType) -> list[int]:
     adjacent_numbers_for_row = [
         detect_adjacent_numbers_in_line(array, row_index)
         for row_index in range(array.shape[0])
     ]
     flattened = [j for i in adjacent_numbers_for_row for j in i]
-    return flattened
+    graph = defaultdict(list)
+    for pair in flattened:
+        part_number = pair[0]
+        # There at most one gear (empirically constated previously)
+        candidate_gear = next(iter(pair[1])) if pair[1] else None
+        graph[candidate_gear].append(part_number)
+    gear_part_numbers_tuples = [
+        tuple(value) for value in graph.values() if len(value) == 2
+    ]
+    return gear_part_numbers_tuples
 
 
 def detect_adjacent_numbers_in_line(array: np.ndarray, row_index: int):
@@ -73,7 +96,13 @@ def detect_adjacent_numbers_in_line(array: np.ndarray, row_index: int):
                 # only the first stack_indices is useful actually
                 if not is_solitary_number(array, row_index, col_start, i):
                     number = int("".join(i.decode() for i in stack_values))
-                    adjacent_numbers.append(number)
+                    candidate_gear_coordinates_list = (
+                        get_candidate_gear_coordinates_list(
+                            array, row_index, col_start, i
+                        )
+                    )
+                    adjacent_numbers.append((number, candidate_gear_coordinates_list))
+
                 stack_values.clear()
     return adjacent_numbers
 
@@ -81,20 +110,54 @@ def detect_adjacent_numbers_in_line(array: np.ndarray, row_index: int):
 def is_solitary_number(
     array: np.ndarray, row_index: int, col_start_inclusive: int, col_end_exclusive: int
 ) -> bool:
-    # Note: are touching numbers considered as symbols?
-    # The current assumption is no.
-    if array[row_index, col_start_inclusive - 1] != b".":
-        return False
-    if array[row_index, col_end_exclusive] != b".":
-        return False
+    # A number is considered solitary (non-adjacent) if it is circled by dots.
+    return all(
+        array[coords] == b"."
+        for coords in get_neighbouring_coordinates_generator(
+            row_index, col_start_inclusive, col_end_exclusive
+        )
+    )
 
-    for col in range(col_start_inclusive - 1, col_end_exclusive + 1):
-        if array[row_index - 1, col] != b".":
-            return False
-        if array[row_index + 1, col] != b".":
-            return False
 
-    return True
+def get_candidate_gear_coordinates_list(
+    array: np.ndarray, row_index: int, col_start_inclusive: int, col_end_exclusive: int
+) -> set[tuple[int, int]]:
+    target_char = b"*"
+    candidate_gear_coordinates_set = set()
+    neighbouring_coordinates_generator = get_neighbouring_coordinates_generator(
+        row_index, col_start_inclusive, col_end_exclusive
+    )
+    candidate_gear_coordinates_set = {
+        neighbouring_coordinates
+        for neighbouring_coordinates in neighbouring_coordinates_generator
+        if array[neighbouring_coordinates] == target_char
+    }
+
+    # Good to know: a part number is connected to at most one candidate gear.
+    assert len(candidate_gear_coordinates_set) <= 1
+
+    return candidate_gear_coordinates_set
+
+
+def get_neighbouring_coordinates_generator(
+    row_index: int, col_start_inclusive: int, col_end_exclusive: int
+):
+    neighbouring_coordinates_generator = (
+        (row_index, col_start_inclusive - 1),  # left
+        (row_index, col_end_exclusive),  # right
+        # upper row
+        *(
+            (row_index - 1, col)
+            for col in range(col_start_inclusive - 1, col_end_exclusive + 1)
+        ),
+        # lower row
+        *(
+            (row_index + 1, col)
+            for col in range(col_start_inclusive - 1, col_end_exclusive + 1)
+        ),
+    )
+
+    return neighbouring_coordinates_generator
 
 
 if __name__ == "__main__":
