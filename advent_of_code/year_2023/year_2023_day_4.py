@@ -24,7 +24,11 @@ def compute_part_1():
 
 
 def compute_part_2():
-    ...
+    cards = load_input_text_file()
+    instances = np.ones(len(cards), dtype=int)
+    for card in cards:
+        update_card_instances(instances, card)
+    return sum(instances)
 
 
 def load_input_text_file() -> list[Card]:
@@ -75,6 +79,14 @@ def find_card_worth(card: Card) -> int:
     if not number_set:
         return 0
     return 2 ** (len(number_set) - 1)
+
+
+# Mutates instances in place. An instance count = "number of cards"
+def update_card_instances(instances: np.ndarray, card: Card):
+    start = card.identifier
+    offset = len(find_winning_numbers_you_have(card))
+    current_card_instance_count = instances[start - 1]
+    instances[start : start + offset] += current_card_instance_count
 
 
 if __name__ == "__main__":

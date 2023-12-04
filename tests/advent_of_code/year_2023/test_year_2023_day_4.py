@@ -1,7 +1,10 @@
+import numpy as np
+
 from advent_of_code.year_2023.year_2023_day_4 import (
     find_card_worth,
     find_winning_numbers_you_have,
     parse_text_input,
+    update_card_instances,
 )
 
 EXAMPLE_INPUT = """
@@ -39,4 +42,21 @@ def test_year_2023_day_4_part_1():
 
 
 def test_year_2023_day_4_part_2():
-    ...
+    test_input = EXAMPLE_INPUT
+    cards = parse_text_input(test_input)
+
+    expected_instances = [
+        np.array([1, 2, 2, 2, 2, 1]),
+        np.array([1, 2, 4, 4, 2, 1]),
+        np.array([1, 2, 4, 8, 6, 1]),
+        np.array([1, 2, 4, 8, 14, 1]),
+        np.array([1, 2, 4, 8, 14, 1]),
+        np.array([1, 2, 4, 8, 14, 1]),
+    ]
+
+    instances = np.ones(len(cards), dtype=int)
+    for card in cards:
+        update_card_instances(instances, card)
+        assert (instances == expected_instances[card.identifier - 1]).all()
+
+    assert sum(instances) == 30
