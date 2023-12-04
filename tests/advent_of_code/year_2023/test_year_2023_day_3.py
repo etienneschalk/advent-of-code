@@ -20,7 +20,7 @@ EXAMPLE_INPUT = """
 """
 
 
-def test_year_2023_day_2_part_1():
+def test_year_2023_day_3_part_1():
     test_input = EXAMPLE_INPUT
     array = parse_text_input(test_input)
 
@@ -32,7 +32,7 @@ def test_year_2023_day_2_part_1():
     assert sum(flattened) == 4361
 
 
-def test_year_2023_day_2_part_2():
+def test_year_2023_day_3_part_2():
     test_input = EXAMPLE_INPUT
     array = parse_text_input(test_input)
 
