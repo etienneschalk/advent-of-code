@@ -1,6 +1,6 @@
 import numpy as np
 
-from advent_of_code.year_2023.year_2023_day_4 import (
+from advent_of_code.year_2023.year_2023_day_04 import (
     find_card_worth,
     find_winning_numbers_you_have,
     parse_text_input,

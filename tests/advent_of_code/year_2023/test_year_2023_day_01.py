@@ -1,4 +1,4 @@
-from advent_of_code.year_2023.year_2023_day_1 import (
+from advent_of_code.year_2023.year_2023_day_01 import (
     build_part_2_mappings,
     correct_input_for_part_2,
     parse_text_input,

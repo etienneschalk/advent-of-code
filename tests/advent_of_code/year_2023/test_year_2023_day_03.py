@@ -1,4 +1,4 @@
-from advent_of_code.year_2023.year_2023_day_3 import (
+from advent_of_code.year_2023.year_2023_day_03 import (
     find_part_numbers,
     find_part_numbers_and_gears,
     parse_text_input,

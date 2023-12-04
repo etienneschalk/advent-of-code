@@ -1,4 +1,4 @@
-from advent_of_code.year_2023.year_2023_day_2 import (
+from advent_of_code.year_2023.year_2023_day_02 import (
     Game,
     Handful,
     compute_minimal_required_handful,
