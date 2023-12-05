@@ -36,9 +36,9 @@ class AlmanacMap:
     ranges: list[AlmanacRange]
 
     def source_to_target(self, source: int) -> int:
-        for range_ in self.ranges:
-            if range_.is_source_in_source_range(source):
-                return range_.source_to_target(source)
+        for almanac_range in self.ranges:
+            if almanac_range.is_source_in_source_range(source):
+                return almanac_range.source_to_target(source)
         return source
 
 
@@ -46,6 +46,18 @@ class AlmanacMap:
 class Almanac:
     seeds: list[int]
     maps: list[AlmanacMap]
+
+    def unroll_almanac_dict(self, source: int) -> dict[str, int]:
+        path: dict[str, int] = {}
+        path[self.maps[0].source_category] = source
+        destination = source
+        for almanac_map in self.maps:
+            destination = almanac_map.source_to_target(destination)
+            path[almanac_map.destination_category] = destination
+        return path
+
+    def find_lowest_number_for_category(self, category: str) -> int:
+        return min(self.unroll_almanac_dict(seed)[category] for seed in self.seeds)
 
 
 def parse_almanac_range(line: str) -> AlmanacRange:

@@ -85,6 +85,56 @@ def test_parse_almanac():
     assert first_map.source_to_target(55) == 57
     assert first_map.source_to_target(13) == 13
 
+    expected_unrolled = {
+        79: {
+            "seed": 79,
+            "soil": 81,
+            "fertilizer": 81,
+            "water": 81,
+            "light": 74,
+            "temperature": 78,
+            "humidity": 78,
+            "location": 82,
+        },
+        14: {
+            "seed": 14,
+            "soil": 14,
+            "fertilizer": 53,
+            "water": 49,
+            "light": 42,
+            "temperature": 42,
+            "humidity": 43,
+            "location": 43,
+        },
+        55: {
+            "seed": 55,
+            "soil": 57,
+            "fertilizer": 57,
+            "water": 53,
+            "light": 46,
+            "temperature": 82,
+            "humidity": 82,
+            "location": 86,
+        },
+        13: {
+            "seed": 13,
+            "soil": 13,
+            "fertilizer": 52,
+            "water": 41,
+            "light": 34,
+            "temperature": 34,
+            "humidity": 35,
+            "location": 35,
+        },
+    }
+
+    assert all(
+        almanac.unroll_almanac_dict(source) == expected
+        for source, expected in expected_unrolled.items()
+    )
+
+    assert almanac.find_lowest_number_for_category("location") == 35
+
 
 def test_year_2023_day_5_part_1():
     test_input = EXAMPLE_INPUT
