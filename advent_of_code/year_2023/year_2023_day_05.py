@@ -89,27 +89,24 @@ def main():
 
 
 def compute_part_1():
-    data = parse_input_text_file()  # noqa: F841
-    ...
-    return None
+    almanac = parse_input_text_file()  # noqa: F841
+    return almanac.find_lowest_number_for_category("location")
 
 
 def compute_part_2():
-    data = parse_input_text_file()  # noqa: F841
+    almanac = parse_input_text_file()  # noqa: F841
     ...
     return None
 
 
-def parse_input_text_file() -> ...:
+def parse_input_text_file() -> Almanac:
     text = load_input_text_file(__file__)
     parsed = parse_text_input(text)
     return parsed
 
 
-def parse_text_input(text: str) -> ...:
-    lines = text.strip().split("\n")
-    ...
-    return lines
+def parse_text_input(text: str) -> Almanac:
+    return parse_almanac(text)
 
 
 if __name__ == "__main__":
