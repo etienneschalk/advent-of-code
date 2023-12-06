@@ -1,9 +1,14 @@
 import pytest
 
 from advent_of_code.year_2023.year_2023_day_05 import (
-    AlmanacMap,
     AlmanacRange,
+    fill_almanac_in_place,
+    find_max_destination_stop_in_almanac,
+    logic_part_2_almanac_tree,
+    map_ranges,
     parse_almanac,
+    sort_mapping_by_source_range_start_in_place,
+    sort_ranges_in_place,
 )
 
 EXAMPLE_INPUT = """
@@ -244,45 +249,6 @@ def test_year_2023_day_5_part_2_parse_almanac():
 #     ...
 
 
-def map_ranges(input_ranges: list[range], mapping: AlmanacMap) -> list[range]:
-    sort_mapping_by_source_range_start_in_place(mapping.ranges)
-    intersections_of_input_ranges = []
-    for input_range in input_ranges:
-        intersections = [
-            intersect_ranges(input_range, mr.source_range) for mr in mapping.ranges
-        ]
-        intersections_of_input_ranges.append(intersections)
-        ...
-    mapped_input_ranges = []
-    for index, mapping_range in enumerate(mapping.ranges):
-        input_ranges_split = [i[index] for i in intersections_of_input_ranges]
-        delta = mapping_range.destination_range_start - mapping_range.source_range_start
-        mapped = [range(r.start + delta, r.stop + delta) for r in input_ranges_split]
-        mapped_input_ranges.append(mapped)
-        ...
-    flattened_filtered_ranges = [
-        y for x in mapped_input_ranges for y in x if y.start < y.stop
-    ]
-    sort_ranges_in_place(flattened_filtered_ranges)
-    return flattened_filtered_ranges
-
-
-def intersect_ranges(range_a: range, range_b: range) -> range:
-    a = range_a
-    b = range_b
-    return range(max(a.start, b.start), min(a.stop, b.stop))
-
-
-def sort_mapping_by_source_range_start_in_place(
-    almanac_ranges: list[AlmanacRange],
-) -> AlmanacRange:
-    almanac_ranges.sort(key=lambda ar: ar.source_range_start)
-
-
-def sort_ranges_in_place(ranges: list[range]):
-    ranges.sort(key=lambda r: min(r))
-
-
 def test_year_2023_day_5_part_2_second_try():
     almanac = parse_almanac(EXAMPLE_INPUT)
     assert almanac.seeds == [79, 14, 55, 13]
@@ -308,3 +274,49 @@ def test_year_2023_day_5_part_2_second_try():
 
     first_map = map_ranges(almanac.seed_ranges, almanac.maps[0])
     assert first_map == [range(57, 70), range(81, 95)]
+
+    # @ Mandatory
+    fill_almanac_in_place(almanac)
+    sort_ranges_in_place(almanac.seed_ranges)
+
+    ranges = almanac.seed_ranges
+    for al_map in almanac.maps:
+        ranges = map_ranges(ranges, al_map)
+    ranges[0].start == 46
+    ...
+
+
+def test_year_2023_day_5_part_2_third_try():
+    almanac = parse_almanac(EXAMPLE_INPUT)
+    min_location_number = logic_part_2_almanac_tree(almanac)
+    assert min_location_number == 46
+    # import json
+
+    # json.dumps(tree, indent=4, default=str)
+    ...
+
+
+def printable_tree(tree):
+    if isinstance(tree, range):
+        return str()
+
+
+# TODO detect max possible value in the Almanac
+# TODO clean to fill hole in mapping with an id mapping
+
+
+def test_detect_max_value_in_almanac():
+    almanac = parse_almanac(EXAMPLE_INPUT)
+    (
+        almanac.maps[0].ranges[0].destination_range_start
+        + almanac.maps[0].ranges[0].range_length
+    )
+    max_almanac = find_max_destination_stop_in_almanac(almanac)
+    assert max_almanac == 100
+    ...
+
+
+def test_clean_almanac():
+    almanac = parse_almanac(EXAMPLE_INPUT)
+    fill_almanac_in_place(almanac)
+    ...
