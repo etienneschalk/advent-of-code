@@ -89,52 +89,38 @@ class Almanac:
         # return min(self.unroll_almanac_dict_part_2(seed) for seed in seed_gen)
 
 
-def parse_almanac_range(line: str) -> AlmanacRange:
-    return AlmanacRange(*(int(i) for i in line.split(" ")))
+def main():
+    result_part_1 = compute_part_1()
+    result_part_2 = compute_part_2()
+    print({1: result_part_1, 2: result_part_2})
 
 
-def parse_almanac_map(lines: list[str]) -> AlmanacMap:
-    categories = lines[0].split(" ")[0].split("-")
-    source_category, destination_category = categories[0], categories[-1]
-    ranges = [parse_almanac_range(line) for line in lines[1:]]
-    return AlmanacMap(
-        source_category=source_category,
-        destination_category=destination_category,
-        ranges=ranges,
-    )
+def compute_part_1():
+    almanac = parse_input_text_file()
+    return almanac.find_lowest_number_for_category("location")
 
 
-def parse_almanac(text: str) -> Almanac:
-    sections = text.strip().split("\n\n")
-    seeds = [int(i) for i in sections[0].split(" ", 1)[-1].split(" ")]
-    maps = [parse_almanac_map(section.split("\n")) for section in sections[1:]]
-    return Almanac(seeds=seeds, maps=maps)
+def compute_part_2():
+    almanac = parse_input_text_file()
+    return compute_lowest_location_number(almanac)
 
 
-def map_ranges_old(input_ranges: list[range], mapping: AlmanacMap) -> list[range]:
-    sort_mapping_by_source_range_start_in_place(mapping.ranges)
-    intersections_of_input_ranges = []
-    for input_range in input_ranges:
-        intersections = [
-            intersect_ranges(input_range, mr.source_range) for mr in mapping.ranges
-        ]
-        intersections_of_input_ranges.append(intersections)
-        ...
-    mapped_input_ranges = []
-    for index, mapping_range in enumerate(mapping.ranges):
-        input_ranges_split = [i[index] for i in intersections_of_input_ranges]
-        delta = mapping_range.destination_range_start - mapping_range.source_range_start
-        mapped = [range(r.start + delta, r.stop + delta) for r in input_ranges_split]
-        mapped_input_ranges.append(mapped)
-        ...
-    flattened_filtered_ranges = [
-        y for x in mapped_input_ranges for y in x if y.start < y.stop
-    ]
-    sort_ranges_in_place(flattened_filtered_ranges)
-    return flattened_filtered_ranges
+def compute_lowest_location_number(almanac: Almanac) -> int:
+    # Fill holes in mappings and create identity mappings for them
+    fill_almanac_in_place(almanac)
+    # Sort input ranges
+    sort_ranges_in_place(almanac.seed_ranges)  # sort inputs
+
+    input_ranges = almanac.seed_ranges
+
+    tree = recur_map_ranges_tree(almanac, input_ranges)
+
+    min_location_number = find_min_range_in_tree(tree)
+
+    return min_location_number
 
 
-def find_min_range_in_tree(tree):
+def find_min_range_in_tree(tree: range | list):
     if isinstance(tree, range):
         return tree.start
     elif isinstance(tree, list):
@@ -178,29 +164,6 @@ def map_ranges_tree(
     return mapped_intersections_of_input_ranges
 
 
-def map_ranges(input_ranges: list[range], mapping: AlmanacMap) -> list[range]:
-    sort_mapping_by_source_range_start_in_place(mapping.ranges)
-    intersections_of_input_ranges = []
-    for input_range in input_ranges:
-        intersections = [
-            intersect_ranges(input_range, mr.source_range) for mr in mapping.ranges
-        ]
-        intersections_of_input_ranges.append(intersections)
-        ...
-    mapped_input_ranges = []
-    for index, mapping_range in enumerate(mapping.ranges):
-        input_ranges_split = [i[index] for i in intersections_of_input_ranges]
-        delta = mapping_range.destination_range_start - mapping_range.source_range_start
-        mapped = [range(r.start + delta, r.stop + delta) for r in input_ranges_split]
-        mapped_input_ranges.append(mapped)
-        ...
-    flattened_filtered_ranges = [
-        y for x in mapped_input_ranges for y in x if y.start < y.stop
-    ]
-    sort_ranges_in_place(flattened_filtered_ranges)
-    return flattened_filtered_ranges
-
-
 def intersect_ranges(range_a: range, range_b: range) -> range:
     a = range_a
     b = range_b
@@ -217,27 +180,29 @@ def sort_ranges_in_place(ranges: list[range]):
     ranges.sort(key=lambda r: r.start)
 
 
-# TODO detect max possible value in the Almanac
-# TODO clean to fill hole in mapping with an id mapping
+# DONE detect max possible value in the Almanac
+# DONE clean to fill hole in mapping with an id mapping
 def find_max_destination_stop_in_almanac(almanac: Almanac) -> int:
-    return max(find_max_destination_stop_in_am(am) for am in almanac.maps)
+    return max(find_max_destination_stop_in_almanac_map(am) for am in almanac.maps)
 
 
-def find_max_destination_stop_in_am(am: AlmanacMap) -> int:
-    return max(find_max_destination_stop_in_ar(r) for r in am.ranges)
+def find_max_destination_stop_in_almanac_map(am: AlmanacMap) -> int:
+    return max(find_max_destination_stop_in_almanac_range(r) for r in am.ranges)
 
 
-def find_max_destination_stop_in_ar(ar: AlmanacRange) -> int:
+def find_max_destination_stop_in_almanac_range(ar: AlmanacRange) -> int:
     return ar.destination_range_start + ar.range_length
 
 
 def fill_almanac_in_place(almanac: Almanac) -> Almanac:
     max_almanac = find_max_destination_stop_in_almanac(almanac)
     for mapping in almanac.maps:
-        fill_am_in_place(mapping, max_almanac)
+        fill_almanac_map_in_place(mapping, max_almanac)
 
 
-def fill_am_in_place(mapping: AlmanacMap, max_stop: int) -> AlmanacMap:
+def fill_almanac_map_in_place(mapping: AlmanacMap, max_stop: int) -> AlmanacMap:
+    # from ....xx..xxx...
+    # to   iiii..ii...iii
     sort_mapping_by_source_range_start_in_place(mapping.ranges)
     boundaries = [
         0,
@@ -268,35 +233,6 @@ def fill_am_in_place(mapping: AlmanacMap, max_stop: int) -> AlmanacMap:
     ]
     mapping.ranges.extend(identity_almanac_ranges)
     sort_mapping_by_source_range_start_in_place(mapping.ranges)
-    ...
-
-
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-    print({1: result_part_1, 2: result_part_2})
-
-
-def compute_part_1():
-    almanac = parse_input_text_file()
-    return almanac.find_lowest_number_for_category("location")
-
-
-def compute_part_2():
-    almanac = parse_input_text_file()
-    return logic_part_2_almanac_tree(almanac)
-
-
-def logic_part_2_almanac_tree(almanac: Almanac) -> int:
-    fill_almanac_in_place(almanac)  # fill holes in mappings
-    sort_ranges_in_place(almanac.seed_ranges)  # sort inputs
-
-    input_ranges = almanac.seed_ranges
-
-    tree = recur_map_ranges_tree(almanac, input_ranges)
-
-    min_location_number = find_min_range_in_tree(tree)
-    return min_location_number
 
 
 def parse_input_text_file() -> Almanac:
@@ -307,6 +243,51 @@ def parse_input_text_file() -> Almanac:
 
 def parse_text_input(text: str) -> Almanac:
     return parse_almanac(text)
+
+
+def parse_almanac_range(line: str) -> AlmanacRange:
+    return AlmanacRange(*(int(i) for i in line.split(" ")))
+
+
+def parse_almanac_map(lines: list[str]) -> AlmanacMap:
+    categories = lines[0].split(" ")[0].split("-")
+    source_category, destination_category = categories[0], categories[-1]
+    ranges = [parse_almanac_range(line) for line in lines[1:]]
+    return AlmanacMap(
+        source_category=source_category,
+        destination_category=destination_category,
+        ranges=ranges,
+    )
+
+
+def parse_almanac(text: str) -> Almanac:
+    sections = text.strip().split("\n\n")
+    seeds = [int(i) for i in sections[0].split(" ", 1)[-1].split(" ")]
+    maps = [parse_almanac_map(section.split("\n")) for section in sections[1:]]
+    return Almanac(seeds=seeds, maps=maps)
+
+
+def map_ranges_prototype(input_ranges: list[range], mapping: AlmanacMap) -> list[range]:
+    sort_mapping_by_source_range_start_in_place(mapping.ranges)
+    intersections_of_input_ranges = []
+    for input_range in input_ranges:
+        intersections = [
+            intersect_ranges(input_range, mr.source_range) for mr in mapping.ranges
+        ]
+        intersections_of_input_ranges.append(intersections)
+        ...
+    mapped_input_ranges = []
+    for index, mapping_range in enumerate(mapping.ranges):
+        input_ranges_split = [i[index] for i in intersections_of_input_ranges]
+        delta = mapping_range.destination_range_start - mapping_range.source_range_start
+        mapped = [range(r.start + delta, r.stop + delta) for r in input_ranges_split]
+        mapped_input_ranges.append(mapped)
+        ...
+    flattened_filtered_ranges = [
+        y for x in mapped_input_ranges for y in x if y.start < y.stop
+    ]
+    sort_ranges_in_place(flattened_filtered_ranges)
+    return flattened_filtered_ranges
 
 
 if __name__ == "__main__":

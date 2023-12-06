@@ -2,10 +2,10 @@ import pytest
 
 from advent_of_code.year_2023.year_2023_day_05 import (
     AlmanacRange,
+    _map_ranges,
+    compute_lowest_location_number,
     fill_almanac_in_place,
     find_max_destination_stop_in_almanac,
-    logic_part_2_almanac_tree,
-    map_ranges,
     parse_almanac,
     sort_mapping_by_source_range_start_in_place,
     sort_ranges_in_place,
@@ -177,8 +177,6 @@ def test_year_2023_day_5_part_2_parse_almanac():
                 )
                 mapped_range = range(maxmin + delta, minmax + delta)
                 mapped_ranges.append(mapped_range)
-            ...
-    ...
     # 55: 86
     # 56: 87
     # 57: 88
@@ -209,46 +207,6 @@ def test_year_2023_day_5_part_2_parse_almanac():
     # 92: 60
 
 
-# def map_ranges(input_ranges: list[range], mapping: AlmanacMap) -> list[range]:
-#     funnel_source_ranges = [r.source_range for r in mapping.ranges]
-#     sort_mapping_by_source_range_start_in_place(mapping.ranges)
-#     # funnel_destination_ranges = [r.destination_range for r in mapping.ranges]
-#     initial_cursor = min(min(input_ranges[0]), min(funnel_source_ranges[0]))
-#     cursor = initial_cursor
-#     in_input_range = False
-#     in_funnel_source_range = False
-#     cursor = 0
-#     current_input_range = input_ranges.pop(0)
-#     current_funnel_source_range = funnel_source_ranges.pop(0)
-#     while input_ranges and funnel_source_ranges:
-#         if in_input_range:
-#             mark_i = max(current_input_range)
-#         else:
-#             mark_i = min(current_input_range)
-#         if in_funnel_source_range:
-#             mark_f = max(current_funnel_source_range)
-#         else:
-#             mark_f = min(current_funnel_source_range)
-#         if mark_i <= mark_f:
-#             in_input_range = not in_input_range
-#         if mark_i >= mark_f:
-#             in_funnel_source_range = True
-#         cursor = min(mark_i, mark_f)
-#         ...
-#         # if not in_input_range and not in_funnel_source_range:
-#         #     min_i = min(current_input_range)
-#         #     min_f = min(current_funnel_source_range)
-#         #     cursor = min(min_i, min_f)
-#         #     if min_i <= min_f:
-#         #         in_input_range = True
-#         #     if min_i >= min_f:
-#         #         in_funnel_source_range = True
-#         #     ...
-#         # elif not in_input_range and in_funnel_source_range:
-
-#     ...
-
-
 def test_year_2023_day_5_part_2_second_try():
     almanac = parse_almanac(EXAMPLE_INPUT)
     assert almanac.seeds == [79, 14, 55, 13]
@@ -272,37 +230,23 @@ def test_year_2023_day_5_part_2_second_try():
         AlmanacRange(destination_range_start=50, source_range_start=98, range_length=2),
     ]
 
-    first_map = map_ranges(almanac.seed_ranges, almanac.maps[0])
+    first_map = _map_ranges(almanac.seed_ranges, almanac.maps[0])
     assert first_map == [range(57, 70), range(81, 95)]
 
-    # @ Mandatory
+    # Mandatory
     fill_almanac_in_place(almanac)
     sort_ranges_in_place(almanac.seed_ranges)
 
     ranges = almanac.seed_ranges
     for al_map in almanac.maps:
-        ranges = map_ranges(ranges, al_map)
+        ranges = _map_ranges(ranges, al_map)
     ranges[0].start == 46
-    ...
 
 
 def test_year_2023_day_5_part_2_third_try():
     almanac = parse_almanac(EXAMPLE_INPUT)
-    min_location_number = logic_part_2_almanac_tree(almanac)
+    min_location_number = compute_lowest_location_number(almanac)
     assert min_location_number == 46
-    # import json
-
-    # json.dumps(tree, indent=4, default=str)
-    ...
-
-
-def printable_tree(tree):
-    if isinstance(tree, range):
-        return str()
-
-
-# TODO detect max possible value in the Almanac
-# TODO clean to fill hole in mapping with an id mapping
 
 
 def test_detect_max_value_in_almanac():
@@ -313,10 +257,8 @@ def test_detect_max_value_in_almanac():
     )
     max_almanac = find_max_destination_stop_in_almanac(almanac)
     assert max_almanac == 100
-    ...
 
 
 def test_clean_almanac():
     almanac = parse_almanac(EXAMPLE_INPUT)
     fill_almanac_in_place(almanac)
-    ...
