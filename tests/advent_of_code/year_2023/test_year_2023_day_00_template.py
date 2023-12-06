@@ -8,11 +8,11 @@ toto2
 """
 
 
-def test_year_2023_day_5_part_1():
+def test_year_2023_day_000_part_1():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)  # noqa: F841
 
 
-def test_year_2023_day_5_part_2():
+def test_year_2023_day_000_part_2():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)  # noqa: F841
