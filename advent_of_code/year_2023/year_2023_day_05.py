@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from functools import cached_property
 
 from advent_of_code.common import load_input_text_file
 
@@ -56,8 +57,36 @@ class Almanac:
             path[almanac_map.destination_category] = destination
         return path
 
+    def unroll_almanac_part_2(self, source: int) -> dict[str, int]:
+        destination = source
+        for almanac_map in self.maps:
+            destination = almanac_map.source_to_target(destination)
+        return destination
+
     def find_lowest_number_for_category(self, category: str) -> int:
         return min(self.unroll_almanac_dict(seed)[category] for seed in self.seeds)
+
+    @cached_property
+    def seed_ranges(self) -> list[range]:
+        seeds = self.seeds
+        seed_ranges = list(
+            range(start, start + offset)
+            for start, offset in (zip(seeds[::2], seeds[1::2]))
+        )
+        return seed_ranges
+
+    def find_lowest_number_for_seed_ranges_bruteforce(self):
+        print(f"Seed Ranges: {self.seed_ranges}")
+        print(f"Range Lengths: {[len(r) for r in self.seed_ranges]}")
+        print(f"Seed Count: {sum([len(r)for r in self.seed_ranges]):e}")
+        mins = []
+        for seed_range in self.seed_ranges:
+            print(f"Seed Range: {seed_range} | Length: {len(seed_range): e}")
+            the_min = min(self.unroll_almanac_part_2(seed) for seed in seed_range)
+            mins.append(the_min)
+        return min(*mins)
+        # seed_gen = (b for a in (list(r) for r in self.seed_ranges) for b in a)
+        # return min(self.unroll_almanac_dict_part_2(seed) for seed in seed_gen)
 
 
 def parse_almanac_range(line: str) -> AlmanacRange:
@@ -89,14 +118,19 @@ def main():
 
 
 def compute_part_1():
-    almanac = parse_input_text_file()  # noqa: F841
+    almanac = parse_input_text_file()
     return almanac.find_lowest_number_for_category("location")
 
 
 def compute_part_2():
-    almanac = parse_input_text_file()  # noqa: F841
-    ...
-    return None
+    almanac = parse_input_text_file()
+
+    mapping = almanac.maps[0]
+    for seed_range in almanac.seed_ranges:
+        for mapping_range in mapping.ranges:
+            ...
+        ...
+    # return almanac.find_lowest_number_for_seed_ranges_bruteforce()
 
 
 def parse_input_text_file() -> Almanac:
