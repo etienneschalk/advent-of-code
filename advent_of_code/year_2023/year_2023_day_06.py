@@ -13,15 +13,16 @@ def main():
 
 
 def compute_part_1():
-    data = parse_input_text_file()  # noqa: F841
+    data = parse_input_text_file()
     number_of_ways = compute_number_of_ways_to_win(data)
     return number_of_ways
 
 
 def compute_part_2():
-    data = parse_input_text_file()  # noqa: F841
-    ...
-    return None
+    data = parse_input_text_file()
+    data = correct_data(data)
+    number_of_ways = compute_number_of_ways_to_win(data)
+    return number_of_ways
 
 
 def parse_input_text_file() -> ...:
@@ -37,6 +38,13 @@ def parse_text_input(text: str) -> ...:
     return {
         time_line[0]: [int(i) for i in time_line[1:]],
         distance_line[0]: [int(i) for i in distance_line[1:]],
+    }
+
+
+def correct_data(races: dict[str, list[int]]) -> dict[str, list[int]]:
+    return {
+        key: [int("".join(str(i) for i in races[key]))]
+        for key in ("Time:", "Distance:")
     }
 
 

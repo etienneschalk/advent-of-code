@@ -1,5 +1,6 @@
 from advent_of_code.year_2023.year_2023_day_06 import (
     compute_number_of_ways_to_win,
+    correct_data,
     parse_text_input,
 )
 
@@ -56,3 +57,7 @@ def test_year_2023_day_6_part_1():
 def test_year_2023_day_6_part_2():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)  # noqa: F841
+    data = correct_data(parsed_input)
+    assert data == {"Time:": [71530], "Distance:": [940200]}
+    number_of_ways = compute_number_of_ways_to_win(data)
+    assert number_of_ways == 71503
