@@ -3,10 +3,18 @@ from typing import Literal, get_args
 
 from advent_of_code.common import load_input_text_file
 
-ALL_LABELS = list("AKQJT98765432")
-MAPPED_LABELS = list(range(len(ALL_LABELS)))
-MAPPING_SRC_TO_DEST = {k: v for k, v in zip(ALL_LABELS, MAPPED_LABELS)}
-MAPPING_DEST_TO_SRC = {k: v for k, v in zip(MAPPED_LABELS, ALL_LABELS)}
+ALL_LABELS_PART_1 = tuple("AKQJT98765432")
+MAPPED_LABELS_PART_1 = tuple(range(len(ALL_LABELS_PART_1)))
+MAPPING_SRC_TO_DEST_PART_1 = {
+    k: v for k, v in zip(ALL_LABELS_PART_1, MAPPED_LABELS_PART_1)
+}
+
+
+ALL_LABELS_PART_2 = tuple("AKQT98765432J")
+MAPPED_LABELS_PART_2 = tuple(range(len(ALL_LABELS_PART_2)))
+MAPPING_SRC_TO_DEST_PART_2 = {
+    k: v for k, v in zip(ALL_LABELS_PART_2, MAPPED_LABELS_PART_2)
+}
 
 HandType = Literal[
     "Five of a kind",
@@ -37,13 +45,22 @@ def main():
 
 
 def compute_part_1():
-    parsed_input = parse_input_text_file()  # noqa: F841
-    total_winnings = compute_total_winnings(parsed_input)
+    parsed_input = parse_input_text_file(mapping=MAPPING_SRC_TO_DEST_PART_1)
+    sorted_by_hand_type = sort_by_hand_type_part_1(parsed_input)
+    total_winnings = compute_total_winnings(sorted_by_hand_type)
     return total_winnings
 
 
-def compute_total_winnings(parsed_input: list[tuple[Counter, int]]) -> int:
-    sorted_by_hand_type = sort_by_hand_type(parsed_input)
+def compute_part_2():
+    parsed_input = parse_input_text_file(mapping=MAPPING_SRC_TO_DEST_PART_2)
+    sorted_by_hand_type = sort_by_hand_type_part_2(
+        parsed_input, mapping=MAPPING_SRC_TO_DEST_PART_2
+    )
+    total_winnings = compute_total_winnings(sorted_by_hand_type)
+    return total_winnings
+
+
+def compute_total_winnings(sorted_by_hand_type):
     bids_times_ranks = (
         index * hand_and_bid[1]
         for index, hand_and_bid in enumerate(
@@ -54,7 +71,7 @@ def compute_total_winnings(parsed_input: list[tuple[Counter, int]]) -> int:
     return total_winnings
 
 
-def sort_by_hand_type(
+def sort_by_hand_type_part_1(
     hands_and_bids: list[tuple[Counter, int]]
 ) -> dict[HandType, Counter]:
     hand_types: dict[HandType, Counter] = {
@@ -68,26 +85,53 @@ def sort_by_hand_type(
     return hand_types
 
 
-def compute_part_2():
-    data = parse_input_text_file()  # noqa: F841
-    ...
-    return None
+def sort_by_hand_type_part_2(
+    hands_and_bids: list[tuple[Counter, int]],
+    mapping,
+) -> dict[HandType, Counter]:
+    hand_types: dict[HandType, Counter] = {
+        hand_type: [] for hand_type in ALL_HAND_TYPES
+    }
+
+    joker_value = len(mapping) - 1
+    sort_instances_func = list(UNIQUE_OCCURRENCES_TO_HAND_TYPE.keys()).index
+    for hand_and_bid in hands_and_bids:
+        hand = hand_and_bid[0]
+        candidate_instances = []
+        if joker_value not in hand:
+            best_instances = tuple(sorted(Counter(hand).values(), reverse=True))
+        else:
+            for j_candidate_value in MAPPED_LABELS_PART_2[:-1]:
+                new_hand = [j_candidate_value if h == joker_value else h for h in hand]
+                instances = tuple(sorted(Counter(new_hand).values(), reverse=True))
+                candidate_instances.append(instances)
+            best_instances = min(
+                candidate_instances,
+                key=sort_instances_func,
+            )
+        hand_types[UNIQUE_OCCURRENCES_TO_HAND_TYPE[best_instances]].append(hand_and_bid)
+    return hand_types
 
 
-def parse_input_text_file() -> list[tuple[Counter, int]]:
+def parse_input_text_file(
+    *,
+    mapping=MAPPING_SRC_TO_DEST_PART_1,
+) -> list[tuple[Counter, int]]:
     text = load_input_text_file(__file__)
-    parsed = parse_text_input(text)
+    parsed = parse_text_input(text, mapping=mapping)
     return parsed
 
 
-def parse_text_input(text: str) -> list[tuple[Counter, int]]:
+def parse_text_input(
+    text: str, *, mapping=MAPPING_SRC_TO_DEST_PART_1
+) -> list[tuple[Counter, int]]:
     lines = text.strip().split("\n")
     # Assert that all cards are unique.
     assert len(set((line.split()[0] for line in lines))) == len(lines)
     return sorted(
         [
             (
-                list(MAPPING_SRC_TO_DEST[v] for v in line.split()[0]),
+                list(mapping[v] for v in line.split()[0]),
                 int(line.split()[1]),
             )
             for line in lines
