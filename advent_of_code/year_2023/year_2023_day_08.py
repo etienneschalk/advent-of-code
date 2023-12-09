@@ -1,7 +1,6 @@
-from advent_of_code.common import load_input_text_file
-
 from dataclasses import dataclass
-from pathlib import Path
+
+from advent_of_code.common import load_input_text_file
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -26,9 +25,14 @@ def compute_part_1():
 
 
 def compute_part_2():
-    data = parse_input_text_file()
-    ...
-    return None
+    network = parse_input_text_file()
+    source_set = set(key for key in network.nodes.keys() if key.endswith("A"))
+    target_set = set(key for key in network.nodes.keys() if key.endswith("Z"))
+    assert len(source_set) == len(target_set)
+    sources = tuple(source_set)
+    targets = tuple(target_set)
+    steps = count_required_steps_simultaneously(network, sources, targets)
+    return steps
 
 
 def count_required_steps(
@@ -44,6 +48,26 @@ def count_required_steps(
         elif instruction == "R":
             index = 1
         current_node = network.nodes[current_node][index]
+        steps += 1
+    return steps
+
+
+def count_required_steps_simultaneously(
+    network: Network,
+    starting_node_tuple: tuple[str, ...],
+    target_node_tuple: tuple[str, ...],
+) -> int:
+    current_node_tuple = starting_node_tuple
+    target_node_set = set(target_node_tuple)
+    i = steps = 0
+    while set(current_node_tuple) != target_node_set:
+        i = steps % len(network.instructions)
+        instruction = network.instructions[i]
+        if instruction == "L":
+            index = 0
+        elif instruction == "R":
+            index = 1
+        current_node_tuple = tuple(network.nodes[c][index] for c in current_node_tuple)
         steps += 1
     return steps
 

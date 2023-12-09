@@ -56,7 +56,9 @@ def create_files_for_year_and_day_from_templates(
         },
         "test_code": {
             "template": test_code_template,
-            "target_path": f"tests/{project_name}/{year_repr}/test_{year_repr}_{day_repr}.py",
+            "target_path": (
+                f"tests/{project_name}/{year_repr}/test_{year_repr}_{day_repr}.py"
+            ),
         },
     }
 

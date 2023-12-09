@@ -1,5 +1,6 @@
 from advent_of_code.year_2023.year_2023_day_08 import (
     count_required_steps,
+    count_required_steps_simultaneously,
     parse_text_input,
 )
 
@@ -29,6 +30,21 @@ ZZZ = (ZZZ, ZZZ)
 
 """
 
+EXAMPLE_INPUT_PART_2 = """
+
+LR
+
+11A = (11B, XXX)
+11B = (XXX, 11Z)
+11Z = (11B, XXX)
+22A = (22B, XXX)
+22B = (22C, 22C)
+22C = (22Z, 22Z)
+22Z = (22B, 22B)
+XXX = (XXX, XXX)
+
+"""
+
 
 def test_year_2023_day_08_part_1():
     test_input_1 = EXAMPLE_INPUT_1
@@ -43,5 +59,9 @@ def test_year_2023_day_08_part_1():
 
 
 def test_year_2023_day_08_part_2():
-    test_input = EXAMPLE_INPUT_1
-    parsed_input = parse_text_input(test_input)
+    test_input = EXAMPLE_INPUT_PART_2
+    network_1 = parse_text_input(test_input)
+    starts = ("11A", "22A")
+    ends = ("11Z", "22Z")
+    steps_1 = count_required_steps_simultaneously(network_1, starts, ends)
+    assert steps_1 == 6
