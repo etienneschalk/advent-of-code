@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+import numpy as np
+
 from advent_of_code.common import load_input_text_file
 
 
@@ -58,16 +60,15 @@ def count_required_steps_simultaneously(
     target_node_tuple: tuple[str, ...],
 ) -> int:
     current_node_tuple = starting_node_tuple
-    target_node_set = set(target_node_tuple)
+    instructions_length = len(network.instructions)
+    instructions = np.array([0 if inst == "L" else 1 for inst in network.instructions])
     i = steps = 0
-    while set(current_node_tuple) != target_node_set:
-        i = steps % len(network.instructions)
-        instruction = network.instructions[i]
-        if instruction == "L":
-            index = 0
-        elif instruction == "R":
-            index = 1
-        current_node_tuple = tuple(network.nodes[c][index] for c in current_node_tuple)
+    while not all(c.endswith("Z") for c in current_node_tuple):
+        i = steps % instructions_length
+        instruction = instructions[i]
+        current_node_tuple = tuple(
+            network.nodes[c][instruction] for c in current_node_tuple
+        )
         steps += 1
     return steps
 
