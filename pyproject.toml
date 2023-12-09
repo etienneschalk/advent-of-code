@@ -1,16 +1,15 @@
 [tool.poetry]
-name = "advent-of-code"
-version = "0.1.0"
-description = ""
 authors = ["eschalk <etienne.schalk@gmail.com>"]
-readme = "README.md"
+description = ""
+name = "advent-of-code"
 packages = [{include = "advent_of_code"}]
+readme = "README.md"
+version = "0.1.0"
 
 [tool.poetry.dependencies]
-python = "^3.10"
 numpy = "^1.26.2"
-
+python = "^3.10"
 
 [build-system]
-requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
