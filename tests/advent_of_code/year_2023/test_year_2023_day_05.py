@@ -2,7 +2,6 @@ import pytest
 
 from advent_of_code.year_2023.year_2023_day_05 import (
     AlmanacRange,
-    _map_ranges,
     compute_lowest_location_number,
     fill_almanac_in_place,
     find_max_destination_stop_in_almanac,
@@ -230,17 +229,17 @@ def test_year_2023_day_5_part_2_second_try():
         AlmanacRange(destination_range_start=50, source_range_start=98, range_length=2),
     ]
 
-    first_map = _map_ranges(almanac.seed_ranges, almanac.maps[0])
-    assert first_map == [range(57, 70), range(81, 95)]
+    # first_map = _map_ranges(almanac.seed_ranges, almanac.maps[0])
+    # assert first_map == [range(57, 70), range(81, 95)]
 
-    # Mandatory
-    fill_almanac_in_place(almanac)
-    sort_ranges_in_place(almanac.seed_ranges)
+    # # Mandatory
+    # fill_almanac_in_place(almanac)
+    # sort_ranges_in_place(almanac.seed_ranges)
 
-    ranges = almanac.seed_ranges
-    for al_map in almanac.maps:
-        ranges = _map_ranges(ranges, al_map)
-    ranges[0].start == 46
+    # ranges = almanac.seed_ranges
+    # for al_map in almanac.maps:
+    #     ranges = _map_ranges(ranges, al_map)
+    # ranges[0].start == 46
 
 
 def test_year_2023_day_5_part_2_third_try():

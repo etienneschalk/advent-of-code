@@ -1,6 +1,10 @@
+from functools import reduce
+import operator
 from advent_of_code.year_2023.year_2023_day_08 import (
+    compute_steps_for_part_2,
     count_required_steps,
-    count_required_steps_simultaneously,
+    count_required_steps_simultaneously_bruteforce,
+    detect_loop,
     parse_text_input,
 )
 
@@ -58,10 +62,26 @@ def test_year_2023_day_08_part_1():
     assert steps_2 == 6
 
 
-def test_year_2023_day_08_part_2():
+def test_year_2023_day_08_part_2_bruteforce():
     test_input = EXAMPLE_INPUT_PART_2
     network_1 = parse_text_input(test_input)
     starts = ("11A", "22A")
     ends = ("11Z", "22Z")
-    steps_1 = count_required_steps_simultaneously(network_1, starts, ends)
+
+    steps_1 = count_required_steps_simultaneously_bruteforce(network_1, starts, ends)
     assert steps_1 == 6
+
+
+def test_year_2023_day_08_part_2():
+    test_input = EXAMPLE_INPUT_PART_2
+    network = parse_text_input(test_input)
+
+    sources = tuple(sorted(key for key in network.nodes.keys() if key.endswith("A")))
+    targets = tuple(sorted(key for key in network.nodes.keys() if key.endswith("Z")))
+
+    assert sources == ("11A", "22A")
+    assert targets == ("11Z", "22Z")
+
+    steps = compute_steps_for_part_2(network, sources, "Z")
+
+    assert steps == 2 * 3
