@@ -13,15 +13,14 @@ def main():
 
 def compute_part_1():
     parsed_input = parse_input_text_file()
-    predictions = [predict_next_value(arr) for arr in parsed_input]
-    ...
+    predictions = [predict_next_value_forward(arr) for arr in parsed_input]
     return sum(predictions)
 
 
 def compute_part_2():
-    data = parse_input_text_file()
-    ...
-    return None
+    parsed_input = parse_input_text_file()
+    predictions = [predict_next_value_backward(arr) for arr in parsed_input]
+    return sum(predictions)
 
 
 def parse_input_text_file() -> ProblemDataType:
@@ -37,17 +36,27 @@ def parse_text_input(text: str) -> ProblemDataType:
     return stacked
 
 
-def predict_next_value(arr: np.ndarray) -> int:
+def predict_next_value_forward(arr: np.ndarray) -> int:
     if np.all(arr == 0):
         return 0
 
-    diff = compute_finite_difference(arr)
-    next_value = predict_next_value(diff)
+    diff = compute_finite_difference_forward(arr)
+    next_value = predict_next_value_forward(diff)
     result = arr[-1] + next_value
     return result
 
 
-def compute_finite_difference(arr: np.ndarray) -> np.ndarray:
+def predict_next_value_backward(arr: np.ndarray) -> int:
+    if np.all(arr == 0):
+        return 0
+
+    diff = compute_finite_difference_forward(arr)
+    next_value = predict_next_value_backward(diff)
+    result = arr[0] - next_value
+    return result
+
+
+def compute_finite_difference_forward(arr: np.ndarray) -> np.ndarray:
     return (np.roll(arr, -1) - arr)[:-1]
 
 
