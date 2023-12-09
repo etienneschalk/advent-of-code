@@ -1,4 +1,5 @@
 from pathlib import Path
+
 import click
 
 
@@ -36,17 +37,24 @@ def create_files_for_year_and_day_from_templates(
     template_to_path = {
         "puzzle_input": {
             "template": "",
-            "target_path": f"resources/{project_name}/{year_repr}/input_{year_repr}_{day_repr}.txt",
+            "target_path": (
+                f"resources/{project_name}/{year_repr}/"
+                f"input_{year_repr}_{day_repr}.txt"
+            ),
         },
         "source_code": {
             "template": source_code_template,
-            "target_path": f"{project_name}/{year_repr}/{year_repr}_{day_repr}.py",
+            "target_path": (
+                f"{project_name}/{year_repr}/" f"{year_repr}_{day_repr}.py"
+            ),
         },
         "test_code": {
             "template": test_code_template,
             "target_path": f"tests/{project_name}/{year_repr}/test_{year_repr}_{day_repr}.py",
         },
     }
+
+    click.secho("Started Generation", bg="green", fg="red", bold=True)
 
     for key, item in template_to_path.items():
         click.secho(f"Generating {key}", bg="green", fg="red", bold=True)
@@ -71,10 +79,19 @@ def create_files_for_year_and_day_from_templates(
                     bold=True,
                 )
 
-        click.secho(
-            f"    Written {key} to {target_path}", bg="green", fg="red", bold=True
-        )
-
+            click.secho(
+                f"    Written {key} to {target_path}",
+                bg="green",
+                fg="red",
+                bold=True,
+            )
+        else:
+            click.secho(
+                f"    Would have written {key} to {target_path}",
+                bg="green",
+                fg="red",
+                bold=True,
+            )
     click.secho("Finished Generation", bg="green", fg="red", bold=True)
 
 
