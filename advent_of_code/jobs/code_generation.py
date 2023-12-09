@@ -78,7 +78,8 @@ def create_files_for_year_and_day_from_templates(
             continue
 
         if not dry_run:
-            (target_path).write_text(template)
+            target_path.parent.mkdir(exist_ok=True, parents=True)
+            target_path.write_text(template)
             if not target_path.is_file():
                 click.secho(
                     f"    Failed to write {target_path}",
