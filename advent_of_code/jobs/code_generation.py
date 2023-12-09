@@ -135,7 +135,7 @@ ProblemDataType = ...
 def main():
     result_part_1 = compute_part_1()
     result_part_2 = compute_part_2()
-    print({{1: result_part_1, 2: result_part_2}})
+    print({1: result_part_1, 2: result_part_2})
 
 
 def compute_part_1():

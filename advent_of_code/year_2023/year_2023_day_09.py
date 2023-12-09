@@ -2,7 +2,7 @@ import numpy as np
 
 from advent_of_code.common import load_input_text_file
 
-ProblemDataType = ...
+ProblemDataType = np.ndarray
 
 
 def main():
