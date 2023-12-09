@@ -22,6 +22,12 @@ import click
     help="Dry Run",
 )
 def code_generation_entrypoint(year: int, day: int, dry_run: bool):
+    """Example usage:
+
+    python advent_of_code/jobs/code_generation.py --year 2023 --day 9 --dry_run
+
+    python advent_of_code/jobs/code_generation.py --year 2023 --day 9
+    """
     create_files_for_year_and_day_from_templates(year, day, dry_run)
 
 
@@ -120,7 +126,7 @@ def test_{year_repr}_{day_repr}_part_2():
 
 
 def render_source_code_template() -> str:
-    source_code_template = rf"""
+    source_code_template = r"""
 from advent_of_code.common import load_input_text_file
 
 ProblemDataType = ...
