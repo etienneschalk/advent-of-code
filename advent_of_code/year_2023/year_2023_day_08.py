@@ -4,9 +4,6 @@ import numpy as np
 
 from advent_of_code.common import load_input_text_file
 
-from functools import reduce
-import operator
-
 
 @dataclass(frozen=True, kw_only=True)
 class Network:  # poignée

@@ -1,10 +1,7 @@
-from functools import reduce
-import operator
 from advent_of_code.year_2023.year_2023_day_08 import (
     compute_steps_for_part_2,
     count_required_steps,
     count_required_steps_simultaneously_bruteforce,
-    detect_loop,
     parse_text_input,
 )
 
