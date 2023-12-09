@@ -1,3 +1,5 @@
+import numpy as np
+
 from advent_of_code.common import load_input_text_file
 
 ProblemDataType = ...
@@ -10,9 +12,10 @@ def main():
 
 
 def compute_part_1():
-    data = parse_input_text_file()
+    parsed_input = parse_input_text_file()
+    predictions = [predict_next_value(arr) for arr in parsed_input]
     ...
-    return None
+    return sum(predictions)
 
 
 def compute_part_2():
@@ -29,8 +32,23 @@ def parse_input_text_file() -> ProblemDataType:
 
 def parse_text_input(text: str) -> ProblemDataType:
     lines = text.strip().split("\n")
-    ...
-    return lines
+    arrays = (np.fromstring(line, dtype=int, sep=" ") for line in lines)
+    stacked = np.stack(list(arrays))
+    return stacked
+
+
+def predict_next_value(arr: np.ndarray) -> int:
+    if np.all(arr == 0):
+        return 0
+
+    diff = compute_finite_difference(arr)
+    next_value = predict_next_value(diff)
+    result = arr[-1] + next_value
+    return result
+
+
+def compute_finite_difference(arr: np.ndarray) -> np.ndarray:
+    return (np.roll(arr, -1) - arr)[:-1]
 
 
 if __name__ == "__main__":
