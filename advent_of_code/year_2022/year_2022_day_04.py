@@ -11,18 +11,30 @@ def main():
 
 def compute_part_1():
     parsed_input = parse_input_text_file()
-    visu = render_input_visualization(parsed_input)
-    intersections = tuple(intersect_ranges_inclusive(*p) for p in parsed_input)
-    fully_contained_count = sum(
-        inter in set(pair) for inter, pair in zip(intersections, parsed_input)
-    )
+    fully_contained_count = compute_fully_contained_count(parsed_input)
     return fully_contained_count
 
 
 def compute_part_2():
     parsed_input = parse_input_text_file()
-    ...
-    return None
+    overlapping_count = compute_overlapping_count(parsed_input)
+    return overlapping_count
+
+
+def compute_fully_contained_count(parsed_input: ProblemDataType):
+    intersections = tuple(intersect_ranges_inclusive(*p) for p in parsed_input)
+    fully_contained_count = sum(
+        inter in set(pair) for inter, pair in zip(intersections, parsed_input)
+    )
+
+    return fully_contained_count
+
+
+def compute_overlapping_count(parsed_input: ProblemDataType):
+    intersections = tuple(intersect_ranges_inclusive(*p) for p in parsed_input)
+    overlapping_count = sum(inter[0] <= inter[1] for inter in intersections)
+
+    return overlapping_count
 
 
 def intersect_ranges_inclusive(
