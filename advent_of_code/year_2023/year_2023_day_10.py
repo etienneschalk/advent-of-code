@@ -1,18 +1,18 @@
 import sys
-from pathlib import Path
 
 import numpy as np
 import xarray as xr
-from PIL import Image
 from skimage.morphology import flood_fill
 
-from advent_of_code.common import get_year_and_day_from_filename, load_input_text_file
+from advent_of_code.common import load_input_text_file, save_txt
+from advent_of_code.common_img import save_img
 
 ProblemDataType = np.ndarray
 
 VERBOSE = False
 SAVE_IMG = True
-SAVE_TXT = False
+SAVE_TXT = True
+SAVE_IMG_FOR_VIDEO = False
 
 
 def main():
@@ -25,6 +25,14 @@ def compute_part_1():
     maze = parse_input_text_file()
     if VERBOSE:
         print(render_2d_array_to_text(maze))
+    if SAVE_TXT:
+        save_txt(
+            render_2d_array_to_text(maze),
+            "part_1_input.txt",
+            __file__,
+            output_subdir="text",
+        )
+
     result, _ = compute_farthest_point_part_1(maze)
     return result
 
@@ -33,6 +41,14 @@ def compute_part_2():
     maze = parse_input_text_file()
     if VERBOSE:
         print(render_2d_array_to_text(maze))
+    if SAVE_TXT:
+        save_txt(
+            render_2d_array_to_text(maze),
+            "part_2_input.txt",
+            __file__,
+            output_subdir="text",
+        )
+
     _, minimum_distances = compute_farthest_point_part_1(maze)
     result = compute_tiles_enclosed_by_loop_part_2(maze, minimum_distances)
     return result
@@ -81,6 +97,13 @@ def compute_farthest_point_part_1(maze: np.ndarray) -> tuple[int, np.ndarray]:
 
     if VERBOSE:
         print(render_2d_array_to_text((minimum_distances != 0)))
+    if SAVE_TXT:
+        save_txt(
+            render_2d_array_to_text((minimum_distances != 0)),
+            "part_1_farthest_point.txt",
+            __file__,
+            output_subdir="text",
+        )
 
     maximum = np.max(minimum_distances)
     return maximum, minimum_distances
@@ -140,7 +163,13 @@ def compute_tiles_enclosed_by_loop_part_2(
 
     if VERBOSE:
         print(render_2d_array_to_text(main_loop))
-
+    if SAVE_TXT:
+        save_txt(
+            render_2d_array_to_text(main_loop),
+            "text/part_2_main_loop.txt",
+            __file__,
+            output_subdir="text",
+        )
     # Prepare the upscale of the main_loop
     raster_3x = rasterize_main_loop(main_loop)
 
@@ -148,21 +177,22 @@ def compute_tiles_enclosed_by_loop_part_2(
     if VERBOSE:
         print(render_2d_array_to_text(image))
     if SAVE_IMG:
-        save_img(raster_3x, "arr_3x_1.png")
+        save_img(raster_3x, "arr_3x_1.png", __file__)
 
     # Use the Flood Fill algorithm to fill the loop from the exterior.
     # Start from a corner (here upper-left), as the array was padded,
     # guaranteeing free space on its boundaries.
     filled = flood_fill(image, (0, 0), 128, tolerance=1)
+
     if SAVE_IMG:
-        save_img(filled, "arr_3x_2.png")
+        save_img(filled, "arr_3x_2.png", __file__)
 
     # Coarsen to keep any filled macro-cell, then negate to get hole count.
     coarsened_xda = ~(xr.DataArray(filled, dims=("i", "j")).coarsen(i=3, j=3).any())
 
     if SAVE_IMG:
         coarsened_img = np.uint8(coarsened_xda) * 255
-        save_img(coarsened_img, "arr_1x_result_3.png")
+        save_img(coarsened_img, "arr_1x_result_3.png", __file__)
 
     result = np.sum(coarsened_xda).item()
     return result
@@ -192,9 +222,12 @@ def rasterize_main_loop(main_loop: np.ndarray):
         for j in range(1, main_loop.shape[1] - 1):
             fill_macro_pixel_3x(main_loop, raster_3x, pipe_to_pattern_mapping, i, j)
 
-            if SAVE_IMG:
+            if SAVE_IMG_FOR_VIDEO:
                 save_img(
-                    raster_3x, f"arr_i{i:05d}_j{j:05d}.png", output_subdir="mazegen"
+                    raster_3x,
+                    f"arr_i{i:05d}_j{j:05d}.png",
+                    __file__,
+                    output_subdir="mazegen",
                 )
 
     return raster_3x
@@ -234,17 +267,6 @@ def render_2d_array_to_text(data: ProblemDataType) -> str:
     else:
         result = "\n".join("".join(str(c) for c in line) for line in data)
     return result
-
-
-def save_img(array: np.ndarray, filename: str, *, output_subdir: str = ""):
-    year, day = get_year_and_day_from_filename(__file__)
-    output_dir_central = f"generated/advent_of_code/year_{year}/day_{day:02d}"
-    output_dir = Path(output_dir_central) / output_subdir
-    output_dir.mkdir(exist_ok=True, parents=True)
-    output_file_path = output_dir / filename
-    im = Image.fromarray(array)
-    im.save(output_file_path)
-    print(f"Saved image to {output_file_path}")
 
 
 def adapt_recursion_limit():

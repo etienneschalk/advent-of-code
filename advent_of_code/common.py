@@ -19,3 +19,20 @@ def load_input_text(year: int, day: int) -> str:
     assert input_path.is_file()
     text = input_path.read_text()
     return text
+
+
+def save_txt(text: str, filename: str, module_name: str, *, output_subdir: str = ""):
+    output_file_path = create_output_file_path(filename, output_subdir, module_name)
+
+    output_file_path.write_text(text)
+
+    print(f"Saved text to {output_file_path}")
+
+
+def create_output_file_path(filename: str, output_subdir: str, current_filename: str):
+    year, day = get_year_and_day_from_filename(current_filename)
+    output_dir_central = f"generated/advent_of_code/year_{year}/day_{day:02d}"
+    output_dir = Path(output_dir_central) / output_subdir
+    output_dir.mkdir(exist_ok=True, parents=True)
+    output_file_path = output_dir / filename
+    return output_file_path
