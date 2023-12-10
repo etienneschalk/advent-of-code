@@ -118,11 +118,12 @@ REPLACE_BY_EXAMPLE_INPUT_FROM_PROBLEM_DESCRIPTION
 def test_{year_repr}_{day_repr}_part_1():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)
-
+    ...
 
 def test_{year_repr}_{day_repr}_part_2():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)
+    ...
 """
 
     return test_code_template
