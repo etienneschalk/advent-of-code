@@ -3,6 +3,7 @@ import numpy as np
 
 from advent_of_code.year_2022.year_2022_day_24 import (
     advance_blizzard,
+    build_graph_part_1,
     compute_simulation_for_cross_period,
     initialize_blizzard,
     parse_text_input,
@@ -131,8 +132,10 @@ def test_year_2022_day_24_part_1_period_stack():
 def test_year_2022_day_24_part_1():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)
-    blizzard_cube = compute_simulation_for_cross_period(parsed_input)
-    # Do recursive exploration!
+    result = build_graph_part_1(parsed_input)
+    # free_cube.isel(time=2) ^ free_cube.isel(time=1)
+    # ...
+    # # Do recursive exploration!
     assert minutes == 18
     ...
 

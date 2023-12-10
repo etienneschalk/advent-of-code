@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 import numpy as np
 import xarray as xr
 
@@ -32,8 +34,7 @@ def main():
 
 def compute_part_1():
     data = parse_input_text_file()
-    blizzard_cube = compute_simulation_for_cross_period(data, limit=20)
-    ...
+    result = build_graph_part_1(data)
     return None
 
 
@@ -43,7 +44,7 @@ def compute_part_2():
     return None
 
 
-def logic_part_1(simulation_map: ProblemDataType) -> int:
+def logic_part_1_first_try(simulation_map: ProblemDataType) -> int:
     blizzard = initialize_blizzard(simulation_map)
 
     # E is not parsed currently
@@ -92,6 +93,70 @@ def logic_part_1(simulation_map: ProblemDataType) -> int:
                 break
         ...
     return minutes
+
+
+import xarray as xr
+
+
+# Then this graph must be bfs
+def build_graph_part_1(simulation_map: ProblemDataType) -> list[tuple]:
+    blizzard_cube = compute_simulation_for_cross_period(simulation_map)
+    obstacle_cube = sum(v for v in blizzard_cube.values()).astype(np.bool_)
+    free_cube = ~obstacle_cube
+
+    # E is not parsed currently
+    initial_pos = np.array([-1, 0])
+
+    graph = defaultdict(list)
+    # Start at 1 to avoid entry issue
+    build_graph_recursive_part_1(graph, free_cube, 0, initial_pos)
+    ...
+    # for time in free_cube.time:
+    #     build_graph_iterative_part_1[graph, free_cube, time, initial_pos]
+
+
+def build_graph_recursive_part_1(
+    graph: dict[tuple[int, int, int], list[tuple[int, int, int]]],
+    free_cube: xr.DataArray,
+    time: int,
+    initial_pos: np.ndarray,
+):
+    if time >= free_cube.time.size:
+        return
+    free_cube_moment = free_cube.isel(time=time)
+    children = build_graph_iterative_part_1(free_cube_moment, initial_pos)
+    initial_pos_tuple = (time - 1, initial_pos[0], initial_pos[1])
+    for child in children:
+        child_tuple = (time, child[0], child[1])
+        if child_tuple in graph[initial_pos_tuple]:
+            continue
+        graph[initial_pos_tuple].append(child_tuple)
+        build_graph_recursive_part_1(graph, free_cube, time + 1, child)
+
+
+def build_graph_iterative_part_1(
+    free_cube_moment: xr.DataArray,
+    initial_pos: np.ndarray,
+):
+    children_positions = []
+    for move in [MOVE_DOWN, MOVE_RIGHT, MOVE_NULL, MOVE_LEFT, MOVE_UP]:
+        candidate_pos = initial_pos + move
+        if (
+            candidate_pos[0] >= 0
+            and candidate_pos[1] >= 0
+            and candidate_pos[0] < free_cube_moment.row.size
+            and candidate_pos[1] < free_cube_moment.col.size
+        ):
+            free_space = free_cube_moment.isel(
+                row=candidate_pos[0], col=candidate_pos[1]
+            ).item()
+            if free_space:
+                children_positions.append(candidate_pos)
+    if not children_positions:
+        children_positions.append(
+            initial_pos
+        )  # starting point, there cannot be no move possible except here.
+    return children_positions
 
 
 def compute_simulation_for_cross_period(parsed_input, *, limit: int | None = None):
