@@ -132,7 +132,7 @@ def test_year_2022_day_24_part_1_period_stack():
 def test_year_2022_day_24_part_1():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)
-    result = build_graph_part_1(parsed_input)
+    minutes = build_graph_part_1(parsed_input)
     # free_cube.isel(time=2) ^ free_cube.isel(time=1)
     # ...
     # # Do recursive exploration!

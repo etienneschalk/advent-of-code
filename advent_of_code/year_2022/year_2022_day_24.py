@@ -3,7 +3,7 @@ from collections import defaultdict
 import numpy as np
 import xarray as xr
 
-from advent_of_code.common import load_input_text_file
+from advent_of_code.common import adapt_recursion_limit, load_input_text_file
 
 ProblemDataType = np.ndarray
 MOVE_NULL = np.array([0, 0])
@@ -34,8 +34,8 @@ def main():
 
 def compute_part_1():
     data = parse_input_text_file()
-    result = build_graph_part_1(data)
-    return None
+    minutes = build_graph_part_1(data)
+    return minutes
 
 
 def compute_part_2():
@@ -95,11 +95,10 @@ def logic_part_1_first_try(simulation_map: ProblemDataType) -> int:
     return minutes
 
 
-import xarray as xr
-
-
 # Then this graph must be bfs
 def build_graph_part_1(simulation_map: ProblemDataType) -> list[tuple]:
+    adapt_recursion_limit()
+
     blizzard_cube = compute_simulation_for_cross_period(simulation_map)
     obstacle_cube = sum(v for v in blizzard_cube.values()).astype(np.bool_)
     free_cube = ~obstacle_cube
@@ -109,12 +108,78 @@ def build_graph_part_1(simulation_map: ProblemDataType) -> list[tuple]:
 
     graph = defaultdict(list)
     # Start at 1 to avoid entry issue
-    build_graph_recursive_part_1(graph, free_cube, 0, initial_pos)
+    build_graph_breadth_first_part_1(graph, free_cube, 0, initial_pos)
+    candidates = [
+        node
+        for node in graph.keys()
+        if node[1] == free_cube.row.size - 1 and node[2] == free_cube.col.size - 1
+    ]
+    minutes = min(t[0] for t in candidates)
+
+    # 745 too high
+    # 744 too high
+
+    # Add one because of exit outside the blizzard cube, int the wall
+    minutes += 1
+    return minutes
+
+
+def breadth_first_search(
+    graph: dict[tuple[int, int, int], list[tuple[int, int, int]]],
+    starting_node: tuple[int, int, int],
+):
+    queue = []
+    explored = {k: False for k in graph.keys()}
+
+    node = starting_node
+
+    queue.append(node)
+    explored[node] = True
+
+    while queue:
+        node = queue.pop(0)
+        print(node)
+        for child in graph[node]:
+            if child not in explored:
+                queue.append(child)
+                explored[node] = True
+
+
+# breadth first uses fifo and is iterative
+def build_graph_breadth_first_part_1(
+    graph: dict[tuple[int, int, int], list[tuple[int, int, int]]],
+    free_cube: xr.DataArray,
+    time: int,
+    initial_pos: np.ndarray,
+):
+    queue = []
+    explored = {k: False for k in graph.keys()}
+
+    node = (time - 1, initial_pos[0], initial_pos[1])
+
+    queue.append(node)
+    explored[node] = True
+
+    while queue:
+        node = queue.pop(0)
+        time = node[0] + 1
+        if time >= free_cube.time.size:
+            continue
+        free_cube_moment = free_cube.isel(time=time)
+        node_array = np.array([node[1], node[2]])
+        children_tuples = [
+            (time, child[0], child[1])
+            for child in compute_children_positions(free_cube_moment, node_array)
+        ]
+        graph[node] = children_tuples
+        for child_tuple in graph[node]:
+            if child_tuple not in explored:
+                queue.append(child_tuple)
+                explored[node] = True
     ...
-    # for time in free_cube.time:
-    #     build_graph_iterative_part_1[graph, free_cube, time, initial_pos]
 
 
+# depth-first = you will die of old age before finding your way out
 def build_graph_recursive_part_1(
     graph: dict[tuple[int, int, int], list[tuple[int, int, int]]],
     free_cube: xr.DataArray,
@@ -124,17 +189,19 @@ def build_graph_recursive_part_1(
     if time >= free_cube.time.size:
         return
     free_cube_moment = free_cube.isel(time=time)
-    children = build_graph_iterative_part_1(free_cube_moment, initial_pos)
+    children = compute_children_positions(free_cube_moment, initial_pos)
     initial_pos_tuple = (time - 1, initial_pos[0], initial_pos[1])
     for child in children:
         child_tuple = (time, child[0], child[1])
         if child_tuple in graph[initial_pos_tuple]:
+            # Recursion is extremely inefficient, many branches are useless (re-add in set
+            # Must continue
             continue
         graph[initial_pos_tuple].append(child_tuple)
         build_graph_recursive_part_1(graph, free_cube, time + 1, child)
 
 
-def build_graph_iterative_part_1(
+def compute_children_positions(
     free_cube_moment: xr.DataArray,
     initial_pos: np.ndarray,
 ):

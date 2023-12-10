@@ -1,10 +1,8 @@
-import sys
-
 import numpy as np
 import xarray as xr
 from skimage.morphology import flood_fill
 
-from advent_of_code.common import load_input_text_file, save_txt
+from advent_of_code.common import adapt_recursion_limit, load_input_text_file, save_txt
 from advent_of_code.common_img import save_img
 
 ProblemDataType = np.ndarray
@@ -267,14 +265,6 @@ def render_2d_array_to_text(data: ProblemDataType) -> str:
     else:
         result = "\n".join("".join(str(c) for c in line) for line in data)
     return result
-
-
-def adapt_recursion_limit():
-    print("Current recursion limit:")
-    print(sys.getrecursionlimit())
-    sys.setrecursionlimit(15_000)
-    print("New recursion limit:")
-    print(sys.getrecursionlimit())
 
 
 def get_allowed_pipes_for_direction():

@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 
 
@@ -36,3 +37,11 @@ def create_output_file_path(filename: str, output_subdir: str, current_filename:
     output_dir.mkdir(exist_ok=True, parents=True)
     output_file_path = output_dir / filename
     return output_file_path
+
+
+def adapt_recursion_limit(new_value: int = 15000):
+    print("Current recursion limit:")
+    print(sys.getrecursionlimit())
+    sys.setrecursionlimit(new_value)
+    print("New recursion limit:")
+    print(sys.getrecursionlimit())
