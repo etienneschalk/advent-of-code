@@ -166,7 +166,7 @@ def compute_tiles_enclosed_by_loop_part_2(
     if SAVE_TXT:
         save_txt(
             render_2d_array_to_text(main_loop),
-            "text/part_2_main_loop.txt",
+            "part_2_main_loop.txt",
             __file__,
             output_subdir="text",
         )
