@@ -191,6 +191,12 @@ def rasterize_main_loop(main_loop: np.ndarray):
     for i in range(1, main_loop.shape[0] - 1):
         for j in range(1, main_loop.shape[1] - 1):
             fill_macro_pixel_3x(main_loop, raster_3x, pipe_to_pattern_mapping, i, j)
+
+            if SAVE_IMG:
+                save_img(
+                    raster_3x, f"arr_i{i:05d}_j{j:05d}.png", output_subdir="mazegen"
+                )
+
     return raster_3x
 
 
@@ -230,10 +236,10 @@ def render_2d_array_to_text(data: ProblemDataType) -> str:
     return result
 
 
-def save_img(array: np.ndarray, filename: str):
+def save_img(array: np.ndarray, filename: str, *, output_subdir: str = ""):
     year, day = get_year_and_day_from_filename(__file__)
-    output_dir = f"generated/advent_of_code/year_{year}/day_{day:02d}"
-    output_dir = Path(output_dir)
+    output_dir_central = f"generated/advent_of_code/year_{year}/day_{day:02d}"
+    output_dir = Path(output_dir_central) / output_subdir
     output_dir.mkdir(exist_ok=True, parents=True)
     output_file_path = output_dir / filename
     im = Image.fromarray(array)
