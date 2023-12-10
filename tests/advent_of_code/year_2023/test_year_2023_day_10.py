@@ -1,8 +1,8 @@
 import xarray as xr
 
 from advent_of_code.year_2023.year_2023_day_10 import (
-    fill_macro_pixel,
-    logic_part_1,
+    _fill_macro_pixel_first_try,
+    compute_farthest_point_part_1,
     parse_text_input,
     render_2d_array_to_text,
 )
@@ -72,19 +72,19 @@ def test_year_2023_day_10_part_1():
     for p in parsed_inputs:
         print(render_2d_array_to_text(p))
 
-    result, minimum_distances = logic_part_1(parsed_inputs[1])
+    result, minimum_distances = compute_farthest_point_part_1(parsed_inputs[1])
     print(render_2d_array_to_text(minimum_distances))
     assert result == 4
 
-    result, minimum_distances = logic_part_1(parsed_inputs[2])
+    result, minimum_distances = compute_farthest_point_part_1(parsed_inputs[2])
     print(render_2d_array_to_text(minimum_distances))
     assert result == 4
 
-    result, minimum_distances = logic_part_1(parsed_inputs[3])
+    result, minimum_distances = compute_farthest_point_part_1(parsed_inputs[3])
     print(render_2d_array_to_text(minimum_distances))
     assert result == 8
 
-    result, minimum_distances = logic_part_1(parsed_inputs[4])
+    result, minimum_distances = compute_farthest_point_part_1(parsed_inputs[4])
     print(render_2d_array_to_text(minimum_distances))
     assert result == 8
     ...
@@ -203,11 +203,11 @@ def test_year_2023_day_10_part_2():
     parsed_inputs = [parse_text_input(test_input) for test_input in test_inputs]
     for p in parsed_inputs:
         print(render_2d_array_to_text(p))
-        _, minimum_distances = logic_part_1(p)
+        _, minimum_distances = compute_farthest_point_part_1(p)
         print(render_2d_array_to_text(minimum_distances))
 
     maze = parsed_inputs[2]
-    _, minimum_distances = logic_part_1(maze)
+    _, minimum_distances = compute_farthest_point_part_1(maze)
     import numpy as np
 
     contours = np.int32(np.bool_(minimum_distances))
@@ -224,7 +224,7 @@ def test_year_2023_day_10_part_2():
     # Ignore padded contour (1px)
     for i in range(1, arr.shape[0] - 1):
         for j in range(1, arr.shape[1] - 1):
-            fill_macro_pixel(main_loop, arr_2x, i, j)
+            _fill_macro_pixel_first_try(main_loop, arr_2x, i, j)
     ...
     _ = arr_2x
     print(render_2d_array_to_text(arr_2x))

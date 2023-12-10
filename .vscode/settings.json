@@ -4,9 +4,12 @@
   "python.testing.pytestEnabled": true,
   "cSpell.words": [
     "bruteforce",
+    "fromarray",
     "loadtxt",
     "neighbour",
     "neighbours",
-    "secho"
+    "secho",
+    "skimage",
+    "xarray"
   ]
 }
