@@ -39,8 +39,8 @@ def compute_part_1():
 
 
 def compute_part_2():
-    data = parse_input_text_file()
-    ...
+    # data = parse_input_text_file()
+    # ...
     return None
 
 
@@ -99,7 +99,7 @@ def logic_part_1_first_try(simulation_map: ProblemDataType) -> int:
 def build_graph_part_1(simulation_map: ProblemDataType) -> list[tuple]:
     adapt_recursion_limit()
 
-    blizzard_cube = compute_simulation_for_cross_period(simulation_map)
+    blizzard_cube = compute_simulation_for_cross_period(simulation_map, limit=800)
     obstacle_cube = sum(v for v in blizzard_cube.values()).astype(np.bool_)
     free_cube = ~obstacle_cube
 
@@ -116,6 +116,8 @@ def build_graph_part_1(simulation_map: ProblemDataType) -> list[tuple]:
     ]
     minutes = min(t[0] for t in candidates)
 
+    # 242 too low
+    # maybe 243 to account for the last step (exiting the labyrinth)
     # 745 too high
     # 744 too high
 
@@ -142,7 +144,7 @@ def breadth_first_search(
         for child in graph[node]:
             if child not in explored:
                 queue.append(child)
-                explored[node] = True
+                explored[child] = True
 
 
 # breadth first uses fifo and is iterative
@@ -153,11 +155,13 @@ def build_graph_breadth_first_part_1(
     initial_pos: np.ndarray,
 ):
     queue = []
+    queue_set = set()
     explored = {k: False for k in graph.keys()}
 
     node = (time - 1, initial_pos[0], initial_pos[1])
 
     queue.append(node)
+    queue_set.add(node)
     explored[node] = True
 
     while queue:
@@ -175,7 +179,7 @@ def build_graph_breadth_first_part_1(
         for child_tuple in graph[node]:
             if child_tuple not in explored:
                 queue.append(child_tuple)
-                explored[node] = True
+                explored[child_tuple] = True
     ...
 
 
@@ -194,7 +198,8 @@ def build_graph_recursive_part_1(
     for child in children:
         child_tuple = (time, child[0], child[1])
         if child_tuple in graph[initial_pos_tuple]:
-            # Recursion is extremely inefficient, many branches are useless (re-add in set
+            # Recursion is extremely inefficient,
+            # many branches are useless (re-add in set
             # Must continue
             continue
         graph[initial_pos_tuple].append(child_tuple)
@@ -219,6 +224,7 @@ def compute_children_positions(
             ).item()
             if free_space:
                 children_positions.append(candidate_pos)
+                # return children_positions
     if not children_positions:
         children_positions.append(
             initial_pos
@@ -296,3 +302,12 @@ def render_history_moves(history_moves: list[np.ndarray]) -> list[str]:
 
 if __name__ == "__main__":
     main()
+
+
+"""
+[
+(242, 24, 119), (243, 24, 119), (245, 24, 119), (247, 24, 119), (248, 24, 119),
+(249, 24, 119), (251, 24, 119), (253, 24, 119), (257, 24, 119), (258, 24, 119),
+(260, 24, 119), (261, 24, 119), (262, 24, 119), (264, 24, 119)
+]
+"""
