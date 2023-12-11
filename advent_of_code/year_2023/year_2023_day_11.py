@@ -13,37 +13,90 @@ def main():
 
 
 def compute_part_1():
-    data = parse_input_text_file()
-    expanded_space = expand_space(data)
+    space_xda = parse_input_text_file()
+    expanded_space = expand_space(space_xda)
     adjacency_matrix = compute_adjacency_matrix(expanded_space)
     result = compute_sum_of_shortest_paths_between_pairs(adjacency_matrix)
+    # idempotence part 1 part 2
+    assert compute_sum_of_shortest_paths_part_2(space_xda, 1) == result
     return result
 
 
 def compute_part_2():
-    # data = parse_input_text_file()
-    ...
-    return None
+    space_xda = parse_input_text_file()
+
+    # Do not expand space manually
+
+    result = compute_sum_of_shortest_paths_part_2(space_xda, 1000000 - 1)
+
+    return result
+
+
+def compute_sum_of_shortest_paths_part_2(
+    space_xda: xr.DataArray, expansion_coef: int
+) -> int:
+    coord_array = create_coord_array(space_xda)
+    chunk_coord_array = create_chunk_coord_array(space_xda, coord_array)
+
+    adjacency_matrix = compute_adjacency_matrix(space_xda.compute())
+    adjacency_matrix_chunks = compute_adjacency_matrix_from_coord_array(
+        chunk_coord_array.compute()
+    )
+
+    total_adjacency = adjacency_matrix + expansion_coef * adjacency_matrix_chunks
+    result = compute_sum_of_shortest_paths_between_pairs(total_adjacency)
+    return result
 
 
 def compute_sum_of_shortest_paths_between_pairs(adjacency_matrix: np.ndarray) -> int:
     return np.triu(adjacency_matrix).sum()
 
 
-def compute_adjacency_matrix(expanded_space: xr.DataArray) -> np.ndarray:
-    stacked = (expanded_space == b"#").stack(z=("row", "col"), create_index=False)
+def create_chunk_coord_array(
+    space_xda: xr.DataArray, coord_array: xr.DataArray
+) -> xr.DataArray:
+    row_chunks = get_compartiments(space_xda, "row", "col")
+    col_chunks = get_compartiments(space_xda, "col", "row")
+
+    chunk_coords = []
+    for z in coord_array.z:
+        row, col = coord_array.isel(z=z)
+        chunk_row = find_compartiment_id(row, row_chunks)
+        chunk_col = find_compartiment_id(col, col_chunks)
+        chunk_coords.append([chunk_row, chunk_col])
+    chunk_coord_array = coord_array.copy(data=chunk_coords)
+    return chunk_coord_array
+
+
+def compute_adjacency_matrix(space_xda: xr.DataArray) -> np.ndarray:
+    coord_array = create_coord_array(space_xda)
+    adjacency_matrix = compute_adjacency_matrix_from_coord_array(coord_array)
+
+    return adjacency_matrix
+
+
+def compute_adjacency_matrix_from_coord_array(coord_array: xr.DataArray) -> np.ndarray:
+    adjacency_matrix = xr.concat(
+        [
+            np.abs(coord_array.isel(z=i) - coord_array).sum(dim="idx")
+            for i in coord_array.z
+        ],
+        dim="z2",
+    )
+
+    return adjacency_matrix
+
+
+def create_coord_array(space_xda: xr.DataArray) -> xr.DataArray:
+    stacked = (space_xda == b"#").stack(z=("row", "col"), create_index=False)
     indices = stacked[stacked]
     coord_array = xr.DataArray(
         np.array([indices.row, indices.col]),
         dims=("idx", "z"),
         coords={"idx": ["row", "col"]},
     ).T
-    c = coord_array
-    adjacency_matrix = xr.concat(
-        ([np.abs(c.isel(z=i) - c).sum(dim="idx") for i in c.z]), dim="z2"
-    )
 
-    return adjacency_matrix
+    return coord_array
 
 
 def expand_space(parsed_input: xr.DataArray) -> xr.DataArray:
@@ -53,11 +106,34 @@ def expand_space(parsed_input: xr.DataArray) -> xr.DataArray:
     return xda
 
 
+def get_compartiments(xda, chunks_dim: str, dim_reduce: str):
+    offset = (xda == b".").all(dim=dim_reduce)
+    cs = offset[offset][chunks_dim] + 1
+    boundaries = np.pad(cs, (1, 1), constant_values=(0, len(offset)))
+    ranges = [
+        range(boundaries[i], boundaries[i + 1]) for i in range(len(boundaries) - 1)
+    ]
+    compartiments = {idx: v for idx, v in enumerate(ranges)}
+    return compartiments
+
+
+def find_compartiment_id(value: int, compartiments: dict[int, range]) -> int:
+    return [k for k, v in compartiments.items() if value in v][0]
+
+
+def get_chunks_tuple(xda, chunks_dim: str, dim_reduce: str):
+    offset = (xda == b".").all(dim=dim_reduce)
+    cs = offset[offset][chunks_dim] + 1
+    c0 = np.roll(np.pad(cs, (0, 1), constant_values=0), 1)
+    c1 = np.pad(cs, (0, 1), constant_values=len(offset))
+    chunks = c1 - c0
+    return tuple(chunks)
+
+
 def pad_xda(xda: xr.DataArray, dim_reduce: str, dim_concat: str):
     i = 0
     to_concat = []
     to_insert = (xda == b".").all(dim=dim_reduce)
-    print(f"{to_insert.sum().item()=}")
     for index in to_insert[to_insert][dim_concat].values:
         to_concat.append(xda.sel(**{dim_concat: slice(i, index)}))
         to_concat.append(xda.sel(**{dim_concat: index}))
