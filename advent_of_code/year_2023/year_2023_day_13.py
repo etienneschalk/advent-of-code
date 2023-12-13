@@ -29,6 +29,7 @@ def parse_input_text_file() -> ProblemDataType:
     parsed = parse_text_input(text)
 
     # too low 32359
+    # next try: 32967 too low
     return parsed
 
 
@@ -91,23 +92,27 @@ def find_number_of_rows_above_symmetry_axis_part_2(
     candidates = [0]
     for idx in range(1, size):
         reflect_length = min(idx, size - idx)
-        current_xda = xda
         for spread in range(1, reflect_length + 1):
-            left_lim = current_xda[idx - spread : idx]
-            right_lim = current_xda[idx : idx + spread][::-1]
+            left_lim = xda[idx - spread : idx]
+            right_lim = xda[idx : idx + spread][::-1]
             upper_line = left_lim[0]
             lower_line = right_lim[0]
             if (upper_line != lower_line).sum() == 1:
-                if left_lim.size == 1 or right_lim.size == 1:
+                if len(left_lim) == 1 or len(right_lim) == 1:
                     candidates.append(idx)  # can already return
                 else:
                     try_subarray = find_number_of_rows_above_symmetry_axis_part_1(
-                        current_xda.drop_sel({row: [idx - spread, idx + spread - 1]}),
+                        xda.drop_sel({row: [idx - spread, idx + spread - 1]}),
                         row,
                         col,
                     )
-                    if try_subarray > 0:
+                    if try_subarray == idx - 1:
+                        # This check ensure the correct reflection line is found
                         candidates.append(idx)
+                    else:
+                        print(
+                            f"Warning: danger zone (other possible reflection) {idx=}"
+                        )
 
     return max(candidates)
 

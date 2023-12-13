@@ -26,6 +26,18 @@ EXAMPLE_INPUT = """
 
 """
 
+## ! Second example without two first lines is symmetric too!
+"""
+xxxxxxxxx
+xxxxxxxxx
+..##..### 2
+#####.##. 1
+--------  
+#####.##. 1
+..##..### 2
+#....#..#
+
+"""
 EXAMPLE_PROBLEMATIC = """
 
 #......#...
@@ -42,6 +54,17 @@ EXAMPLE_PROBLEMATIC = """
 
 
 def test_year_2023_day_13_part_1_problematic():
+    test_input = EXAMPLE_PROBLEMATIC
+    pattern = parse_text_input(test_input)[0]
+
+    # Vertical symmetry
+    assert find_number_of_cols_above_symmetry_axis(pattern) == 10
+
+    # Horizontal symmetry
+    assert find_number_of_rows_above_symmetry_axis(pattern) == 0
+
+
+def test_year_2023_day_13_part_2_problematic():
     test_input = EXAMPLE_PROBLEMATIC
     pattern = parse_text_input(test_input)[0]
 
