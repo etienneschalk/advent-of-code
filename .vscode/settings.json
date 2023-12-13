@@ -5,12 +5,14 @@
   "cSpell.words": [
     "bruteforce",
     "fromarray",
+    "frombuffer",
     "isel",
     "loadtxt",
     "neighbour",
     "neighbours",
     "secho",
     "skimage",
+    "tobytes",
     "xarray"
   ]
 }
