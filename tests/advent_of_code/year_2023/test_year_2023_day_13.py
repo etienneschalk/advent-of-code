@@ -26,13 +26,14 @@ EXAMPLE_INPUT = """
 
 """
 
-## ! Second example without two first lines is symmetric too!
+# ! Second example without two first lines is symmetric too!
+
 """
 xxxxxxxxx
 xxxxxxxxx
 ..##..### 2
 #####.##. 1
---------  
+--------
 #####.##. 1
 ..##..### 2
 #....#..#
@@ -117,9 +118,6 @@ def test_year_2023_day_13_part_2():
     print(render_2d_data_array(example_1))
     print(render_2d_data_array(example_2))
 
-    # columns, rows = compute_symmetry_amounts(patterns, smudge_mode=False)
-    # columns_s, rows_s = compute_symmetry_amounts(patterns, smudge_mode=True)
-    ...
     # Vertical symmetry
     # Old symmetry disappeared
     assert find_number_of_cols_above_symmetry_axis(example_1, smudge_mode=True) == 0
