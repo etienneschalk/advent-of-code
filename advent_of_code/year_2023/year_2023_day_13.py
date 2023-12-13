@@ -43,22 +43,32 @@ def summarize_pattern_notes(patterns: ProblemDataType) -> int:
     return summary
 
 
-def find_number_of_cols_above_symmetry_axis(xda: xr.DataArray) -> int:
+def find_number_of_cols_above_symmetry_axis(
+    xda: xr.DataArray, *, smudge_mode: bool = False
+) -> int:
     return find_number_of_rows_above_symmetry_axis(xda.T, "col", "row")
 
 
 def find_number_of_rows_above_symmetry_axis(
-    xda: xr.DataArray, row: str = "row", col: str = "col"
+    xda: xr.DataArray, row: str = "row", col: str = "col", *, smudge_mode: bool = False
 ) -> int:
+    # Impact of smudge:
+    # Start from the candidate symmetry line,
+    # and spread 1, then 2, etc. until a line is found (n)
+    # at n+1, there is PROBABLY a smudge.
+    # fixed smudge should have priority over non-smudge result
     size = xda[row].size
     for idx in range(1, size):
         reflect_length = min(idx, size - idx)
-        left = xda[:idx][-reflect_length:].stack(z=(row, col), create_index=False)
-        right = xda[idx:][:reflect_length][::-1].stack(z=(row, col), create_index=False)
-        identical_reflect = (left == right).all().item()
+        for spread in (
+            range(1, reflect_length + 1) if smudge_mode else (reflect_length,)
+        ):
+            left = xda[:idx][-spread:].stack(z=(row, col), create_index=False)
+            right = xda[idx:][:spread][::-1].stack(z=(row, col), create_index=False)
+            identical_reflect = (left == right).all().item()
 
-        if identical_reflect:
-            return idx
+            if identical_reflect:
+                return idx
     return 0
 
 

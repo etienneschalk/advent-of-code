@@ -88,5 +88,20 @@ def test_year_2023_day_13_part_1():
 
 def test_year_2023_day_13_part_2():
     test_input = EXAMPLE_INPUT
-    parsed_input = parse_text_input(test_input)
+    patterns = parse_text_input(test_input)
+
+    example_1, example_2 = patterns
+
+    print(render_2d_data_array(example_1))
+    print(render_2d_data_array(example_2))
+
+    # Vertical symmetry
+    assert find_number_of_cols_above_symmetry_axis(example_1, smudge_mode=True) == 5
+    assert find_number_of_cols_above_symmetry_axis(example_2, smudge_mode=True) == 0
+
+    # Horizontal symmetry
+    assert find_number_of_rows_above_symmetry_axis(example_1, smudge_mode=True) == 0
+    assert find_number_of_rows_above_symmetry_axis(example_2, smudge_mode=True) == 4
+
+    assert summarize_pattern_notes(patterns) == 405
     ...
