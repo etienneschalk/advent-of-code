@@ -1,5 +1,3 @@
-from typing import Literal
-
 import numpy as np
 
 from advent_of_code.common import load_input_text_file
@@ -94,6 +92,34 @@ def parse_text_input(text: str) -> ProblemDataType:
     lines = text.strip().split("\n")
     input_array = np.array([np.fromstring(line, dtype="<S1") for line in lines])
     return input_array
+
+
+def run_one_full_cycle(parsed_input: np.ndarray, rot: int) -> np.ndarray:
+    # North (initial starting rot = 3)
+    rot -= 1
+    list_of_str = get_list_of_str(parsed_input, rot)
+    next_arr = update_state(list_of_str)
+    next_arr = np.rot90(next_arr, 4 - rot)
+
+    # West
+    rot -= 1
+    list_of_str = get_list_of_str(next_arr, rot)
+    next_arr = update_state(list_of_str)
+    next_arr = np.rot90(next_arr, 4 - rot)
+
+    # South
+    rot -= 1
+    list_of_str = get_list_of_str(next_arr, rot)
+    next_arr = update_state(list_of_str)
+    next_arr = np.rot90(next_arr, 4 - rot)
+
+    # East
+    rot -= 1
+    list_of_str = get_list_of_str(next_arr, rot)
+    next_arr = update_state(list_of_str)
+    next_arr = np.rot90(next_arr, 4 - rot)
+
+    return next_arr
 
 
 # def get_list_of_str(
