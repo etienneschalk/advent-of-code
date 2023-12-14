@@ -18,17 +18,65 @@ def main():
 
 def compute_part_1():
     data = parse_input_text_file()
-    list_of_str = get_list_of_str(data, 3)  # initial rotation of 270 degrees
-    result = compute_total_load(list_of_str)
+    result = compute_total_load_for_north(data)
     return result
 
 
+def compute_total_load_for_north(data: np.ndarray) -> int:
+    # initial rotation of 270 degrees
+    list_of_str = get_list_of_str(data, 3)
+    result = compute_total_load_legacy(list_of_str)
+    return result
+
+
+# Kind of related to advent_of_code/year_2023/year_2023_day_08.py (detect a cycle)
 def compute_part_2():
     data = parse_input_text_file()
-    return None
+    init_rot = 4
+    max_iter = 1200
+    state = data
+    search_result = detect_cycle(init_rot, max_iter, state)
+    start, period, state_history = search_result
+    state_wanted = attain_wanted_state(1000000000, start, period, state_history)
+    state_lines = get_list_of_str(state_wanted, 0)
+    total_load = compute_total_load_from_state_lines(state_lines)
+    return total_load
+    ...
 
 
-def compute_total_load(parsed_input: ProblemDataType):
+def detect_cycle(init_rot: int, max_iter: int, state: ProblemDataType):
+    state_history = [state]
+    for i in range(max_iter):
+        print(i)
+        state = run_one_full_cycle(state, init_rot)
+        state_history.append(state)
+        # state_history.append(state.flatten().tostring())
+        if sum(np.all(state_history[i] == h) for h in state_history) > 1:
+            indices = tuple(
+                t[0]
+                for t in (
+                    (k, np.all(state_history[i] == h))
+                    for k, h in enumerate(state_history)
+                )
+                if t[1]
+            )
+            print(f"{i=} found duplicates for {indices=}")
+            if len(indices) == 2:
+                period = indices[1] - indices[0]
+                print(f"{i=} found duplicates for {indices=} and {period=}")
+                # The problem should be nice so we can return immediately the
+                # loop index start + period
+                start = indices[0]
+                return start, period, state_history[start : start + period]
+
+                # i=141 found some repeat for indices=(107, 141)
+                # i=141 found some repeat for indices=(107, 141) and delta=34
+                # 142
+                # i=142 found some repeat for indices=(108, 142)
+                # i=142 found some repeat for indices=(108, 142) and delta=34
+
+
+def compute_total_load_legacy(parsed_input: ProblemDataType):
     minimal_repr = get_minimal_representation(parsed_input)
     sum_of_loads = sum(sum(sum_rock_values(*y) for y in x) for x in minimal_repr)
     return sum_of_loads
@@ -74,6 +122,20 @@ def get_minimal_representation(
     ]
 
     return minimal_repr
+
+
+def attain_wanted_state(
+    wanted_cycles: int, start: int, period: int, state_history: list[ProblemDataType]
+):
+    state_wanted = state_history[(wanted_cycles - start) % period]
+    return state_wanted
+
+
+def compute_total_load_from_state_lines(state_lines):
+    total_load = 0
+    for index, line in enumerate((reversed(state_lines)), 1):
+        total_load += sum(1 for c in line if c == "O") * index
+    return total_load
 
 
 def sum_rock_values(goal: int, length: int) -> int:
