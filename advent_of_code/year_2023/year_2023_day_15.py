@@ -6,10 +6,10 @@ from advent_of_code.common import load_input_text_file
 
 ProblemDataType = list[str]
 
-NORTH = 0
-WEST = 1
-SOUTH = 2
-EAST = 3
+# NORTH = 0
+# WEST = 1
+# SOUTH = 2
+# EAST = 3
 
 
 def main():
@@ -20,10 +20,8 @@ def main():
 
 def compute_part_1():
     data = parse_input_text_file()
-    list_of_str = get_list_of_str(data, NORTH)
-    result, next_arr = compute_total_load(list_of_str)
-    next_sim = get_list_of_str(next_arr, -NORTH - 2)
-
+    list_of_str = get_list_of_str(data, 3)  # initial rotation of 270 degrees
+    result = compute_total_load(list_of_str)
     return result
 
 
@@ -35,10 +33,14 @@ def compute_part_2():
 def compute_total_load(parsed_input: ProblemDataType):
     minimal_repr = get_minimal_representation(parsed_input)
     sum_of_loads = sum(sum(sum_rock_values(*y) for y in x) for x in minimal_repr)
+    return sum_of_loads
+
+
+def update_state(parsed_input: ProblemDataType) -> np.ndarray:
+    minimal_repr = get_minimal_representation(parsed_input)
     rendered_lines = minimal_to_list_of_str(minimal_repr)
     next_arr = np.array([np.fromstring(line, dtype="<S1") for line in rendered_lines])
-    # np.rot90(input_array, 1).tolist()
-    return sum_of_loads, next_arr
+    return next_arr
 
 
 def minimal_to_list_of_str(minimal_repr: list[list[tuple[int, int]]]) -> list[str]:
@@ -113,10 +115,12 @@ def parse_text_input(text: str) -> ProblemDataType:
 
 
 #     return data
-def get_list_of_str(
-    input_array: np.ndarray, direction: Literal[0, 1, 2, 3]
-) -> list[str]:
-    tolist = np.rot90(input_array, 3 + direction).tolist()
+def get_list_of_str(input_array: np.ndarray, times: int) -> list[str]:
+    if times > 0:
+        arr = np.rot90(input_array, times)
+    else:
+        arr = input_array
+    tolist = arr.tolist()
     data = ["".join(i.decode() for i in li) for li in tolist]
     return data
 
