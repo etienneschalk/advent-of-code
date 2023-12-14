@@ -21,7 +21,9 @@ def main():
 def compute_part_1():
     data = parse_input_text_file()
     list_of_str = get_list_of_str(data, NORTH)
-    result = compute_total_load(list_of_str)
+    result, next_arr = compute_total_load(list_of_str)
+    next_sim = get_list_of_str(next_arr, -NORTH - 2)
+
     return result
 
 
@@ -31,22 +33,50 @@ def compute_part_2():
 
 
 def compute_total_load(parsed_input: ProblemDataType):
+    minimal_repr = get_minimal_representation(parsed_input)
+    sum_of_loads = sum(sum(sum_rock_values(*y) for y in x) for x in minimal_repr)
+    rendered_lines = minimal_to_list_of_str(minimal_repr)
+    next_arr = np.array([np.fromstring(line, dtype="<S1") for line in rendered_lines])
+    # np.rot90(input_array, 1).tolist()
+    return sum_of_loads, next_arr
+
+
+def minimal_to_list_of_str(minimal_repr: list[list[tuple[int, int]]]) -> list[str]:
+    rendered_lines = []
+    for line in minimal_repr:
+        parts = []
+        pgoal, plength = line[0]
+        parts.append("." * (pgoal - plength) + "O" * plength)
+        for i in range(1, len(line)):
+            cgoal, clength = line[i]
+            totlen = cgoal - pgoal - 1
+            parts.append("." * (totlen - clength) + "O" * clength)
+            pgoal, plength = cgoal, clength
+        rendered_line = "#".join(parts)
+        rendered_lines.append(rendered_line)
+    return rendered_lines
+
+
+def get_minimal_representation(
+    parsed_input: ProblemDataType,
+) -> list[list[tuple[int, int]]]:
     split = [line.split("#") for line in parsed_input]
-    cube_rock_idx = tuple(
+    cube_rock_indices = tuple(
         tuple((*(idx for idx, c in enumerate(li) if c == "#"), len(li)))
         for li in parsed_input
     )
-    round_rock_count = tuple(
+    round_rock_counts = tuple(
         tuple(sum(el == "O" for el in li) for li in line) for line in split
     )
-    loads = [
-        list(some_math(x, y) for x, y in zip(a, b))
-        for a, b in zip(cube_rock_idx, round_rock_count)
+    minimal_repr = [
+        list((goal, length) for goal, length in zip(idx, rock_count))
+        for idx, rock_count in zip(cube_rock_indices, round_rock_counts)
     ]
-    return sum(sum(x) for x in loads)
+
+    return minimal_repr
 
 
-def some_math(goal: int, length: int) -> int:
+def sum_rock_values(goal: int, length: int) -> int:
     go = goal
     le = length
     return ((go * (go + 1)) - ((go - le) * (go - le + 1))) // 2
@@ -64,21 +94,30 @@ def parse_text_input(text: str) -> ProblemDataType:
     return input_array
 
 
+# def get_list_of_str(
+#     input_array: np.ndarray, direction: Literal[0, 1, 2, 3]
+# ) -> list[str]:
+#     direction = NORTH
+#     tolist = np.rot90(input_array, 1 + direction).tolist()
+#     # # .T a priori only for north and south
+#     # if direction == NORTH or direction == SOUTH:
+#     #     tolist = input_array.T.tolist()
+#     # else:
+#     #     tolist = input_array.tolist()
+
+#     # reversed a priori only for north and west
+#     if direction == NORTH or direction == WEST:
+#         data = ["".join(i.decode() for i in reversed(li)) for li in tolist]
+#     else:
+#         data = ["".join(i.decode() for i in li) for li in tolist]
+
+
+#     return data
 def get_list_of_str(
     input_array: np.ndarray, direction: Literal[0, 1, 2, 3]
 ) -> list[str]:
-    # .T a priori only for north and south
-    if direction == NORTH or direction == SOUTH:
-        tolist = input_array.T.tolist()
-    else:
-        tolist = input_array.tolist()
-
-    # reversed a priori only for north and west
-    if direction == NORTH or direction == WEST:
-        data = ["".join(i.decode() for i in reversed(li)) for li in tolist]
-    else:
-        data = ["".join(i.decode() for i in li) for li in tolist]
-
+    tolist = np.rot90(input_array, 3 + direction).tolist()
+    data = ["".join(i.decode() for i in li) for li in tolist]
     return data
 
 
