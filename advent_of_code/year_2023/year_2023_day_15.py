@@ -1,8 +1,15 @@
+from typing import Literal
+
 import numpy as np
 
 from advent_of_code.common import load_input_text_file
 
 ProblemDataType = list[str]
+
+NORTH = 0
+WEST = 1
+SOUTH = 2
+EAST = 3
 
 
 def main():
@@ -13,7 +20,8 @@ def main():
 
 def compute_part_1():
     data = parse_input_text_file()
-    result = compute_total_load(data)
+    list_of_str = get_list_of_str(data, NORTH)
+    result = compute_total_load(list_of_str)
     return result
 
 
@@ -53,8 +61,24 @@ def parse_input_text_file() -> ProblemDataType:
 def parse_text_input(text: str) -> ProblemDataType:
     lines = text.strip().split("\n")
     input_array = np.array([np.fromstring(line, dtype="<S1") for line in lines])
-    tolist = input_array.T.tolist()
-    data = ["".join(i.decode() for i in reversed(li)) for li in tolist]
+    return input_array
+
+
+def get_list_of_str(
+    input_array: np.ndarray, direction: Literal[0, 1, 2, 3]
+) -> list[str]:
+    # .T a priori only for north and south
+    if direction == NORTH or direction == SOUTH:
+        tolist = input_array.T.tolist()
+    else:
+        tolist = input_array.tolist()
+
+    # reversed a priori only for north and west
+    if direction == NORTH or direction == WEST:
+        data = ["".join(i.decode() for i in reversed(li)) for li in tolist]
+    else:
+        data = ["".join(i.decode() for i in li) for li in tolist]
+
     return data
 
 
