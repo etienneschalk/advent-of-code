@@ -1,6 +1,6 @@
 import numpy as np
 
-from advent_of_code.year_2023.year_2023_day_15 import (
+from advent_of_code.year_2023.year_2023_day_14 import (
     attain_wanted_state,
     compute_total_load_for_north,
     compute_total_load_from_state_lines,
@@ -71,7 +71,7 @@ EXPECTED_PART_2_3_CYCLE = """
 """
 
 
-def test_year_2023_day_15_part_1():
+def test_year_2023_day_14_part_1():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)
     list_of_str = get_list_of_str(parsed_input, 3)
@@ -79,14 +79,14 @@ def test_year_2023_day_15_part_1():
     assert total_load == 136
 
 
-def test_year_2023_day_15_part_1_refactored():
+def test_year_2023_day_14_part_1_refactored():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)
     total_load = compute_total_load_for_north(parsed_input)
     assert total_load == 136
 
 
-def test_year_2023_day_15_part_2():
+def test_year_2023_day_14_part_2():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)
 
@@ -103,7 +103,7 @@ def test_year_2023_day_15_part_2():
     assert get_list_of_str(after_three_cycles, 0) == expected_3
 
 
-def test_year_2023_day_15_part_2_more_iter():
+def test_year_2023_day_14_part_2_more_iter():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)
 
@@ -126,7 +126,7 @@ def test_year_2023_day_15_part_2_more_iter():
     ...
 
 
-def test_year_2023_day_15_part_2_validate_problem_description():
+def test_year_2023_day_14_part_2_validate_problem_description():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)
 
