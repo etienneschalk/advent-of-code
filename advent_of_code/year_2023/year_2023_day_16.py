@@ -58,16 +58,16 @@ def main():
 
 def compute_part_1():
     board = parse_input_text_file()
-    result_one_less_iter = do_part_1(board, max_depth=2499)
-    result = do_part_1(board, max_depth=2500)
-    result_one_more_iter = do_part_1(board, max_depth=2501)
+    initial_beam = Beam(np.array((1, 0)), MOVE_RIGHT)
+    result_one_less_iter = do_part_1(board, initial_beam=initial_beam, max_depth=2499)
+    result = do_part_1(board, initial_beam=initial_beam, max_depth=2500)
+    result_one_more_iter = do_part_1(board, initial_beam=initial_beam, max_depth=2501)
     assert result_one_less_iter < result
     assert result == result_one_more_iter
     return result
 
 
-def do_part_1(board: ProblemDataType, max_depth: int = 100) -> int:
-    initial_beam = Beam(np.array((1, 0)), MOVE_RIGHT)
+def do_part_1(board: ProblemDataType, initial_beam: Beam, max_depth: int = 100) -> int:
     explored = np.zeros((4, *board.shape), dtype=np.uint8)
     update_simulation(board, initial_beam, 0, max_depth, explored)
 
@@ -80,6 +80,52 @@ def do_part_1(board: ProblemDataType, max_depth: int = 100) -> int:
 
     energized_count = np.sum(np.logical_or.reduce(explored[:, 1:-1, 1:-1]))
     return energized_count
+
+
+def do_part_2(board: ProblemDataType, max_depth: int = 100) -> int:
+    energized_counts = []
+    row_count = board.shape[0]
+    col_count = board.shape[1]
+    for row in range(1, row_count):
+        initial_beam = Beam(np.array((row, 0)), MOVE_RIGHT)
+        energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
+        print(initial_beam.position)
+        energized_counts.append(energized_count)
+        initial_beam = Beam(np.array((row, col_count - 1)), MOVE_LEFT)
+        energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
+        print(initial_beam.position)
+        energized_counts.append(energized_count)
+    for col in range(1, col_count):
+        initial_beam = Beam(np.array((0, col)), MOVE_DOWN)
+        energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
+        print(initial_beam.position)
+        energized_counts.append(energized_count)
+        initial_beam = Beam(np.array((row_count - 1, col)), MOVE_UP)
+        energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
+        print(initial_beam.position)
+        energized_counts.append(energized_count)
+    maximum = max(energized_counts)
+    return maximum
+
+
+# def do_part_2(board: ProblemDataType, max_depth: int = 100) -> int:
+#     energized_counts = []
+#     for row in range(1, board.shape[0] - 1):
+#         initial_beam = Beam(np.array((row, 1)), MOVE_RIGHT)
+#         energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
+#         energized_counts.append(energized_count)
+#         initial_beam = Beam(np.array((row, board.shape[1] - 1)), MOVE_LEFT)
+#         energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
+#         energized_counts.append(energized_count)
+#     for col in range(1, board.shape[1] - 1):
+#         initial_beam = Beam(np.array((1, col)), MOVE_DOWN)
+#         energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
+#         energized_counts.append(energized_count)
+#         initial_beam = Beam(np.array((board.shape[0] - 1, col)), MOVE_UP)
+#         energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
+#         energized_counts.append(energized_count)
+#     maximum = max(energized_counts)
+#     return maximum
 
 
 def update_simulation(
@@ -137,9 +183,15 @@ def draw_energized(
 
 
 def compute_part_2():
-    data = parse_input_text_file()
-    ...
-    return None
+    board = parse_input_text_file()
+    result_1 = do_part_2(board, max_depth=2500)
+    assert result_1 == 7505
+    result_2 = do_part_2(board, max_depth=2700)
+    assert result_2 == 7521
+    result_22 = do_part_2(board, max_depth=3000)
+    assert result_22 == 7521
+    result = result_22
+    return result
 
 
 def render_parsed_input(parsed_input: ProblemDataType) -> str:

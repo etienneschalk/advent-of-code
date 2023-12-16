@@ -1,5 +1,11 @@
+import numpy as np
+
 from advent_of_code.year_2023.year_2023_day_16 import (
+    MOVE_DOWN,
+    MOVE_RIGHT,
+    Beam,
     do_part_1,
+    do_part_2,
     parse_text_input,
     render_parsed_input,
 )
@@ -26,11 +32,26 @@ def test_year_2023_day_16_part_1():
     parsed_input = parse_text_input(test_input)
     print()
     print(render_parsed_input(parsed_input))
-    assert do_part_1(parsed_input) == 46
+    initial_beam = Beam(np.array((1, 0)), MOVE_RIGHT)
+    assert do_part_1(parsed_input, initial_beam=initial_beam, max_depth=31) == 45
+    assert do_part_1(parsed_input, initial_beam=initial_beam, max_depth=32) == 46
+    assert do_part_1(parsed_input, initial_beam=initial_beam, max_depth=33) == 46
     ...
 
 
 def test_year_2023_day_16_part_2():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)
+    print()
+    print(render_parsed_input(parsed_input))
+    initial_beam = Beam(np.array((0, 4)), MOVE_DOWN)
+    assert do_part_1(parsed_input, initial_beam=initial_beam, max_depth=32) == 49
+    assert do_part_1(parsed_input, initial_beam=initial_beam, max_depth=33) == 50
+    assert do_part_1(parsed_input, initial_beam=initial_beam, max_depth=34) == 51
+    assert do_part_1(parsed_input, initial_beam=initial_beam, max_depth=35) == 51
+
+    assert do_part_2(parsed_input, max_depth=32) == 49
+    assert do_part_2(parsed_input, max_depth=33) == 50
+    assert do_part_2(parsed_input, max_depth=34) == 51
+    assert do_part_2(parsed_input, max_depth=35) == 51
     ...
