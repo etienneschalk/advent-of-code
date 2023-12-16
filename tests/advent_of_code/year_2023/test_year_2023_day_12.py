@@ -1,4 +1,5 @@
 import numpy as np
+
 from advent_of_code.year_2023.year_2023_day_12 import (
     analyse_group,
     compute_possible_arrangements,
@@ -44,7 +45,7 @@ def test_year_2023_day_12_part_2():
     ]
     multiple_multiplied_histories = [
         compute_possible_arrangements([unfold_records(i, k) for i in parsed_input])
-        for k in range(1, 3)
+        for k in range(1, 5)
     ]
 
     sequence = np.array(multiple_multiplied_histories)
@@ -86,3 +87,8 @@ def test_year_2023_day_12_part_2_naive():
     # 2500 / 4 = 625
     # 506250 / 10 = 5062
     ...
+
+
+# TODO memoize with tuples
+# Simplify repeated sequences
+# of hash and dot

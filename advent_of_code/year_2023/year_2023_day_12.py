@@ -1,4 +1,5 @@
 from fractions import Fraction
+
 import numpy as np
 
 from advent_of_code.common import load_input_text_file
@@ -69,10 +70,16 @@ def compute_possible_arrangements(multiplied):
     return history_list
 
 
+# def num_valid_solutions(record: str, groups: tuple[int, ...]) -> int:
+
+
+# TODO Simplify this logic, put tuples, use a cache, simplify repeated sequence
+# Find sum, do not try to compute the history, it's too much
+# Only two parameters: record being a string or tuple, and groups tuple.
 def analyse_group(
     full_record: np.ndarray,
     record: np.ndarray,
-    group: tuple[int],
+    group: tuple[int, ...],
     history: set[str],
     damaged_count: int = 0,
 ) -> int:
