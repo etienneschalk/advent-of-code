@@ -1,3 +1,4 @@
+from fractions import Fraction
 import numpy as np
 
 from advent_of_code.common import load_input_text_file
@@ -24,9 +25,48 @@ def compute_part_1():
 
 
 def compute_part_2():
-    data = parse_input_text_file()
-    ...
-    return None
+    parsed_input = parse_input_text_file()
+    iter_count = 5
+    u_n = np.array(
+        [
+            compute_possible_arrangements([unfold_records(i, k) for i in parsed_input])
+            for k in range(1, 3)
+        ]
+    )
+    u_n_plus_one_on_u_n = (np.roll(u_n, -1, axis=0) // u_n)[:-1][0]
+
+    possible_arrangements = u_n[0] * (u_n_plus_one_on_u_n ** (iter_count - 1))
+
+    # or...
+    with_errors = (u_n[1] ** 4) / (u_n[0] ** 4)
+    ratio = (u_n[1] ** 4) // (u_n[0] ** 3)
+    ratio = (u_n[1] ** 4) // (u_n[0] ** 3)
+    ratio = (u_n[1] ** (iter_count - 1)) // (u_n[0] ** (iter_count - 2))
+    [Fraction(x, y) for x, y in zip(u_n[1], u_n[0])]
+    # Non-integer denominators must be calculated manually?
+    len(
+        [
+            f
+            for f in [Fraction(x, y) for x, y in zip(u_n[1], u_n[0])]
+            if f.denominator != 1
+        ]
+    )
+    91464976098328  # too low
+    5223100092137  # too low
+    result = sum(ratio)
+    return result
+
+
+def compute_possible_arrangements(multiplied):
+    history_list = []
+    history = set()
+    for idx, line in enumerate(multiplied):
+        record, group = line
+        print("-------------", idx)
+        _ = analyse_group(record, record, group, history)
+        history_list.append(len(history))
+        history.clear()
+    return history_list
 
 
 def analyse_group(
@@ -39,14 +79,14 @@ def analyse_group(
     # print(f"{len(record):02d}", record, group, damaged_count)
     if len(group) == 0:
         if np.all(record != b"#"):
-            print("Found")
+            # print("Found")
             history.add(full_record.tostring())
             return 1
         else:
             return 0
     if record.size == 0:
         if len(group) == 1 and damaged_count == group[0]:
-            print("Found")
+            # print("Found")
             history.add(full_record.tostring())
             return 1
         else:
@@ -83,6 +123,14 @@ def analyse_group(
         record[0] = b"?"
 
         return found
+
+
+def unfold_records(input_line, iter_count: int = 5):
+    record, group = input_line
+    return (
+        np.tile(np.pad(record, (0, 1), constant_values="?"), iter_count)[:-1],
+        group * iter_count,
+    )
 
 
 def parse_input_text_file() -> ProblemDataType:
