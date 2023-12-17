@@ -18,11 +18,18 @@ EXAMPLE_INPUT = """
 
 """
 
+EXAMPLE_INPUT_PART_2 = """
 
-def test_year_2023_day_17_part_1():
-    test_input = EXAMPLE_INPUT
-    parsed_input = parse_text_input(test_input)
+111111111111
+999999999991
+999999999991
+999999999991
+999999999991
 
+"""
+
+
+def test_year_2023_day_17_misc():
     # Heat excluded from hash, but included in comparison
     assert hash(State(10, (0, 0), 0, 0)) == hash(State(99999, (0, 0), 0, 0))
     assert (State(10, (0, 0), 0, 0)) < (State(99999, (0, 0), 0, 0))
@@ -42,14 +49,32 @@ def test_year_2023_day_17_part_1():
     dicthashmap[hash(different_heat_state)] = different_heat_state
     assert dicthashmap[hash(different_heat_state)] == different_heat_state
 
-    start = (0, 0)
-    end = tuple((parsed_input.shape[0] - 1, parsed_input.shape[1] - 1))
-    least_heat_loss = dijkstra(parsed_input, start, end)
-    assert least_heat_loss == 102
-    ...
 
-
-def test_year_2023_day_17_part_2():
+def test_year_2023_day_17_part_1():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)
-    ...
+
+    start = (0, 0)
+    end = tuple((parsed_input.shape[0] - 1, parsed_input.shape[1] - 1))
+    least_heat_loss = dijkstra(parsed_input, start, end, 1, 3)
+    assert least_heat_loss == 102
+
+
+def test_year_2023_day_17_part_2_a():
+    test_input = EXAMPLE_INPUT
+    parsed_input = parse_text_input(test_input)
+
+    start = (0, 0)
+    end = tuple((parsed_input.shape[0] - 1, parsed_input.shape[1] - 1))
+    least_heat_loss = dijkstra(parsed_input, start, end, 4, 10)
+    assert least_heat_loss == 94
+
+
+def test_year_2023_day_17_part_2_b():
+    test_input = EXAMPLE_INPUT_PART_2
+    parsed_input = parse_text_input(test_input)
+
+    start = (0, 0)
+    end = tuple((parsed_input.shape[0] - 1, parsed_input.shape[1] - 1))
+    least_heat_loss = dijkstra(parsed_input, start, end, 4, 10)
+    assert least_heat_loss == 71
