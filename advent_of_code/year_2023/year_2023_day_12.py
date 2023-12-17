@@ -26,18 +26,24 @@ def compute_part_1():
 
 
 def compute_part_2():
-    parsed_input = parse_input_text_file()
+    parsed_input = parse_input_text_file()[:16]
     iter_count = 5
+    iter_count_to_compute = 4
     u_n = np.array(
         [
             compute_possible_arrangements([unfold_records(i, k) for i in parsed_input])
-            for k in range(1, 3)
+            for k in range(1, iter_count_to_compute)
         ]
     )
     u_n_plus_one_on_u_n = (np.roll(u_n, -1, axis=0) // u_n)[:-1][0]
 
     possible_arrangements = u_n[0] * (u_n_plus_one_on_u_n ** (iter_count - 1))
 
+    # Some are slow but does not correspond to those whose ratio changes:
+    # 5: ?.???????.????. 5,1,1
+    # 7: ??.???????????.? 4,2
+    # array([[ 1,  3, 37,  3,  6, 43,  7, 51, 12,  1,  9,  7,  3,  5,  3,  3],
+    #        [ 1,  3, 37,  3,  6, 44,  7, 58, 12,  1,  9,  7,  3,  5,  3,  3]])
     # or...
     with_errors = (u_n[1] ** 4) / (u_n[0] ** 4)
     ratio = (u_n[1] ** 4) // (u_n[0] ** 3)
