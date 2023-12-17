@@ -6,15 +6,12 @@ from advent_of_code.common import adapt_recursion_limit, load_input_text_file
 
 ProblemDataType = np.ndarray
 
-ROW_AXIS = 0
-COL_AXIS = 1
-
 
 MOVE_NULL = np.array((0, 0))
-MOVE_DOWN = np.array((1, 0))
-MOVE_RIGHT = np.array((0, 1))
-MOVE_UP = np.array((-1, 0))
-MOVE_LEFT = np.array((0, -1))
+MOVE_SOUTH = np.array((1, 0))
+MOVE_EAST = np.array((0, 1))
+MOVE_NORTH = np.array((-1, 0))
+MOVE_WEST = np.array((0, -1))
 
 CELL_EMPTY_SPACE = b"."
 CELL_MIRROR_FSLASH = b"/"
@@ -25,17 +22,17 @@ CELL_WALL = b"O"
 CELL_ENERGY = b"#"
 
 CELL_DIRECTIONS = {
-    tuple(MOVE_DOWN): b"v",
-    tuple(MOVE_RIGHT): b">",
-    tuple(MOVE_UP): b"^",
-    tuple(MOVE_LEFT): b"<",
+    tuple(MOVE_SOUTH): b"v",
+    tuple(MOVE_EAST): b">",
+    tuple(MOVE_NORTH): b"^",
+    tuple(MOVE_WEST): b"<",
 }
 
 EXPLORED_IDX = {
-    tuple(MOVE_DOWN): 0,
-    tuple(MOVE_RIGHT): 1,
-    tuple(MOVE_UP): 2,
-    tuple(MOVE_LEFT): 3,
+    tuple(MOVE_SOUTH): 0,
+    tuple(MOVE_EAST): 1,
+    tuple(MOVE_NORTH): 2,
+    tuple(MOVE_WEST): 3,
 }
 
 
@@ -58,7 +55,7 @@ def main():
 
 def compute_part_1():
     board = parse_input_text_file()
-    initial_beam = Beam(np.array((1, 0)), MOVE_RIGHT)
+    initial_beam = Beam(np.array((1, 0)), MOVE_EAST)
     result_one_less_iter = do_part_1(board, initial_beam=initial_beam, max_depth=2499)
     result = do_part_1(board, initial_beam=initial_beam, max_depth=2500)
     result_one_more_iter = do_part_1(board, initial_beam=initial_beam, max_depth=2501)
@@ -87,20 +84,20 @@ def do_part_2(board: ProblemDataType, max_depth: int = 100) -> int:
     row_count = board.shape[0]
     col_count = board.shape[1]
     for row in range(1, row_count):
-        initial_beam = Beam(np.array((row, 0)), MOVE_RIGHT)
+        initial_beam = Beam(np.array((row, 0)), MOVE_EAST)
         energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
         print(initial_beam.position)
         energized_counts.append(energized_count)
-        initial_beam = Beam(np.array((row, col_count - 1)), MOVE_LEFT)
+        initial_beam = Beam(np.array((row, col_count - 1)), MOVE_WEST)
         energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
         print(initial_beam.position)
         energized_counts.append(energized_count)
     for col in range(1, col_count):
-        initial_beam = Beam(np.array((0, col)), MOVE_DOWN)
+        initial_beam = Beam(np.array((0, col)), MOVE_SOUTH)
         energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
         print(initial_beam.position)
         energized_counts.append(energized_count)
-        initial_beam = Beam(np.array((row_count - 1, col)), MOVE_UP)
+        initial_beam = Beam(np.array((row_count - 1, col)), MOVE_NORTH)
         energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
         print(initial_beam.position)
         energized_counts.append(energized_count)
@@ -153,14 +150,14 @@ def update_simulation(
         if beam.speed[1] == 0:
             beam.children.append(Beam(next_position, beam.speed))
         else:
-            beam.children.append(Beam(next_position, MOVE_DOWN))
-            beam.children.append(Beam(next_position, MOVE_UP))
+            beam.children.append(Beam(next_position, MOVE_SOUTH))
+            beam.children.append(Beam(next_position, MOVE_NORTH))
     elif cell == CELL_SPLITTER_H:
         if beam.speed[0] == 0:
             beam.children.append(Beam(next_position, beam.speed))
         else:
-            beam.children.append(Beam(next_position, MOVE_RIGHT))
-            beam.children.append(Beam(next_position, MOVE_LEFT))
+            beam.children.append(Beam(next_position, MOVE_EAST))
+            beam.children.append(Beam(next_position, MOVE_WEST))
     elif cell == CELL_WALL:
         # finito for the beam
         ...

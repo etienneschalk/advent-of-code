@@ -4,6 +4,7 @@
   "python.testing.pytestEnabled": true,
   "cSpell.words": [
     "bruteforce",
+    "dijkstra",
     "fromarray",
     "frombuffer",
     "isel",
