@@ -112,9 +112,6 @@ def dijkstra(
         iter_count += 1
         state: State = q.get()
 
-        if iter_count % 10_000 == 0:
-            print(state, iter_count)
-
         # Destination is reached with permitted amount of steps
         if state.position == end and state.step >= min_step:
             return state.heat
