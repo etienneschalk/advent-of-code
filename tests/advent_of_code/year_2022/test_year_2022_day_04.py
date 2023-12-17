@@ -1,7 +1,6 @@
 from advent_of_code.year_2022.year_2022_day_04 import (
     compute_fully_contained_count,
     compute_overlapping_count,
-    intersect_ranges_inclusive,
     parse_text_input,
     render_input_visualization,
 )

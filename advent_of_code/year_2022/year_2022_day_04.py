@@ -53,9 +53,9 @@ def render_input_visualization(input_data: ProblemDataType) -> str:
             render_interval_bar(p[0], p[1], max_value, format_str)
             + "  "
             + render_interval(p, format_str)
-            for p in l
+            for p in line
         )
-        for l in input_data
+        for line in input_data
     )
 
 

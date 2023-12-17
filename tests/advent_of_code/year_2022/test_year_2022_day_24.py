@@ -67,11 +67,11 @@ def test_year_2022_day_24_part_1_period_stack():
     # Also See https://matplotlib.org/stable/gallery/mplot3d/voxels_rgb.html
 
     # prepare some coordinates
-    x, y, z = (
-        blizzard_cube.time.values,
-        blizzard_cube.col.values,
-        blizzard_cube.row.values,
-    )
+    # x, y, z = (
+    #     blizzard_cube.time.values,
+    #     blizzard_cube.col.values,
+    #     blizzard_cube.row.values,
+    # )
 
     # draw cuboids in the top left and bottom right corners, and a link between
     # them
@@ -141,6 +141,6 @@ def test_year_2022_day_24_part_1():
 
 
 def test_year_2022_day_24_part_2():
-    test_input = EXAMPLE_INPUT
-    parsed_input = parse_text_input(test_input)
+    # test_input = EXAMPLE_INPUT
+    # parsed_input = parse_text_input(test_input)
     ...
