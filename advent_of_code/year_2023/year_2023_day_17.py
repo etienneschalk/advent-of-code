@@ -1,11 +1,16 @@
 import queue
 from dataclasses import dataclass, field
-from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
 
 from advent_of_code.common import load_input_text_file
+from advent_of_code.constants import (
+    NEIGHBOUR_MOVES,
+    Direction,
+    Position,
+    is_out_of_bounds,
+)
 
 # Literally copied from
 # https://github.com/tbeu/AdventOfCode/blob/master/2023/day17/day17.cpp
@@ -14,35 +19,9 @@ from advent_of_code.common import load_input_text_file
 # Other source: https://fr.wikipedia.org/wiki/Algorithme_de_Dijkstra
 
 HeatMap = npt.NDArray[np.uint8]
-Position = tuple[int, int]
 Step = np.uint8
 
 # In trigonometrical order: E, N, W, S
-
-EastType = Literal[0]
-NorthType = Literal[1]
-WestType = Literal[2]
-SouthType = Literal[3]
-
-EAST: EastType = 0
-NORTH: NorthType = 1
-WEST: WestType = 2
-SOUTH: SouthType = 3
-
-Direction = Literal[EastType, NorthType, WestType, SouthType]
-
-MOVE_NULL = np.array((0, 0))
-MOVE_EAST = np.array((0, 1))
-MOVE_NORTH = np.array((-1, 0))
-MOVE_WEST = np.array((0, -1))
-MOVE_SOUTH = np.array((1, 0))
-
-NEIGHBOUR_MOVES = {
-    EAST: MOVE_EAST,
-    NORTH: MOVE_NORTH,
-    WEST: MOVE_WEST,
-    SOUTH: MOVE_SOUTH,
-}
 
 
 # The State is more complex than the usual dijkstra of explored nodes
@@ -157,17 +136,6 @@ def dijkstra(
 def is_opposite_direction(a: Direction, b: Direction) -> bool:
     # 2 90deg turns, 4 turns = full rotation
     return a == (b + 2) % 4
-
-
-def is_out_of_bounds(
-    direction: Direction, position: Position, shape: tuple[int, int]
-) -> bool:
-    return (
-        (direction == SOUTH and position[0] == shape[0] - 1)
-        or (direction == EAST and position[1] == shape[1] - 1)
-        or (direction == NORTH and position[0] == 0)
-        or (direction == WEST and position[1] == 0)
-    )
 
 
 def main():
