@@ -1,7 +1,7 @@
-from dataclasses import asdict, dataclass
-from typing import Literal
+from dataclasses import asdict, dataclass, replace
+from typing import Any, Literal
 
-from advent_of_code.common import load_input_text_file
+from advent_of_code.common import load_input_text_file, save_txt
 
 ProblemDataType = ...
 
@@ -12,6 +12,26 @@ class PartRating:
     m: int
     a: int
     s: int
+
+    def __getitem__(self, item):
+        return getattr(self, item)
+
+
+@dataclass(frozen=True, kw_only=True)
+class PartRatingRange:
+    x: range
+    m: range
+    a: range
+    s: range
+
+    def __getitem__(self, item):
+        return getattr(self, item)
+
+
+@dataclass(frozen=True, kw_only=True)
+class PartRatingRangeTree:
+    mapping: dict[str, dict[str, tuple[int, int]]]
+    children: dict[str, "PartRatingRangeTree"]
 
     def __getitem__(self, item):
         return getattr(self, item)
@@ -30,6 +50,28 @@ class Rule:
         else:
             return part[self.category] > self.rating
 
+    def apply_to_range(
+        self, part_range: PartRatingRange
+    ) -> tuple[PartRatingRange, PartRatingRange]:
+        min_inclusive = 1
+        max_inclusive = 4000
+        r = part_range[self.category]
+
+        if self.operator == "<":
+            lrange = intersect_ranges(r, range(min_inclusive, self.rating))
+            rrange = intersect_ranges(r, range(self.rating, max_inclusive + 1))
+            lpr = replace(part_range, **{self.category: lrange})
+            rpr = replace(part_range, **{self.category: rrange})
+            acc, rej = lpr, rpr
+        else:  # == ">"
+            lrange = intersect_ranges(r, range(min_inclusive, self.rating + 1))
+            rrange = intersect_ranges(r, range(self.rating + 1, max_inclusive + 1))
+            lpr = replace(part_range, **{self.category: lrange})
+            rpr = replace(part_range, **{self.category: rrange})
+            acc, rej = rpr, lpr
+        return acc, rej
+        ...
+
 
 @dataclass(frozen=True, kw_only=True)
 class Workflow:
@@ -42,6 +84,17 @@ class Workflow:
             if rule.apply(part):
                 return rule.destination_workflow
         return self.destination_workflow_else
+
+    def apply_to_range(self, part_range: PartRatingRange) -> dict[str, PartRatingRange]:
+        accu = {}
+        # meta_accu = {}
+        rej = part_range
+        for rule in self.rules:
+            acc, rej = rule.apply_to_range(rej)
+            accu[rule.destination_workflow] = acc
+            # meta_accu[rule.destination_workflow] = str(rule)
+        accu[self.destination_workflow_else] = rej
+        return accu
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -66,6 +119,54 @@ class PuzzleInput:
             if self.apply(part) == "A"
         }
 
+    def apply_to_range(
+        self, initial_part_range: PartRatingRange, initial_dest: str = "in"
+    ) -> dict[str, Any] | None:
+        final_destinations = {"A", "R"}
+        if initial_dest in final_destinations:
+            return None
+
+        mapping = self.workflows[initial_dest].apply_to_range(initial_part_range)
+        # json_friendly_mapping = {
+        #     k: {cat: (r.start, r.stop) for cat, r in asdict(v).items()}
+        #     for k, v in (mapping).items()
+        # }
+
+        children = {
+            destination: self.apply_to_range(part_range, destination)
+            for destination, part_range in mapping.items()
+        }
+        children = {k: v for k, v in children.items() if v is not None}
+        children = children if len(children) >= 1 else None
+        recur_mapping = PartRatingRangeTree(
+            **{
+                "mapping": mapping,
+                "children": children,
+            }
+        )
+        return recur_mapping
+
+    def solve_part_2(self, initial_part_range: PartRatingRange) -> int:
+        applied = self.apply_to_range(initial_part_range)
+        acc = []
+        rej = []
+        gather_accepted_and_rejected_ranges(applied, acc, rej)
+        return applied
+
+
+def gather_accepted_and_rejected_ranges(tree, acc, rej):
+    mapping, children = tree["mapping"], tree["children"]
+    acc_ranges = mapping.get("A")
+    rej_ranges = mapping.get("R")
+    if acc_ranges is not None:
+        acc.append(acc_ranges)
+    if rej_ranges is not None:
+        rej.append(rej_ranges)
+
+    if children is not None:
+        for child in children.values():
+            gather_accepted_and_rejected_ranges(child, acc, rej)
+
 
 def main():
     result_part_1 = compute_part_1()
@@ -80,9 +181,26 @@ def compute_part_1():
 
 
 def compute_part_2():
-    data = parse_input_text_file()
-    ...
+    parsed_input = parse_input_text_file()
+    initial_part_rating_range = construct_initial_part_range()
+    solve_2 = parsed_input.solve_part_2(initial_part_rating_range)
+    visu_recur_dict_part_2(solve_2)
     return None
+
+
+def construct_initial_part_range() -> PartRatingRange:
+    min_inclusive = 1
+    max_inclusive = 4000
+    initial_range = range(min_inclusive, max_inclusive + 1)
+    initial_part_rating_range = PartRatingRange(
+        x=initial_range, m=initial_range, a=initial_range, s=initial_range
+    )
+
+    return initial_part_rating_range
+
+
+def intersect_ranges(a: range, b: range) -> range:
+    return range(max(a.start, b.start), min(a.stop, b.stop))
 
 
 def parse_input_text_file() -> ProblemDataType:
@@ -129,6 +247,19 @@ def parse_rule(ru: str) -> Rule:
         operator=rest[op_idx],
         rating=int(rest[op_idx + 1 :]),
         destination_workflow=dest,
+    )
+
+
+def visu_recur_dict_part_2(mapping, suffix: str = ""):
+    import json
+
+    txt = json.dumps(asdict(mapping), indent=4, default=str)
+
+    save_txt(
+        txt,
+        f"part2{suffix}.json",
+        __file__,
+        output_subdir="text",
     )
 
 
