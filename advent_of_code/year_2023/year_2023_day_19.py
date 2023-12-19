@@ -1,5 +1,8 @@
+from collections import defaultdict
 from dataclasses import asdict, dataclass, replace
 from typing import Any, Literal
+
+import numpy as np
 
 from advent_of_code.common import load_input_text_file, save_txt
 
@@ -26,6 +29,9 @@ class PartRatingRange:
 
     def __getitem__(self, item):
         return getattr(self, item)
+
+    def volume(self) -> int:
+        return np.prod([r.stop - r.start for r in asdict(self).values()])
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -85,15 +91,17 @@ class Workflow:
                 return rule.destination_workflow
         return self.destination_workflow_else
 
-    def apply_to_range(self, part_range: PartRatingRange) -> dict[str, PartRatingRange]:
-        accu = {}
-        # meta_accu = {}
+    def apply_to_range(
+        self, part_range: PartRatingRange
+    ) -> dict[str, list[PartRatingRange]]:
+        # Beware of not overwriting keys in dicts!! Same issue as in day 05!
+        # A destination can be split in multiple sub-ranges!!!!!
+        accu = defaultdict(list)
         rej = part_range
         for rule in self.rules:
             acc, rej = rule.apply_to_range(rej)
-            accu[rule.destination_workflow] = acc
-            # meta_accu[rule.destination_workflow] = str(rule)
-        accu[self.destination_workflow_else] = rej
+            accu[rule.destination_workflow].append(acc)
+        accu[self.destination_workflow_else].append(rej)
         return accu
 
 
@@ -127,16 +135,15 @@ class PuzzleInput:
             return None
 
         mapping = self.workflows[initial_dest].apply_to_range(initial_part_range)
-        # json_friendly_mapping = {
-        #     k: {cat: (r.start, r.stop) for cat, r in asdict(v).items()}
-        #     for k, v in (mapping).items()
-        # }
 
         children = {
-            destination: self.apply_to_range(part_range, destination)
-            for destination, part_range in mapping.items()
+            destination: [
+                self.apply_to_range(part_range, destination)
+                for part_range in part_ranges
+            ]
+            for destination, part_ranges in mapping.items()
         }
-        children = {k: v for k, v in children.items() if v is not None}
+        children = {k: [el for el in v if el is not None] for k, v in children.items()}
         children = children if len(children) >= 1 else None
         recur_mapping = PartRatingRangeTree(
             **{
@@ -151,7 +158,8 @@ class PuzzleInput:
         acc = []
         rej = []
         gather_accepted_and_rejected_ranges(applied, acc, rej)
-        return applied
+        result = sum([el.volume() for a in acc for el in a])
+        return result
 
 
 def gather_accepted_and_rejected_ranges(tree, acc, rej):
@@ -165,7 +173,8 @@ def gather_accepted_and_rejected_ranges(tree, acc, rej):
 
     if children is not None:
         for child in children.values():
-            gather_accepted_and_rejected_ranges(child, acc, rej)
+            for el in child:
+                gather_accepted_and_rejected_ranges(el, acc, rej)
 
 
 def main():
@@ -184,8 +193,7 @@ def compute_part_2():
     parsed_input = parse_input_text_file()
     initial_part_rating_range = construct_initial_part_range()
     solve_2 = parsed_input.solve_part_2(initial_part_rating_range)
-    visu_recur_dict_part_2(solve_2)
-    return None
+    return solve_2
 
 
 def construct_initial_part_range() -> PartRatingRange:
