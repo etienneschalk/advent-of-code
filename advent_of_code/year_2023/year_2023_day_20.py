@@ -1,18 +1,6 @@
 from dataclasses import dataclass
-import queue
+
 from advent_of_code.common import load_input_text_file
-
-ProblemDataType = ...
-
-test_data = """
-
-broadcaster -> a, b, c
-%a -> b
-%b -> c
-%c -> inv
-&inv -> a
-
-"""
 
 LowPulse = False
 HighPulse = True
@@ -35,27 +23,47 @@ class Module:
             destination_names=destination_names,
         )
 
-    def send(self, modules: dict[str, "Module"]):
-        ...
-
-    def send_to_all(self, pulse: Pulse, modules: dict[str, "Module"]):
-        for dest_name in self.destination_names:
-            modules[dest_name].receive(self.name, pulse)
-
-    def receive(self, input_name: str, pulse: Pulse):
+    def receive(self, source: str, pulse: Pulse) -> list["Message"]:
         pass
+
+
+ModuleDict = dict[str, Module]
+
+
+@dataclass(frozen=True, kw_only=True)
+class Message:
+    # source: Module
+    # destination: Module
+    # pulse: Pulse
+    source: str
+    destination: str
+    pulse: Pulse
+
+    def __repr__(self) -> str:
+        pulse_str = "high" if self.pulse else "low"
+        return f"{self.source} -{pulse_str}-> {self.destination}"
 
 
 @dataclass(kw_only=True)
 class BroadcasterModule(Module):
-    ...
+    @staticmethod
+    def init(name: str, destination_names: tuple[str]) -> "BroadcasterModule":
+        return BroadcasterModule(
+            name=name,
+            destination_names=destination_names,
+        )
+
+    def receive(self, source: str, pulse: Pulse) -> list[Message]:
+        messages = [
+            Message(source=self.name, destination=dest, pulse=pulse)
+            for dest in self.destination_names
+        ]
+        return messages
 
 
 @dataclass(kw_only=True)
 class FlipFlopModule(Module):
     state: FlipFlopState
-    next_state: FlipFlopState
-    # pulses_to_send: queue.Queue
     pulses_to_send: list[Pulse]
 
     @staticmethod
@@ -65,34 +73,24 @@ class FlipFlopModule(Module):
             destination_names=destination_names,
             state=Off,
             pulses_to_send=[],
-            next_state=Off
-            # pulses_to_send=queue.Queue(),
         )
 
-    def receive(self, input_name: str, pulse: Pulse):
+    def receive(self, source: str, pulse: Pulse) -> list[Message]:
         if pulse is LowPulse:
-            self.next_state = not self.next_state
-            self.pulses_to_send.append(self.next_state)
-            # self.pulses_to_send.put(self.state)
-
-    def send(self, modules: dict[str, "Module"]):
-        # if queue.empty():
-        #     return
-        self.state = self.next_state
-        if not self.pulses_to_send:
-            return
-        pulse = self.pulses_to_send.pop(0)
-        # pulse = self.pulses_to_send.get()
-        super().send_to_all(pulse, modules)
+            self.state = not self.state
+            pulse = self.state
+            return [
+                Message(source=self.name, destination=dest, pulse=pulse)
+                for dest in self.destination_names
+            ]
+        return []
 
 
 @dataclass(kw_only=True)
 class ConjunctionModule(Module):
     prefix = "&"
     inputs: dict[str, Pulse]
-    next_inputs: dict[str, Pulse]
     pulses_to_send: list[Pulse]
-    next_pulses_to_send: list[Pulse]
 
     @staticmethod
     def init(name: str, destination_names: tuple[str]) -> "ConjunctionModule":
@@ -100,27 +98,16 @@ class ConjunctionModule(Module):
             name=name,
             destination_names=destination_names,
             inputs={},
-            next_inputs={},
-            # inputs={name: LowPulse for name in destination_names},
             pulses_to_send=[],
-            next_pulses_to_send=[],
         )
 
-    def receive(self, input_name: str, pulse: Pulse):
-        self.next_inputs[input_name] = pulse
-        pulse = not all(input is HighPulse for input in self.next_inputs.values())
-        self.pulses_to_send.append(pulse)
-
-    def send(self, modules: dict[str, "Module"]):
-        self.inputs = self.next_inputs
-        self.next_inputs = {**self.inputs}
-
-        # if queue.empty():
-        #     return
-        if not self.pulses_to_send:
-            return
-        pulse = self.pulses_to_send.pop(0)
-        super().send_to_all(pulse, modules)
+    def receive(self, source: str, pulse: Pulse) -> list[Message]:
+        self.inputs[source] = pulse
+        pulse = not all(input is HighPulse for input in self.inputs.values())
+        return [
+            Message(source=self.name, destination=dest, pulse=pulse)
+            for dest in self.destination_names
+        ]
 
 
 def main():
@@ -130,33 +117,56 @@ def main():
 
 
 def compute_part_1():
-    # text = load_input_text_file(__file__)
-    text = test_data
+    text = load_input_text_file(__file__)
+    # text = test_data
     modules = parse_text_input(text)
-    modules["broadcaster"].send_to_all(LowPulse, modules)
-    ...
-    for name, module in modules.items():
-        module.send(modules)
-    ...
-    for name, module in modules.items():
-        module.send(modules)
-    ...
-    for name, module in modules.items():
-        module.send(modules)
-    ...
-    for name, module in modules.items():
-        module.send(modules)
-    return None
+
+    history = compute_simulation_history(modules)
+
+    result = len(history)
+    return result
+
+
+def compute_simulation_history(modules: ModuleDict):
+    messages = [Message(source="button", destination="broadcaster", pulse=LowPulse)]
+    history = [*messages]
+
+    while messages:
+        message = messages.pop(0)
+        module = modules.get(message.destination, None)
+        if module is None:
+            continue
+        response = module.receive(message.source, message.pulse)
+        messages.extend(response)
+        history.extend(response)
+
+    return history
+
+
+def compute_result_for_part_1(
+    histories: list[list[Message]], button_push_count: int
+) -> int:
+    high_pulse_count_total = 0
+    low_pulse_count_total = 0
+    cycle_length = len(histories)
+    for h in histories:
+        high_pulse_count = sum(m.pulse for m in h)
+        low_pulse_count = len(h) - high_pulse_count
+        high_pulse_count_total += high_pulse_count
+        low_pulse_count_total += low_pulse_count
+    result = (
+        (button_push_count // cycle_length) ** 2
+        * high_pulse_count_total
+        * low_pulse_count_total
+    )
+    return result
 
 
 def compute_part_2():
-    text = load_input_text_file(__file__)
-    parsed = parse_text_input(text)
-    ...
     return None
 
 
-def parse_text_input(text: str) -> ProblemDataType:
+def parse_text_input(text: str) -> ModuleDict:
     lines = text.strip().split("\n")
 
     modules: dict[str, Module] = {}
@@ -174,11 +184,21 @@ def parse_text_input(text: str) -> ProblemDataType:
         else:
             module_class = Module
 
-        module = module_class.init(
+        candidate = module_class.init(
             name=name, destination_names=tuple(destinations.split(", "))
         )
 
-        modules[name] = module
+        modules[name] = candidate
+
+    # Initialize Conjunction sources
+    conjunction_modules = []
+    for m in modules.values():
+        if type(m) is ConjunctionModule:
+            conjunction_modules.append(m)
+    for conj in conjunction_modules:
+        for module in modules.values():
+            if conj.name in module.destination_names:
+                conj.inputs[module.name] = False
     ...
     return modules
 
