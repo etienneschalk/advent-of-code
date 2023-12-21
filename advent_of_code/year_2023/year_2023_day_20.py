@@ -118,12 +118,15 @@ def main():
 
 def compute_part_1():
     text = load_input_text_file(__file__)
-    # text = test_data
-    modules = parse_text_input(text)
+    start_module_dict = parse_text_input(text)
+    module_dict = parse_text_input(text)
 
-    history = compute_simulation_history(modules)
+    histories = compute_successive_histories_until_circle_back(
+        start_module_dict, module_dict
+    )
 
-    result = len(history)
+    result = compute_result_for_part_1(histories, 1000)
+
     return result
 
 
@@ -160,6 +163,18 @@ def compute_result_for_part_1(
         * low_pulse_count_total
     )
     return result
+
+
+def compute_successive_histories_until_circle_back(
+    start_module_dict: ModuleDict, module_dict: ModuleDict, max_iter: int = 1000
+):
+    i = 0
+    histories = []
+    while i < max_iter and (module_dict != start_module_dict or i == 0):
+        i += 1
+        histories.append(compute_simulation_history(module_dict))
+
+    return histories
 
 
 def compute_part_2():
