@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+import numpy as np
+
 from advent_of_code.common import load_input_text_file
 
 LowPulse = False
@@ -122,12 +124,30 @@ def compute_part_1():
     module_dict = parse_text_input(text)
 
     histories = compute_successive_histories_until_circle_back(
-        start_module_dict, module_dict
+        start_module_dict, module_dict, 1000
     )
 
     result = compute_result_for_part_1(histories, 1000)
 
     return result
+
+
+def load_input_text_file_y2023_d20() -> str:
+    return load_input_text_file(__file__)
+
+
+def compute_part_2():
+    text = load_input_text_file(__file__)
+    module_dict = parse_text_input(text)
+
+    max_iter = 5000
+
+    # hb is the parent of rx
+    periods = detect_periods_part_2(module_dict, max_iter, "hb")
+
+    product = np.prod([t[0] for t in periods])
+
+    return product
 
 
 def compute_simulation_history(modules: ModuleDict):
@@ -166,19 +186,44 @@ def compute_result_for_part_1(
 
 
 def compute_successive_histories_until_circle_back(
-    start_module_dict: ModuleDict, module_dict: ModuleDict, max_iter: int = 1000
+    start_module_dict: ModuleDict,
+    module_dict: ModuleDict,
+    max_iter: int = 1000,
+    *,
+    keep_history: bool = True,
 ):
     i = 0
     histories = []
     while i < max_iter and (module_dict != start_module_dict or i == 0):
         i += 1
-        histories.append(compute_simulation_history(module_dict))
+        history = compute_simulation_history(module_dict)
+        if keep_history:
+            histories.append(history)
 
     return histories
 
 
-def compute_part_2():
-    return None
+def detect_periods_part_2(
+    module_dict: ModuleDict,
+    max_iter: int = 5000,
+    target_module: str = "hb",
+) -> list[tuple[int, Message]]:
+    i = 0
+    modules_of_interest = {n: [] for n in module_dict[target_module].inputs}
+    expected_messages = {
+        n: Message(source=n, destination=target_module, pulse=HighPulse)
+        for n in modules_of_interest
+    }.values()
+    events_of_interest = []
+    while i < max_iter:
+        i += 1
+        history = compute_simulation_history(module_dict)
+        for msg in expected_messages:
+            if msg in history:
+                events_of_interest.append((i, msg))
+        if len(events_of_interest) == len(modules_of_interest):
+            return events_of_interest
+    return events_of_interest
 
 
 def parse_text_input(text: str) -> ModuleDict:

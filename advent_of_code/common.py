@@ -13,13 +13,18 @@ def get_year_and_day_from_filename(filename: str) -> tuple[int, int]:
 
 
 def load_input_text(year: int, day: int) -> str:
+    input_path = get_input_file_path(year, day)
+    assert input_path.is_file()
+    text = input_path.read_text()
+    return text
+
+
+def get_input_file_path(year: int, day: int) -> Path:
     input_path = (
         f"resources/advent_of_code/year_{year}/input_year_{year}_day_{day:02d}.txt"
     )
     input_path = Path(input_path)
-    assert input_path.is_file()
-    text = input_path.read_text()
-    return text
+    return input_path
 
 
 def save_txt(text: str, filename: str, module_name: str, *, output_subdir: str = ""):
