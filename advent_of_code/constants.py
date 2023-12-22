@@ -50,3 +50,8 @@ def is_out_of_bounds(
         or (direction == NORTH and position[0] == 0)
         or (direction == WEST and position[1] == 0)
     )
+
+
+def is_opposite_direction(a: Direction, b: Direction) -> bool:
+    # 2 90deg turns, 4 turns = full rotation
+    return a == (b + 2) % 4

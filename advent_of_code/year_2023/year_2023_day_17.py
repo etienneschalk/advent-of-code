@@ -9,6 +9,7 @@ from advent_of_code.constants import (
     NEIGHBOUR_MOVES,
     Direction,
     Position,
+    is_opposite_direction,
     is_out_of_bounds,
 )
 
@@ -131,11 +132,6 @@ def dijkstra(
                 q.put(next_state)
 
     return -1
-
-
-def is_opposite_direction(a: Direction, b: Direction) -> bool:
-    # 2 90deg turns, 4 turns = full rotation
-    return a == (b + 2) % 4
 
 
 def main():
