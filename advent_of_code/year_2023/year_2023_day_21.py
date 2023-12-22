@@ -26,9 +26,12 @@ def compute_part_1():
 
 
 def compute_part_2():
-    data = parse_input_text_file()
-
-    return None
+    garden = parse_input_text_file()
+    initial_pos = get_starting_position(garden)
+    max_iter = 65 * 2
+    history, reached = run_steps(garden, initial_pos, max_iter)
+    result = len(reached)
+    return result
 
 
 def count_reached_garden_plots(max_iter: int, history: list[str]):
@@ -36,16 +39,23 @@ def count_reached_garden_plots(max_iter: int, history: list[str]):
 
 
 def run_steps(garden: xr.DataArray, initial_pos: Position, max_iter: int):
+    a, b, _, _ = run_steps_details(garden, initial_pos, max_iter)
+    return a, b
+
+
+def run_steps_details(garden: xr.DataArray, initial_pos: Position, max_iter: int):
     iter_count = 0
     pos = initial_pos
-    q = []
+    q = set()
     to_explore = []
-    q.extend([pos])
+    q.add(pos)
     history = []
     # Aggressive anti-backtracking
     explored = garden.copy(data=np.zeros_like(garden.data, dtype=np.bool_))
     reached_even = set()
     reached_odd = set()
+    reached_even_xda = garden.copy(data=np.zeros_like(garden.data, dtype=np.bool_))
+    reached_odd_xda = garden.copy(data=np.zeros_like(garden.data, dtype=np.bool_))
 
     while iter_count < max_iter:
         iter_count += 1
@@ -69,11 +79,14 @@ def run_steps(garden: xr.DataArray, initial_pos: Position, max_iter: int):
                     continue
                 if garden[next_pos] == b"." or garden[next_pos] == b"S":
                     garden[next_pos] = b"O"
-                    q.append(next_pos)
+                    q.add(next_pos)
                     if iter_count % 2 == 0:
                         reached_even.add(next_pos)
+                        reached_even_xda[next_pos] = True
                     else:
                         reached_odd.add(next_pos)
+                        reached_odd_xda[next_pos] = True
+
         to_explore.clear()
         history.append(render_2d_data_array(garden))
         print(history[-1])
@@ -81,9 +94,9 @@ def run_steps(garden: xr.DataArray, initial_pos: Position, max_iter: int):
     # This metric is to be used to count
 
     if max_iter % 2 == 0:
-        return history, reached_even
+        return history, reached_even, reached_even_xda, reached_odd_xda
     else:
-        return history, reached_odd
+        return history, reached_odd, reached_even_xda, reached_odd_xda
 
 
 def run_steps_old(garden: xr.DataArray, initial_pos: Position, max_iter: int):
