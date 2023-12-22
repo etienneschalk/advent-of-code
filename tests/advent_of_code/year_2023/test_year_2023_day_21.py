@@ -1,10 +1,9 @@
-from advent_of_code.common import render_2d_data_array
-from advent_of_code.constants import NEIGHBOUR_MOVES, is_out_of_bounds
 from advent_of_code.year_2023.year_2023_day_21 import (
     count_reached_garden_plots,
     get_starting_position,
     parse_text_input,
     run_steps,
+    run_steps_old,
 )
 
 EXAMPLE_INPUT = """
@@ -79,7 +78,7 @@ O.O.#.#.O..
 }
 
 
-def test_year_2023_day_21_part_1():
+def test_year_2023_day_21_part_1_1():
     test_input = EXAMPLE_INPUT
     garden = parse_text_input(test_input)
 
@@ -87,11 +86,24 @@ def test_year_2023_day_21_part_1():
 
     max_iter = 6
 
-    history = run_steps(garden, initial_pos, max_iter)
+    history = run_steps_old(garden, initial_pos, max_iter)
 
     assert count_reached_garden_plots(max_iter, history) == 16
     for index_plus_one, array_string in EXPECTED_PART_1_HISTORY.items():
         assert history[index_plus_one - 1] == array_string
+
+
+def test_year_2023_day_21_part_1_2():
+    test_input = EXAMPLE_INPUT
+    garden = parse_text_input(test_input)
+
+    initial_pos = get_starting_position(garden)
+
+    max_iter = 6
+
+    history, reached = run_steps(garden, initial_pos, max_iter)
+
+    assert len(reached) == 16
 
     ...
 
