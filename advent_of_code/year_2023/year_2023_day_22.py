@@ -1,6 +1,28 @@
+from dataclasses import dataclass
+import numpy as np
 from advent_of_code.common import load_input_text_file
 
-ProblemDataType = ...
+
+@dataclass(kw_only=True)
+class Brick:
+    position: tuple[np.ndarray, np.ndarray]
+    falling: bool
+    shadow: np.ndarray | None = None
+
+    @property
+    def rank(self) -> int:
+        return min(coord[2] for coord in self.position)
+
+    @property
+    def lowest_z(self) -> int:
+        return min(coord[2] for coord in self.position)
+
+    @property
+    def highest(self) -> int:
+        return max(coord[2] for coord in self.position)
+
+
+ProblemDataType = list[Brick]
 
 
 def main():
@@ -29,8 +51,19 @@ def parse_input_text_file() -> ProblemDataType:
 
 def parse_text_input(text: str) -> ProblemDataType:
     lines = text.strip().split("\n")
-    ...
-    return lines
+
+    bricks = [
+        Brick(
+            position=tuple(
+                np.fromstring(part, dtype=int, sep=",") for part in line.split("~")
+            ),
+            falling=True,
+        )
+        for line in lines
+    ]
+    # 1,1,8~1,1,9
+
+    return bricks
 
 
 if __name__ == "__main__":
