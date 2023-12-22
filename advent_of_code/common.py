@@ -1,6 +1,9 @@
 import sys
 from pathlib import Path
 
+import numpy as np
+import xarray as xr
+
 
 def load_input_text_file(filename: str) -> str:
     year, day = get_year_and_day_from_filename(filename)
@@ -50,3 +53,11 @@ def adapt_recursion_limit(new_value: int = 15000):
     sys.setrecursionlimit(new_value)
     print("New recursion limit:")
     print(sys.getrecursionlimit())
+
+
+def render_2d_data_array(xda: xr.DataArray) -> str:
+    return render_2d_numpy_array(xda.data)
+
+
+def render_2d_numpy_array(data: np.ndarray) -> str:
+    return "\n".join(line.tobytes().decode("utf-8") for line in data)

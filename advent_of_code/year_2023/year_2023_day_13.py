@@ -116,14 +116,6 @@ def find_number_of_rows_above_symmetry_axis_both_parts(
     return 0
 
 
-def render_2d_data_array(xda: xr.DataArray) -> str:
-    return render_2d_numpy_array(xda.data)
-
-
-def render_2d_numpy_array(data: ProblemDataType) -> str:
-    return "\n".join(line.tobytes().decode("utf-8") for line in data)
-
-
 def numpy_to_xarray(numpy_array: np.ndarray) -> xr.DataArray:
     return xr.DataArray(
         numpy_array,
