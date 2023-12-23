@@ -1,5 +1,7 @@
 from dataclasses import dataclass
+
 import numpy as np
+
 from advent_of_code.common import load_input_text_file
 
 
@@ -20,6 +22,54 @@ class Brick:
     @property
     def highest(self) -> int:
         return max(coord[2] for coord in self.position)
+
+    @property
+    def x0(self) -> int:
+        return self.position[0][0]
+
+    @property
+    def x1(self) -> int:
+        return self.position[1][0]
+
+    @property
+    def y0(self) -> int:
+        return self.position[0][1]
+
+    @property
+    def y1(self) -> int:
+        return self.position[1][1]
+
+    @property
+    def z0(self) -> int:
+        return self.position[0][2]
+
+    @property
+    def z1(self) -> int:
+        return self.position[1][2]
+
+    @property
+    def pos0(self) -> int:
+        return self.position[0]
+
+    @property
+    def pos1(self) -> int:
+        return self.position[1]
+
+    @property
+    def pos1(self) -> int:
+        return self.position[1]
+
+    @property
+    def length(self) -> int:
+        # The bricks span in only one direction
+        # So all deltas will be null except for the brick's direction
+        # Hence it is safe to sum to eliminate the null values
+        return np.sum(self.pos1 - self.pos0)
+
+    @property
+    def height(self) -> int:
+        # +1 because the position tuple is incluseive
+        return self.z1 - self.z0 + 1
 
 
 ProblemDataType = list[Brick]

@@ -1,6 +1,5 @@
-import queue
-
 import numpy as np
+
 from advent_of_code.year_2023.year_2023_day_22 import Brick, parse_text_input
 
 EXAMPLE_INPUT = """
@@ -26,36 +25,39 @@ def test_year_2023_day_22_part_1():
     # The input is nice, no need to max min min max, positions are ordered.
     assert np.all(
         [
-            np.all(sorted_brick.position[1] - sorted_brick.position[0] >= 0)
+            np.all(sorted_brick.pos1 - sorted_brick.pos0 >= 0)
             for sorted_brick in sorted_bricks
         ]
     )
 
-    xmax = max(max(coord[0] for coord in b.position) for b in parsed_input)
-    ymax = max(max(coord[1] for coord in b.position) for b in parsed_input)
+    xmax = max(max(b.x0, b.x1) for b in parsed_input)
+    ymax = max(max(b.y0, b.y1) for b in parsed_input)
     heatmap_shape = (xmax + 1, ymax + 1)
     heatmap = np.zeros(heatmap_shape, dtype=int)
 
+    # Create shadows of all bricks (projection along the z axis)
     for brick in sorted_bricks:
-        pos = brick.position
-
         # shadow = footprint x and y wise (z = constant, the closest to the ground)
         # use heatmap to know if the brick can still fall
-        dx = pos[1][0] - pos[0][0]
-        dy = pos[1][1] - pos[0][1]
+        dx = brick.x1 - brick.x0
+        dy = brick.y1 - brick.y0
 
         shadow = np.zeros(heatmap_shape, dtype=int)
 
+        # Vertical brick
         if dx == 0 and dy == 0:
-            shadow[pos[0][0], pos[0][1]] = 1
+            shadow[brick.x0, brick.y0] = 1
+        # y-span brick
         elif dx == 0:
-            x = pos[0][0]
-            min_y = pos[0][1]
+            x = brick.x0
+            min_y = brick.y0
             shadow[x, min_y : min_y + dy] = 1
+        # x-span brick
         elif dy == 0:
-            y = pos[0][1]
-            min_x = pos[0][0]
+            y = brick.y0
+            min_x = brick.x0
             shadow[min_x : min_x + dx, y] = 1
+
         brick.shadow = shadow
 
     # priority_queue = queue.PriorityQueue()
@@ -70,8 +72,7 @@ def test_year_2023_day_22_part_1():
         iter_count += 1
         brick: Brick = falling.pop(0)
 
-        pos = brick.position
-        lowz = brick.lowest_z
+        heatmap += brick.shadow * brick.height
 
         # Intersect shadow at min z with heatmap
         # If touch, update heatmap with max z
