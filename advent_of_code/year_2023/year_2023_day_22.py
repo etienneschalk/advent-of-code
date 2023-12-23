@@ -10,6 +10,7 @@ class Brick:
     position: tuple[np.ndarray, np.ndarray]
     falling: bool
     shadow: np.ndarray | None = None
+    identifier: int = -1
 
     @property
     def rank(self) -> int:
@@ -70,6 +71,29 @@ class Brick:
     def height(self) -> int:
         # +1 because the position tuple is incluseive
         return self.z1 - self.z0 + 1
+
+    @property
+    def indexer(self) -> tuple[int | slice, ...]:
+        dx = self.x1 - self.x0
+        dy = self.y1 - self.y0
+        dz = self.z1 - self.z0
+
+        # z-span brick (vertical)
+        if dz != 0:
+            min_z = self.z0
+            indexer = (self.x0, self.y0, slice(min_z, min_z + dz + 1))
+        # y-span brick (horizontal)
+        elif dy != 0:
+            min_y = self.y0
+            indexer = (self.x0, slice(min_y, min_y + dy + 1), self.z0)
+        # x-span brick (horizontal)
+        elif dx != 0:
+            min_x = self.x0
+            indexer = (slice(min_x, min_x + dx + 1), self.y0, self.z0)
+        else:
+            raise ValueError("Incorrect Brick")
+
+        return indexer
 
 
 ProblemDataType = list[Brick]

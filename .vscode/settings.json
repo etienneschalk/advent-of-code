@@ -6,6 +6,7 @@
     "ARARA",
     "bruteforce",
     "dijkstra",
+    "dpos",
     "fromarray",
     "frombuffer",
     "isel",
@@ -19,6 +20,7 @@
     "tobytes",
     "xarray",
     "xcoords",
-    "ycoords"
+    "ycoords",
+    "zmax"
   ]
 }
