@@ -100,7 +100,7 @@ def main():
 
 def compute_part_1():
     data = parse_input_text_file()
-    result = compute_safely_removable_bricks(data)
+    result = compute_safely_removable_bricks_count(data)
     return result
     # {1: 471, 2: None}
     # That's not the right answer; your answer is too high.
@@ -114,11 +114,119 @@ def compute_part_1():
 
 def compute_part_2():
     data = parse_input_text_file()
-    ...
-    return None
+    supported_bricks = compute_supported_bricks_from_initial_bricks(data)
+    support_counts = compute_support_counts(supported_bricks)
+
+    # 81610 too high
+    # 55713 That's not the right answer; your answer is too low.
+    result = solve_part_2(supported_bricks, support_counts, True)
+
+    return result
 
 
-def compute_safely_removable_bricks(unsorted_bricks: list[Brick]) -> int:
+def solve_part_2(
+    supported_bricks: dict[int, tuple[int, ...]],
+    support_counts: dict[int, int],
+    dangerous_only: bool = False,
+):
+    can_be_disintegrated = compute_disintegrable_bricks(
+        supported_bricks, support_counts
+    )
+
+    updated_support_counts_when_node_removed = (
+        compute_updated_support_counts_when_node_removed(
+            supported_bricks, support_counts
+        )
+    )
+
+    if dangerous_only:
+        dangerous_bricks = {
+            k: v
+            for k, v in updated_support_counts_when_node_removed.items()
+            if not can_be_disintegrated[k]
+        }
+    else:
+        dangerous_bricks = updated_support_counts_when_node_removed
+
+    dangerous_consequences = compute_chain_reaction_other_fallen_bricks_count(
+        dangerous_bricks
+    )
+    other_bricks_that_would_fall_count = sum(dangerous_consequences.values())
+    return other_bricks_that_would_fall_count
+
+
+def compute_updated_support_counts_when_node_removed(
+    supported_bricks: dict[int, tuple[int, ...]],
+    support_counts: dict[int, int],
+):
+    updated_support_counts_when_node_removed = {}
+    for b_id in supported_bricks.keys():
+        sc = dict(support_counts)  # copy support counts, it will be mutated
+
+        q = [b_id]
+        while q:
+            node = q.pop(0)
+            for child in supported_bricks[node]:
+                sc[child] -= 1
+                if sc[child] == 0:
+                    q.append(child)
+
+        updated_support_counts_when_node_removed[b_id] = sc
+    return updated_support_counts_when_node_removed
+
+
+# def compute_updated_support_counts_when_node_removed(
+#     supported_bricks: dict[int, tuple[int, ...]],
+#     support_counts: dict[int, int],
+# ):
+#     updated_support_counts_when_node_removed = {}
+#     for b_id, children in supported_bricks.items():
+#         sc = dict(support_counts)  # copy support counts, it will be mutated
+
+#         q = []
+#         q.extend([b_id])
+#         unique = set(q)
+#         while q:
+#             node = q.pop(0)
+#             if node in sc:
+#                 sc[node] = max(0, sc[node] - 1)
+#             else:
+#                 # Node not in sc = touches the ground
+#                 # So, add it with 0 value when removed so
+#                 # that the children are explored
+#                 sc[node] = 0
+#             # Only explore children if the brick was removed
+#             # Filter out already queued children not to double-decrease
+#             if sc[node] == 0:
+#                 q.extend(list(n for n in supported_bricks[node] if n not in unique))
+#                 unique.update(supported_bricks[node])
+#         updated_support_counts_when_node_removed[b_id] = sc
+#     return updated_support_counts_when_node_removed
+
+
+def compute_chain_reaction_other_fallen_bricks_count(
+    updated_support_counts_when_node_removed,
+):
+    return {
+        node: sum(v == 0 for v in value.values())
+        for node, value in updated_support_counts_when_node_removed.items()
+    }
+
+
+def compute_safely_removable_bricks_count(unsorted_bricks: list[Brick]) -> int:
+    supported_bricks = compute_supported_bricks_from_initial_bricks(unsorted_bricks)
+    support_counts = compute_support_counts(supported_bricks)
+    can_be_disintegrated = compute_disintegrable_bricks(
+        supported_bricks, support_counts
+    )
+    safely_removable_bricks = sum(can_be_disintegrated.values())
+
+    return safely_removable_bricks
+
+
+def compute_supported_bricks_from_initial_bricks(
+    unsorted_bricks: list[Brick],
+) -> dict[int, tuple[int, ...]]:
     # Bricks that are the closest to the ground have the most priority (low-leaning z)
     sorted_bricks = sorted(unsorted_bricks, key=lambda b: b.rank)
 
@@ -132,14 +240,7 @@ def compute_safely_removable_bricks(unsorted_bricks: list[Brick]) -> int:
     fill_space_with_bricks_identifiers(fallen_bricks, space)
 
     supported_bricks = compute_supported_bricks(fallen_bricks, space)
-    support_counts = compute_support_counts(supported_bricks)
-    support_counts = dict(support_counts)
-    can_be_disintegrated = compute_disintegrable_bricks(
-        supported_bricks, support_counts
-    )
-    safely_removable_bricks = sum(can_be_disintegrated.values())
-
-    return safely_removable_bricks
+    return supported_bricks
 
 
 def compute_disintegrable_bricks(
