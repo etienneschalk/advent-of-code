@@ -1,5 +1,6 @@
 import re
 from dataclasses import asdict, dataclass
+from time import perf_counter
 
 import numpy as np
 
@@ -64,9 +65,16 @@ def solve_part_2(hiking_trail, target):
     # because the node encode the weights, the weight must be know in advance
     # (already known for step 1)
     track = []
+    t1 = perf_counter()
     explore_flatset(flatset, start_node_pos, set(), 0, 0, target, track)
+    t2 = perf_counter()
 
-    print(track)
+    # t2-t1=149.8870151930023 (time taken by bruteforce according to perf_counter)
+    # so around 2min30
+    print(f"{t2-t1=} (time taken by bruteforce according to perf_counter)")
+
+    # Don't ever do this! (ultra long)
+    # print(track)
 
     # Minus one, start excluded...
     result = np.max(np.array([t[2] for t in track])) - 1
