@@ -43,6 +43,77 @@ def compute_part_1():
     return max_path_length
 
 
+def compute_part_2():
+    hiking_trail = parse_input_text_file()
+    hk = hiking_trail
+    target = (133, (130, 128))
+    result = solve_part_2(hk, target)
+    return result
+
+
+def solve_part_2(hiking_trail, target):
+    hk = hiking_trail
+    starting_position: Position = (1, 2)
+    tree = compute_exploration_tree(hk, starting_position)
+    flat = flatten_exploration_tree(tree)
+    flat = create_flat_simplified_tuple(flat)
+    flatset = create_flatset(flat)
+
+    # Lucky that the dicts are ordered!
+    start_node_pos = next(iter(flatset))
+    # because the node encode the weights, the weight must be know in advance
+    # (already known for step 1)
+    track = []
+    explore_flatset(flatset, start_node_pos, set(), 0, 0, target, track)
+
+    print(track)
+
+    # Minus one, start excluded...
+    result = np.max(np.array([t[2] for t in track])) - 1
+    return result
+
+
+def create_flatset(flat):
+    flatset = {k: set(v) for k, v in flat.items()}
+
+    flatset
+    for node in flatset:
+        for c in flatset[node]:
+            flatset[c].add(node)
+    flatset
+
+    return flatset
+
+
+def explore_flatset(
+    flatset,
+    start_node_pos_weight: tuple[int, Position],
+    explored: set[tuple[int, Position]],
+    depth: int,
+    steps: int,
+    target_node_pos_weight: tuple[int, Position],
+    track: set[int],  # set containing all weights for target
+) -> None:
+    pos_weight = start_node_pos_weight
+    target = target_node_pos_weight
+    explored.add(pos_weight)
+    length = pos_weight[0]
+    steps = steps + length  # first tuple member is weight
+    # print(" " * depth, pos_weight, steps)
+    if target == pos_weight:
+        track.append((depth, pos_weight, steps))
+    # Only explore target, avoid unnecessary backtracking
+    if target in flatset[pos_weight]:
+        child = target
+        explore_flatset(flatset, child, explored, depth + 1, steps, target, track)
+    else:
+        for child in flatset[pos_weight]:
+            if child in explored:
+                continue
+            explore_flatset(flatset, child, explored, depth + 1, steps, target, track)
+    explored.remove(pos_weight)
+
+
 # def analyze_exploration_tree(tree):
 #     return (flatten_graph, path_lengths)
 
@@ -153,12 +224,6 @@ def compute_all_path_lengths(bf) -> np.ndarray:
     return actual_result
 
 
-def compute_part_2():
-    hiking_trail = parse_input_text_file()
-    ...
-    return None
-
-
 def parse_input_text_file() -> ProblemDataType:
     text = load_input_text_file(__file__)
     parsed = parse_text_input(text)
@@ -186,6 +251,66 @@ def save_exploration_tree_txt(tree):
         __file__,
         output_subdir="text",
     )
+
+
+def make_undirected_graph(flat, bidirectional: bool = False):
+    couples_forward = {}
+    couples_backward = {}
+    for node, children in flat.items():
+        for child in children:
+            # Cheap trick: ordered set backed by dict...
+            couples_forward[node, child] = None
+            couples_backward[child, node] = None
+    if bidirectional:
+        couples = {**couples_forward, **couples_backward}
+    else:
+        # For graphviz, use display trick instead
+        # otherwise the graph is very bad looking...
+        couples = couples_forward
+    return couples
+
+
+# def make_undirected_graph(flat):
+#     for node in flat.values():
+#         for c in node.children:
+#             c.children.append(node)
+
+
+# def make_undirected_graph(flat):
+#     undirected = {}
+#     for node in flat.values():
+#         new_children = []
+#         for c in node.children:
+#             new_children.append(replace(c, children=tuple([*c.children, node])))
+#         new_node = replace(node, children=tuple(new_children))
+#         undirected[new_node.starting_position] = new_node
+#     return undirected
+
+
+def create_flat_simplified(to_flatten: dict):
+    flat_simplified = {
+        format_node(v): [format_node(c) for c in v.children]
+        for k, v in to_flatten.items()
+    }
+
+    return flat_simplified
+
+
+def create_flat_simplified_tuple(to_flatten: dict):
+    flat_simplified = {
+        label_pk_node(v): [label_pk_node(c) for c in v.children]
+        for k, v in to_flatten.items()
+    }
+
+    return flat_simplified
+
+
+def label_pk_node(node) -> tuple[int, int, int]:
+    return (node.length, node.starting_position)
+
+
+def format_node(node: TrailNode) -> str:
+    return f"{node.length}\n{node.starting_position}"
 
 
 if __name__ == "__main__":

@@ -11,3 +11,12 @@ def construct_dot_graph_from_dict(graph_dict: dict[Any, Sequence[Any]]) -> Digra
         for child in children:
             dot.edge(f"{node}", f"{child}")
     return dot
+
+
+def construct_dot_graph_from_couples(ordered_set: dict[Any, None]) -> Digraph:
+    dot = Digraph()
+    for key in ordered_set:
+        source, target = key
+        dot.edge(f"{source}", f"{target}", dir="both")
+
+    return dot
