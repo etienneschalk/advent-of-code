@@ -14,7 +14,6 @@ ALLOWED_MOVES = {b">": EAST, b"<": WEST, b"^": NORTH, b"v": SOUTH}
 @dataclass(kw_only=True)
 class TrailNode:
     starting_position: Position
-    end_position: Position | None = None
     length: int
     children: list["TrailNode"]
 
@@ -35,7 +34,7 @@ def compute_part_1():
     # starting_position: Position = (0, 1)
     starting_position: Position = (1, 2)
 
-    tree = compute_exploration_tree_part_1(hk, starting_position)
+    tree = compute_exploration_tree(hk, starting_position)
     bf = bruteforce_paths_in_exploration_tree(tree, 0)
 
     # It works ^^
@@ -48,7 +47,7 @@ def compute_part_1():
 #     return (flatten_graph, path_lengths)
 
 
-def flatten_exploration_tree_part_1(initial_tree: TrailNode):
+def flatten_exploration_tree(initial_tree: TrailNode):
     graph: dict[Position, TrailNode] = {}
 
     q = [initial_tree]
@@ -57,22 +56,7 @@ def flatten_exploration_tree_part_1(initial_tree: TrailNode):
         tree = q.pop(0)
         if tree.starting_position in explored:
             continue
-        explored.add(tree.starting_position)
-        graph[tree.starting_position] = tree
-        q.extend(tree.children)
-
-    return graph
-
-
-def flatten_exploration_tree_part_2(initial_tree: TrailNode):
-    graph: dict[Position, TrailNode] = {}
-
-    q = [initial_tree]
-    explored = set()
-    while q:
-        tree = q.pop(0)
-        if tree.starting_position in explored:
-            continue
+        # Wrong, TODO ,[tree] and append if explored
         explored.add(tree.starting_position)
         graph[tree.starting_position] = tree
         q.extend(tree.children)
@@ -96,7 +80,7 @@ def bruteforce_paths_in_exploration_tree(tree: TrailNode, total_length: int = 0)
         ]
 
 
-def compute_exploration_tree_part_1(hk, starting_position):
+def compute_exploration_tree(hk, starting_position):
     explored = np.zeros_like(hk, dtype=np.bool_)
     # length = -1  # exclude start
     length = 0
@@ -107,26 +91,11 @@ def compute_exploration_tree_part_1(hk, starting_position):
         length=length,
         children=[],
     )
-    explore_hiking_trail_part_1(pos, hk, explored, initial_tree)
+    explore_hiking_trail(pos, hk, explored, initial_tree)
     return initial_tree
 
 
-def compute_exploration_tree_part_2(hk, starting_position):
-    explored = np.zeros_like(hk, dtype=np.bool_)
-    # length = -1  # exclude start
-    length = 0
-    pos = starting_position
-
-    initial_tree = TrailNode(
-        starting_position=starting_position,
-        length=length,
-        children=[],
-    )
-    explore_hiking_trail_part_2(pos, hk, explored, initial_tree)
-    return initial_tree
-
-
-def explore_hiking_trail_part_1(
+def explore_hiking_trail(
     pos: Position,
     hk: np.ndarray,
     explored: np.ndarray,
@@ -146,7 +115,7 @@ def explore_hiking_trail_part_1(
             if hk[next_pos] == b"#":
                 continue
             if hk[next_pos] == b".":
-                explore_hiking_trail_part_1(next_pos, hk, explored, node, flat_graph)
+                explore_hiking_trail(next_pos, hk, explored, node, flat_graph)
             # Resolved (issue was with flat graph construction)
             # Note: the test input only contains T-intersection
             # (at most 3 slopes). The actual input can contain up to 4, and this case
@@ -170,58 +139,7 @@ def explore_hiking_trail_part_1(
                     )
                     flat_graph[child.starting_position] = child
                     node.children.append(child)
-                    explore_hiking_trail_part_1(jumped, hk, explored, child, flat_graph)
-
-
-def explore_hiking_trail_part_2(
-    pos: Position,
-    hk: np.ndarray,
-    explored: np.ndarray,
-    node: TrailNode,
-    ends_tracker=None,
-) -> None:
-    node.length += 1
-    explored[pos] = True
-    if ends_tracker is None:
-        ends_tracker: dict[Position, TrailNode] = {}
-    for direction, move in NEIGHBOUR_MOVES.items():
-        next_pos = tuple(pos + move)
-        if explored[next_pos]:
-            # Do we need to backtrack ?
-            # I think I can reuse the initial logic with slopes,
-            # they were already defining intersections..
-            ...
-        else:
-            if hk[next_pos] == b"#":
-                continue
-            if hk[next_pos] == b".":
-                explore_hiking_trail_part_1(next_pos, hk, explored, node, ends_tracker)
-            elif hk[next_pos] in ALLOWED_MOVES:
-                node.length += 1  # we will skip the slope
-                node.end_position = next_pos
-
-                # Both start and end position uniquely define an atomic path
-                ends_tracker[node.starting_position] = node
-                ends_tracker[node.end_position] = node
-
-                jumped = tuple(pos + move + move)
-                if jumped in ends_tracker:
-                    already_explored_child = ends_tracker[jumped]
-                    node.children.append(already_explored_child)
-                else:
-                    child = TrailNode(
-                        starting_position=jumped,
-                        # no offset because current node length was incremented before
-                        length=0,
-                        children=[],
-                    )
-                    ends_tracker[child.starting_position] = child
-                    ends_tracker[child.end_position] = child
-
-                    node.children.append(child)
-                    explore_hiking_trail_part_2(
-                        jumped, hk, explored, child, ends_tracker
-                    )
+                    explore_hiking_trail(jumped, hk, explored, child, flat_graph)
 
 
 def compute_all_path_lengths(bf) -> np.ndarray:
