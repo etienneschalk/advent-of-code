@@ -1,7 +1,9 @@
-from dataclasses import asdict
-from advent_of_code.common import save_txt
+import numpy as np
+
 from advent_of_code.constants import Position
 from advent_of_code.year_2023.year_2023_day_23 import (
+    bruteforce_paths_in_exploration_tree,
+    compute_all_path_lengths,
     compute_exploration_tree,
     parse_text_input,
 )
@@ -69,18 +71,12 @@ def test_year_2023_day_23_part_1():
     starting_position: Position = (1, 2)
 
     tree = compute_exploration_tree(hk, starting_position)
-    dico = asdict(tree)
+    bf = bruteforce_paths_in_exploration_tree(tree, 0)
 
-    import json
-
-    txt = json.dumps(dico, indent=4, default=str)
-
-    save_txt(
-        txt,
-        f"part1.json",
-        __file__,
-        output_subdir="text",
-    )
+    # It works ^^
+    actual_result = compute_all_path_lengths(bf)
+    assert actual_result[0] == 94
+    assert all(actual_result == np.array([94, 90, 86, 82, 82, 74]))
     ...
 
 
