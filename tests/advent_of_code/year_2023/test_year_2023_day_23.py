@@ -4,7 +4,7 @@ from advent_of_code.constants import Position
 from advent_of_code.year_2023.year_2023_day_23 import (
     bruteforce_paths_in_exploration_tree,
     compute_all_path_lengths,
-    compute_exploration_tree,
+    compute_exploration_tree_part_1,
     parse_text_input,
 )
 
@@ -70,7 +70,7 @@ def test_year_2023_day_23_part_1():
     hk = hiking_trail
     starting_position: Position = (1, 2)
 
-    tree = compute_exploration_tree(hk, starting_position)
+    tree = compute_exploration_tree_part_1(hk, starting_position)
     bf = bruteforce_paths_in_exploration_tree(tree, 0)
 
     # It works ^^
