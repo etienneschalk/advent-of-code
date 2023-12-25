@@ -18,6 +18,7 @@
     "lrange",
     "neighbour",
     "neighbours",
+    "nodesep",
     "rrange",
     "secho",
     "skimage",
