@@ -1,8 +1,8 @@
+from advent_of_code.common import render_2d_data_array
 from advent_of_code.year_2023.year_2023_day_13 import (
     find_number_of_cols_above_symmetry_axis,
     find_number_of_rows_above_symmetry_axis,
     parse_text_input,
-    render_2d_data_array,
     summarize_pattern_notes,
 )
 

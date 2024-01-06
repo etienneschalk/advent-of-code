@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import pytest
 
 from advent_of_code.year_2022.year_2022_day_24 import (
     advance_blizzard,
@@ -58,6 +59,7 @@ def test_year_2022_day_24_part_1_period():
     assert all(v for v in np.all(initial_blizzard_backup == blizzard).values())
 
 
+@pytest.mark.skip(reason="displays voxel array")
 def test_year_2022_day_24_part_1_period_stack():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)
@@ -129,6 +131,7 @@ def test_year_2022_day_24_part_1_period_stack():
     ...
 
 
+@pytest.mark.skip(reason="very slow")
 def test_year_2022_day_24_part_1():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)

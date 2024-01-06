@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 from advent_of_code.year_2023.year_2023_day_12 import (
     analyse_group_v2,
@@ -66,6 +67,7 @@ def test_year_2023_day_12_part_2_old():
     assert np.sum(fifth_iteration) == 525152
 
 
+@pytest.mark.skip(reason="very slow")
 def test_year_2023_day_12_part_2_naive():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)

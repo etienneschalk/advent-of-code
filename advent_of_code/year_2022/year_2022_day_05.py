@@ -80,9 +80,10 @@ def parse_text_input(text: str) -> ProblemDataType:
 
 
 def parse_stack_text(stack_group: str) -> StacksType:
-    stacks = np.array(
-        [np.fromstring(line, dtype="<S1") for line in stack_group.split("\n")]
-    )
+    sa = stack_group.split("\n")
+    max_length = max(len(line) for line in sa)
+    sa = [line + " " * (max_length - len(line)) for line in sa]
+    stacks = np.array([np.fromstring(line, dtype="<S1") for line in sa])
     stacks = np.flip(stacks.T, axis=1)[1::4][:, 1:].tolist()
     stacks = tuple(
         list(s.decode("utf-8") for s in stack if s != b" ") for stack in stacks
