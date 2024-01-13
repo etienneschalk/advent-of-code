@@ -1,59 +1,52 @@
+from dataclasses import dataclass
+
 import numpy as np
+import numpy.typing as npt
 import xarray as xr
 
-from advent_of_code.common import load_input_text_file_from_filename
+from advent_of_code.protocols import AdventOfCodeProblem
 
-ProblemDataType = tuple[xr.DataArray]
-
-
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-    print({1: result_part_1, 2: result_part_2})
+PuzzleInput = tuple[xr.DataArray, ...]
 
 
-def compute_part_1():
-    patterns = parse_input_text_file()
-    result = summarize_pattern_notes(patterns)
-    return result
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202313(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2023
+    day: int = 13
+
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        patterns = puzzle_input
+        result = summarize_pattern_notes(patterns)
+        return result
+
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        # Lesson learned: don't spend 2 hours over-thinking
+        # Take a break
+        # Think
+        # And change one single line of code to solve the problem
+        # Edit: this is about the trick of just ignore the small change in the logic
+        # (no bruteforce, just more degrees of freedom in the code)
+        patterns = puzzle_input
+        result = summarize_pattern_notes(patterns, smudge_mode=True)
+        return result
+
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        return parse_text_input(text)
 
 
-def compute_part_2():
-    patterns = parse_input_text_file()
-    result = summarize_pattern_notes(patterns, smudge_mode=True)
-    return result
-
-
-def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file_from_filename(__file__)
-    parsed = parse_text_input(text)
-
-    # too low 32359
-    # next try: 32967 too low
-    # next try try: 33054
-    # Lesson learned: don't spend 2 hours over-thinking
-    # Take a break
-    # Think
-    # And change one single line of code to solve the problem
-    return parsed
-
-
-def summarize_pattern_notes(
-    patterns: ProblemDataType, *, smudge_mode: bool = False
-) -> int:
+def summarize_pattern_notes(patterns: PuzzleInput, *, smudge_mode: bool = False) -> int:
     columns, rows = compute_symmetry_amounts(patterns, smudge_mode=smudge_mode)
 
     number_of_columns = sum(columns)
     number_of_rows = sum(rows)
-
-    np.array(rows) + np.array(columns)
 
     summary = number_of_columns + 100 * number_of_rows
     return summary
 
 
 def compute_symmetry_amounts(
-    patterns: ProblemDataType, *, smudge_mode: bool = False
+    patterns: PuzzleInput, *, smudge_mode: bool = False
 ) -> tuple[tuple[int, ...], tuple[int, ...]]:
     columns = tuple(
         find_number_of_cols_above_symmetry_axis(xda, smudge_mode=smudge_mode)
@@ -80,28 +73,25 @@ def find_number_of_rows_above_symmetry_axis(
     xda: xr.DataArray, *, smudge_mode: bool = False
 ) -> int:
     if not smudge_mode:
-        return find_number_of_rows_above_symmetry_axis_part_1(xda)
+        return find_number_of_rows_above_symmetry_axis_part_1(xda, "row", "col")
     else:
-        return find_number_of_rows_above_symmetry_axis_part_2(xda)
+        return find_number_of_rows_above_symmetry_axis_part_2(xda, "row", "col")
 
 
 def find_number_of_rows_above_symmetry_axis_part_1(
-    xda: xr.DataArray, row: str = "row", col: str = "col"
+    xda: xr.DataArray, row: str, col: str
 ) -> int:
     return find_number_of_rows_above_symmetry_axis_both_parts(xda, 0, row, col)
 
 
 def find_number_of_rows_above_symmetry_axis_part_2(
-    xda: xr.DataArray, row: str = "row", col: str = "col"
+    xda: xr.DataArray, row: str, col: str
 ) -> int:
     return find_number_of_rows_above_symmetry_axis_both_parts(xda, 1, row, col)
 
 
 def find_number_of_rows_above_symmetry_axis_both_parts(
-    xda: xr.DataArray,
-    target_sum: int,
-    row: str = "row",
-    col: str = "col",
+    xda: xr.DataArray, target_sum: int, row: str, col: str
 ) -> int:
     size = xda[row].size
     for idx in range(1, size):
@@ -116,7 +106,7 @@ def find_number_of_rows_above_symmetry_axis_both_parts(
     return 0
 
 
-def numpy_to_xarray(numpy_array: np.ndarray) -> xr.DataArray:
+def numpy_to_xarray(numpy_array: npt.NDArray[np.uint8]) -> xr.DataArray:
     return xr.DataArray(
         numpy_array,
         coords={
@@ -126,7 +116,7 @@ def numpy_to_xarray(numpy_array: np.ndarray) -> xr.DataArray:
     )
 
 
-def parse_text_input(text: str) -> ProblemDataType:
+def parse_text_input(text: str) -> PuzzleInput:
     lines = text.strip().split("\n\n")
     input_arrays = (
         np.array(
@@ -139,4 +129,4 @@ def parse_text_input(text: str) -> ProblemDataType:
 
 
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202313().solve_all())

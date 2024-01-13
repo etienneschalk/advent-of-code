@@ -1,30 +1,33 @@
 from collections import defaultdict
+from dataclasses import dataclass
 from functools import reduce
 
 from advent_of_code.common import load_input_text_file_from_filename
+from advent_of_code.protocols import AdventOfCodeProblem
 
-ProblemDataType = list[str]
-
-
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-    print({1: result_part_1, 2: result_part_2})
+PuzzleInput = list[str]
 
 
-def compute_part_1():
-    parsed_input = parse_input_text_file()
-    return sum(hash_year_2023_day_15(i) for i in parsed_input)
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202315(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2023
+    day: int = 15
 
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        return sum(hash_year_2023_day_15(i) for i in puzzle_input)
 
-def compute_part_2():
-    initialization_sequence = parse_input_text_file()
-    boxes = hashmap_process(initialization_sequence)
-    return add_up_focusing_power(boxes)
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        initialization_sequence = puzzle_input
+        boxes = hashmap_process(initialization_sequence)
+        return add_up_focusing_power(boxes)
+
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        return parse_text_input(text)
 
 
 def hashmap_process(
-    initialization_sequence: ProblemDataType,
+    initialization_sequence: PuzzleInput,
 ) -> dict[int, dict[str, int]]:
     boxes = defaultdict(dict)
     for step in initialization_sequence:
@@ -49,7 +52,7 @@ def add_up_focusing_power(boxes: dict[int, dict[str, int]]) -> int:
     )
 
 
-def render_step(boxes, step) -> str:
+def render_step(boxes: dict[int, dict[str, int]], step: str) -> str:
     return f'After "{step}":\n' + "\n".join(
         (f"Box {k}: {render_box(v)}" for k, v in boxes.items() if v)
     )
@@ -70,16 +73,16 @@ def hash_year_2023_day_15(string: str):
     return reduce(lambda x, y: ((x + ord(y)) * 17) % 256, string, 0)
 
 
-def parse_input_text_file() -> ProblemDataType:
+def parse_input_text_file() -> PuzzleInput:
     text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 
 
-def parse_text_input(text: str) -> ProblemDataType:
+def parse_text_input(text: str) -> PuzzleInput:
     lines = text.strip().split(",")
     return lines
 
 
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202315().solve_all())

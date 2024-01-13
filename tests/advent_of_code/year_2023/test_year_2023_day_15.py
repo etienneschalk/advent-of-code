@@ -4,6 +4,7 @@ from advent_of_code.year_2023.year_2023_day_15 import (
     hash_year_2023_day_15_imperative,
     hashmap_process,
     parse_text_input,
+    render_step,
 )
 
 EXAMPLE_INPUT = """
@@ -98,13 +99,3 @@ def test_year_2023_day_15_part_2():
     boxes = hashmap_process(init_sequence)
     assert add_up_focusing_power(boxes) == 145
     ...
-
-
-def render_step(boxes, step) -> str:
-    return f'After "{step}":\n' + "\n".join(
-        (f"Box {k}: {render_box(v)}" for k, v in boxes.items() if v)
-    )
-
-
-def render_box(box: dict[str, int]) -> str:
-    return " ".join(f"[{k} {v}]" for k, v in box.items())

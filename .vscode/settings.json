@@ -19,6 +19,7 @@
     "fromarray",
     "frombuffer",
     "graphviz",
+    "hbjdi",
     "isel",
     "loadtxt",
     "lrange",
