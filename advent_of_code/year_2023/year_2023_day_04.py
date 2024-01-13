@@ -22,6 +22,7 @@ class AdventOfCodeProblem202304(AdventOfCodeProblem[PuzzleInput]):
 
     def solve_part_1(self, puzzle_input: PuzzleInput):
         cards = puzzle_input
+        assert len(cards) == 214
         card_worths = [find_card_worth(card) for card in cards]
         return sum(card_worths)
 
@@ -52,7 +53,6 @@ def parse_text_input(text: str) -> list[Card]:
             numbers_you_have=numbers_you_have,
         )
         cards.append(card)
-    assert len(cards) == 214
     return cards
 
 

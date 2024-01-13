@@ -6,7 +6,6 @@ from advent_of_code.year_2023.year_2023_day_11 import (
     create_chunk_coord_array,
     create_coord_array,
     expand_space,
-    get_chunks_tuple,
     parse_text_input,
 )
 
@@ -62,22 +61,6 @@ def test_year_2023_day_11_part_1():
 
     actual_result = compute_sum_of_shortest_paths_between_pairs(adjacency_matrix)
     assert actual_result == 374
-
-
-def test_try_classic_dask_chunks():
-    test_input = EXAMPLE_INPUT
-    parsed_input = parse_text_input(test_input)
-
-    xda = parsed_input
-    parsed_input = parse_text_input(test_input)
-    dim_reduce = "row"
-    col_chunks = (xda == b".").all(dim=dim_reduce)
-
-    row_chunks = get_chunks_tuple(xda, "row", "col")
-    col_chunks = get_chunks_tuple(xda, "col", "row")
-
-    assert row_chunks == (4, 4, 2)
-    assert col_chunks == (3, 3, 3, 1)
 
 
 def test_year_2023_day_11_part_2():

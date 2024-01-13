@@ -16,6 +16,8 @@ class AdventOfCodeProblem202303(AdventOfCodeProblem[PuzzleInput]):
     day: int = 3
 
     def solve_part_1(self, puzzle_input: PuzzleInput):
+        assert len(puzzle_input) == 140 + 2  # + 2 comes from padding
+
         flattened = find_part_numbers(puzzle_input)
         answer = sum(flattened)
         return answer
@@ -38,7 +40,6 @@ def parse_text_input(text: str) -> PuzzleInput:
     # Add a border of dots will ease later checks,
     # not having to care about data outside the borders
     padded_array = np.pad(input_array, pad_width=1, constant_values=ord(b"."))
-    assert len(padded_array) == 140 + 2  # + 2 comes from padding
 
     return padded_array
 

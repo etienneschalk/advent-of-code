@@ -306,7 +306,7 @@ def get_double_pipes_mapping():
     }
 
 
-def get_pipe_to_pattern_mapping() -> dict[str, np.ndarray]:
+def get_pipe_to_pattern_mapping() -> dict[str, np.bool_]:
     return {
         "│": np.bool_(
             np.array(

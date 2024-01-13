@@ -1,35 +1,42 @@
+from dataclasses import dataclass
+from typing import Any
+
 import numpy as np
+import numpy.typing as npt
 import xarray as xr
 
-from advent_of_code.common import load_input_text_file_from_filename
+from advent_of_code.common import parse_2d_char_array
+from advent_of_code.year_2023.year_2023_day_01 import AdventOfCodeProblem
 
-ProblemDataType = xr.DataArray
-
-
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-    print({1: result_part_1, 2: result_part_2})
+type PuzzleInput = xr.DataArray
 
 
-def compute_part_1():
-    space_xda = parse_input_text_file()
-    expanded_space = expand_space(space_xda)
-    adjacency_matrix = compute_adjacency_matrix(expanded_space)
-    result = compute_sum_of_shortest_paths_between_pairs(adjacency_matrix)
-    # idempotence part 1 part 2
-    assert compute_sum_of_shortest_paths_part_2(space_xda, 1) == result
-    return result
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202311(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2023
+    day: int = 11
 
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        return parse_text_input(text)
 
-def compute_part_2():
-    space_xda = parse_input_text_file()
+    def solve_part_1_naive(self, puzzle_input: PuzzleInput):
+        expanded_space = expand_space(puzzle_input)
+        adjacency_matrix = compute_adjacency_matrix(expanded_space)
+        result = compute_sum_of_shortest_paths_between_pairs(adjacency_matrix)
+        return result
 
-    # Do not expand space manually
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        # idempotence part 1 part 2
+        naive_result = self.solve_part_1_naive(puzzle_input)
+        result = compute_sum_of_shortest_paths_part_2(puzzle_input, 1)
+        assert naive_result == result
+        return result
 
-    result = compute_sum_of_shortest_paths_part_2(space_xda, 1000000 - 1)
-
-    return result
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        # Do not expand space manually
+        result = compute_sum_of_shortest_paths_part_2(puzzle_input, 1000000 - 1)
+        return result
 
 
 def compute_sum_of_shortest_paths_part_2(
@@ -38,9 +45,9 @@ def compute_sum_of_shortest_paths_part_2(
     coord_array = create_coord_array(space_xda)
     chunk_coord_array = create_chunk_coord_array(space_xda, coord_array)
 
-    adjacency_matrix = compute_adjacency_matrix(space_xda.compute())
+    adjacency_matrix = compute_adjacency_matrix(space_xda)
     adjacency_matrix_chunks = compute_adjacency_matrix_from_coord_array(
-        chunk_coord_array.compute()
+        chunk_coord_array
     )
 
     total_adjacency = adjacency_matrix + expansion_coef * adjacency_matrix_chunks
@@ -48,7 +55,7 @@ def compute_sum_of_shortest_paths_part_2(
     return result
 
 
-def compute_sum_of_shortest_paths_between_pairs(adjacency_matrix: np.ndarray) -> int:
+def compute_sum_of_shortest_paths_between_pairs(adjacency_matrix: xr.DataArray) -> int:
     return np.triu(adjacency_matrix).sum()
 
 
@@ -58,7 +65,7 @@ def create_chunk_coord_array(
     row_chunks = get_compartiments(space_xda, "row", "col")
     col_chunks = get_compartiments(space_xda, "col", "row")
 
-    chunk_coords = []
+    chunk_coords: list[list[int]] = []
     for z in coord_array.z:
         row, col = coord_array.isel(z=z)
         chunk_row = find_compartiment_id(row, row_chunks)
@@ -68,27 +75,39 @@ def create_chunk_coord_array(
     return chunk_coord_array
 
 
-def compute_adjacency_matrix(space_xda: xr.DataArray) -> np.ndarray:
+def compute_adjacency_matrix(space_xda: xr.DataArray) -> xr.DataArray:
     coord_array = create_coord_array(space_xda)
     adjacency_matrix = compute_adjacency_matrix_from_coord_array(coord_array)
 
     return adjacency_matrix
 
 
-def compute_adjacency_matrix_from_coord_array(coord_array: xr.DataArray) -> np.ndarray:
-    adjacency_matrix = xr.concat(
-        [
-            np.abs(coord_array.isel(z=i) - coord_array).sum(dim="idx")
-            for i in coord_array.z
-        ],
-        dim="z2",
+def compute_adjacency_matrix_from_coord_array(
+    coord_array: xr.DataArray,
+) -> xr.DataArray:
+    print("compute_adjacency_matrix_from_coord_array start")
+
+    # 425*425 = 180625 -> this operation is O(n**2) with n=425
+    # This is because for each node, the distance to all its peers must be computed
+    # This is
+    # An optimization would be to only compute the triangular par of the matrix
+    # (2 among n) = n(n-1) / 2  (edge count in graphe complet)
+    # -> but still O(n)
+    array_list = [
+        abs(coord_array.isel(z=i) - coord_array).sum(dim="idx")
+        for i in coord_array["z"]
+    ]
+
+    adjacency_matrix = xr.concat(  # pyright: ignore[reportUnknownMemberType]
+        array_list, dim="z2"
     )
+    print("compute_adjacency_matrix_from_coord_array end")
 
     return adjacency_matrix
 
 
 def create_coord_array(space_xda: xr.DataArray) -> xr.DataArray:
-    stacked = (space_xda == b"#").stack(z=("row", "col"), create_index=False)
+    stacked = (space_xda == ord(b"#")).stack(z=("row", "col"), create_index=False)
     indices = stacked[stacked]
     coord_array = xr.DataArray(
         np.array([indices.row, indices.col]),
@@ -106,10 +125,15 @@ def expand_space(parsed_input: xr.DataArray) -> xr.DataArray:
     return xda
 
 
-def get_compartiments(xda, chunks_dim: str, dim_reduce: str):
-    offset = (xda == b".").all(dim=dim_reduce)
+def get_compartiments(
+    xda: xr.DataArray, chunks_dim: str, dim_reduce: str
+) -> dict[int, range]:
+    offset = (xda == ord(b".")).all(dim=dim_reduce)
     cs = offset[offset][chunks_dim] + 1
-    boundaries = np.pad(cs, (1, 1), constant_values=(0, len(offset)))
+    boundaries: npt.NDArray[np.int64] = np.pad(
+        cs, (1, 1), constant_values=(0, len(offset))
+    )
+
     ranges = [
         range(boundaries[i], boundaries[i + 1]) for i in range(len(boundaries) - 1)
     ]
@@ -118,42 +142,49 @@ def get_compartiments(xda, chunks_dim: str, dim_reduce: str):
 
 
 def find_compartiment_id(value: int, compartiments: dict[int, range]) -> int:
-    return [k for k, v in compartiments.items() if value in v][0]
+    # This is extremely inefficient.
+    for k, v in compartiments.items():
+        if v.start <= value < v.stop:
+            return k
+    raise ValueError
 
 
-def get_chunks_tuple(xda, chunks_dim: str, dim_reduce: str):
-    offset = (xda == b".").all(dim=dim_reduce)
-    cs = offset[offset][chunks_dim] + 1
-    c0 = np.roll(np.pad(cs, (0, 1), constant_values=0), 1)
-    c1 = np.pad(cs, (0, 1), constant_values=len(offset))
-    chunks = c1 - c0
-    return tuple(chunks)
-
-
-def pad_xda(xda: xr.DataArray, dim_reduce: str, dim_concat: str):
+def pad_xda(xda: xr.DataArray, dim_reduce: str, dim_concat: str) -> xr.DataArray:
+    # Note: Unpacking a dict into the kwargs of sel seems not to work well with typing
+    # (only an Any-typed variable is accepted)
+    # Note: xr.concat also requires the same pyright ignore directive.
     i = 0
-    to_concat = []
-    to_insert = (xda == b".").all(dim=dim_reduce)
-    for index in to_insert[to_insert][dim_concat].values:
-        to_concat.append(xda.sel(**{dim_concat: slice(i, index)}))
-        to_concat.append(xda.sel(**{dim_concat: index}))
+    to_concat: list[xr.DataArray] = []
+    to_insert = (xda == ord(b".")).all(dim=dim_reduce)
+    for index in to_insert[to_insert][dim_concat]:
+        # contravariance in kwargs?? slice is not acceptable as an Any
+        slice_i_index_any: Any = slice(i, index)
+        to_concat.append(
+            xda.sel(  # pyright: ignore[reportUnknownMemberType]
+                **{dim_concat: slice_i_index_any}
+            )
+        )
+        to_concat.append(
+            xda.sel(**{dim_concat: index})  # pyright: ignore[reportUnknownMemberType]
+        )
         i = index + 1
-    to_concat.append(xda.sel(**{dim_concat: slice(i, None)}))
-    concatenated = xr.concat(to_concat, dim=dim_concat)
-    return concatenated.assign_coords(
-        **{dim_concat: list(range(len(concatenated[dim_concat])))}
+    slice_i_none_any: Any = slice(i, None)
+    to_concat.append(
+        xda.sel(  # pyright: ignore[reportUnknownMemberType]
+            **{dim_concat: slice_i_none_any}
+        )
+    )
+    concatenated = xr.concat(  # pyright: ignore[reportUnknownMemberType]
+        to_concat, dim=dim_concat
+    )
+    dim_concat_value_any: Any = list(range(len(concatenated[dim_concat])))
+    return concatenated.assign_coords(  # pyright: ignore[reportUnknownMemberType]
+        **{dim_concat: dim_concat_value_any}
     )
 
 
-def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file_from_filename(__file__)
-    parsed = parse_text_input(text)
-    return parsed
-
-
-def parse_text_input(text: str) -> ProblemDataType:
-    lines = text.strip().split("\n")
-    input_array = np.array([np.fromstring(line, dtype="<S1") for line in lines])
+def parse_text_input(text: str) -> PuzzleInput:
+    input_array = parse_2d_char_array(text)
     return xr.DataArray(
         input_array,
         coords={
@@ -164,4 +195,4 @@ def parse_text_input(text: str) -> ProblemDataType:
 
 
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202311().solve_all())

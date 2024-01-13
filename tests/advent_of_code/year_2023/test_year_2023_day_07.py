@@ -1,6 +1,8 @@
 from advent_of_code.year_2023.year_2023_day_07 import (
+    MAPPING_SRC_TO_DEST_PART_1,
     MAPPING_SRC_TO_DEST_PART_2,
     compute_total_winnings,
+    map_puzzle_input,
     parse_text_input,
     sort_by_hand_type_part_1,
     sort_by_hand_type_part_2,
@@ -20,7 +22,8 @@ QQQJA 483
 def test_year_2023_day_07_part_1():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)  # noqa: F841
-    sorted_by_hand_type = sort_by_hand_type_part_1(parsed_input)
+    mapped_input = map_puzzle_input(parsed_input, MAPPING_SRC_TO_DEST_PART_1)
+    sorted_by_hand_type = sort_by_hand_type_part_1(mapped_input)
     total_winnings = compute_total_winnings(sorted_by_hand_type)
     assert total_winnings == 6440
     ...
@@ -28,9 +31,10 @@ def test_year_2023_day_07_part_1():
 
 def test_year_2023_day_07_part_2():
     test_input = EXAMPLE_INPUT
-    parsed_input = parse_text_input(test_input, mapping=MAPPING_SRC_TO_DEST_PART_2)
+    parsed_input = parse_text_input(test_input)
+    mapped_input = map_puzzle_input(parsed_input, MAPPING_SRC_TO_DEST_PART_2)
     sorted_by_hand_type = sort_by_hand_type_part_2(
-        parsed_input, mapping=MAPPING_SRC_TO_DEST_PART_2
+        mapped_input, MAPPING_SRC_TO_DEST_PART_2
     )
     total_winnings = compute_total_winnings(sorted_by_hand_type)
     assert total_winnings == 5905
