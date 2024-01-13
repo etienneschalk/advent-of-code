@@ -6,7 +6,7 @@ import xarray as xr
 
 from advent_of_code.protocols import AdventOfCodeProblem
 
-PuzzleInput = tuple[xr.DataArray, ...]
+type PuzzleInput = tuple[xr.DataArray, ...]
 
 
 @dataclass(kw_only=True)

@@ -12,7 +12,7 @@ class Network:  # poignée
     nodes: dict[str, tuple[str, str]]
 
 
-PuzzleInput = Network
+type PuzzleInput = Network
 
 
 @dataclass(kw_only=True)

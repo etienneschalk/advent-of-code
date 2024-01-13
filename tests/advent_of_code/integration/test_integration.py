@@ -13,6 +13,7 @@ from advent_of_code.year_2023.year_2023_day_10 import AdventOfCodeProblem202310
 from advent_of_code.year_2023.year_2023_day_11 import AdventOfCodeProblem202311
 from advent_of_code.year_2023.year_2023_day_13 import AdventOfCodeProblem202313
 from advent_of_code.year_2023.year_2023_day_15 import AdventOfCodeProblem202315
+from advent_of_code.year_2023.year_2023_day_18 import AdventOfCodeProblem202318
 
 # Bash:
 # pytest --with-integration -k integration
@@ -35,3 +36,6 @@ def test_integration_year_2023():
     assert AdventOfCodeProblem202313().solve_all() == {1: 34918, 2: 33054}
     # assert AdventOfCodeProblem202314().solve_all() == {1: TODO, 2: TODO}
     assert AdventOfCodeProblem202315().solve_all() == {1: 514281, 2: 244199}
+    # assert AdventOfCodeProblem202316().solve_all() == {1: TODO, 2: TODO}
+    # assert AdventOfCodeProblem202317().solve_all() == {1: TODO, 2: TODO}
+    assert AdventOfCodeProblem202318().solve_all() == {1: 47139, 2: 173152345887206}

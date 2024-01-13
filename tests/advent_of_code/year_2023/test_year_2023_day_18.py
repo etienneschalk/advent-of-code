@@ -5,7 +5,7 @@ from advent_of_code.year_2023.year_2023_day_18 import (
     compute_pick_polygon_area_formula,
     compute_polygon_coords,
     compute_shoelace_formula,
-    parse_text_input,
+    parse_text_input_part_1,
     parse_text_input_part_2,
 )
 
@@ -54,7 +54,7 @@ def test_year_2023_day_18_part_1_basic():
     # Shoelace formula https://en.wikipedia.org/wiki/Shoelace_formula
     # Pick's theorem https://en.wikipedia.org/wiki/Pick%27s_theorem
     test_input = EXAMPLE_INPUT_3_X_3_LOOP
-    dig_plan = parse_text_input(test_input)
+    dig_plan = parse_text_input_part_1(test_input)
 
     internal_perimeter = compute_internal_perimeter(dig_plan)
     assert internal_perimeter == 8
@@ -70,7 +70,7 @@ def test_year_2023_day_18_part_1_basic():
 
 def test_year_2023_day_18_part_1_basic_2():
     test_input = EXAMPLE_INPUT_3_X_4_LOOP
-    dig_plan = parse_text_input(test_input)
+    dig_plan = parse_text_input_part_1(test_input)
 
     internal_perimeter = compute_internal_perimeter(dig_plan)
     assert internal_perimeter == 10
@@ -86,7 +86,7 @@ def test_year_2023_day_18_part_1_basic_2():
 
 def test_year_2023_day_18_part_1():
     test_input = EXAMPLE_INPUT
-    dig_plan = parse_text_input(test_input)
+    dig_plan = parse_text_input_part_1(test_input)
 
     internal_perimeter = compute_internal_perimeter(dig_plan)
     assert internal_perimeter == 38

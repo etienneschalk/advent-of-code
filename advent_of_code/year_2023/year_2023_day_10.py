@@ -16,7 +16,7 @@ from advent_of_code.common_img import (
 )
 from advent_of_code.protocols import AdventOfCodeProblem
 
-PuzzleInput = npt.NDArray[Any]
+type PuzzleInput = npt.NDArray[Any]
 
 
 @dataclass(kw_only=True)

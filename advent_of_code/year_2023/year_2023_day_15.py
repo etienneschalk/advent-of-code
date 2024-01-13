@@ -5,7 +5,7 @@ from functools import reduce
 from advent_of_code.common import load_input_text_file_from_filename
 from advent_of_code.protocols import AdventOfCodeProblem
 
-PuzzleInput = list[str]
+type PuzzleInput = list[str]
 
 
 @dataclass(kw_only=True)
