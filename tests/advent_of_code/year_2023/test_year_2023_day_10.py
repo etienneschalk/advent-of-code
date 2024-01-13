@@ -1,8 +1,9 @@
+import numpy as np
 import pytest
 import xarray as xr
 
 from advent_of_code.year_2023.year_2023_day_10 import (
-    compute_farthest_point_part_1,
+    AdventOfCodeProblem202310,
     parse_text_input,
     render_2d_array_to_text,
 )
@@ -72,19 +73,31 @@ def test_year_2023_day_10_part_1():
     for p in parsed_inputs:
         print(render_2d_array_to_text(p))
 
-    result, minimum_distances = compute_farthest_point_part_1(parsed_inputs[1])
+    minimum_distances = AdventOfCodeProblem202310().compute_minimum_distances(
+        parsed_inputs[1]
+    )
+    result = np.max(minimum_distances)
     print(render_2d_array_to_text(minimum_distances))
     assert result == 4
 
-    result, minimum_distances = compute_farthest_point_part_1(parsed_inputs[2])
+    minimum_distances = AdventOfCodeProblem202310().compute_minimum_distances(
+        parsed_inputs[2]
+    )
+    result = np.max(minimum_distances)
     print(render_2d_array_to_text(minimum_distances))
     assert result == 4
 
-    result, minimum_distances = compute_farthest_point_part_1(parsed_inputs[3])
+    minimum_distances = AdventOfCodeProblem202310().compute_minimum_distances(
+        parsed_inputs[3]
+    )
+    result = np.max(minimum_distances)
     print(render_2d_array_to_text(minimum_distances))
     assert result == 8
 
-    result, minimum_distances = compute_farthest_point_part_1(parsed_inputs[4])
+    minimum_distances = AdventOfCodeProblem202310().compute_minimum_distances(
+        parsed_inputs[4]
+    )
+    result = np.max(minimum_distances)
     print(render_2d_array_to_text(minimum_distances))
     assert result == 8
     ...
@@ -204,11 +217,11 @@ def test_year_2023_day_10_part_2():
     parsed_inputs = [parse_text_input(test_input) for test_input in test_inputs]
     for p in parsed_inputs:
         print(render_2d_array_to_text(p))
-        _, minimum_distances = compute_farthest_point_part_1(p)
+        minimum_distances = AdventOfCodeProblem202310().compute_minimum_distances(p)
         print(render_2d_array_to_text(minimum_distances))
 
     maze = parsed_inputs[2]
-    _, minimum_distances = compute_farthest_point_part_1(maze)
+    minimum_distances = AdventOfCodeProblem202310().compute_minimum_distances(maze)
     import numpy as np
 
     contours = np.int32(np.bool_(minimum_distances))
@@ -230,7 +243,9 @@ def test_year_2023_day_10_part_2():
     ...
     _ = arr_2x
     print(render_2d_array_to_text(arr_2x))
-    xda = xr.DataArray(arr_2x, dims=("i", "j")).coarsen(i=2, j=2).sum()
+    xda = (
+        xr.DataArray(arr_2x, dims=("i", "j")).coarsen(i=2, j=2).sum()  # pyright: ignore[reportGeneralTypeIssues]
+    )
     print(render_2d_array_to_text(xda.data))
 
     ...

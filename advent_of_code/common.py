@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import numpy.typing as npt
@@ -65,10 +66,15 @@ def render_2d_numpy_array(data: npt.NDArray[np.uint8]) -> str:
     return "\n".join(line.tobytes().decode("utf-8") for line in data)
 
 
-def parse_2d_char_array(text: str) -> npt.NDArray[np.uint8]:
+def parse_2d_string_array_to_uint8(text: str) -> npt.NDArray[np.uint8]:
     lines = text.strip().split("\n")
     # Typing this expression seems impossible right now
     return np.array([np.fromstring(line, dtype=np.uint8) for line in lines])  # type: ignore
+
+
+def parse_2d_string_array_to_u1(text: str) -> npt.NDArray[Any]:  # dtype='<U1'
+    lines = text.strip().split("\n")
+    return np.array([np.array(list(line)) for line in lines])
 
 
 def parse_2d_list_int_array(text: str) -> npt.NDArray[np.int32]:

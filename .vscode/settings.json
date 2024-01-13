@@ -21,6 +21,7 @@
     "isel",
     "loadtxt",
     "lrange",
+    "mazegen",
     "neighbour",
     "neighbours",
     "nodesep",

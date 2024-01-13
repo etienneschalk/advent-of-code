@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import numpy as np
 import numpy.typing as npt
 
-from advent_of_code.common import parse_2d_char_array
+from advent_of_code.common import parse_2d_string_array_to_uint8
 from advent_of_code.protocols import AdventOfCodeProblem
 
 PuzzleInput = npt.NDArray[np.uint8]  # <S1
@@ -35,7 +35,7 @@ class AdventOfCodeProblem202303(AdventOfCodeProblem[PuzzleInput]):
 
 
 def parse_text_input(text: str) -> PuzzleInput:
-    input_array = parse_2d_char_array(text)
+    input_array = parse_2d_string_array_to_uint8(text)
 
     # Add a border of dots will ease later checks,
     # not having to care about data outside the borders
