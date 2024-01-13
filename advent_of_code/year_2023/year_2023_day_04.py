@@ -1,44 +1,41 @@
 from dataclasses import dataclass
-from pathlib import Path
 
 import numpy as np
+import numpy.typing as npt
+
+from advent_of_code.protocols import AdventOfCodeProblem
 
 
 @dataclass(frozen=True, kw_only=True)
 class Card:
     identifier: int
-    winning_numbers: list[int]
-    numbers_you_have: list[int]
+    winning_numbers: npt.NDArray[np.int32]
+    numbers_you_have: npt.NDArray[np.int32]
 
 
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-    print({1: result_part_1, 2: result_part_2})
+type PuzzleInput = list[Card]
 
 
-def compute_part_1():
-    cards = load_input_text_file()
-    card_worths = [find_card_worth(card) for card in cards]
-    return sum(card_worths)
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202304(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2023
+    day: int = 4
 
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        cards = puzzle_input
+        card_worths = [find_card_worth(card) for card in cards]
+        return sum(card_worths)
 
-def compute_part_2():
-    cards = load_input_text_file()
-    instances = np.ones(len(cards), dtype=int)
-    for card in cards:
-        update_card_instances(instances, card)
-    return sum(instances)
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        cards = puzzle_input
+        instances = np.ones(len(cards), dtype=np.int32)
+        for card in cards:
+            update_card_instances(instances, card)
+        return sum(instances)
 
-
-def load_input_text_file() -> list[Card]:
-    input_path = "resources/advent_of_code/year_2023/input_year_2023_day_4.txt"
-    input_path = Path(input_path)
-    assert input_path.is_file()
-    text = input_path.read_text()
-    cards = parse_text_input(text)
-    assert len(cards) == 214
-    return cards
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        return parse_text_input(text)
 
 
 def parse_text_input(text: str) -> list[Card]:
@@ -48,14 +45,15 @@ def parse_text_input(text: str) -> list[Card]:
         colon_split = line.split(":")
         identifier = int(colon_split[0][4:])
         pipe_split = colon_split[1].split("|")
-        winning_numbers = np.fromstring(pipe_split[0], np.int8, sep=" ")
-        numbers_you_have = np.fromstring(pipe_split[1], np.int8, sep=" ")
+        winning_numbers = np.fromstring(pipe_split[0], np.int32, sep=" ")
+        numbers_you_have = np.fromstring(pipe_split[1], np.int32, sep=" ")
         card = Card(
             identifier=identifier,
             winning_numbers=winning_numbers,
             numbers_you_have=numbers_you_have,
         )
         cards.append(card)
+    assert len(cards) == 214
     return cards
 
 
@@ -82,7 +80,7 @@ def find_card_worth(card: Card) -> int:
 
 
 # Mutates instances in place. An instance count = "number of cards"
-def update_card_instances(instances: np.ndarray, card: Card):
+def update_card_instances(instances: npt.NDArray[np.int32], card: Card):
     start = card.identifier
     offset = len(find_winning_numbers_you_have(card))
     current_card_instance_count = instances[start - 1]
@@ -90,4 +88,4 @@ def update_card_instances(instances: np.ndarray, card: Card):
 
 
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202304().solve_all())

@@ -1,58 +1,50 @@
 from collections import defaultdict
-from pathlib import Path
+from dataclasses import dataclass
 
 import numpy as np
 import numpy.typing as npt
 
-DataType = npt.NDArray[np.dtype("|S1")]
+from advent_of_code.common import parse_2d_char_array
+from advent_of_code.protocols import AdventOfCodeProblem
+
+PuzzleInput = npt.NDArray[np.uint8]  # <S1
 
 
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-    print({1: result_part_1, 2: result_part_2})
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202303(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2023
+    day: int = 3
+
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        flattened = find_part_numbers(puzzle_input)
+        answer = sum(flattened)
+        return answer
+
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        gear_part_numbers_tuples = find_part_numbers_and_gears(puzzle_input)
+        gear_ratios = [t[0] * t[1] for t in gear_part_numbers_tuples]
+        sum_of_gear_ratios = sum(gear_ratios)
+        answer = sum_of_gear_ratios
+        return answer
+
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        return parse_text_input(text)
 
 
-def compute_part_1():
-    array = load_input_text_file()
-    flattened = find_part_numbers(array)
-    print(flattened)
-    answer = sum(flattened)
-    return answer
+def parse_text_input(text: str) -> PuzzleInput:
+    input_array = parse_2d_char_array(text)
 
-
-def compute_part_2():
-    array = load_input_text_file()
-    gear_part_numbers_tuples = find_part_numbers_and_gears(array)
-    print(gear_part_numbers_tuples)
-    gear_ratios = [t[0] * t[1] for t in gear_part_numbers_tuples]
-    print(gear_ratios)
-    sum_of_gear_ratios = sum(gear_ratios)
-    answer = sum_of_gear_ratios
-    return answer
-
-
-def load_input_text_file() -> DataType:
-    input_path = "resources/advent_of_code/year_2023/input_year_2023_day_3.txt"
-    input_path = Path(input_path)
-    assert input_path.is_file()
-    text = input_path.read_text()
-    games = parse_text_input(text)
-    assert len(games) == 140 + 2  # + 2 comes from padding
-    return games
-
-
-def parse_text_input(text: str) -> DataType:
-    lines = text.strip().split("\n")
-    input_array = np.array([np.fromstring(line, dtype="<S1") for line in lines])
     # Add a border of dots will ease later checks,
     # not having to care about data outside the borders
-    padded_array = np.pad(input_array, pad_width=1, constant_values=b".")
+    padded_array = np.pad(input_array, pad_width=1, constant_values=ord(b"."))
+    assert len(padded_array) == 140 + 2  # + 2 comes from padding
+
     return padded_array
 
 
 # Part 1
-def find_part_numbers(array: DataType) -> list[int]:
+def find_part_numbers(array: PuzzleInput) -> list[int]:
     adjacent_numbers_for_row = [
         [t[0] for t in detect_adjacent_numbers_in_line(array, row_index)]
         for row_index in range(array.shape[0])
@@ -62,13 +54,13 @@ def find_part_numbers(array: DataType) -> list[int]:
 
 
 # Part 2
-def find_part_numbers_and_gears(array: DataType) -> list[int]:
+def find_part_numbers_and_gears(array: PuzzleInput) -> list[tuple[int, ...]]:
     adjacent_numbers_for_row = [
         detect_adjacent_numbers_in_line(array, row_index)
         for row_index in range(array.shape[0])
     ]
     flattened = [j for i in adjacent_numbers_for_row for j in i]
-    graph = defaultdict(list)
+    graph: dict[tuple[int, ...] | None, list[int]] = defaultdict(list)
     for pair in flattened:
         part_number = pair[0]
         # There at most one gear (empirically constated previously)
@@ -80,13 +72,14 @@ def find_part_numbers_and_gears(array: DataType) -> list[int]:
     return gear_part_numbers_tuples
 
 
-def detect_adjacent_numbers_in_line(array: np.ndarray, row_index: int):
+def detect_adjacent_numbers_in_line(array: PuzzleInput, row_index: int):
     line = array[row_index]
     digit_was_detected = False
-    adjacent_numbers = []
-    stack_values = []
+    adjacent_numbers: list[tuple[int, set[tuple[int, ...]]]] = []
+    stack_values: list[int] = []
+    col_start = -1  # fix the unbound issue
     for i in range(line.shape[0]):
-        digit_is_detected = line[i].isdigit()
+        digit_is_detected = chr(line[i]).isdigit()
         if digit_is_detected:
             if not digit_was_detected:
                 digit_was_detected = True
@@ -97,7 +90,7 @@ def detect_adjacent_numbers_in_line(array: np.ndarray, row_index: int):
                 digit_was_detected = False
                 # only the first stack_indices is useful actually
                 if not is_solitary_number(array, row_index, col_start, i):
-                    number = int("".join(i.decode() for i in stack_values))
+                    number = int("".join(chr(i) for i in stack_values))
                     candidate_gear_coordinates_list = (
                         get_candidate_gear_coordinates_list(
                             array, row_index, col_start, i
@@ -110,23 +103,22 @@ def detect_adjacent_numbers_in_line(array: np.ndarray, row_index: int):
 
 
 def is_solitary_number(
-    array: np.ndarray, row_index: int, col_start_inclusive: int, col_end_exclusive: int
+    array: PuzzleInput, row_index: int, col_start_inclusive: int, col_end_exclusive: int
 ) -> bool:
     # A number is considered solitary (non-adjacent) if it is circled by dots.
     return all(
-        array[coords] == b"."
-        for coords in get_neighbouring_coordinates_generator(
+        array[coords] == ord(b".")
+        for coords in get_neighbouring_coordinates_tuple(
             row_index, col_start_inclusive, col_end_exclusive
         )
     )
 
 
 def get_candidate_gear_coordinates_list(
-    array: np.ndarray, row_index: int, col_start_inclusive: int, col_end_exclusive: int
+    array: PuzzleInput, row_index: int, col_start_inclusive: int, col_end_exclusive: int
 ) -> set[tuple[int, int]]:
-    target_char = b"*"
-    candidate_gear_coordinates_set = set()
-    neighbouring_coordinates_generator = get_neighbouring_coordinates_generator(
+    target_char = ord(b"*")
+    neighbouring_coordinates_generator = get_neighbouring_coordinates_tuple(
         row_index, col_start_inclusive, col_end_exclusive
     )
     candidate_gear_coordinates_set = {
@@ -141,10 +133,10 @@ def get_candidate_gear_coordinates_list(
     return candidate_gear_coordinates_set
 
 
-def get_neighbouring_coordinates_generator(
+def get_neighbouring_coordinates_tuple(
     row_index: int, col_start_inclusive: int, col_end_exclusive: int
-):
-    neighbouring_coordinates_generator = (
+) -> tuple[tuple[int, int], ...]:
+    return (
         (row_index, col_start_inclusive - 1),  # left
         (row_index, col_end_exclusive),  # right
         # upper row
@@ -159,8 +151,6 @@ def get_neighbouring_coordinates_generator(
         ),
     )
 
-    return neighbouring_coordinates_generator
-
 
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202303().solve_all())

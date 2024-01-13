@@ -1,7 +1,9 @@
 from dataclasses import dataclass
 from functools import cached_property
+from typing import Sequence, Union
 
 from advent_of_code.common import load_input_text_file_from_filename
+from advent_of_code.protocols import AdventOfCodeProblem
 
 
 @dataclass(frozen=True)
@@ -57,7 +59,7 @@ class Almanac:
             path[almanac_map.destination_category] = destination
         return path
 
-    def unroll_almanac_part_2(self, source: int) -> dict[str, int]:
+    def unroll_almanac_part_2(self, source: int) -> int:
         destination = source
         for almanac_map in self.maps:
             destination = almanac_map.source_to_target(destination)
@@ -79,7 +81,7 @@ class Almanac:
         print(f"Seed Ranges: {self.seed_ranges}")
         print(f"Range Lengths: {[len(r) for r in self.seed_ranges]}")
         print(f"Seed Count: {sum([len(r)for r in self.seed_ranges]):e}")
-        mins = []
+        mins: list[int] = []
         for seed_range in self.seed_ranges:
             print(f"Seed Range: {seed_range} | Length: {len(seed_range): e}")
             the_min = min(self.unroll_almanac_part_2(seed) for seed in seed_range)
@@ -89,20 +91,25 @@ class Almanac:
         # return min(self.unroll_almanac_dict_part_2(seed) for seed in seed_gen)
 
 
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-    print({1: result_part_1, 2: result_part_2})
+type PuzzleInput = Almanac
 
 
-def compute_part_1():
-    almanac = parse_input_text_file()
-    return almanac.find_lowest_number_for_category("location")
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202305(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2023
+    day: int = 5
 
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        almanac = puzzle_input
+        return almanac.find_lowest_number_for_category("location")
 
-def compute_part_2():
-    almanac = parse_input_text_file()
-    return compute_lowest_location_number(almanac)
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        almanac = puzzle_input
+        return compute_lowest_location_number(almanac)
+
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        return parse_text_input(text)
 
 
 def compute_lowest_location_number(almanac: Almanac) -> int:
@@ -120,16 +127,20 @@ def compute_lowest_location_number(almanac: Almanac) -> int:
     return min_location_number
 
 
-def find_min_range_in_tree(tree: range | list):
+# Hint from Pylance: Consider switching from "list" to "Sequence" which is covariant
+type RecursiveSequenceOfRanges = Sequence[Union["RecursiveSequenceOfRanges", range]]
+type RecursiveSequenceOfInts = Sequence[Union["RecursiveSequenceOfInts", int]]
+
+
+def find_min_range_in_tree(tree: RecursiveSequenceOfRanges | range) -> int:
     if isinstance(tree, range):
         return tree.start
-    elif isinstance(tree, list):
-        return min(find_min_range_in_tree(el) for el in tree)
+    return min(find_min_range_in_tree(el) for el in tree)
 
 
 def recur_map_ranges_tree(
     almanac: Almanac, input_ranges: list[range], almanac_map_index: int = 0
-):
+) -> RecursiveSequenceOfRanges:
     if almanac_map_index >= len(almanac.maps):
         return input_ranges
     mapping = almanac.maps[almanac_map_index]
@@ -145,14 +156,14 @@ def map_ranges_tree(
 ) -> list[list[range]]:
     sort_mapping_by_source_range_start_in_place(mapping.ranges)
     # (input, input ^ source )
-    intersections_of_input_ranges = []
-    mapped_intersections_of_input_ranges = []
+    intersections_of_input_ranges: list[list[range]] = []
+    mapped_intersections_of_input_ranges: list[list[range]] = []
     for input_range in input_ranges:
         intersections = [
             intersect_ranges(input_range, mr.source_range) for mr in mapping.ranges
         ]
         intersections_of_input_ranges.append(intersections)
-        mapped_list = []
+        mapped_list: list[range] = []
         for intersection, mapping_range in zip(intersections, mapping.ranges):
             delta = (
                 mapping_range.destination_range_start - mapping_range.source_range_start
@@ -172,7 +183,7 @@ def intersect_ranges(range_a: range, range_b: range) -> range:
 
 def sort_mapping_by_source_range_start_in_place(
     almanac_ranges: list[AlmanacRange],
-) -> AlmanacRange:
+) -> None:
     almanac_ranges.sort(key=lambda ar: ar.source_range_start)
 
 
@@ -194,13 +205,13 @@ def find_max_destination_stop_in_almanac_range(ar: AlmanacRange) -> int:
     return ar.destination_range_start + ar.range_length
 
 
-def fill_almanac_in_place(almanac: Almanac) -> Almanac:
+def fill_almanac_in_place(almanac: Almanac) -> None:
     max_almanac = find_max_destination_stop_in_almanac(almanac)
     for mapping in almanac.maps:
         fill_almanac_map_in_place(mapping, max_almanac)
 
 
-def fill_almanac_map_in_place(mapping: AlmanacMap, max_stop: int) -> AlmanacMap:
+def fill_almanac_map_in_place(mapping: AlmanacMap, max_stop: int) -> None:
     # from ....xx..xxx...
     # to   iiii..ii...iii
     sort_mapping_by_source_range_start_in_place(mapping.ranges)
@@ -269,20 +280,18 @@ def parse_almanac(text: str) -> Almanac:
 
 def map_ranges_prototype(input_ranges: list[range], mapping: AlmanacMap) -> list[range]:
     sort_mapping_by_source_range_start_in_place(mapping.ranges)
-    intersections_of_input_ranges = []
-    for input_range in input_ranges:
-        intersections = [
-            intersect_ranges(input_range, mr.source_range) for mr in mapping.ranges
-        ]
-        intersections_of_input_ranges.append(intersections)
-        ...
-    mapped_input_ranges = []
+    intersections_of_input_ranges = [
+        [intersect_ranges(input_range, mr.source_range) for mr in mapping.ranges]
+        for input_range in input_ranges
+    ]
+
+    mapped_input_ranges: list[list[range]] = []
     for index, mapping_range in enumerate(mapping.ranges):
         input_ranges_split = [i[index] for i in intersections_of_input_ranges]
         delta = mapping_range.destination_range_start - mapping_range.source_range_start
         mapped = [range(r.start + delta, r.stop + delta) for r in input_ranges_split]
         mapped_input_ranges.append(mapped)
-        ...
+
     flattened_filtered_ranges = [
         y for x in mapped_input_ranges for y in x if y.start < y.stop
     ]
@@ -291,4 +300,4 @@ def map_ranges_prototype(input_ranges: list[range], mapping: AlmanacMap) -> list
 
 
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202305().solve_all())

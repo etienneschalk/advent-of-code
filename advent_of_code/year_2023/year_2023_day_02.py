@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from pathlib import Path
+
+from advent_of_code.protocols import AdventOfCodeProblem
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -19,40 +20,34 @@ class Game:
     handfuls: list[Handful]
 
 
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-    print({1: result_part_1, 2: result_part_2})
+type PuzzleInput = list[Game]
 
 
-def compute_part_1():
-    games = load_input_text_file()
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202302(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2023
+    day: int = 2
 
-    # 12 red cubes, 13 green cubes, and 14 blue cubes
-    # a bag is a handful too
-    reference_bag = Handful(red=12, green=13, blue=14)
-    possible_games = compute_possible_games(reference_bag, games)
-    possible_games_identifiers = [g.identifier for g in possible_games]
-    print(possible_games_identifiers)
-    answer = sum(possible_games_identifiers)
-    return answer
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        # 12 red cubes, 13 green cubes, and 14 blue cubes
+        # a bag is a handful too
+        reference_bag = Handful(red=12, green=13, blue=14)
+        possible_games = compute_possible_games(reference_bag, puzzle_input)
+        possible_games_identifiers = [g.identifier for g in possible_games]
+        answer = sum(possible_games_identifiers)
+        return answer
 
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        minimal_handfuls = [
+            compute_minimal_required_handful(game) for game in puzzle_input
+        ]
+        return sum(h.power for h in minimal_handfuls)
 
-def compute_part_2():
-    games = load_input_text_file()
-
-    minimal_handfuls = [compute_minimal_required_handful(game) for game in games]
-    return sum(h.power for h in minimal_handfuls)
-
-
-def load_input_text_file() -> list[Game]:
-    input_path = "resources/advent_of_code/year_2023/input_year_2023_day_2.txt"
-    input_path = Path(input_path)
-    assert input_path.is_file()
-    text = input_path.read_text()
-    games = parse_text_input(text)
-    assert len(games) == 100
-    return games
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        games = parse_text_input(text)
+        assert len(games) == 100
+        return games
 
 
 def parse_text_input(text: str) -> list[Game]:
@@ -103,4 +98,4 @@ def compute_minimal_required_handful(game: Game) -> Handful:
 
 
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202302().solve_all())

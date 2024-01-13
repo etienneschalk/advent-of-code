@@ -2,6 +2,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+import numpy.typing as npt
 import xarray as xr
 
 
@@ -61,3 +62,8 @@ def render_2d_data_array(xda: xr.DataArray) -> str:
 
 def render_2d_numpy_array(data: np.ndarray) -> str:
     return "\n".join(line.tobytes().decode("utf-8") for line in data)
+
+
+def parse_2d_char_array(text: str) -> npt.NDArray[np.uint8]:
+    lines = text.strip().split("\n")
+    return np.array([np.fromstring(line, dtype=np.uint8) for line in lines])  # type: ignore
