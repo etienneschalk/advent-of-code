@@ -27,6 +27,15 @@ class AdventOfCodeProblem[PuzzleInputT](Protocol):  #  type: ignore[syntax]
         parsed = self.parse_text_input(text)
         return parsed
 
+    def solve_all(self):
+        # Be safe and parse twice the input, in case logic require input mutation
+        # This is less efficient than reusing the input, but can help keep independence
+        # in part solving, when it is easier to mutate the puzzle input inplace.
+        result_part_1 = self.solve_part_1(self.parse_input_text_file())
+        result_part_2 = self.solve_part_2(self.parse_input_text_file())
+
+        return {1: result_part_1, 2: result_part_2}
+
 
 @dataclass(kw_only=True, frozen=True)
 class ExampleAdventOfCodePuzzleInput202206:

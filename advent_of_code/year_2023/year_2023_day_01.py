@@ -1,39 +1,30 @@
-from pathlib import Path
-from typing import Literal
+from dataclasses import dataclass
+from typing import Literal, get_args
 
-MappingsType = dict[Literal["default", "reversed"], dict[str, str]]
+from advent_of_code.protocols import AdventOfCodeProblem
 
-
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-
-    # A l'endroit, et a l'envers, eg one -> eno
-    # 54729 too low
-    # 54771 too high
-    print({1: result_part_1, 2: result_part_2})
+# Do not use the type keyword, as values are used dynamically
+# in the code too (not only the type declarations)
+Keys = Literal["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+type Mappings = dict[Literal["default", "reversed"], dict[Keys, str]]
+type PuzzleInput = list[str]
 
 
-def compute_part_1():
-    words = load_input_text_file()
-    return compute_calibration_sum(words)
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202301(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2023
+    day: int = 1
 
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        return compute_calibration_sum(puzzle_input)
 
-def compute_part_2():
-    words = load_input_text_file()
-    corrected = correct_input_for_part_2(words)
-    # print(corrected)
-    return compute_calibration_sum(corrected)
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        corrected = correct_input_for_part_2(puzzle_input)
+        return compute_calibration_sum(corrected)
 
-
-def load_input_text_file():
-    input_path = "resources/advent_of_code/year_2023/input_year_2023_day_1.txt"
-    input_path = Path(input_path)
-    assert input_path.is_file()
-    text = input_path.read_text()
-    words = parse_text_input(text)
-    assert len(words) == 1000
-    return words
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        return parse_text_input(text)
 
 
 def parse_text_input(text: str) -> list[str]:
@@ -43,6 +34,8 @@ def parse_text_input(text: str) -> list[str]:
     assert all(
         all((is_lowercase_alphanumeric_character(c)) for c in word) for word in words
     )
+    # Note: there is no "a"...
+    assert all(all(ord(c) != "a" for c in word) for word in words)
 
     return words
 
@@ -52,21 +45,7 @@ def is_lowercase_alphanumeric_character(c: str):
 
 
 def compute_calibration_sum(words: list[str]) -> int:
-    # Note: there is no "a"...
-    assert all(all(ord(c) != "a" for c in word) for word in words)
-
-    calibration_value_generator = (recover_calibration_value(word) for word in words)
-    calibration_values = list(calibration_value_generator)
-    for i in range(50):
-        print(calibration_values[i * 20 : (i + 1) * 20])
-    print()
-
-    calibration_value_generator = (recover_calibration_value(word) for word in words)
-    calibration_sum = sum(calibration_value_generator)
-
-    print(calibration_sum)
-
-    return calibration_sum
+    return sum(recover_calibration_value(word) for word in words)
 
 
 def recover_calibration_value(word: str) -> int:
@@ -80,51 +59,52 @@ def correct_input_for_part_2(words: list[str]) -> list[str]:
     return [replace_first_last_spelled_digits(word, mappings) for word in words]
 
 
-def build_part_2_mappings() -> MappingsType:
+def build_part_2_mappings() -> Mappings:
     mapping = build_part_2_mapping()
     reversed_mapping = {k[::-1]: v for k, v in mapping.items()}
     return {"default": mapping, "reversed": reversed_mapping}
 
 
-def build_part_2_mapping() -> dict[str, str]:
-    keys = ("one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
+def build_part_2_mapping():
+    keys = get_args(Keys)
     values = (str(i) for i in range(1, 10))
     mapping = dict(zip(keys, values))
     return mapping
 
 
-def replace_first_last_spelled_digits(word: str, mappings: MappingsType) -> str:
+def replace_first_last_spelled_digits(word: str, mappings: Mappings) -> str:
     word = replace_first_spelled_digit(word, mappings["default"])
     word = replace_first_spelled_digit(word[::-1], mappings["reversed"])[::-1]
     return word
 
 
-def replace_first_spelled_digit(word: str, mapping: dict[str, str]) -> str:
-    word_dict = {}
+def replace_first_spelled_digit(word: str, mapping: dict[Keys, str]) -> str:
+    # The count = 1 is very important to only replace what's needed!
+    word_dict = {
+        source: word.replace(source, target, 1) for source, target in mapping.items()
+    }
 
-    for source, target in mapping.items():
-        # The count = 1 is very important to only replace what's needed!
-        word_dict[source] = word.replace(source, target, 1)
     rank_mapping = {k: find_first_digit_index(v, False) for k, v in word_dict.items()}
-    rank_mapping = {k: v for k, v in rank_mapping.items() if v is not None}
+    rank_mapping_non_none = {k: v for k, v in rank_mapping.items() if v is not None}
 
     # Do nee to substitute if not needed! (don't doing so = wrong result)
-    if len(set(rank_mapping.values())) == 1:
+    if len(set(rank_mapping_non_none.values())) == 1:
         return word
 
-    correct_digit_key = min(rank_mapping, key=rank_mapping.get)
+    # The -1 is necessary to make the type checker happy
+    correct_digit_key = min(
+        rank_mapping_non_none, key=lambda k: rank_mapping_non_none.get(k, -1)
+    )
     corrected_word = word_dict[correct_digit_key]
 
     return corrected_word
 
 
 def find_first_digit_index(word: str, reverse: bool):
-    if reverse:
-        word = reversed(word)
-    for i, c in enumerate(word):
+    for i, c in enumerate(reversed(word) if reverse else word):
         if c.isdigit():
             return i
 
 
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202301().solve_all())
