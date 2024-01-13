@@ -1,4 +1,6 @@
 # https://pre-commit.com/
+default_language_version:
+    python: python3.12
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -53,3 +55,5 @@ repos:
     rev: v1.1.345
     hooks:
     - id: pyright
+      language: python_venv
+      language_version: python3.12

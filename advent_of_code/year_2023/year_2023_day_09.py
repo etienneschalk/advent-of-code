@@ -1,42 +1,35 @@
+from dataclasses import dataclass
+
 import numpy as np
+import numpy.typing as npt
 
-from advent_of_code.common import load_input_text_file_from_filename
+from advent_of_code.protocols import AdventOfCodeProblem
 
-ProblemDataType = np.ndarray
-
-
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-    print({1: result_part_1, 2: result_part_2})
+type PuzzleInput = npt.NDArray[np.int32]
 
 
-def compute_part_1():
-    parsed_input = parse_input_text_file()
-    predictions = [predict_next_value_forward(arr) for arr in parsed_input]
-    return sum(predictions)
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202309(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2023
+    day: int = 9
+
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        predictions = [predict_next_value_forward(arr) for arr in puzzle_input]
+        return sum(predictions)
+
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        predictions = [predict_next_value_backward(arr) for arr in puzzle_input]
+        return sum(predictions)
+
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        lines = text.strip().split("\n")
+        arrays = (np.fromstring(line, dtype=int, sep=" ") for line in lines)
+        stacked = np.stack(list(arrays))
+        return stacked
 
 
-def compute_part_2():
-    parsed_input = parse_input_text_file()
-    predictions = [predict_next_value_backward(arr) for arr in parsed_input]
-    return sum(predictions)
-
-
-def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file_from_filename(__file__)
-    parsed = parse_text_input(text)
-    return parsed
-
-
-def parse_text_input(text: str) -> ProblemDataType:
-    lines = text.strip().split("\n")
-    arrays = (np.fromstring(line, dtype=int, sep=" ") for line in lines)
-    stacked = np.stack(list(arrays))
-    return stacked
-
-
-def predict_next_value_forward(arr: np.ndarray) -> int:
+def predict_next_value_forward(arr: PuzzleInput) -> int:
     if np.all(arr == 0):
         return 0
 
@@ -46,7 +39,7 @@ def predict_next_value_forward(arr: np.ndarray) -> int:
     return result
 
 
-def predict_next_value_backward(arr: np.ndarray) -> int:
+def predict_next_value_backward(arr: PuzzleInput) -> int:
     if np.all(arr == 0):
         return 0
 
@@ -56,9 +49,9 @@ def predict_next_value_backward(arr: np.ndarray) -> int:
     return result
 
 
-def compute_finite_difference_forward(arr: np.ndarray) -> np.ndarray:
+def compute_finite_difference_forward(arr: PuzzleInput) -> PuzzleInput:
     return (np.roll(arr, -1) - arr)[:-1]
 
 
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202309().solve_all())

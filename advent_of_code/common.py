@@ -13,7 +13,8 @@ def load_input_text_file_from_filename(filename: str) -> str:
 
 
 def get_year_and_day_from_filename(filename: str) -> tuple[int, int]:
-    return tuple(int(i) for i in Path(filename).stem.split("_") if i.isdigit())
+    year, day = tuple(int(i) for i in Path(filename).stem.split("_") if i.isdigit())
+    return year, day
 
 
 def load_puzzle_input_text_file(year: int, day: int) -> str:
@@ -60,10 +61,21 @@ def render_2d_data_array(xda: xr.DataArray) -> str:
     return render_2d_numpy_array(xda.data)
 
 
-def render_2d_numpy_array(data: np.ndarray) -> str:
+def render_2d_numpy_array(data: npt.NDArray[np.uint8]) -> str:
     return "\n".join(line.tobytes().decode("utf-8") for line in data)
 
 
 def parse_2d_char_array(text: str) -> npt.NDArray[np.uint8]:
     lines = text.strip().split("\n")
+    # Typing this expression seems impossible right now
     return np.array([np.fromstring(line, dtype=np.uint8) for line in lines])  # type: ignore
+
+
+def parse_2d_list_int_array(text: str) -> npt.NDArray[np.int32]:
+    lines = text.strip().split("\n")
+    # Typing this expression seems impossible right now
+    return [np.fromstring(line, dtype=np.int32) for line in lines]  # type: ignore
+
+
+def parse_2d_int_array(text: str) -> npt.NDArray[np.int32]:
+    return np.array(parse_2d_list_int_array(text))
