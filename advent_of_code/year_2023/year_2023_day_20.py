@@ -1,30 +1,76 @@
+from abc import abstractmethod
 from dataclasses import dataclass
+from typing import Literal, get_args
 
 import numpy as np
 
 from advent_of_code.common import load_input_text_file_from_filename
+from advent_of_code.protocols import AdventOfCodeProblem
 
-LowPulse = False
-HighPulse = True
-Pulse = LowPulse | HighPulse
-Off = False
-On = True
-FlipFlopState = Off | On
+LowPulseType = Literal[False]
+HighPulseType = Literal[True]
+type Pulse = Literal[LowPulseType, HighPulseType]
+
+OffType = LowPulseType
+OnType = HighPulseType
+type FlipFlopState = Literal[OffType, OnType]
+
+LowPulse = get_args(LowPulseType)[0]
+HighPulse = get_args(HighPulseType)[0]
+Off = get_args(OffType)[0]
+On = get_args(OnType)[0]
+
+type PuzzleInput = str
+
+
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202320(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2023
+    day: int = 20
+
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        return text
+
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        start_module_dict = parse_text_to_module_dict(puzzle_input)
+        module_dict = parse_text_to_module_dict(puzzle_input)
+
+        histories = compute_successive_histories_until_circle_back(
+            start_module_dict, module_dict, 1000
+        )
+
+        result = compute_result_for_part_1(histories, 1000)
+
+        return result
+
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        module_dict = parse_text_to_module_dict(puzzle_input)
+
+        max_iter = 5000
+
+        # hb is the parent of rx
+        periods = detect_periods_part_2(module_dict, max_iter, "hb")
+
+        product = np.prod([t[0] for t in periods])
+
+        return int(product)
 
 
 @dataclass(kw_only=True)
 class Module:
     prefix = ""
     name: str
-    destination_names: tuple[str]
+    destination_names: tuple[str, ...]
 
     @staticmethod
-    def init(name: str, destination_names: tuple[str]) -> "Module":
+    def init(name: str, destination_names: tuple[str, ...]) -> "Module":
         return Module(
             name=name,
             destination_names=destination_names,
         )
 
+    @abstractmethod
     def receive(self, source: str, pulse: Pulse) -> list["Message"]:
         pass
 
@@ -49,7 +95,7 @@ class Message:
 @dataclass(kw_only=True)
 class BroadcasterModule(Module):
     @staticmethod
-    def init(name: str, destination_names: tuple[str]) -> "BroadcasterModule":
+    def init(name: str, destination_names: tuple[str, ...]) -> "BroadcasterModule":
         return BroadcasterModule(
             name=name,
             destination_names=destination_names,
@@ -69,7 +115,7 @@ class FlipFlopModule(Module):
     pulses_to_send: list[Pulse]
 
     @staticmethod
-    def init(name: str, destination_names: tuple[str]) -> "FlipFlopModule":
+    def init(name: str, destination_names: tuple[str, ...]) -> "FlipFlopModule":
         return FlipFlopModule(
             name=name,
             destination_names=destination_names,
@@ -78,7 +124,7 @@ class FlipFlopModule(Module):
         )
 
     def receive(self, source: str, pulse: Pulse) -> list[Message]:
-        if pulse is LowPulse:
+        if pulse == LowPulse:
             self.state = not self.state
             pulse = self.state
             return [
@@ -95,7 +141,7 @@ class ConjunctionModule(Module):
     pulses_to_send: list[Pulse]
 
     @staticmethod
-    def init(name: str, destination_names: tuple[str]) -> "ConjunctionModule":
+    def init(name: str, destination_names: tuple[str, ...]) -> "ConjunctionModule":
         return ConjunctionModule(
             name=name,
             destination_names=destination_names,
@@ -105,49 +151,15 @@ class ConjunctionModule(Module):
 
     def receive(self, source: str, pulse: Pulse) -> list[Message]:
         self.inputs[source] = pulse
-        pulse = not all(input is HighPulse for input in self.inputs.values())
+        pulse = not all(input == HighPulse for input in self.inputs.values())
         return [
             Message(source=self.name, destination=dest, pulse=pulse)
             for dest in self.destination_names
         ]
 
 
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-    print({1: result_part_1, 2: result_part_2})
-
-
-def compute_part_1():
-    text = load_input_text_file_from_filename(__file__)
-    start_module_dict = parse_text_input(text)
-    module_dict = parse_text_input(text)
-
-    histories = compute_successive_histories_until_circle_back(
-        start_module_dict, module_dict, 1000
-    )
-
-    result = compute_result_for_part_1(histories, 1000)
-
-    return result
-
-
 def load_input_text_file_y2023_d20() -> str:
     return load_input_text_file_from_filename(__file__)
-
-
-def compute_part_2():
-    text = load_input_text_file_from_filename(__file__)
-    module_dict = parse_text_input(text)
-
-    max_iter = 5000
-
-    # hb is the parent of rx
-    periods = detect_periods_part_2(module_dict, max_iter, "hb")
-
-    product = np.prod([t[0] for t in periods])
-
-    return product
 
 
 def compute_simulation_history(modules: ModuleDict):
@@ -193,7 +205,7 @@ def compute_successive_histories_until_circle_back(
     keep_history: bool = True,
 ):
     i = 0
-    histories = []
+    histories: list[list[Message]] = []
     while i < max_iter and (module_dict != start_module_dict or i == 0):
         i += 1
         history = compute_simulation_history(module_dict)
@@ -209,7 +221,9 @@ def detect_periods_part_2(
     target_module: str = "hb",
 ) -> list[tuple[int, Message]]:
     i = 0
-    modules_of_interest = {n: [] for n in module_dict[target_module].inputs}
+    conjunction_module = module_dict[target_module]
+    assert isinstance(conjunction_module, ConjunctionModule)
+    modules_of_interest = {n: [] for n in conjunction_module.inputs}
     expected_messages = {
         n: Message(source=n, destination=target_module, pulse=HighPulse)
         for n in modules_of_interest
@@ -226,7 +240,7 @@ def detect_periods_part_2(
     return events_of_interest
 
 
-def parse_text_input(text: str) -> ModuleDict:
+def parse_text_to_module_dict(text: str) -> ModuleDict:
     lines = text.strip().split("\n")
 
     modules: dict[str, Module] = {}
@@ -264,4 +278,4 @@ def parse_text_input(text: str) -> ModuleDict:
 
 
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202320().solve_all())

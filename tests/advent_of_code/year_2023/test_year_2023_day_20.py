@@ -2,7 +2,7 @@ from advent_of_code.year_2023.year_2023_day_20 import (
     compute_result_for_part_1,
     compute_simulation_history,
     compute_successive_histories_until_circle_back,
-    parse_text_input,
+    parse_text_to_module_dict,
 )
 
 EXAMPLE_INPUT_1 = """
@@ -94,8 +94,8 @@ con -high-> output
 
 def test_year_2023_day_20_part_1_1():
     test_input = EXAMPLE_INPUT_1
-    start_module_dict = parse_text_input(test_input)
-    module_dict = parse_text_input(test_input)
+    start_module_dict = parse_text_to_module_dict(test_input)
+    module_dict = parse_text_to_module_dict(test_input)
 
     history_1 = compute_simulation_history(module_dict)
     assert [repr(h) for h in history_1] == EXPECTED_OUTPUT_1
@@ -110,8 +110,8 @@ def test_year_2023_day_20_part_1_1():
 
 def test_year_2023_day_20_part_1_1bis():
     test_input = EXAMPLE_INPUT_1
-    start_module_dict = parse_text_input(test_input)
-    module_dict = parse_text_input(test_input)
+    start_module_dict = parse_text_to_module_dict(test_input)
+    module_dict = parse_text_to_module_dict(test_input)
     histories = compute_successive_histories_until_circle_back(
         start_module_dict, module_dict
     )
@@ -121,8 +121,8 @@ def test_year_2023_day_20_part_1_1bis():
 
 def test_year_2023_day_20_part_1_2():
     test_input = EXAMPLE_INPUT_2
-    start_module_dict = parse_text_input(test_input)
-    module_dict = parse_text_input(test_input)
+    start_module_dict = parse_text_to_module_dict(test_input)
+    module_dict = parse_text_to_module_dict(test_input)
 
     history_1 = compute_simulation_history(module_dict)
     assert [repr(h) for h in history_1] == EXPECTED_OUTPUT_2_1
@@ -149,8 +149,8 @@ def test_year_2023_day_20_part_1_2():
 
 def test_year_2023_day_20_part_1_2bis():
     test_input = EXAMPLE_INPUT_2
-    start_module_dict = parse_text_input(test_input)
-    module_dict = parse_text_input(test_input)
+    start_module_dict = parse_text_to_module_dict(test_input)
+    module_dict = parse_text_to_module_dict(test_input)
     histories = compute_successive_histories_until_circle_back(
         start_module_dict, module_dict
     )
