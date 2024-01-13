@@ -18,6 +18,7 @@
     "flatset",
     "fromarray",
     "frombuffer",
+    "graphviz",
     "isel",
     "loadtxt",
     "lrange",
