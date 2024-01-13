@@ -2,15 +2,42 @@ from collections import defaultdict
 from dataclasses import dataclass
 
 import numpy as np
+import numpy.typing as npt
 
-from advent_of_code.common import load_input_text_file_from_filename
+from advent_of_code.protocols import AdventOfCodeProblem
+
+type SupportCounts = dict[int, int]
+type PuzzleInput = list[Brick]
+
+
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202322(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2023
+    day: int = 22
+
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        return parse_text_input(text)
+
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        result = compute_safely_removable_bricks_count(puzzle_input)
+        return result
+
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        supported_bricks = compute_supported_bricks_from_initial_bricks(puzzle_input)
+        support_counts = compute_support_counts(supported_bricks)
+
+        # 81610 too high
+        # 55713 That's not the right answer; your answer is too low.
+        result = solve_part_2(supported_bricks, support_counts, True)
+
+        return result
 
 
 @dataclass(kw_only=True)
 class Brick:
-    position: tuple[np.ndarray, np.ndarray]
+    position: tuple[npt.NDArray[np.int64], npt.NDArray[np.int64]]
     falling: bool
-    shadow: np.ndarray | None = None
     identifier: int = -1
 
     @property
@@ -42,15 +69,15 @@ class Brick:
         return self.position[1][2]
 
     @property
-    def pos0(self) -> int:
+    def pos0(self) -> npt.NDArray[np.int64]:
         return self.position[0]
 
     @property
-    def pos1(self) -> int:
+    def pos1(self) -> npt.NDArray[np.int64]:
         return self.position[1]
 
     @property
-    def length(self) -> int:
+    def length(self) -> np.int64:
         # The bricks span in only one direction
         # So all deltas will be null except for the brick's direction
         # Hence it is safe to sum to eliminate the null values
@@ -85,48 +112,13 @@ class Brick:
         return indexer
 
     @property
-    def is_position_ordered(self) -> bool:
+    def is_position_ordered(self) -> np.bool_:
         return np.all(self.pos1 >= self.pos0)
-
-
-ProblemDataType = list[Brick]
-
-
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-    print({1: result_part_1, 2: result_part_2})
-
-
-def compute_part_1():
-    data = parse_input_text_file()
-    result = compute_safely_removable_bricks_count(data)
-    return result
-    # {1: 471, 2: None}
-    # That's not the right answer; your answer is too high.
-    # Curiously, it's the right answer for someone else; you might be logged in
-    # to the wrong account or just unlucky. In any case,
-    # you need to be using your puzzle input. If you're stuck, make sure you're
-    # using the full input data; there are also some general tips on the about page,
-    # or you can ask for hints on the subreddit.
-    # Please wait one minute before trying again. [Return to Day 22]
-
-
-def compute_part_2():
-    data = parse_input_text_file()
-    supported_bricks = compute_supported_bricks_from_initial_bricks(data)
-    support_counts = compute_support_counts(supported_bricks)
-
-    # 81610 too high
-    # 55713 That's not the right answer; your answer is too low.
-    result = solve_part_2(supported_bricks, support_counts, True)
-
-    return result
 
 
 def solve_part_2(
     supported_bricks: dict[int, tuple[int, ...]],
-    support_counts: dict[int, int],
+    support_counts: SupportCounts,
     dangerous_only: bool = False,
 ):
     can_be_disintegrated = compute_disintegrable_bricks(
@@ -157,9 +149,9 @@ def solve_part_2(
 
 def compute_updated_support_counts_when_node_removed(
     supported_bricks: dict[int, tuple[int, ...]],
-    support_counts: dict[int, int],
+    support_counts: SupportCounts,
 ):
-    updated_support_counts_when_node_removed = {}
+    updated_support_counts_when_node_removed: dict[int, SupportCounts] = {}
     for b_id in supported_bricks.keys():
         sc = dict(support_counts)  # copy support counts, it will be mutated
 
@@ -175,37 +167,8 @@ def compute_updated_support_counts_when_node_removed(
     return updated_support_counts_when_node_removed
 
 
-# def compute_updated_support_counts_when_node_removed(
-#     supported_bricks: dict[int, tuple[int, ...]],
-#     support_counts: dict[int, int],
-# ):
-#     updated_support_counts_when_node_removed = {}
-#     for b_id, children in supported_bricks.items():
-#         sc = dict(support_counts)  # copy support counts, it will be mutated
-
-#         q = []
-#         q.extend([b_id])
-#         unique = set(q)
-#         while q:
-#             node = q.pop(0)
-#             if node in sc:
-#                 sc[node] = max(0, sc[node] - 1)
-#             else:
-#                 # Node not in sc = touches the ground
-#                 # So, add it with 0 value when removed so
-#                 # that the children are explored
-#                 sc[node] = 0
-#             # Only explore children if the brick was removed
-#             # Filter out already queued children not to double-decrease
-#             if sc[node] == 0:
-#                 q.extend(list(n for n in supported_bricks[node] if n not in unique))
-#                 unique.update(supported_bricks[node])
-#         updated_support_counts_when_node_removed[b_id] = sc
-#     return updated_support_counts_when_node_removed
-
-
 def compute_chain_reaction_other_fallen_bricks_count(
-    updated_support_counts_when_node_removed,
+    updated_support_counts_when_node_removed: dict[int, SupportCounts],
 ):
     return {
         node: sum(v == 0 for v in value.values())
@@ -245,7 +208,7 @@ def compute_supported_bricks_from_initial_bricks(
 
 def compute_disintegrable_bricks(
     supported_bricks: dict[int, tuple[int, ...]],
-    support_counts: dict[int, int],
+    support_counts: SupportCounts,
 ) -> dict[int, bool]:
     # For the record: put an any instead of a all.
     # Was producing the wrong output.
@@ -260,7 +223,7 @@ def compute_disintegrable_bricks(
 
 
 def compute_supported_bricks(
-    fallen_bricks: list[Brick], space: np.ndarray
+    fallen_bricks: list[Brick], space: npt.NDArray[np.int64]
 ) -> dict[int, tuple[int, ...]]:
     actual_supported: dict[int, tuple[int, ...]] = {}
     for fallen_brick in fallen_bricks:
@@ -278,24 +241,24 @@ def compute_supported_bricks(
 
 def compute_support_counts(
     supported_bricks: dict[int, tuple[int, ...]],
-) -> dict[int, int]:
+) -> SupportCounts:
     # Unsafe when support_count == 1 (it means one support only)
     # Note: bricks supported by the ground are not in the support counts
     support_counts = defaultdict(int)
-    for brick_id, supported_bricks_ids in supported_bricks.items():
+    for _, supported_bricks_ids in supported_bricks.items():
         for supported_brick_id in supported_bricks_ids:
             support_counts[supported_brick_id] += 1
     return support_counts
 
 
 def fill_space_with_bricks_identifiers(
-    fallen_bricks: list[Brick], space: np.ndarray
+    fallen_bricks: list[Brick], space: npt.NDArray[np.int64]
 ) -> None:
     for fallen_brick in fallen_bricks:
         space[fallen_brick.indexer] = fallen_brick.identifier
 
 
-def create_space_datacuboid(fallen_bricks: list[Brick]) -> np.ndarray:
+def create_space_datacuboid(fallen_bricks: list[Brick]) -> npt.NDArray[np.int64]:
     xmax = max(max(b.x0, b.x1) for b in fallen_bricks)
     ymax = max(max(b.y0, b.y1) for b in fallen_bricks)
     zmax = max(max(b.z0, b.z1) for b in fallen_bricks)
@@ -306,7 +269,7 @@ def create_space_datacuboid(fallen_bricks: list[Brick]) -> np.ndarray:
 
 
 def compute_fallen_bricks(
-    sorted_bricks: list[Brick], elevation_map: np.ndarray
+    sorted_bricks: list[Brick], elevation_map: npt.NDArray[np.int64]
 ) -> list[Brick]:
     fallen_bricks = []
     for idx, brick in enumerate(sorted_bricks, 1):
@@ -320,11 +283,11 @@ def compute_fallen_bricks(
 
 
 def create_fallen_brick(
-    elevation_map: np.ndarray, identifier: int, brick: Brick
+    elevation_map: npt.NDArray[np.int64], identifier: int, brick: Brick
 ) -> Brick:
     indexer = brick.indexer[:2]
     peak = np.max(elevation_map[indexer])
-    new_peak = peak + brick.height
+    new_peak = int(peak) + brick.height
     elevation_map[indexer] = new_peak
     dz = brick.z1 - new_peak
     dpos = np.array((0, 0, dz))
@@ -338,7 +301,7 @@ def create_fallen_brick(
     return fallen_brick
 
 
-def create_elevation_map(sorted_bricks: list[Brick]) -> np.ndarray:
+def create_elevation_map(sorted_bricks: list[Brick]) -> npt.NDArray[np.int64]:
     xmax = max(max(b.x0, b.x1) for b in sorted_bricks)
     ymax = max(max(b.y0, b.y1) for b in sorted_bricks)
     elevation_map_shape = (xmax + 1, ymax + 1)
@@ -347,28 +310,22 @@ def create_elevation_map(sorted_bricks: list[Brick]) -> np.ndarray:
     return elevation_map
 
 
-def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file_from_filename(__file__)
-    parsed = parse_text_input(text)
-    return parsed
-
-
-def parse_text_input(text: str) -> ProblemDataType:
+def parse_text_input(text: str) -> PuzzleInput:
     lines = text.strip().split("\n")
 
-    bricks = [
-        Brick(
-            position=tuple(
-                np.fromstring(part, dtype=int, sep=",") for part in line.split("~")
-            ),
-            falling=True,
-        )
-        for line in lines
-    ]
+    bricks = [parse_brick(line) for line in lines]
     # 1,1,8~1,1,9
 
     return bricks
 
 
+def parse_brick(line: str):
+    pos0, pos1 = (np.fromstring(part, dtype=int, sep=",") for part in line.split("~"))
+    return Brick(
+        position=(pos0, pos1),
+        falling=True,
+    )
+
+
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202322().solve_all())
