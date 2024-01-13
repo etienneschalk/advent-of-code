@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from advent_of_code.common import load_input_text_file
+from advent_of_code.common import load_input_text_file_from_filename
 
 
 @dataclass(kw_only=True)
@@ -277,7 +277,7 @@ def compute_supported_bricks(
 
 
 def compute_support_counts(
-    supported_bricks: dict[int, tuple[int, ...]]
+    supported_bricks: dict[int, tuple[int, ...]],
 ) -> dict[int, int]:
     # Unsafe when support_count == 1 (it means one support only)
     # Note: bricks supported by the ground are not in the support counts
@@ -348,7 +348,7 @@ def create_elevation_map(sorted_bricks: list[Brick]) -> np.ndarray:
 
 
 def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 

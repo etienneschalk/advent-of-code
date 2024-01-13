@@ -4,7 +4,11 @@ from time import perf_counter
 
 import numpy as np
 
-from advent_of_code.common import adapt_recursion_limit, load_input_text_file, save_txt
+from advent_of_code.common import (
+    adapt_recursion_limit,
+    load_input_text_file_from_filename,
+    save_txt,
+)
 from advent_of_code.constants import EAST, NEIGHBOUR_MOVES, NORTH, SOUTH, WEST, Position
 
 ProblemDataType = ...
@@ -233,7 +237,7 @@ def compute_all_path_lengths(bf) -> np.ndarray:
 
 
 def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 

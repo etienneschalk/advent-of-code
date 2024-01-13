@@ -5,9 +5,9 @@ import numpy as np
 import xarray as xr
 
 
-def load_input_text_file(filename: str) -> str:
+def load_input_text_file_from_filename(filename: str) -> str:
     year, day = get_year_and_day_from_filename(filename)
-    text = load_input_text(year, day)
+    text = load_puzzle_input_text_file(year, day)
     return text
 
 
@@ -15,7 +15,7 @@ def get_year_and_day_from_filename(filename: str) -> tuple[int, int]:
     return tuple(int(i) for i in Path(filename).stem.split("_") if i.isdigit())
 
 
-def load_input_text(year: int, day: int) -> str:
+def load_puzzle_input_text_file(year: int, day: int) -> str:
     input_path = get_input_file_path(year, day)
     assert input_path.is_file()
     text = input_path.read_text()

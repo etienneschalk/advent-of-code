@@ -1,4 +1,4 @@
-from advent_of_code.common import load_input_text_file
+from advent_of_code.common import load_input_text_file_from_filename
 
 ProblemDataType = list[list[int]]
 
@@ -30,7 +30,7 @@ def compute_max_calories_part_2(parsed_input: ProblemDataType, limit: int = 3) -
 
 
 def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 

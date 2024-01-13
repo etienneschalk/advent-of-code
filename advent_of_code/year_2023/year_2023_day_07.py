@@ -1,7 +1,7 @@
 from collections import Counter
 from typing import Literal, get_args
 
-from advent_of_code.common import load_input_text_file
+from advent_of_code.common import load_input_text_file_from_filename
 
 ALL_LABELS_PART_1 = tuple("AKQJT98765432")
 MAPPED_LABELS_PART_1 = tuple(range(len(ALL_LABELS_PART_1)))
@@ -72,7 +72,7 @@ def compute_total_winnings(sorted_by_hand_type):
 
 
 def sort_by_hand_type_part_1(
-    hands_and_bids: list[tuple[Counter, int]]
+    hands_and_bids: list[tuple[Counter, int]],
 ) -> dict[HandType, Counter]:
     hand_types: dict[HandType, Counter] = {
         hand_type: [] for hand_type in ALL_HAND_TYPES
@@ -117,7 +117,7 @@ def parse_input_text_file(
     *,
     mapping=MAPPING_SRC_TO_DEST_PART_1,
 ) -> list[tuple[Counter, int]]:
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text, mapping=mapping)
     return parsed
 

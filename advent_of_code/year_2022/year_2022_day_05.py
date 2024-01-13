@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from advent_of_code.common import load_input_text_file
+from advent_of_code.common import load_input_text_file_from_filename
 
 InstructionTuple = namedtuple("InstructionTuple", ["move", "source", "destination"])
 StacksType = dict[int, list[str]]
@@ -65,7 +65,7 @@ def move_stacks_lifo(instruction, destination, source):
 
 
 def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 

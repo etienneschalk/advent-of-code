@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from functools import cached_property
 
-from advent_of_code.common import load_input_text_file
+from advent_of_code.common import load_input_text_file_from_filename
 
 
 @dataclass(frozen=True)
@@ -236,7 +236,7 @@ def fill_almanac_map_in_place(mapping: AlmanacMap, max_stop: int) -> AlmanacMap:
 
 
 def parse_input_text_file() -> Almanac:
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 

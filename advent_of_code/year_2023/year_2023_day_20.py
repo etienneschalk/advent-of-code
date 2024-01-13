@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from advent_of_code.common import load_input_text_file
+from advent_of_code.common import load_input_text_file_from_filename
 
 LowPulse = False
 HighPulse = True
@@ -119,7 +119,7 @@ def main():
 
 
 def compute_part_1():
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     start_module_dict = parse_text_input(text)
     module_dict = parse_text_input(text)
 
@@ -133,11 +133,11 @@ def compute_part_1():
 
 
 def load_input_text_file_y2023_d20() -> str:
-    return load_input_text_file(__file__)
+    return load_input_text_file_from_filename(__file__)
 
 
 def compute_part_2():
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     module_dict = parse_text_input(text)
 
     max_iter = 5000

@@ -2,7 +2,10 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from advent_of_code.common import adapt_recursion_limit, load_input_text_file
+from advent_of_code.common import (
+    adapt_recursion_limit,
+    load_input_text_file_from_filename,
+)
 
 ProblemDataType = np.ndarray
 
@@ -196,7 +199,7 @@ def render_parsed_input(parsed_input: ProblemDataType) -> str:
 
 
 def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 

@@ -1,7 +1,7 @@
 import numpy as np
 import xarray as xr
 
-from advent_of_code.common import load_input_text_file
+from advent_of_code.common import load_input_text_file_from_filename
 
 ProblemDataType = tuple[xr.DataArray]
 
@@ -25,7 +25,7 @@ def compute_part_2():
 
 
 def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
 
     # too low 32359

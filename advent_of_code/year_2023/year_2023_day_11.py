@@ -1,7 +1,7 @@
 import numpy as np
 import xarray as xr
 
-from advent_of_code.common import load_input_text_file
+from advent_of_code.common import load_input_text_file_from_filename
 
 ProblemDataType = xr.DataArray
 
@@ -146,7 +146,7 @@ def pad_xda(xda: xr.DataArray, dim_reduce: str, dim_concat: str):
 
 
 def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 

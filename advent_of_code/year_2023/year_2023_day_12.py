@@ -3,7 +3,7 @@ from fractions import Fraction
 
 import numpy as np
 
-from advent_of_code.common import load_input_text_file
+from advent_of_code.common import load_input_text_file_from_filename
 
 ProblemDataType = ...
 
@@ -26,7 +26,7 @@ def compute_part_1():
 
 
 def compute_part_2():
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed_input = parse_text_input_v2(text)
     multiplied = [unfold_records_v2(i, 5) for i in parsed_input]
     arrangement_counts = [
@@ -162,7 +162,7 @@ def unfold_records(input_line, iter_count: int = 5):
 
 
 def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 

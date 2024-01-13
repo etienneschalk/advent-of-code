@@ -1,7 +1,10 @@
 import numpy as np
 import xarray as xr
 
-from advent_of_code.common import load_input_text_file, render_2d_data_array
+from advent_of_code.common import (
+    load_input_text_file_from_filename,
+    render_2d_data_array,
+)
 from advent_of_code.constants import NEIGHBOUR_MOVES, Position, is_out_of_bounds
 
 ProblemDataType = xr.DataArray
@@ -143,7 +146,7 @@ def get_starting_position(garden):
 
 
 def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 

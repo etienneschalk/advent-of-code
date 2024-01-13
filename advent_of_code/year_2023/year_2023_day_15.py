@@ -1,7 +1,7 @@
 from collections import defaultdict
 from functools import reduce
 
-from advent_of_code.common import load_input_text_file
+from advent_of_code.common import load_input_text_file_from_filename
 
 ProblemDataType = list[str]
 
@@ -71,7 +71,7 @@ def hash_year_2023_day_15(string: str):
 
 
 def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 

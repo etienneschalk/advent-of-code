@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import numpy as np
 import numpy.typing as npt
 
-from advent_of_code.common import load_input_text_file
+from advent_of_code.common import load_input_text_file_from_filename
 from advent_of_code.constants import (
     DOWN,
     LEFT,
@@ -59,7 +59,7 @@ def compute_part_1():
 
 
 def compute_part_2():
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     dig_plan = parse_text_input_part_2(text)
     pick_area_including_exterior = compute_area(dig_plan)
     return pick_area_including_exterior
@@ -103,7 +103,7 @@ def compute_internal_perimeter(dig_plan):
 
 
 def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 

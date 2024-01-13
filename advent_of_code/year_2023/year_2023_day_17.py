@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 import numpy as np
 import numpy.typing as npt
 
-from advent_of_code.common import load_input_text_file
+from advent_of_code.common import load_input_text_file_from_filename
 from advent_of_code.constants import (
     NEIGHBOUR_MOVES,
     Direction,
@@ -157,7 +157,7 @@ def compute_part_2():
 
 
 def parse_input_text_file() -> HeatMap:
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 

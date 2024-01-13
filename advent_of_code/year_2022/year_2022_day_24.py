@@ -3,7 +3,10 @@ from collections import defaultdict
 import numpy as np
 import xarray as xr
 
-from advent_of_code.common import adapt_recursion_limit, load_input_text_file
+from advent_of_code.common import (
+    adapt_recursion_limit,
+    load_input_text_file_from_filename,
+)
 
 ProblemDataType = np.ndarray
 MOVE_NULL = np.array([0, 0])
@@ -272,7 +275,7 @@ def initialize_blizzard(simulation_map: np.ndarray):
 
 
 def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 

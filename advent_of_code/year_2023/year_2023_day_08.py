@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from advent_of_code.common import load_input_text_file
+from advent_of_code.common import load_input_text_file_from_filename
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -109,7 +109,7 @@ def detect_loop(network: Network, starting_node: str, target_end_letter: str) ->
 
 
 def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 

@@ -1,4 +1,4 @@
-from advent_of_code.common import load_input_text_file
+from advent_of_code.common import load_input_text_file_from_filename
 
 ProblemDataType = tuple[tuple[tuple[int, int], tuple[int, int]], ...]
 
@@ -75,7 +75,7 @@ def render_interval_bar(start: int, stop: int, max_value: int, format_str: str) 
 
 
 def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 

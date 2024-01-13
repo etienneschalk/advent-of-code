@@ -2,7 +2,11 @@ import numpy as np
 import xarray as xr
 from skimage.morphology import flood_fill
 
-from advent_of_code.common import adapt_recursion_limit, load_input_text_file, save_txt
+from advent_of_code.common import (
+    adapt_recursion_limit,
+    load_input_text_file_from_filename,
+    save_txt,
+)
 from advent_of_code.common_img import save_img
 
 ProblemDataType = np.ndarray
@@ -53,7 +57,7 @@ def compute_part_2():
 
 
 def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file(__file__)
+    text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 
