@@ -5,6 +5,12 @@ from typing import Sequence, Union
 from advent_of_code.common import load_input_text_file_from_filename
 from advent_of_code.protocols import AdventOfCodeProblem
 
+type PuzzleInput = Almanac
+
+# Hint from Pylance: Consider switching from "list" to "Sequence" which is covariant
+type RecursiveSequenceOfRanges = Sequence[Union["RecursiveSequenceOfRanges", range]]
+type RecursiveSequenceOfInts = Sequence[Union["RecursiveSequenceOfInts", int]]
+
 
 @dataclass(frozen=True)
 class AlmanacRange:
@@ -91,9 +97,6 @@ class Almanac:
         # return min(self.unroll_almanac_dict_part_2(seed) for seed in seed_gen)
 
 
-type PuzzleInput = Almanac
-
-
 @dataclass(kw_only=True)
 class AdventOfCodeProblem202305(AdventOfCodeProblem[PuzzleInput]):
     year: int = 2023
@@ -125,11 +128,6 @@ def compute_lowest_location_number(almanac: Almanac) -> int:
     min_location_number = find_min_range_in_tree(tree)
 
     return min_location_number
-
-
-# Hint from Pylance: Consider switching from "list" to "Sequence" which is covariant
-type RecursiveSequenceOfRanges = Sequence[Union["RecursiveSequenceOfRanges", range]]
-type RecursiveSequenceOfInts = Sequence[Union["RecursiveSequenceOfInts", int]]
 
 
 def find_min_range_in_tree(tree: RecursiveSequenceOfRanges | range) -> int:

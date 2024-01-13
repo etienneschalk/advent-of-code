@@ -5,15 +5,14 @@ import numpy.typing as npt
 
 from advent_of_code.protocols import AdventOfCodeProblem
 
+type PuzzleInput = list[Card]
+
 
 @dataclass(frozen=True, kw_only=True)
 class Card:
     identifier: int
     winning_numbers: npt.NDArray[np.int32]
     numbers_you_have: npt.NDArray[np.int32]
-
-
-type PuzzleInput = list[Card]
 
 
 @dataclass(kw_only=True)

@@ -2,6 +2,8 @@ from dataclasses import dataclass
 
 from advent_of_code.protocols import AdventOfCodeProblem
 
+type PuzzleInput = list[Game]
+
 
 @dataclass(frozen=True, kw_only=True)
 class Handful:  # poignée
@@ -18,9 +20,6 @@ class Handful:  # poignée
 class Game:
     identifier: int
     handfuls: list[Handful]
-
-
-type PuzzleInput = list[Game]
 
 
 @dataclass(kw_only=True)
