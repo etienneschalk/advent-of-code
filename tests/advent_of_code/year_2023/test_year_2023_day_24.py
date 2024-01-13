@@ -78,6 +78,4 @@ def test_year_2023_day_24_part_1():
 
 
 def test_year_2023_day_24_part_2():
-    test_input = EXAMPLE_INPUT
-    hailstones = parse_text_input(test_input)
     ...

@@ -48,3 +48,8 @@ repos:
   #         numpy,
   #         typing-extensions>=4.1.0,
   #       ]
+  # Pyright can replace mypy
+  - repo: https://github.com/RobertCraigie/pyright-python
+    rev: v1.1.345
+    hooks:
+    - id: pyright

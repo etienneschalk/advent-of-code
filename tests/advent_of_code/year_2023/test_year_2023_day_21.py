@@ -109,6 +109,4 @@ def test_year_2023_day_21_part_1_2():
 
 
 def test_year_2023_day_21_part_2():
-    test_input = EXAMPLE_INPUT
-    parsed_input = parse_text_input(test_input)
     ...

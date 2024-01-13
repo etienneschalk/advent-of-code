@@ -30,9 +30,7 @@ b -low-> c
 c -low-> inv
 inv -high-> a
 
-""".strip().split(
-    "\n"
-)
+""".strip().split("\n")
 
 EXAMPLE_INPUT_2 = """
 
@@ -55,9 +53,7 @@ con -high-> output
 b -high-> con
 con -low-> output
 
-""".strip().split(
-    "\n"
-)
+""".strip().split("\n")
 
 EXPECTED_OUTPUT_2_2 = """
 
@@ -68,9 +64,7 @@ a -low-> con
 inv -high-> b
 con -high-> output
 
-""".strip().split(
-    "\n"
-)
+""".strip().split("\n")
 
 EXPECTED_OUTPUT_2_3 = """
 
@@ -83,9 +77,7 @@ con -low-> output
 b -low-> con
 con -high-> output
 
-""".strip().split(
-    "\n"
-)
+""".strip().split("\n")
 
 EXPECTED_OUTPUT_2_4 = """
 
@@ -97,9 +89,7 @@ inv -high-> b
 con -high-> output
 
 
-""".strip().split(
-    "\n"
-)
+""".strip().split("\n")
 
 
 def test_year_2023_day_20_part_1_1():
