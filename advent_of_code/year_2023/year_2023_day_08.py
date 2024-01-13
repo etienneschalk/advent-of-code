@@ -3,6 +3,7 @@ from dataclasses import dataclass
 import numpy as np
 
 from advent_of_code.common import load_input_text_file_from_filename
+from advent_of_code.protocols import AdventOfCodeProblem
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -11,28 +12,34 @@ class Network:  # poignée
     nodes: dict[str, tuple[str, str]]
 
 
-ProblemDataType = Network
+PuzzleInput = Network
 
 
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-    print({1: result_part_1, 2: result_part_2})
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202308(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2023
+    day: int = 8
 
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        network = puzzle_input
+        steps = count_required_steps(network)
+        return steps
 
-def compute_part_1():
-    network = parse_input_text_file()
-    steps = count_required_steps(network)
-    return steps
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        network = puzzle_input
+        sources = tuple(
+            sorted(key for key in network.nodes.keys() if key.endswith("A"))
+        )
+        targets = tuple(
+            sorted(key for key in network.nodes.keys() if key.endswith("Z"))
+        )
+        assert len(sources) == len(targets)
+        steps = compute_steps_for_part_2(network, sources, "Z")
+        return steps
 
-
-def compute_part_2():
-    network = parse_input_text_file()
-    sources = tuple(sorted(key for key in network.nodes.keys() if key.endswith("A")))
-    targets = tuple(sorted(key for key in network.nodes.keys() if key.endswith("Z")))
-    assert len(sources) == len(targets)
-    steps = compute_steps_for_part_2(network, sources, "Z")
-    return steps
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        return parse_text_input(text)
 
 
 def count_required_steps(
@@ -43,11 +50,7 @@ def count_required_steps(
     while current_node != target_node:
         i = steps % len(network.instructions)
         instruction = network.instructions[i]
-        if instruction == "L":
-            index = 0
-        elif instruction == "R":
-            index = 1
-        current_node = network.nodes[current_node][index]
+        current_node = network.nodes[current_node][int(instruction == "R")]
         steps += 1
     return steps
 
@@ -63,13 +66,15 @@ def count_required_steps_simultaneously_bruteforce(
         list(inst == "R" for inst in network.instructions), dtype=np.uint8
     )
     i = steps = 0
-    while not all(c.endswith(target_end_letter) for c in current_node_tuple):
-        instruction = instructions[i]
+    stop_condition = False
+    while not stop_condition:
+        instruction: np.uint8 = instructions[i]
         current_node_tuple = tuple(
             network.nodes[c][instruction] for c in current_node_tuple
         )
         steps += 1
         i = steps % instructions_length
+        stop_condition = all(c.endswith(target_end_letter) for c in current_node_tuple)
 
     return steps
 
@@ -77,7 +82,7 @@ def count_required_steps_simultaneously_bruteforce(
 def compute_steps_for_part_2(
     network: Network, source_nodes: tuple[str, ...], target_end_letter: str
 ):
-    histories = {}
+    histories: dict[str, list[tuple[str, int]]] = {}
 
     for source_node in source_nodes:
         histories[source_node] = detect_loop(network, source_node, target_end_letter)
@@ -87,7 +92,7 @@ def compute_steps_for_part_2(
     return steps
 
 
-def detect_loop(network: Network, starting_node: str, target_end_letter: str) -> list:
+def detect_loop(network: Network, starting_node: str, target_end_letter: str):
     current_node = starting_node
     instructions_length = len(network.instructions)
     instructions = np.array(
@@ -95,7 +100,7 @@ def detect_loop(network: Network, starting_node: str, target_end_letter: str) ->
     )
     i = steps = 0
     found_target_node = None
-    history = []
+    history: list[tuple[str, int]] = []
     while True:
         if current_node.endswith(target_end_letter):
             found_target_node = current_node
@@ -103,18 +108,19 @@ def detect_loop(network: Network, starting_node: str, target_end_letter: str) ->
             return history
 
         history.append((current_node, i))
-        current_node = network.nodes[current_node][instructions[i]]
+        instruction: np.uint8 = instructions[i]
+        current_node = network.nodes[current_node][instruction]
         steps += 1
         i = steps % instructions_length
 
 
-def parse_input_text_file() -> ProblemDataType:
+def parse_input_text_file() -> PuzzleInput:
     text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 
 
-def parse_text_input(text: str) -> ProblemDataType:
+def parse_text_input(text: str) -> PuzzleInput:
     lines = text.strip().split("\n")
     instructions = lines[0]
 
@@ -132,4 +138,4 @@ def parse_node_from_line(line: str) -> tuple[str, tuple[str, str]]:
 
 
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202308().solve_all())

@@ -1,7 +1,8 @@
 from collections import Counter
-from typing import Literal, get_args
+from dataclasses import dataclass
+from typing import Any, Literal, get_args
 
-from advent_of_code.common import load_input_text_file_from_filename
+from advent_of_code.protocols import AdventOfCodeProblem
 
 ALL_LABELS_PART_1 = tuple("AKQJT98765432")
 MAPPED_LABELS_PART_1 = tuple(range(len(ALL_LABELS_PART_1)))
@@ -25,7 +26,7 @@ HandType = Literal[
     "One pair",
     "High card",
 ]
-UNIQUE_OCCURRENCES_TO_HAND_TYPE = {
+UNIQUE_OCCURRENCES_TO_HAND_TYPE: dict[tuple[int, ...], str] = {
     (5,): "Five of a kind",
     (4, 1): "Four of a kind",
     (3, 2): "Full house",
@@ -37,30 +38,37 @@ UNIQUE_OCCURRENCES_TO_HAND_TYPE = {
 
 ALL_HAND_TYPES = list(get_args(HandType))
 
-
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-    print({1: result_part_1, 2: result_part_2})
-
-
-def compute_part_1():
-    parsed_input = parse_input_text_file(mapping=MAPPING_SRC_TO_DEST_PART_1)
-    sorted_by_hand_type = sort_by_hand_type_part_1(parsed_input)
-    total_winnings = compute_total_winnings(sorted_by_hand_type)
-    return total_winnings
+type PuzzleInput = list[tuple[list[str], int]]
+type HandAndBid = tuple[list[int], int]
+type PuzzleMappedInput = list[HandAndBid]
+type SortedByHandType = dict[Any, list[HandAndBid]]
 
 
-def compute_part_2():
-    parsed_input = parse_input_text_file(mapping=MAPPING_SRC_TO_DEST_PART_2)
-    sorted_by_hand_type = sort_by_hand_type_part_2(
-        parsed_input, mapping=MAPPING_SRC_TO_DEST_PART_2
-    )
-    total_winnings = compute_total_winnings(sorted_by_hand_type)
-    return total_winnings
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202307(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2023
+    day: int = 7
+
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        mapping = MAPPING_SRC_TO_DEST_PART_1
+        mapped_input = map_puzzle_input(puzzle_input, mapping)
+        sorted_by_hand_type = sort_by_hand_type_part_1(mapped_input)
+        total_winnings = compute_total_winnings(sorted_by_hand_type)
+        return total_winnings
+
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        mapping = MAPPING_SRC_TO_DEST_PART_2
+        mapped_input = map_puzzle_input(puzzle_input, mapping)
+        sorted_by_hand_type = sort_by_hand_type_part_2(mapped_input, mapping=mapping)
+        total_winnings = compute_total_winnings(sorted_by_hand_type)
+        return total_winnings
+
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        return parse_text_input(text)
 
 
-def compute_total_winnings(sorted_by_hand_type):
+def compute_total_winnings(sorted_by_hand_type: SortedByHandType):
     bids_times_ranks = (
         index * hand_and_bid[1]
         for index, hand_and_bid in enumerate(
@@ -71,12 +79,21 @@ def compute_total_winnings(sorted_by_hand_type):
     return total_winnings
 
 
+def map_puzzle_input(
+    puzzle_input: PuzzleInput, mapping: dict[str, int]
+) -> PuzzleMappedInput:
+    return sorted(
+        [
+            ([mapping[c] for c in list_of_hands], bid)
+            for (list_of_hands, bid) in puzzle_input
+        ]
+    )
+
+
 def sort_by_hand_type_part_1(
-    hands_and_bids: list[tuple[Counter, int]],
-) -> dict[HandType, Counter]:
-    hand_types: dict[HandType, Counter] = {
-        hand_type: [] for hand_type in ALL_HAND_TYPES
-    }
+    hands_and_bids: PuzzleMappedInput,
+) -> SortedByHandType:
+    hand_types: SortedByHandType = {hand_type: [] for hand_type in ALL_HAND_TYPES}
 
     for hand_and_bid in hands_and_bids:
         hand = hand_and_bid[0]
@@ -86,18 +103,16 @@ def sort_by_hand_type_part_1(
 
 
 def sort_by_hand_type_part_2(
-    hands_and_bids: list[tuple[Counter, int]],
-    mapping,
-) -> dict[HandType, Counter]:
-    hand_types: dict[HandType, Counter] = {
-        hand_type: [] for hand_type in ALL_HAND_TYPES
-    }
+    hands_and_bids: PuzzleMappedInput,
+    mapping: dict[str, int],
+) -> SortedByHandType:
+    hand_types: SortedByHandType = {hand_type: [] for hand_type in ALL_HAND_TYPES}
 
     joker_value = len(mapping) - 1
     sort_instances_func = list(UNIQUE_OCCURRENCES_TO_HAND_TYPE.keys()).index
     for hand_and_bid in hands_and_bids:
         hand = hand_and_bid[0]
-        candidate_instances = []
+        candidate_instances: list[tuple[int, ...]] = []
         if joker_value not in hand:
             best_instances = tuple(sorted(Counter(hand).values(), reverse=True))
         else:
@@ -113,46 +128,12 @@ def sort_by_hand_type_part_2(
     return hand_types
 
 
-def parse_input_text_file(
-    *,
-    mapping=MAPPING_SRC_TO_DEST_PART_1,
-) -> list[tuple[Counter, int]]:
-    text = load_input_text_file_from_filename(__file__)
-    parsed = parse_text_input(text, mapping=mapping)
-    return parsed
-
-
-def parse_text_input(
-    text: str, *, mapping=MAPPING_SRC_TO_DEST_PART_1
-) -> list[tuple[Counter, int]]:
+def parse_text_input(text: str):
     lines = text.strip().split("\n")
     # Assert that all cards are unique.
     assert len(set((line.split()[0] for line in lines))) == len(lines)
-    return sorted(
-        [
-            (
-                list(mapping[v] for v in line.split()[0]),
-                int(line.split()[1]),
-            )
-            for line in lines
-        ]
-    )
-
-
-# def parse_text_input(text: str) -> list[tuple[Counter, int]]:
-#     lines = text.strip().split("\n")
-#     # Assert that all cards are unique.
-#     assert len(set((line.split()[0] for line in lines))) == len(lines)
-#     return sorted(
-#         (
-#             (
-#                 (sorted(line.split()[0], key=lambda l: ALL_LABELS.index(l))),
-#                 str(line.split()[1]),
-#             )
-#             for line in lines
-#         ),
-#     )
+    return [(list(line.split()[0]), int(line.split()[1])) for line in lines]
 
 
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202307().solve_all())
