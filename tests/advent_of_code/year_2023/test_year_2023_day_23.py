@@ -2,10 +2,10 @@ import numpy as np
 
 from advent_of_code.constants import Position
 from advent_of_code.year_2023.year_2023_day_23 import (
+    AdventOfCodeProblem202323,
     bruteforce_paths_in_exploration_tree,
     compute_all_path_lengths,
     compute_exploration_tree,
-    parse_text_input,
     solve_part_2,
 )
 
@@ -67,7 +67,7 @@ EXPECTED_RESULT = """
 
 def test_year_2023_day_23_part_1():
     test_input = EXAMPLE_INPUT
-    hiking_trail = parse_text_input(test_input)
+    hiking_trail = AdventOfCodeProblem202323.parse_text_input(test_input)
     hk = hiking_trail
     starting_position: Position = (1, 2)
 
@@ -83,7 +83,7 @@ def test_year_2023_day_23_part_1():
 
 def test_year_2023_day_23_part_2():
     test_input = EXAMPLE_INPUT
-    hiking_trail = parse_text_input(test_input)
+    hiking_trail = AdventOfCodeProblem202323.parse_text_input(test_input)
 
     hk = hiking_trail
     target = (5, (22, 20))

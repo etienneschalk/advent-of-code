@@ -1,10 +1,11 @@
-from typing import Any, Literal, Sequence
+from typing import Any, Literal, Mapping, Sequence
 
-from graphviz import Digraph
+from graphviz import Digraph  # pyright: ignore[reportMissingTypeStubs]
 
 
+# Note: Use Mapping instead of dict because Mapping is covariant (so it can accept specializations)
 def construct_dot_graph_from_dict(
-    graph_dict: dict[Any, Sequence[Any]],
+    graph_dict: Mapping[Any, Sequence[Any]],
     *,
     dir: Literal["forward", "back", "both", "none"] = "forward",
     nodesep: float = 0.25,
@@ -19,7 +20,7 @@ def construct_dot_graph_from_dict(
     return dot
 
 
-def construct_dot_graph_from_couples(ordered_set: dict[Any, None]) -> Digraph:
+def construct_dot_graph_from_couples(ordered_set: Mapping[Any, None]) -> Digraph:
     dot = Digraph()
     for key in ordered_set:
         source, target = key

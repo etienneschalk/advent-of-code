@@ -44,7 +44,10 @@ def test_year_2023_day_25_part_1():
 
     nodes_to_disconnect = {"cmg": "bvb", "jqt": "nvd", "pzl": "hfx"}
     # nodes_to_disconnect: thanks graphviz...
-    disconnect_result = disconnect_then_explore(components, nodes_to_disconnect)
+    nodes_to_explore = set(nodes_to_disconnect.keys())
+    disconnect_result = disconnect_then_explore(
+        components, nodes_to_disconnect, nodes_to_explore
+    )
     assert disconnect_result == {"pzl": 9, "jqt": 6, "cmg": 9}
     product_of_unique_group_sizes = compute_result_from_exploration(disconnect_result)
     unique_referenced_nodes = set.union(

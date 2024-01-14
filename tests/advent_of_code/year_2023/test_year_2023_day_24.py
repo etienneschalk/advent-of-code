@@ -68,9 +68,7 @@ def test_year_2023_day_24_part_1():
     logs = []
     qualified = []
 
-    solve_part_1(
-        hailstones, qualified, xmin, ymin, xmax, ymax, with_logging=True, logs=logs
-    )
+    solve_part_1(hailstones, qualified, xmin, ymin, xmax, ymax, logs=logs)
 
     actual_log = "\n".join(logs[:-1])
     assert actual_log == EXPECTED_LOG_PART_1

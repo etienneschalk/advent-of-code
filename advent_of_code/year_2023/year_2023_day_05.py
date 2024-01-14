@@ -9,7 +9,6 @@ type PuzzleInput = Almanac
 
 # Hint from Pylance: Consider switching from "list" to "Sequence" which is covariant
 type RecursiveSequenceOfRanges = Sequence[Union["RecursiveSequenceOfRanges", range]]
-type RecursiveSequenceOfInts = Sequence[Union["RecursiveSequenceOfInts", int]]
 
 
 @dataclass(frozen=True)

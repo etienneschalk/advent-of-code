@@ -50,12 +50,18 @@ def create_output_file_path(filename: str, output_subdir: str, current_filename:
     return output_file_path
 
 
-def adapt_recursion_limit(new_value: int = 15000):
-    print("Current recursion limit:")
-    print(sys.getrecursionlimit())
+def adapt_recursion_limit(new_value: int = 15000, *, silent: bool = False):
+    if not silent:
+        print("Current recursion limit:")
+    if not silent:
+        print(sys.getrecursionlimit())
+
     sys.setrecursionlimit(new_value)
-    print("New recursion limit:")
-    print(sys.getrecursionlimit())
+
+    if not silent:
+        print("New recursion limit:")
+    if not silent:
+        print(sys.getrecursionlimit())
 
 
 def render_2d_data_array(xda: xr.DataArray) -> str:

@@ -1,6 +1,7 @@
 from typing import Literal
 
 import numpy as np
+import numpy.typing as npt
 
 Position = tuple[int, int]
 
@@ -22,13 +23,13 @@ LEFT = WEST
 DOWN = SOUTH
 
 
-MOVE_NULL = np.array((0, 0))
-MOVE_EAST = MOVE_RIGHT = np.array((0, 1))
-MOVE_NORTH = MOVE_NORTH = np.array((-1, 0))
-MOVE_WEST = MOVE_WEST = np.array((0, -1))
-MOVE_SOUTH = MOVE_SOUTH = np.array((1, 0))
+MOVE_NULL: npt.NDArray[np.int32] = np.array((0, 0))
+MOVE_EAST: npt.NDArray[np.int32] = np.array((0, 1))
+MOVE_NORTH: npt.NDArray[np.int32] = np.array((-1, 0))
+MOVE_WEST: npt.NDArray[np.int32] = np.array((0, -1))
+MOVE_SOUTH: npt.NDArray[np.int32] = np.array((1, 0))
 
-NEIGHBOUR_MOVES: dict[Direction, np.ndarray] = {
+NEIGHBOUR_MOVES: dict[Direction, npt.NDArray[np.int32]] = {
     EAST: MOVE_EAST,
     NORTH: MOVE_NORTH,
     WEST: MOVE_WEST,

@@ -16,6 +16,9 @@ from advent_of_code.year_2023.year_2023_day_15 import AdventOfCodeProblem202315
 from advent_of_code.year_2023.year_2023_day_18 import AdventOfCodeProblem202318
 from advent_of_code.year_2023.year_2023_day_20 import AdventOfCodeProblem202320
 from advent_of_code.year_2023.year_2023_day_22 import AdventOfCodeProblem202322
+from advent_of_code.year_2023.year_2023_day_23 import AdventOfCodeProblem202323
+from advent_of_code.year_2023.year_2023_day_24 import AdventOfCodeProblem202324
+from advent_of_code.year_2023.year_2023_day_25 import AdventOfCodeProblem202325
 
 # Bash:
 # pytest --with-integration -k integration
@@ -45,3 +48,16 @@ def test_integration_year_2023():
     assert AdventOfCodeProblem202320().solve_all() == {1: 684125385, 2: 225872806380073}
     # assert AdventOfCodeProblem202321().solve_all() == {1: TODO, 2: TODO}
     assert AdventOfCodeProblem202322().solve_all() == {1: 393, 2: 58440}
+    assert AdventOfCodeProblem202322().solve_all() == {1: 393, 2: 58440}
+    # Day 23 is slow and in the slow Integration Test
+    assert AdventOfCodeProblem202324().solve_all() == {1: 19523, 2: 566373506408017}
+    assert AdventOfCodeProblem202325().solve_all() == {
+        1: 601310,
+        2: "Part 2 of Day 25 is having solved all the 49 previous problems!",
+    }
+
+
+@pytest.mark.skip(reason="slow")
+@pytest.mark.integration
+def test_integration_year_2023_slow():
+    assert AdventOfCodeProblem202323().solve_all() == {1: 1998, 2: 6434}
