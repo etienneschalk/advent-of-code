@@ -1,10 +1,13 @@
+import queue
 from dataclasses import dataclass, field
+from pathlib import Path
 
 import numpy as np
 import numpy.typing as npt
 
 from advent_of_code.common import (
     adapt_recursion_limit,
+    create_output_file_path,
     load_input_text_file_from_filename,
     parse_2d_string_array_to_uint8,
 )
@@ -79,6 +82,26 @@ class AdventOfCodeProblem202316(AdventOfCodeProblem[PuzzleInput]):
         result = result_22
         return result
 
+    def log_part_1(self, puzzle_input: PuzzleInput, max_depth: int):
+        adapt_recursion_limit(5000)
+
+        board = puzzle_input
+        initial_beam = Beam(np.array((1, 0)), MOVE_EAST)
+        _ = do_part_1(board, initial_beam=initial_beam, max_depth=max_depth)
+
+        # Explore the initial Beam
+        history = explore_beam_breadth_first(initial_beam, max_depth=max_depth)
+        output_file_path = self.get_output_log_part_1_file_path()
+        import json
+
+        text = ",\n".join([json.dumps((line)) for line in history])
+        # text = json.dumps(history, default=str)
+        output_file_path.write_text(f"[\n{text}\n]")
+        print(f"Saved text to {output_file_path}")
+
+    def get_output_log_part_1_file_path(self) -> Path:
+        return create_output_file_path("history.json", "", self.year, self.day)
+
 
 @dataclass(frozen=True)
 class Beam:  # poignée
@@ -87,6 +110,40 @@ class Beam:  # poignée
 
     # can be zero, one, or two
     children: list["Beam"] = field(default_factory=list)
+
+
+@dataclass(order=True)
+class PrioritizedBeam:
+    priority: int
+    item: Beam = field(compare=False)
+
+
+def explore_beam_breadth_first(
+    root_beam: Beam, max_depth: int = 2501
+) -> list[tuple[int, list[int], list[int]]]:
+    history = []
+    q: queue.PriorityQueue[PrioritizedBeam] = queue.PriorityQueue()
+    depth = 0
+    q.put(PrioritizedBeam(depth, root_beam))
+    while not q.empty() and depth < max_depth:
+        pr_beam = q.get()
+        depth = pr_beam.priority
+        beam = pr_beam.item
+        # [visu] this log can be used to control
+        print(f"{" " * (depth//50)} | {depth=}, {beam.position=}, {beam.speed=}")
+        history.append(
+            (
+                depth,
+                beam.position.tolist(),
+                beam.speed.tolist(),
+                # (beam.position[0], beam.position[1]),
+                # (beam.speed[0], beam.speed[1]),
+            )
+        )
+        for child_beam in beam.children:
+            q.put(PrioritizedBeam(depth + 1, child_beam))
+
+    return history
 
 
 def do_part_1(board: PuzzleInput, initial_beam: Beam, max_depth: int = 100) -> int:
@@ -128,13 +185,29 @@ def update_simulation(
     if depth > max_depth:
         return
     next_position = beam.position + beam.speed
-    coords = tuple(next_position)
-    if explored[tuple((EXPLORED_IDX[tuple(beam.speed)], *coords))] == 1:
+    coords = next_position[0], next_position[1]
+    index = tuple((EXPLORED_IDX[tuple(beam.speed)], *coords))
+    if explored[index] == 1:
         return
-    explored[tuple((EXPLORED_IDX[tuple(beam.speed)], *coords))] = 1
+    explored[index] = 1
 
-    cell = board[coords]
+    cell = board[coords].item()
+    append_children_to_beam(beam, next_position, cell)
 
+    # [visu] can be reused to save_txt
+    # energy_board = np.copy(board)
+    # draw_energized(energy_board, beam, CELL_DIRECTIONS[tuple(beam.speed)])
+    # print(render_parsed_input(energy_board))
+
+    # print(beam.position, beam.speed)  # Use this to draw [visu] the beams
+
+    for beam in beam.children:
+        update_simulation(board, beam, depth + 1, max_depth, explored)
+
+
+def append_children_to_beam(
+    beam: Beam, next_position: npt.NDArray[np.int32], cell: int
+):
     if cell == CELL_EMPTY_SPACE:
         beam.children.append(Beam(next_position, beam.speed))
     elif cell == CELL_MIRROR_SLASH:
@@ -155,14 +228,6 @@ def update_simulation(
         else:
             beam.children.append(Beam(next_position, MOVE_EAST))
             beam.children.append(Beam(next_position, MOVE_WEST))
-
-    # [visu] can be reused to save_txt
-    # energy_board = np.copy(board)
-    # draw_energized(energy_board, beam, CELL_DIRECTIONS[tuple(beam.speed)])
-    # print(render_parsed_input(energy_board))
-
-    for beam in beam.children:
-        update_simulation(board, beam, depth + 1, max_depth, explored)
 
 
 def draw_energized(board: PuzzleInput, beam: Beam, fill_value: bytes):
@@ -188,4 +253,14 @@ def parse_text_input(text: str) -> PuzzleInput:
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202316().solve_all())
+    solve_all = False
+    if solve_all:
+        print(AdventOfCodeProblem202316().solve_all())
+    else:
+        # experiment
+        max_depth = 2501
+        problem = AdventOfCodeProblem202316()
+        problem.log_part_1(problem.parse_input_text_file(), max_depth=max_depth)
+        # TODO use transparency to draw in an array, and renderi it
+        # TODO This code generate the breadth-first sequence of events for the rays (10k lines)
+        # It can now be rendered via eg pygame.

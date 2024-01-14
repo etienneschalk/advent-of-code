@@ -9,8 +9,14 @@ import xarray as xr
 
 def load_input_text_file_from_filename(filename: str) -> str:
     year, day = get_year_and_day_from_filename(filename)
-    text = load_puzzle_input_text_file(year, day)
-    return text
+    return load_puzzle_input_text_file(year, day)
+
+
+def create_output_file_path_from_filename(
+    output_filename: str, output_subdir: str, current_filename: str
+) -> Path:
+    year, day = get_year_and_day_from_filename(current_filename)
+    return create_output_file_path(output_filename, output_subdir, year, day)
 
 
 def get_year_and_day_from_filename(filename: str) -> tuple[int, int]:
@@ -26,28 +32,37 @@ def load_puzzle_input_text_file(year: int, day: int) -> str:
 
 
 def get_input_file_path(year: int, day: int) -> Path:
-    input_path = (
-        f"resources/advent_of_code/year_{year}/input_year_{year}_day_{day:02d}.txt"
-    )
+    input_path = render_central_input_path(year, day)
     input_path = Path(input_path)
     return input_path
 
 
 def save_txt(text: str, filename: str, module_name: str, *, output_subdir: str = ""):
-    output_file_path = create_output_file_path(filename, output_subdir, module_name)
+    output_file_path = create_output_file_path_from_filename(
+        filename, output_subdir, module_name
+    )
 
     output_file_path.write_text(text)
 
     print(f"Saved text to {output_file_path}")
 
 
-def create_output_file_path(filename: str, output_subdir: str, current_filename: str):
-    year, day = get_year_and_day_from_filename(current_filename)
-    output_dir_central = f"generated/advent_of_code/year_{year}/day_{day:02d}"
-    output_dir = Path(output_dir_central) / output_subdir
-    output_dir.mkdir(exist_ok=True, parents=True)
-    output_file_path = output_dir / filename
+def create_output_file_path(
+    output_filename: str, output_subdir: str, year: int, day: int
+) -> Path:
+    output_dir_central = render_central_output_dir(year, day)
+    output_dir_path = Path(output_dir_central) / output_subdir
+    output_dir_path.mkdir(exist_ok=True, parents=True)
+    output_file_path = output_dir_path / output_filename
     return output_file_path
+
+
+def render_central_input_path(year: int, day: int):
+    return f"resources/advent_of_code/year_{year}/input_year_{year}_day_{day:02d}.txt"
+
+
+def render_central_output_dir(year: int, day: int):
+    return f"generated/advent_of_code/year_{year}/day_{day:02d}"
 
 
 def adapt_recursion_limit(new_value: int = 15000, *, silent: bool = False):
@@ -95,6 +110,10 @@ def parse_2d_string_array_to_uint8(text: str) -> npt.NDArray[np.uint8]:
 
 def lines_to_2d_uint8_array(lines: list[str]) -> npt.NDArray[np.uint8]:
     return np.array([np.fromstring(line, dtype=np.uint8) for line in lines])  # type: ignore
+
+
+def view_uint8_as_s1(array: npt.NDArray[np.uint8]) -> npt.NDArray[Any]:  # dtype='<U1'
+    return array.view("S1")
 
 
 def parse_2d_string_array_to_u1(text: str) -> npt.NDArray[Any]:  # dtype='<U1'
