@@ -1,88 +1,102 @@
 from dataclasses import dataclass, field
 
 import numpy as np
+import numpy.typing as npt
 
 from advent_of_code.common import (
     adapt_recursion_limit,
     load_input_text_file_from_filename,
+    parse_2d_string_array_to_uint8,
 )
+from advent_of_code.constants import MOVE_EAST, MOVE_NORTH, MOVE_SOUTH, MOVE_WEST
+from advent_of_code.protocols import AdventOfCodeProblem
 
-ProblemDataType = np.ndarray
+type PuzzleInput = npt.NDArray[np.uint8]
 
 
-MOVE_NULL = np.array((0, 0))
-MOVE_SOUTH = np.array((1, 0))
-MOVE_EAST = np.array((0, 1))
-MOVE_NORTH = np.array((-1, 0))
-MOVE_WEST = np.array((0, -1))
+CELL_EMPTY_SPACE = ord(b".")
+CELL_MIRROR_SLASH = ord(b"/")
+CELL_MIRROR_BACKSLASH = ord(b"\\")
+CELL_SPLITTER_V = ord(b"|")
+CELL_SPLITTER_H = ord(b"-")
+CELL_WALL = ord(b"O")
+CELL_ENERGY = ord(b"#")
 
-CELL_EMPTY_SPACE = b"."
-CELL_MIRROR_FSLASH = b"/"
-CELL_MIRROR_BSLASH = b"\\"
-CELL_SPLITTER_V = b"|"
-CELL_SPLITTER_H = b"-"
-CELL_WALL = b"O"
-CELL_ENERGY = b"#"
-
-CELL_DIRECTIONS = {
-    tuple(MOVE_SOUTH): b"v",
-    tuple(MOVE_EAST): b">",
-    tuple(MOVE_NORTH): b"^",
-    tuple(MOVE_WEST): b"<",
+CELL_DIRECTIONS: dict[tuple[int, ...], int] = {
+    tuple(MOVE_SOUTH): ord(b"v"),
+    tuple(MOVE_EAST): ord(b">"),
+    tuple(MOVE_NORTH): ord(b"^"),
+    tuple(MOVE_WEST): ord(b"<"),
 }
 
-EXPLORED_IDX = {
+EXPLORED_IDX: dict[tuple[int, ...], int] = {
     tuple(MOVE_SOUTH): 0,
     tuple(MOVE_EAST): 1,
     tuple(MOVE_NORTH): 2,
     tuple(MOVE_WEST): 3,
 }
 
+# [visu] would look real good in a 2D engine, maybe pygame, or panda3d (with z=0 empty space, z=1 mirror)
+# this can also be visualized in terminal directly.
+# this is literally ray tracing?
+
+
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202316(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2023
+    day: int = 16
+
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        return parse_text_input(text)
+
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        adapt_recursion_limit(5000)
+
+        board = puzzle_input
+        initial_beam = Beam(np.array((1, 0)), MOVE_EAST)
+        result_one_less_iter = do_part_1(
+            board, initial_beam=initial_beam, max_depth=2499
+        )
+        result = do_part_1(board, initial_beam=initial_beam, max_depth=2500)
+        result_one_more_iter = do_part_1(
+            board, initial_beam=initial_beam, max_depth=2501
+        )
+        assert result_one_less_iter < result
+        assert result == result_one_more_iter
+        return result
+
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        adapt_recursion_limit(5000)
+
+        board = puzzle_input
+        result_1 = do_part_2(board, max_depth=2500)
+        assert result_1 == 7505
+        result_2 = do_part_2(board, max_depth=2700)
+        assert result_2 == 7521
+        result_22 = do_part_2(board, max_depth=3000)
+        assert result_22 == 7521
+        result = result_22
+        return result
+
 
 @dataclass(frozen=True)
 class Beam:  # poignée
-    # position: tuple[int, int]
-    # speed: tuple[int, int]
-    position: np.ndarray
-    speed: np.ndarray
+    position: npt.NDArray[np.int32]
+    speed: npt.NDArray[np.int32]
+
     # can be zero, one, or two
     children: list["Beam"] = field(default_factory=list)
 
 
-def main():
-    adapt_recursion_limit(10000)
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-    print({1: result_part_1, 2: result_part_2})
-
-
-def compute_part_1():
-    board = parse_input_text_file()
-    initial_beam = Beam(np.array((1, 0)), MOVE_EAST)
-    result_one_less_iter = do_part_1(board, initial_beam=initial_beam, max_depth=2499)
-    result = do_part_1(board, initial_beam=initial_beam, max_depth=2500)
-    result_one_more_iter = do_part_1(board, initial_beam=initial_beam, max_depth=2501)
-    assert result_one_less_iter < result
-    assert result == result_one_more_iter
-    return result
-
-
-def do_part_1(board: ProblemDataType, initial_beam: Beam, max_depth: int = 100) -> int:
-    explored = np.zeros((4, *board.shape), dtype=np.uint8)
+def do_part_1(board: PuzzleInput, initial_beam: Beam, max_depth: int = 100) -> int:
+    explored: PuzzleInput = np.zeros((4, *board.shape), dtype=np.uint8)
     update_simulation(board, initial_beam, 0, max_depth, explored)
-
-    # energy_board = np.full_like(board, CELL_EMPTY_SPACE)
-    # draw_energized(energy_board, initial_beam, CELL_ENERGY)
-    # # Remove walls, they contain the initial out of bound beam.
-    # energy_board = energy_board[1:-1, 1:-1]
-    # print(render_parsed_input(energy_board))
-    # energized_count = np.sum(energy_board == CELL_ENERGY)
-
     energized_count = np.sum(np.logical_or.reduce(explored[:, 1:-1, 1:-1]))
     return energized_count
 
 
-def do_part_2(board: ProblemDataType, max_depth: int = 100) -> int:
+def do_part_2(board: PuzzleInput, max_depth: int = 100) -> int:
     energized_counts = []
     row_count = board.shape[0]
     col_count = board.shape[1]
@@ -108,28 +122,8 @@ def do_part_2(board: ProblemDataType, max_depth: int = 100) -> int:
     return maximum
 
 
-# def do_part_2(board: ProblemDataType, max_depth: int = 100) -> int:
-#     energized_counts = []
-#     for row in range(1, board.shape[0] - 1):
-#         initial_beam = Beam(np.array((row, 1)), MOVE_RIGHT)
-#         energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
-#         energized_counts.append(energized_count)
-#         initial_beam = Beam(np.array((row, board.shape[1] - 1)), MOVE_LEFT)
-#         energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
-#         energized_counts.append(energized_count)
-#     for col in range(1, board.shape[1] - 1):
-#         initial_beam = Beam(np.array((1, col)), MOVE_DOWN)
-#         energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
-#         energized_counts.append(energized_count)
-#         initial_beam = Beam(np.array((board.shape[0] - 1, col)), MOVE_UP)
-#         energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
-#         energized_counts.append(energized_count)
-#     maximum = max(energized_counts)
-#     return maximum
-
-
 def update_simulation(
-    board: ProblemDataType, beam: Beam, depth: int, max_depth: int, explored: np.ndarray
+    board: PuzzleInput, beam: Beam, depth: int, max_depth: int, explored: PuzzleInput
 ) -> None:
     if depth > max_depth:
         return
@@ -143,10 +137,10 @@ def update_simulation(
 
     if cell == CELL_EMPTY_SPACE:
         beam.children.append(Beam(next_position, beam.speed))
-    elif cell == CELL_MIRROR_FSLASH:
+    elif cell == CELL_MIRROR_SLASH:
         speed = -beam.speed[::-1]
         beam.children.append(Beam(next_position, speed))
-    elif cell == CELL_MIRROR_BSLASH:
+    elif cell == CELL_MIRROR_BACKSLASH:
         speed = beam.speed[::-1]
         beam.children.append(Beam(next_position, speed))
     elif cell == CELL_SPLITTER_V:
@@ -161,55 +155,37 @@ def update_simulation(
         else:
             beam.children.append(Beam(next_position, MOVE_EAST))
             beam.children.append(Beam(next_position, MOVE_WEST))
-    elif cell == CELL_WALL:
-        # finito for the beam
-        ...
 
+    # [visu] can be reused to save_txt
     # energy_board = np.copy(board)
     # draw_energized(energy_board, beam, CELL_DIRECTIONS[tuple(beam.speed)])
     # print(render_parsed_input(energy_board))
 
     for beam in beam.children:
         update_simulation(board, beam, depth + 1, max_depth, explored)
-    ...
 
 
-def draw_energized(
-    board: ProblemDataType, beam: Beam, fill_value: bytes
-) -> ProblemDataType:
+def draw_energized(board: PuzzleInput, beam: Beam, fill_value: bytes):
     board[tuple(beam.position)] = fill_value
     for beam in beam.children:
         draw_energized(board, beam, fill_value)
 
 
-def compute_part_2():
-    board = parse_input_text_file()
-    result_1 = do_part_2(board, max_depth=2500)
-    assert result_1 == 7505
-    result_2 = do_part_2(board, max_depth=2700)
-    assert result_2 == 7521
-    result_22 = do_part_2(board, max_depth=3000)
-    assert result_22 == 7521
-    result = result_22
-    return result
-
-
-def render_parsed_input(parsed_input: ProblemDataType) -> str:
+def render_parsed_input(parsed_input: PuzzleInput) -> str:
     return "\n".join(line.tostring().decode() for line in parsed_input)
 
 
-def parse_input_text_file() -> ProblemDataType:
+def parse_input_text_file() -> PuzzleInput:
     text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 
 
-def parse_text_input(text: str) -> ProblemDataType:
-    lines = text.strip().split("\n")
-    input_array = np.array([np.fromstring(line, dtype="<S1") for line in lines])
+def parse_text_input(text: str) -> PuzzleInput:
+    input_array = parse_2d_string_array_to_uint8(text)
     padded = np.pad(input_array, pad_width=1, constant_values=CELL_WALL)
     return padded
 
 
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202316().solve_all())

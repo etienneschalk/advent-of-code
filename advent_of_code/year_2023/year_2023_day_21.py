@@ -130,7 +130,7 @@ def run_steps_details(
             for direction, move in NEIGHBOUR_MOVES.items():
                 next_pos_array = pos + move
                 next_pos: Position = next_pos_array[0], next_pos_array[1]
-                if is_out_of_bounds(direction, pos, (garden.shape[0], garden.shape[1])):
+                if is_out_of_bounds(direction, pos, garden.shape):  # type: ignore
                     continue
                 if garden[next_pos] == ord(b".") or garden[next_pos] == ord(b"S"):
                     garden[next_pos] = ord(b"O")
@@ -180,7 +180,7 @@ def run_steps_old(
             for direction, move in NEIGHBOUR_MOVES.items():
                 next_pos = move + pos
                 next_pos = tuple(next_pos)
-                if is_out_of_bounds(direction, pos, (garden.shape[0], garden.shape[1])):
+                if is_out_of_bounds(direction, pos, garden.shape):  # type: ignore
                     continue
                 if garden[next_pos] == ord(b".") or garden[next_pos] == ord(b"S"):
                     garden[next_pos] = ord(b"O")

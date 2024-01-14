@@ -50,9 +50,14 @@ class AdventOfCodeProblem202320(AdventOfCodeProblem[PuzzleInput]):
         max_iter = 5000
 
         # hb is the parent of rx
-        periods = detect_periods_part_2(module_dict, max_iter, "hb")
+        events_of_interest = detect_periods_part_2(module_dict, max_iter, "hb")
 
-        product = np.prod([t[0] for t in periods])
+        periods = [t[0] for t in events_of_interest]
+        product = int(np.prod(periods))
+
+        # Use LCM for safety. We could have had some periods that are multiples between each others.
+        lcm = int(np.lcm.reduce(periods))
+        assert product == lcm
 
         return int(product)
 

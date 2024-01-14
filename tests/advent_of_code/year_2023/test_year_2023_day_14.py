@@ -1,13 +1,13 @@
 import numpy as np
 
 from advent_of_code.year_2023.year_2023_day_14 import (
+    AdventOfCodeProblem202314,
     attain_wanted_state,
     compute_total_load_for_north,
     compute_total_load_from_state_lines,
     compute_total_load_legacy,
     detect_cycle,
     get_list_of_str,
-    parse_text_input,
     run_one_full_cycle,
 )
 
@@ -73,7 +73,7 @@ EXPECTED_PART_2_3_CYCLE = """
 
 def test_year_2023_day_14_part_1():
     test_input = EXAMPLE_INPUT
-    parsed_input = parse_text_input(test_input)
+    parsed_input = AdventOfCodeProblem202314.parse_text_input(test_input)
     list_of_str = get_list_of_str(parsed_input, 3)
     total_load = compute_total_load_legacy(list_of_str)
     assert total_load == 136
@@ -81,14 +81,14 @@ def test_year_2023_day_14_part_1():
 
 def test_year_2023_day_14_part_1_refactored():
     test_input = EXAMPLE_INPUT
-    parsed_input = parse_text_input(test_input)
+    parsed_input = AdventOfCodeProblem202314.parse_text_input(test_input)
     total_load = compute_total_load_for_north(parsed_input)
     assert total_load == 136
 
 
 def test_year_2023_day_14_part_2():
     test_input = EXAMPLE_INPUT
-    parsed_input = parse_text_input(test_input)
+    parsed_input = AdventOfCodeProblem202314.parse_text_input(test_input)
 
     expected_1 = EXPECTED_PART_2_1_CYCLE.strip().split("\n")
     expected_2 = EXPECTED_PART_2_2_CYCLE.strip().split("\n")
@@ -105,7 +105,7 @@ def test_year_2023_day_14_part_2():
 
 def test_year_2023_day_14_part_2_more_iter():
     test_input = EXAMPLE_INPUT
-    parsed_input = parse_text_input(test_input)
+    parsed_input = AdventOfCodeProblem202314.parse_text_input(test_input)
 
     init_rot = 4
 
@@ -128,7 +128,7 @@ def test_year_2023_day_14_part_2_more_iter():
 
 def test_year_2023_day_14_part_2_validate_problem_description():
     test_input = EXAMPLE_INPUT
-    parsed_input = parse_text_input(test_input)
+    parsed_input = AdventOfCodeProblem202314.parse_text_input(test_input)
 
     init_rot = 4
     max_iter = 32

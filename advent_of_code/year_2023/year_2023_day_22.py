@@ -9,6 +9,8 @@ from advent_of_code.protocols import AdventOfCodeProblem
 type SupportCounts = dict[int, int]
 type PuzzleInput = list[Brick]
 
+# [visu] Would look good with a 3d engine showing the bricks fall, with GUI controls
+
 
 @dataclass(kw_only=True)
 class AdventOfCodeProblem202322(AdventOfCodeProblem[PuzzleInput]):

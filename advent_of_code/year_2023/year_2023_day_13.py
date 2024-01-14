@@ -6,6 +6,8 @@ import xarray as xr
 
 from advent_of_code.protocols import AdventOfCodeProblem
 
+# [visu] Would look good with seaborn / observable plot with facets x and y
+
 type PuzzleInput = tuple[xr.DataArray, ...]
 
 

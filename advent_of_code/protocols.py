@@ -92,6 +92,12 @@ class ExampleAdventOfCodeProblem202207:
         parsed = self.parse_text_input(text)
         return parsed
 
+    def solve_all(self):
+        result_part_1 = self.solve_part_1(self.parse_input_text_file())
+        result_part_2 = self.solve_part_2(self.parse_input_text_file())
+
+        return {1: result_part_1, 2: result_part_2}
+
 
 def function_that_solve_part_1[PuzzleInputT](
     problem: AdventOfCodeProblem[PuzzleInputT], puzzle_input: PuzzleInputT

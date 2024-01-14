@@ -7,7 +7,7 @@ import numpy.typing as npt
 from advent_of_code.common import parse_2d_string_array_to_uint8
 from advent_of_code.protocols import AdventOfCodeProblem
 
-type PuzzleInput = npt.NDArray[np.uint8]  # <S1
+type PuzzleInput = npt.NDArray[np.uint8]
 
 
 @dataclass(kw_only=True)

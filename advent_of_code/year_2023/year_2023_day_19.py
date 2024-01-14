@@ -1,12 +1,34 @@
 from collections import defaultdict
 from dataclasses import asdict, dataclass, replace
-from typing import Any, Literal
+from typing import Any
 
 import numpy as np
 
 from advent_of_code.common import load_input_text_file_from_filename, save_txt
+from advent_of_code.protocols import AdventOfCodeProblem
 
-ProblemDataType = ...
+# [visu] Sankey flow diagram is the best suited
+
+type PuzzleInput = PuzzleInputData
+
+
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202319(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2023
+    day: int = 19
+
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        return parse_text_input(text)
+
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        solve_1 = puzzle_input.solve_part_1()
+        return sum(solve_1.values())
+
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        initial_part_rating_range = construct_initial_part_range()
+        solve_2 = puzzle_input.solve_part_2(initial_part_rating_range)
+        return solve_2
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -16,7 +38,7 @@ class PartRating:
     a: int
     s: int
 
-    def __getitem__(self, item):
+    def __getitem__(self, item: Any):
         return getattr(self, item)
 
 
@@ -27,26 +49,27 @@ class PartRatingRange:
     a: range
     s: range
 
-    def __getitem__(self, item):
+    def __getitem__(self, item: Any):
         return getattr(self, item)
 
     def volume(self) -> int:
-        return np.prod([r.stop - r.start for r in asdict(self).values()])
+        volume = np.prod([r.stop - r.start for r in asdict(self).values()])
+        return int(volume)
 
 
 @dataclass(frozen=True, kw_only=True)
 class PartRatingRangeTree:
-    mapping: dict[str, dict[str, tuple[int, int]]]
-    children: dict[str, "PartRatingRangeTree"]
+    mapping: dict[str, list[PartRatingRange]]
+    children: dict[str, list["PartRatingRangeTree"]] | None
 
-    def __getitem__(self, item):
+    def __getitem__(self, item: Any):
         return getattr(self, item)
 
 
 @dataclass(frozen=True, kw_only=True)
 class Rule:
     category: str
-    operator: Literal["<", ">"]
+    operator: str  # Literal["<", ">"]
     rating: int
     destination_workflow: str
 
@@ -76,13 +99,12 @@ class Rule:
             rpr = replace(part_range, **{self.category: rrange})
             acc, rej = rpr, lpr
         return acc, rej
-        ...
 
 
 @dataclass(frozen=True, kw_only=True)
 class Workflow:
     name: str
-    rules: tuple[Rule]
+    rules: tuple[Rule, ...]
     destination_workflow_else: str
 
     def apply(self, part: PartRating) -> str:
@@ -106,7 +128,7 @@ class Workflow:
 
 
 @dataclass(frozen=True, kw_only=True)
-class PuzzleInput:
+class PuzzleInputData:
     workflows: dict[str, Workflow]
     part_ratings: list[PartRating]
 
@@ -120,7 +142,7 @@ class PuzzleInput:
     def apply_to_all(self) -> list[str]:
         return [self.apply(part) for part in self.part_ratings]
 
-    def solve_part_1(self) -> int:
+    def solve_part_1(self) -> dict[int, int]:
         return {
             idx: sum(asdict(part).values())
             for idx, part in enumerate(self.part_ratings)
@@ -129,7 +151,7 @@ class PuzzleInput:
 
     def apply_to_range(
         self, initial_part_range: PartRatingRange, initial_dest: str = "in"
-    ) -> dict[str, Any] | None:
+    ) -> PartRatingRangeTree | None:
         final_destinations = {"A", "R"}
         if initial_dest in final_destinations:
             return None
@@ -145,29 +167,31 @@ class PuzzleInput:
         }
         children = {k: [el for el in v if el is not None] for k, v in children.items()}
         children = children if len(children) >= 1 else None
-        recur_mapping = PartRatingRangeTree(
-            **{
-                "mapping": mapping,
-                "children": children,
-            }
-        )
+        recur_mapping = PartRatingRangeTree(mapping=mapping, children=children)
         return recur_mapping
 
     def solve_part_2(self, initial_part_range: PartRatingRange) -> int:
         applied = self.apply_to_range(initial_part_range)
-        acc = []
-        rej = []
-        gather_accepted_and_rejected_ranges(applied, acc, rej)
+        acc: list[list[PartRatingRange]] = []
+        rej: list[list[PartRatingRange]] = []
+        if applied is not None:
+            gather_accepted_and_rejected_ranges(applied, acc, rej)
         result = sum([el.volume() for a in acc for el in a])
         return result
 
 
-def gather_accepted_and_rejected_ranges(tree, acc, rej):
-    mapping, children = tree["mapping"], tree["children"]
+def gather_accepted_and_rejected_ranges(
+    tree: PartRatingRangeTree,
+    acc: list[list[PartRatingRange]],
+    rej: list[list[PartRatingRange]],
+):
+    mapping, children = tree.mapping, tree.children
+
     acc_ranges = mapping.get("A")
-    rej_ranges = mapping.get("R")
     if acc_ranges is not None:
         acc.append(acc_ranges)
+
+    rej_ranges = mapping.get("R")
     if rej_ranges is not None:
         rej.append(rej_ranges)
 
@@ -175,25 +199,6 @@ def gather_accepted_and_rejected_ranges(tree, acc, rej):
         for child in children.values():
             for el in child:
                 gather_accepted_and_rejected_ranges(el, acc, rej)
-
-
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-    print({1: result_part_1, 2: result_part_2})
-
-
-def compute_part_1():
-    parsed_input = parse_input_text_file()
-    solve_1 = parsed_input.solve_part_1()
-    return sum(solve_1.values())
-
-
-def compute_part_2():
-    parsed_input = parse_input_text_file()
-    initial_part_rating_range = construct_initial_part_range()
-    solve_2 = parsed_input.solve_part_2(initial_part_rating_range)
-    return solve_2
 
 
 def construct_initial_part_range() -> PartRatingRange:
@@ -211,13 +216,13 @@ def intersect_ranges(a: range, b: range) -> range:
     return range(max(a.start, b.start), min(a.stop, b.stop))
 
 
-def parse_input_text_file() -> ProblemDataType:
+def parse_input_text_file() -> PuzzleInputData:
     text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 
 
-def parse_text_input(text: str) -> ProblemDataType:
+def parse_text_input(text: str) -> PuzzleInputData:
     blocks = text.strip().split("\n\n")
     workflows_raw = blocks[0].split("\n")
     part_ratings_raw = blocks[1].split("\n")
@@ -231,7 +236,7 @@ def parse_text_input(text: str) -> ProblemDataType:
         )
         for line in part_ratings_raw
     ]
-    return PuzzleInput(
+    return PuzzleInputData(
         workflows={w.name: w for w in workflows}, part_ratings=part_ratings
     )
 
@@ -258,7 +263,7 @@ def parse_rule(ru: str) -> Rule:
     )
 
 
-def visu_recur_dict_part_2(mapping, suffix: str = ""):
+def visu_recur_dict_part_2(mapping: PartRatingRangeTree, suffix: str = ""):
     import json
 
     txt = json.dumps(asdict(mapping), indent=4, default=str)
@@ -272,4 +277,4 @@ def visu_recur_dict_part_2(mapping, suffix: str = ""):
 
 
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202319().solve_all())

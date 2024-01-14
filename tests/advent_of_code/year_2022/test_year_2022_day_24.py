@@ -131,7 +131,7 @@ def test_year_2022_day_24_part_1_period_stack():
     ...
 
 
-@pytest.mark.skip(reason="very slow")
+@pytest.mark.slow
 def test_year_2022_day_24_part_1():
     test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)

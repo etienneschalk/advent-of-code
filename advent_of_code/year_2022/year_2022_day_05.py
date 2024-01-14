@@ -9,6 +9,8 @@ from advent_of_code.common import load_input_text_file_from_filename
 InstructionTuple = namedtuple("InstructionTuple", ["move", "source", "destination"])
 StacksType = dict[int, list[str]]
 
+# [visu] Sankey flow diagram is the best suited
+
 
 @dataclass(frozen=True, kw_only=True)
 class RearrangementProcedure:
@@ -83,7 +85,7 @@ def parse_stack_text(stack_group: str) -> StacksType:
     sa = stack_group.split("\n")
     max_length = max(len(line) for line in sa)
     sa = [line + " " * (max_length - len(line)) for line in sa]
-    stacks = np.array([np.fromstring(line, dtype="<S1") for line in sa])
+    stacks = np.array([np.fromstring(line, dtype="<S1") for line in sa])  # type: ignore
     stacks = np.flip(stacks.T, axis=1)[1::4][:, 1:].tolist()
     stacks = tuple(
         list(s.decode("utf-8") for s in stack if s != b" ") for stack in stacks
@@ -93,7 +95,7 @@ def parse_stack_text(stack_group: str) -> StacksType:
     return stacks
 
 
-def parse_instructions_text(instruction_group) -> tuple[InstructionTuple]:
+def parse_instructions_text(instruction_group: str) -> tuple[InstructionTuple]:
     instructions = tuple(
         InstructionTuple(*(int(d) for d in re.findall(r"\d+", instruction)))
         for instruction in instruction_group.split("\n")

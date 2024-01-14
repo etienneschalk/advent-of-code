@@ -90,6 +90,10 @@ def numpy_2d_to_xarray_row_col(input_array: npt.NDArray[Any]):
 def parse_2d_string_array_to_uint8(text: str) -> npt.NDArray[np.uint8]:
     lines = text.strip().split("\n")
     # Typing this expression seems impossible right now
+    return lines_to_2d_uint8_array(lines)
+
+
+def lines_to_2d_uint8_array(lines: list[str]) -> npt.NDArray[np.uint8]:
     return np.array([np.fromstring(line, dtype=np.uint8) for line in lines])  # type: ignore
 
 
