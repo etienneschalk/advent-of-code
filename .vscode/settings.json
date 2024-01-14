@@ -35,6 +35,7 @@
     "polyfit",
     "polyval",
     "Pylance",
+    "pytest",
     "rrange",
     "secho",
     "skimage",

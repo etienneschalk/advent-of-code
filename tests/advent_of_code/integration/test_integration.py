@@ -57,13 +57,13 @@ def test_integration_year_2023():
     }
 
 
-# @pytest.mark.skip(reason="slow")
-# @pytest.mark.integration
+@pytest.mark.slow
+@pytest.mark.integration
 def test_integration_year_2023_21_slow():
-    assert AdventOfCodeProblem202321().solve_all() == {1: 3740, 2: 26501365}
+    assert AdventOfCodeProblem202321().solve_all() == {1: 3740, 2: 620962518745459}
 
 
-@pytest.mark.skip(reason="slow")
+@pytest.mark.slow
 @pytest.mark.integration
 def test_integration_year_2023_23_slow():
     assert AdventOfCodeProblem202323().solve_all() == {1: 1998, 2: 6434}

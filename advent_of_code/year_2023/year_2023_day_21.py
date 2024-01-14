@@ -254,9 +254,9 @@ def evaluate_quadratic_equation(
     coefficients = np.polyfit(x, y, 2)
 
     # Evaluate the quadratic equation at the given target value
-    result = np.polyval(coefficients, target)[0]
+    result = np.polyval(coefficients, target)
 
-    return round(result)
+    return round(result)  # pyright: ignore[reportGeneralTypeIssues]
 
 
 def parse_text_input(text: str) -> PuzzleInput:

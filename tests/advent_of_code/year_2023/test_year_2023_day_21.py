@@ -109,4 +109,5 @@ def test_year_2023_day_21_part_1():
 def test_year_2023_day_21_part_2():
     # The solution has only be tested on the actual input data.
     # It is not guaranteed to work on the test input data
+    # Note: not testing the test input data should ideally remain exceptional.
     pass
