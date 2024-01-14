@@ -72,6 +72,21 @@ def render_2d_numpy_array(data: npt.NDArray[np.uint8]) -> str:
     return "\n".join(line.tobytes().decode("utf-8") for line in data)
 
 
+def parse_2d_string_array_to_uint8_xarray(text: str) -> xr.DataArray:
+    input_array = parse_2d_string_array_to_uint8(text)
+    return numpy_2d_to_xarray_row_col(input_array)
+
+
+def numpy_2d_to_xarray_row_col(input_array: npt.NDArray[Any]):
+    return xr.DataArray(
+        input_array,
+        coords={
+            "row": list(range(input_array.shape[0])),
+            "col": list(range(input_array.shape[1])),
+        },
+    )
+
+
 def parse_2d_string_array_to_uint8(text: str) -> npt.NDArray[np.uint8]:
     lines = text.strip().split("\n")
     # Typing this expression seems impossible right now

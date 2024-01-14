@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 import xarray as xr
 
-from advent_of_code.common import parse_2d_string_array_to_uint8
+from advent_of_code.common import parse_2d_string_array_to_uint8_xarray
 from advent_of_code.year_2023.year_2023_day_01 import AdventOfCodeProblem
 
 type PuzzleInput = xr.DataArray
@@ -184,14 +184,7 @@ def pad_xda(xda: xr.DataArray, dim_reduce: str, dim_concat: str) -> xr.DataArray
 
 
 def parse_text_input(text: str) -> PuzzleInput:
-    input_array = parse_2d_string_array_to_uint8(text)
-    return xr.DataArray(
-        input_array,
-        coords={
-            "row": list(range(input_array.shape[0])),
-            "col": list(range(input_array.shape[1])),
-        },
-    )
+    return parse_2d_string_array_to_uint8_xarray(text)
 
 
 if __name__ == "__main__":
