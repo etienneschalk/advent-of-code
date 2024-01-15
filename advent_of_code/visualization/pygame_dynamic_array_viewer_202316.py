@@ -287,7 +287,8 @@ if __name__ == "__main__":
         problem_input_array=problem_input_array,
         history=history_dict,
         display_size=(problem_input_array.shape[0], problem_input_array.shape[1]),
-        simulation_step=1,
+        simulation_step=4,
+        # simulation_step=1,
     )
     viewer.init(f"AoC Y{problem.year} D{problem.day} | Click to Start")
     viewer.start()
