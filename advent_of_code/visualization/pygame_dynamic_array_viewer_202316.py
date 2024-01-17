@@ -121,13 +121,20 @@ class Viewer:
     problem_input_array: npt.NDArray[np.uint8]
     history: HistoryDictPerDepth
     display_size: tuple[int, int]
-    target_fps: int = 60
-    screen: pygame.SurfaceType = field(init=False)
-    display_size_scaled: tuple[int, int] = field(init=False)
     simulation_step: int
+
+    target_fps: int = 60
     min_luminance: int = 40
     max_luminance: int = 255 - min_luminance
     cell_width_px: int = 5
+    running_game_loop: bool = True
+    update_display: bool = False
+    elapsed_frames: int = 0
+
+    screen: pygame.SurfaceType = field(init=False)
+    display_size_scaled: tuple[int, int] = field(init=False)
+    mirror_surf: pygame.Surface = field(init=False)
+    ray_array: npt.NDArray[np.uint8] = field(init=False)
 
     def init(self, title: str):
         pygame.init()
@@ -139,62 +146,83 @@ class Viewer:
         pygame.display.set_caption(title)
 
     def start(self):
-        mirror_array = self.generate_mirror_array()
-        mirror_surf = pygame.surfarray.make_surface(mirror_array)
-        mirror_surf.set_colorkey((0, 0, 0))
+        self.init_mirror_surf()
+        self.ray_array = self.generate_ray_array()
 
-        ray_array = (
-            np.zeros((self.display_size[0], self.display_size[1], 3), dtype=np.uint8)
-            + self.min_luminance
-        )
         initial_color = (self.min_luminance, self.min_luminance, self.min_luminance)
         self.screen.fill(initial_color)
         pygame.display.flip()
 
-        running = True
-        total_elapsed_frames = 0
         clock = pygame.time.Clock()
 
-        display_update = False
-        while running:
+        while self.running_game_loop:
             clock.tick(self.target_fps)
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                elif event.type == pygame.MOUSEBUTTONUP:
-                    display_update = not display_update
-
-            if not display_update:
+            self.consume_event_loop()
+            if not self.update_display:
                 continue
-
-            # Can give funny results
-            # array = np.clip(array - 1, min_luminance, max_luminance)
-            ray_array = np.where(
-                ray_array > self.min_luminance,
-                np.clip(ray_array * 0.99, 1.3 * self.min_luminance, 255),
-                self.min_luminance,
-            )
-            for i in range(self.simulation_step):
-                # All rays of same recursion depth move altogether at the same time
-                history_for_depth = self.history[
-                    (i + self.simulation_step * total_elapsed_frames) % len(history)
-                ]
-
-                for history_line in history_for_depth:
-                    position = history_line[1]
-                    ray_array[position] = self.max_luminance
-
-            surf = pygame.surfarray.make_surface(ray_array)
-            surf_scaled = pygame.transform.scale(surf, self.display_size_scaled)
-            self.screen.blit(surf_scaled, (0, 0))
-            self.screen.blit(mirror_surf, (0, 0))
-
-            pygame.display.update()
-
-            total_elapsed_frames += 1
+            self.update_ray_array(self.elapsed_frames)
+            self.render()
+            self.elapsed_frames += 1
 
         pygame.quit()
+
+    def init_mirror_surf(self):
+        mirror_array = self.generate_mirror_array()
+        self.mirror_surf = pygame.surfarray.make_surface(mirror_array)
+        self.mirror_surf.set_colorkey((0, 0, 0))
+
+    def render(self):
+        surf = pygame.surfarray.make_surface(self.ray_array)
+        surf_scaled = pygame.transform.scale(surf, self.display_size_scaled)
+        self.screen.blit(surf_scaled, (0, 0))
+        self.screen.blit(self.mirror_surf, (0, 0))
+
+        pygame.display.update()
+
+    def update_ray_array(self, total_elapsed_frames: int) -> None:
+        # Can give funny results
+        # array = np.clip(array - 1, min_luminance, max_luminance)
+        self.ray_array = np.where(
+            self.ray_array > self.min_luminance,
+            np.clip(self.ray_array * 0.99, 1.3 * self.min_luminance, 255),
+            self.min_luminance,
+        )
+        for i in range(self.simulation_step):
+            # All rays of same recursion depth move altogether at the same time
+            history_for_depth = self.history[
+                (i + self.simulation_step * total_elapsed_frames) % len(history)
+            ]
+
+            for history_line in history_for_depth:
+                position = history_line[1]
+                self.ray_array[position] = self.max_luminance
+
+    def consume_event_loop(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running_game_loop = False
+            elif event.type == pygame.MOUSEBUTTONUP:
+                self.update_display = not self.update_display
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_w:  # XXX issue with AZERTY?
+                    self.simulation_step += 1
+                elif event.key == pygame.K_s:
+                    self.simulation_step = (
+                        self.simulation_step - 1 if self.simulation_step > 0 else 0
+                    )
+                elif event.key == pygame.K_SPACE:
+                    self.update_display = not self.update_display
+                elif event.key == pygame.K_r:
+                    self.elapsed_frames = 0
+                elif event.key == pygame.K_t:
+                    self.elapsed_frames -= 12 * self.simulation_step
+                elif event.key == pygame.K_g:
+                    self.elapsed_frames += 12 * self.simulation_step
+
+    def generate_ray_array(self) -> npt.NDArray[np.uint8]:
+        return np.zeros(
+            (self.display_size[0], self.display_size[1], 3), dtype=np.uint8
+        ) + np.uint8(self.min_luminance)
 
     def generate_mirror_array(self) -> npt.NDArray[np.uint8]:
         mirror_array = np.zeros(
@@ -279,9 +307,9 @@ if __name__ == "__main__":
 
     problem_input_array = problem.parse_input_text_file()
 
-    # TODO:
+    # DONE
     # - Draw the mirrors. (for now problem_input_array is unused)
-    #    For that, upscale to 3X33 tiles, and display rays as centered 1px lines
+    #    For that, upscale to 3X3 tiles, and display rays as centered 1px lines
     # - Handle alpha, to have a "trace" effect
     viewer = Viewer(
         problem_input_array=problem_input_array,
