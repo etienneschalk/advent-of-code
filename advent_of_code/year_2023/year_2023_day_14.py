@@ -193,4 +193,4 @@ def get_list_of_str(input_array: PuzzleInput, times: int) -> list[str]:
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202314().solve_all())
+    print(AdventOfCodeProblem202314().solve())

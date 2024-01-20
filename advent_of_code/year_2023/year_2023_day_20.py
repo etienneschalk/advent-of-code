@@ -283,4 +283,4 @@ def parse_text_to_module_dict(text: str) -> ModuleDict:
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202320().solve_all())
+    print(AdventOfCodeProblem202320().solve())

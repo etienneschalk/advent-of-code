@@ -95,4 +95,4 @@ def unfold_records_v2(input_line: PuzzleLine, iter_count: int = 5):
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202312().solve_all())
+    print(AdventOfCodeProblem202312().solve())

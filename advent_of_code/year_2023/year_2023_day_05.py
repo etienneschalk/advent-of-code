@@ -297,4 +297,4 @@ def map_ranges_prototype(input_ranges: list[range], mapping: AlmanacMap) -> list
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202305().solve_all())
+    print(AdventOfCodeProblem202305().solve())

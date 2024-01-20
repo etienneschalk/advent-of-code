@@ -52,6 +52,7 @@
     "pygame",
     "Pylance",
     "pytest",
+    "quittable",
     "reddit",
     "RNLFDJMCT",
     "rrange",

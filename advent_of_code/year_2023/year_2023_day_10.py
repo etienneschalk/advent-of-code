@@ -376,4 +376,4 @@ def get_pipe_to_pattern_mapping() -> dict[str, np.bool_]:
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202310().solve_all())
+    print(AdventOfCodeProblem202310().solve())

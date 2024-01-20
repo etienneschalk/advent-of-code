@@ -87,4 +87,4 @@ def update_card_instances(instances: npt.NDArray[np.int32], card: Card):
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202304().solve_all())
+    print(AdventOfCodeProblem202304().solve())

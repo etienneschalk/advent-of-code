@@ -277,4 +277,4 @@ def visu_recur_dict_part_2(mapping: PartRatingRangeTree, suffix: str = ""):
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202319().solve_all())
+    print(AdventOfCodeProblem202319().solve())

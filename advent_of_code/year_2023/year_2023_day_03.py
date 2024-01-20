@@ -154,4 +154,4 @@ def get_neighbouring_coordinates_tuple(
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202303().solve_all())
+    print(AdventOfCodeProblem202303().solve())

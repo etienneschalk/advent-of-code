@@ -171,4 +171,4 @@ def dijkstra(
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202317().solve_all())
+    print(AdventOfCodeProblem202317().solve())

@@ -56,4 +56,4 @@ def parse_text_input(text: str) -> PuzzleInput:
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202202().solve_all())
+    print(AdventOfCodeProblem202202().solve())

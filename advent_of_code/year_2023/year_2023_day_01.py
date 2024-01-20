@@ -107,4 +107,4 @@ def find_first_digit_index(word: str, reverse: bool):
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202301().solve_all())
+    print(AdventOfCodeProblem202301().solve())

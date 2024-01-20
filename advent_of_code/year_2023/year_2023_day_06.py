@@ -72,4 +72,4 @@ def compute_range(time: int, record_distance: int):
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202306().solve_all())
+    print(AdventOfCodeProblem202306().solve())

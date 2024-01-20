@@ -1,13 +1,18 @@
 import json
 from collections import defaultdict
 from dataclasses import dataclass, field
-from typing import Mapping
+from typing import Mapping, override
 
+import click
 import numpy as np
 import numpy.typing as npt
 import pygame
 
 from advent_of_code.common import parse_2d_string_array_to_uint8
+from advent_of_code.visualization.protocols import (
+    AOCPygameVisualizer,
+    AOCPygameVisualizerFactory,
+)
 from advent_of_code.year_2023.year_2023_day_16 import (
     CELL_EMPTY_SPACE,
     CELL_MIRROR_BACKSLASH,
@@ -21,6 +26,46 @@ from advent_of_code.year_2023.year_2023_day_16 import (
 type HistoryLine = tuple[int, tuple[int, int], tuple[int, int]]
 type History = tuple[HistoryLine, ...]
 type HistoryDictPerDepth = Mapping[int, list[HistoryLine]]
+
+
+@click.command
+@click.option(
+    "--choice",
+    help="Choice of mode of execution of the file",
+    type=click.Choice(
+        [
+            "solve",
+            "generate_visualizations_instructions",
+            "visualize",
+        ]
+    ),
+    required=True,
+    default="visualize",
+)
+@click.option(
+    "--part",
+    help="Problem part to solve/visualize",
+    type=click.Choice(["one", "two", "both", "irrelevant"]),
+    required=True,
+    default="both",
+)
+def main(choice: str, part: str):
+    if choice == "solve":
+        print(
+            AdventOfCodeProblem202316().solve(
+                part_1=part in {"one", "both"}, part_2=part in {"two", "both"}
+            )
+        )
+    elif choice == "generate_visualizations_instructions":
+        # Only part 1 is implemented, ignore part 2 (it would be interesting though,
+        # to make all the simulations run in parallel with a color code)
+        AdventOfCodeProblem202316().write_visualizations_instructions_for_part_1()
+    elif choice == "visualize":
+        visualizer = AOCPygameVisualizerFactory202316().create_visualizer()
+        visualizer.start()
+    else:
+        click.secho("Invalid choice", err=True)
+
 
 PATTERN_EMPTY_SPACE_3X3 = """
 ...
@@ -118,126 +163,84 @@ CELL_CHAR_TO_PATTERN_5X5_STRINGS = {
 
 # [visu] Adapt this class for year 2023 day 14 (moving rocks)
 @dataclass(kw_only=True)
-class AdventOfCodeVisualizer202316:
+class AOCVisualizer202316(AOCPygameVisualizer):
     problem_input_array: npt.NDArray[np.uint8]
     history: HistoryDictPerDepth
     simulation_step: int
 
     min_luminance: int = 40
     max_luminance: int = 255 - min_luminance
-    cell_width_in_px: int = 5
 
-    display_size_scaled: tuple[int, int] = field(init=False)
-    mirror_surf: pygame.Surface = field(init=False)
-    ray_array: npt.NDArray[np.uint8] = field(init=False)
+    _mirror_surf: pygame.Surface = field(init=False)
+    _ray_array: npt.NDArray[np.uint8] = field(init=False)
 
-    # ---
-
-    display_size: tuple[int, int]
-
-    target_fps: int = 60
-    running_game_loop: bool = True
-    elapsed_frames: int = 0
-    update_display: bool = False
-
-    screen: pygame.SurfaceType = field(init=False)
-
-    def init(self, title: str):
-        pygame.init()
-        self.display_size_scaled = (
-            self.display_size[0] * self.cell_width_in_px,
-            self.display_size[1] * self.cell_width_in_px,
-        )
-        self.screen = pygame.display.set_mode(self.display_size_scaled)
-        pygame.display.set_caption(title)
-        self.screen.fill((0, 0, 0))
-        pygame.display.flip()
-
-        self.init_state()
-
-    def start(self):
-        clock = pygame.time.Clock()
-        while self.running_game_loop:
-            clock.tick(self.target_fps)
-            self.elapsed_frames += 1
-
-            self.consume_event_loop()
-            if not self.update_display:
-                continue
-
-            self.update_state()
-            self.update_surfaces()
-
-            pygame.display.flip()
-
-        pygame.quit()
-
+    @override
     def init_state(self):
-        self.init_mirror_surf()
-        self.ray_array = self.generate_ray_array()
+        self._init_mirror_surf()
+        self._ray_array = self._generate_ray_array()
 
-    def init_mirror_surf(self):
-        mirror_array = self.generate_mirror_array()
-        self.mirror_surf = pygame.surfarray.make_surface(mirror_array)
-        self.mirror_surf.set_colorkey((0, 0, 0))
-
-    def update_surfaces(self):
-        surf = pygame.surfarray.make_surface(self.ray_array)
-        surf_scaled = pygame.transform.scale(surf, self.display_size_scaled)
-        self.screen.blit(surf_scaled, (0, 0))
-        self.screen.blit(self.mirror_surf, (0, 0))
-
+    @override
     def update_state(self) -> None:
-        self.update_ray_array(self.elapsed_frames)
+        self._update_ray_array(self.elapsed_frames)
 
-    def update_ray_array(self, total_elapsed_frames: int) -> None:
+    @override
+    def update_surfaces(self):
+        surf = pygame.surfarray.make_surface(self._ray_array)
+        surf_scaled = pygame.transform.scale(surf, self.display_size)
+        self.screen.blit(surf_scaled, (0, 0))
+        self.screen.blit(self._mirror_surf, (0, 0))
+
+    @override
+    def consume_event(self, event: pygame.Event):
+        if event.type == pygame.MOUSEBUTTONUP:
+            self.update_simulation = not self.update_simulation
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_w:  # Potentiel issue with AZERTY keyboards?
+                self.simulation_step += 1
+            elif event.key == pygame.K_s:
+                self.simulation_step = (
+                    self.simulation_step - 1 if self.simulation_step > 0 else 0
+                )
+            elif event.key == pygame.K_SPACE:
+                self.update_simulation = not self.update_simulation
+            elif event.key == pygame.K_r:
+                self.elapsed_frames = 0
+            elif event.key == pygame.K_t:
+                self.elapsed_frames -= 12 * self.simulation_step
+            elif event.key == pygame.K_g:
+                self.elapsed_frames += 12 * self.simulation_step
+
+    def _init_mirror_surf(self):
+        mirror_array = self._generate_mirror_array()
+        self._mirror_surf = pygame.surfarray.make_surface(mirror_array)
+        self._mirror_surf.set_colorkey((0, 0, 0))
+
+    def _update_ray_array(self, total_elapsed_frames: int) -> None:
         # Can give funny results
         # array = np.clip(array - 1, min_luminance, max_luminance)
-        self.ray_array = np.where(
-            self.ray_array > self.min_luminance,
-            np.clip(self.ray_array * 0.99, 1.3 * self.min_luminance, 255),
+        self._ray_array = np.where(
+            self._ray_array > self.min_luminance,
+            np.clip(self._ray_array * 0.99, 1.3 * self.min_luminance, 255),
             self.min_luminance,
         )
         for i in range(self.simulation_step):
             # All rays of same recursion depth move altogether at the same time
             history_for_depth = self.history[
-                (i + self.simulation_step * total_elapsed_frames) % len(history)
+                (i + self.simulation_step * total_elapsed_frames) % len(self.history)
             ]
 
             for history_line in history_for_depth:
                 position = history_line[1]
-                self.ray_array[position] = self.max_luminance
+                self._ray_array[position] = self.max_luminance
 
-    def consume_event_loop(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.running_game_loop = False
-            elif event.type == pygame.MOUSEBUTTONUP:
-                self.update_display = not self.update_display
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_w:  # XXX issue with AZERTY?
-                    self.simulation_step += 1
-                elif event.key == pygame.K_s:
-                    self.simulation_step = (
-                        self.simulation_step - 1 if self.simulation_step > 0 else 0
-                    )
-                elif event.key == pygame.K_SPACE:
-                    self.update_display = not self.update_display
-                elif event.key == pygame.K_r:
-                    self.elapsed_frames = 0
-                elif event.key == pygame.K_t:
-                    self.elapsed_frames -= 12 * self.simulation_step
-                elif event.key == pygame.K_g:
-                    self.elapsed_frames += 12 * self.simulation_step
-
-    def generate_ray_array(self) -> npt.NDArray[np.uint8]:
+    def _generate_ray_array(self) -> npt.NDArray[np.uint8]:
         return np.zeros(
-            (self.display_size[0], self.display_size[1], 3), dtype=np.uint8
+            (self.simulation_size[0], self.simulation_size[1], 3), dtype=np.uint8
         ) + np.uint8(self.min_luminance)
 
-    def generate_mirror_array(self) -> npt.NDArray[np.uint8]:
+    def _generate_mirror_array(self) -> npt.NDArray[np.uint8]:
         mirror_array = np.zeros(
-            (self.display_size_scaled[0], self.display_size_scaled[1], 3),
+            (self.display_size[0], self.display_size[1], 3),
             dtype=np.uint8,
         )
 
@@ -308,26 +311,44 @@ class AdventOfCodeVisualizer202316:
         return mirror_array
 
 
+class AOCPygameVisualizerFactory202316(AOCPygameVisualizerFactory):
+    def create_visualizer(self) -> AOCVisualizer202316:
+        problem = AdventOfCodeProblem202316()
+
+        # Create if not exists
+        if not problem.get_visualizations_instructions_for_part_1_file_path().exists():
+            problem.write_visualizations_instructions_for_part_1()
+
+        history_dict = self.read_history(problem)
+        problem_input_array = problem.parse_input_text_file()
+
+        # DONE
+        # - Draw the mirrors. (for now problem_input_array is unused)
+        #    For that, upscale to 3X3 tiles, and display rays as centered 1px lines
+        # - Handle alpha, to have a "trace" effect
+        viewer = AOCVisualizer202316(
+            title=f"AoC Y{problem.year} D{problem.day} | Click to Start",
+            simulation_size=(
+                problem_input_array.shape[0],
+                problem_input_array.shape[1],
+            ),
+            problem_input_array=problem_input_array,
+            history=history_dict,
+            simulation_step=4,
+        )
+        return viewer
+
+    @staticmethod
+    def read_history(problem: AdventOfCodeProblem202316):
+        history_raw = json.loads(
+            problem.get_visualizations_instructions_for_part_1_file_path().read_text()
+        )
+        history: History = [(h[0], tuple(h[1]), tuple(h[2])) for h in history_raw]  # type: ignore
+        history_dict: HistoryDictPerDepth = defaultdict(list)
+        for line in history:
+            history_dict[line[0]].append(line)
+        return history_dict
+
+
 if __name__ == "__main__":
-    problem = AdventOfCodeProblem202316()
-    history_raw = json.loads(problem.get_output_log_part_1_file_path().read_text())
-    history: History = [(h[0], tuple(h[1]), tuple(h[2])) for h in history_raw]  # type: ignore
-    history_dict: HistoryDictPerDepth = defaultdict(list)
-    for line in history:
-        history_dict[line[0]].append(line)
-
-    problem_input_array = problem.parse_input_text_file()
-
-    # DONE
-    # - Draw the mirrors. (for now problem_input_array is unused)
-    #    For that, upscale to 3X3 tiles, and display rays as centered 1px lines
-    # - Handle alpha, to have a "trace" effect
-    viewer = AdventOfCodeVisualizer202316(
-        problem_input_array=problem_input_array,
-        history=history_dict,
-        display_size=(problem_input_array.shape[0], problem_input_array.shape[1]),
-        simulation_step=4,
-        # simulation_step=1,
-    )
-    viewer.init(f"AoC Y{problem.year} D{problem.day} | Click to Start")
-    viewer.start()
+    main()  # type: ignore

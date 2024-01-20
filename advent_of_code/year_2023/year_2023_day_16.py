@@ -82,6 +82,11 @@ class AdventOfCodeProblem202316(AdventOfCodeProblem[PuzzleInput]):
         result = result_22
         return result
 
+    def write_visualizations_instructions_for_part_1(self):
+        # This code generate the breadth-first sequence of events for the rays (10k lines)
+        # It can now be consumed in a simulation rendered via pygame.
+        self.log_part_1(self.parse_input_text_file(), max_depth=2501)
+
     def log_part_1(self, puzzle_input: PuzzleInput, max_depth: int):
         adapt_recursion_limit(5000)
 
@@ -91,15 +96,14 @@ class AdventOfCodeProblem202316(AdventOfCodeProblem[PuzzleInput]):
 
         # Explore the initial Beam
         history = explore_beam_breadth_first(initial_beam, max_depth=max_depth)
-        output_file_path = self.get_output_log_part_1_file_path()
+        output_file_path = self.get_visualizations_instructions_for_part_1_file_path()
         import json
 
         text = ",\n".join([json.dumps((line)) for line in history])
-        # text = json.dumps(history, default=str)
         output_file_path.write_text(f"[\n{text}\n]")
         print(f"Saved text to {output_file_path}")
 
-    def get_output_log_part_1_file_path(self) -> Path:
+    def get_visualizations_instructions_for_part_1_file_path(self) -> Path:
         return create_output_file_path("history.json", "", self.year, self.day)
 
 
@@ -160,20 +164,20 @@ def do_part_2(board: PuzzleInput, max_depth: int = 100) -> int:
     for row in range(1, row_count):
         initial_beam = Beam(np.array((row, 0)), MOVE_EAST)
         energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
-        print(initial_beam.position)
+        print("E", initial_beam.position)
         energized_counts.append(energized_count)
         initial_beam = Beam(np.array((row, col_count - 1)), MOVE_WEST)
         energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
-        print(initial_beam.position)
+        print("W", initial_beam.position)
         energized_counts.append(energized_count)
     for col in range(1, col_count):
         initial_beam = Beam(np.array((0, col)), MOVE_SOUTH)
         energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
-        print(initial_beam.position)
+        print("S", initial_beam.position)
         energized_counts.append(energized_count)
         initial_beam = Beam(np.array((row_count - 1, col)), MOVE_NORTH)
         energized_count = do_part_1(board, initial_beam, max_depth=max_depth)
-        print(initial_beam.position)
+        print("N", initial_beam.position)
         energized_counts.append(energized_count)
     maximum = max(energized_counts)
     return maximum
@@ -253,14 +257,4 @@ def parse_text_input(text: str) -> PuzzleInput:
 
 
 if __name__ == "__main__":
-    solve_all = False
-    if solve_all:
-        print(AdventOfCodeProblem202316().solve_all())
-    else:
-        # experiment
-        max_depth = 2501
-        problem = AdventOfCodeProblem202316()
-        problem.log_part_1(problem.parse_input_text_file(), max_depth=max_depth)
-        # TODO use transparency to draw in an array, and renderi it
-        # TODO This code generate the breadth-first sequence of events for the rays (10k lines)
-        # It can now be rendered via eg pygame.
+    print(AdventOfCodeProblem202316().solve())

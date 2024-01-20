@@ -54,4 +54,4 @@ def compute_finite_difference_forward(arr: PuzzleInput) -> PuzzleInput:
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202309().solve_all())
+    print(AdventOfCodeProblem202309().solve())

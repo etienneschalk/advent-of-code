@@ -116,4 +116,4 @@ def parse_instructions_text(instruction_group: str) -> tuple[InstructionTuple, .
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202205().solve_all())
+    print(AdventOfCodeProblem202205().solve())

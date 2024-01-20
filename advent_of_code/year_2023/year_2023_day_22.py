@@ -330,4 +330,4 @@ def parse_brick(line: str):
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202322().solve_all())
+    print(AdventOfCodeProblem202322().solve())

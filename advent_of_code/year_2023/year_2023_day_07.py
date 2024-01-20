@@ -136,4 +136,4 @@ def parse_text_input(text: str):
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202307().solve_all())
+    print(AdventOfCodeProblem202307().solve())

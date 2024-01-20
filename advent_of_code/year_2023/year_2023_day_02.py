@@ -97,4 +97,4 @@ def compute_minimal_required_handful(game: Game) -> Handful:
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202302().solve_all())
+    print(AdventOfCodeProblem202302().solve())

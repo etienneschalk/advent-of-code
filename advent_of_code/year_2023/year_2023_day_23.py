@@ -309,4 +309,4 @@ def format_node(node: TrailNode) -> str:
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202323().solve_all())
+    print(AdventOfCodeProblem202323().solve())

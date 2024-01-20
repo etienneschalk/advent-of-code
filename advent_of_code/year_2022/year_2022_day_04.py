@@ -101,4 +101,4 @@ def parse_sub_line(sub_line: str) -> tuple[int, int]:
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202204().solve_all())
+    print(AdventOfCodeProblem202204().solve())

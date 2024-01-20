@@ -138,4 +138,4 @@ def parse_node_from_line(line: str) -> tuple[str, tuple[str, str]]:
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202308().solve_all())
+    print(AdventOfCodeProblem202308().solve())

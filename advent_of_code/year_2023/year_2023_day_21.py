@@ -281,4 +281,4 @@ def compute_points_for_interpolation(
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202321().solve_all())
+    print(AdventOfCodeProblem202321().solve())

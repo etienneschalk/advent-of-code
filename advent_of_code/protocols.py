@@ -5,7 +5,7 @@ from typing import Protocol
 from advent_of_code.common import load_puzzle_input_text_file
 
 
-class AdventOfCodeProblem[PuzzleInputT](Protocol):  #  type: ignore[syntax]
+class AdventOfCodeProblem[PuzzleInputT](Protocol):
     year: int  # This is a protocol member
     day: int
     tag: str = "v1"  # This one too (with default)
@@ -27,12 +27,16 @@ class AdventOfCodeProblem[PuzzleInputT](Protocol):  #  type: ignore[syntax]
         parsed = self.parse_text_input(text)
         return parsed
 
-    def solve_all(self):
+    def solve(self, part_1: bool = True, part_2: bool = True):
         # Be safe and parse twice the input, in case logic require input mutation
         # This is less efficient than reusing the input, but can help keep independence
         # in part solving, when it is easier to mutate the puzzle input inplace.
-        result_part_1 = self.solve_part_1(self.parse_input_text_file())
-        result_part_2 = self.solve_part_2(self.parse_input_text_file())
+        result_part_1 = (
+            self.solve_part_1(self.parse_input_text_file()) if part_1 else None
+        )
+        result_part_2 = (
+            self.solve_part_2(self.parse_input_text_file()) if part_2 else None
+        )
 
         return {1: result_part_1, 2: result_part_2}
 
@@ -47,13 +51,15 @@ class ExampleAdventOfCodePuzzleInput202207:
     number_bis: int
 
 
-@dataclass(kw_only=True)
+@dataclass(kw_only=True, frozen=True)
 class ExampleAdventOfCodeProblem202206(
     AdventOfCodeProblem[ExampleAdventOfCodePuzzleInput202206]
 ):
     year: int
     day: int
     # Explicit subclassing will bring the tag attribute and its default value
+    # But it can still be overridden
+    tag: str = "retest"
 
     def solve_part_1(self, puzzle_input: ExampleAdventOfCodePuzzleInput202206):
         return 1
@@ -92,7 +98,7 @@ class ExampleAdventOfCodeProblem202207:
         parsed = self.parse_text_input(text)
         return parsed
 
-    def solve_all(self):
+    def solve(self, part_1: bool = True, part_2: bool = True):
         result_part_1 = self.solve_part_1(self.parse_input_text_file())
         result_part_2 = self.solve_part_2(self.parse_input_text_file())
 
@@ -107,11 +113,13 @@ def function_that_solve_part_1[PuzzleInputT](
 
 
 if __name__ == "__main__":
+    # Explicit subclassing. With Protocol as a dataclass itself, the tag attribute is inherited
     problem = ExampleAdventOfCodeProblem202206(year=2022, day=6)
     puzzle_input = ExampleAdventOfCodePuzzleInput202206(number=34)
 
     res1 = function_that_solve_part_1(problem, puzzle_input)
 
+    # Implicit subclassing. The tag cannot be passed directly, it must be declared
     problem = ExampleAdventOfCodeProblem202207(year=2022, day=7)
     puzzle_input = ExampleAdventOfCodePuzzleInput202207(number_bis=343)
 

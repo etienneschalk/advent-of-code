@@ -115,4 +115,4 @@ def parse_text_input_part_2(text: str) -> list[DigInstruction]:
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem202318().solve_all())
+    print(AdventOfCodeProblem202318().solve())
