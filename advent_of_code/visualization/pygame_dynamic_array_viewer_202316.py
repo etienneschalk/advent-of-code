@@ -116,68 +116,79 @@ CELL_CHAR_TO_PATTERN_5X5_STRINGS = {
 }
 
 
+# [visu] Adapt this class for year 2023 day 14 (moving rocks)
 @dataclass(kw_only=True)
-class Viewer:
+class AdventOfCodeVisualizer202316:
     problem_input_array: npt.NDArray[np.uint8]
     history: HistoryDictPerDepth
-    display_size: tuple[int, int]
     simulation_step: int
 
-    target_fps: int = 60
     min_luminance: int = 40
     max_luminance: int = 255 - min_luminance
-    cell_width_px: int = 5
-    running_game_loop: bool = True
-    update_display: bool = False
-    elapsed_frames: int = 0
+    cell_width_in_px: int = 5
 
-    screen: pygame.SurfaceType = field(init=False)
     display_size_scaled: tuple[int, int] = field(init=False)
     mirror_surf: pygame.Surface = field(init=False)
     ray_array: npt.NDArray[np.uint8] = field(init=False)
 
+    # ---
+
+    display_size: tuple[int, int]
+
+    target_fps: int = 60
+    running_game_loop: bool = True
+    elapsed_frames: int = 0
+    update_display: bool = False
+
+    screen: pygame.SurfaceType = field(init=False)
+
     def init(self, title: str):
         pygame.init()
         self.display_size_scaled = (
-            self.display_size[0] * self.cell_width_px,
-            self.display_size[1] * self.cell_width_px,
+            self.display_size[0] * self.cell_width_in_px,
+            self.display_size[1] * self.cell_width_in_px,
         )
         self.screen = pygame.display.set_mode(self.display_size_scaled)
         pygame.display.set_caption(title)
-
-    def start(self):
-        self.init_mirror_surf()
-        self.ray_array = self.generate_ray_array()
-
-        initial_color = (self.min_luminance, self.min_luminance, self.min_luminance)
-        self.screen.fill(initial_color)
+        self.screen.fill((0, 0, 0))
         pygame.display.flip()
 
-        clock = pygame.time.Clock()
+        self.init_state()
 
+    def start(self):
+        clock = pygame.time.Clock()
         while self.running_game_loop:
             clock.tick(self.target_fps)
+            self.elapsed_frames += 1
+
             self.consume_event_loop()
             if not self.update_display:
                 continue
-            self.update_ray_array(self.elapsed_frames)
-            self.render()
-            self.elapsed_frames += 1
+
+            self.update_state()
+            self.update_surfaces()
+
+            pygame.display.flip()
 
         pygame.quit()
+
+    def init_state(self):
+        self.init_mirror_surf()
+        self.ray_array = self.generate_ray_array()
 
     def init_mirror_surf(self):
         mirror_array = self.generate_mirror_array()
         self.mirror_surf = pygame.surfarray.make_surface(mirror_array)
         self.mirror_surf.set_colorkey((0, 0, 0))
 
-    def render(self):
+    def update_surfaces(self):
         surf = pygame.surfarray.make_surface(self.ray_array)
         surf_scaled = pygame.transform.scale(surf, self.display_size_scaled)
         self.screen.blit(surf_scaled, (0, 0))
         self.screen.blit(self.mirror_surf, (0, 0))
 
-        pygame.display.update()
+    def update_state(self) -> None:
+        self.update_ray_array(self.elapsed_frames)
 
     def update_ray_array(self, total_elapsed_frames: int) -> None:
         # Can give funny results
@@ -230,7 +241,7 @@ class Viewer:
             dtype=np.uint8,
         )
 
-        if self.cell_width_px == 3:
+        if self.cell_width_in_px == 3:
             empty = (
                 parse_2d_string_array_to_uint8(PATTERN_EMPTY_SPACE_3X3) == CELL_WALL
             ) * 255
@@ -250,7 +261,7 @@ class Viewer:
             full_wall = (
                 parse_2d_string_array_to_uint8(PATTERN_WALL_3X3) == CELL_WALL
             ) * 255
-        elif self.cell_width_px == 5:
+        elif self.cell_width_in_px == 5:
             empty = (
                 parse_2d_string_array_to_uint8(PATTERN_EMPTY_SPACE_5X5) == CELL_WALL
             ) * 255
@@ -286,11 +297,11 @@ class Viewer:
 
         for row in range(self.problem_input_array.shape[0]):
             for col in range(self.problem_input_array.shape[1]):
-                row_origin = self.cell_width_px * row
-                col_origin = self.cell_width_px * col
+                row_origin = self.cell_width_in_px * row
+                col_origin = self.cell_width_in_px * col
                 mirror_array[
-                    row_origin : row_origin + self.cell_width_px,
-                    col_origin : col_origin + self.cell_width_px,
+                    row_origin : row_origin + self.cell_width_in_px,
+                    col_origin : col_origin + self.cell_width_in_px,
                     :,
                 ] = cell_char_to_pattern[self.problem_input_array[row, col]]
 
@@ -311,7 +322,7 @@ if __name__ == "__main__":
     # - Draw the mirrors. (for now problem_input_array is unused)
     #    For that, upscale to 3X3 tiles, and display rays as centered 1px lines
     # - Handle alpha, to have a "trace" effect
-    viewer = Viewer(
+    viewer = AdventOfCodeVisualizer202316(
         problem_input_array=problem_input_array,
         history=history_dict,
         display_size=(problem_input_array.shape[0], problem_input_array.shape[1]),
