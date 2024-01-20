@@ -5,42 +5,43 @@ from typing import Callable, NamedTuple
 import numpy as np
 
 from advent_of_code.common import load_input_text_file_from_filename
+from advent_of_code.protocols import AdventOfCodeProblem
 
 InstructionTuple = NamedTuple(
     "InstructionTuple", [("move", int), ("source", int), ("destination", int)]
 )
 type StacksType = dict[int, list[str]]
-type ProblemDataType = RearrangementProcedure
+type PuzzleInput = RearrangementProcedure
 type MovingFunctionSignatureType = Callable[
     [InstructionTuple, list[str], list[str]], None
 ]
 
 
 # [visu] Sankey flow diagram is the best suited
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202205(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2022
+    day: int = 5
+
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        return parse_text_input(text)
+
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        procedure = puzzle_input
+        result = logic_part_1(procedure)
+        return result
+
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        procedure = puzzle_input
+        result = logic_part_2(procedure)
+        return result
 
 
 @dataclass(frozen=True, kw_only=True)
 class RearrangementProcedure:
     stacks: StacksType
     instructions: tuple[InstructionTuple, ...]
-
-
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-    print({1: result_part_1, 2: result_part_2})
-
-
-def compute_part_1():
-    procedure = parse_input_text_file()
-    result = logic_part_1(procedure)
-    return result
-
-
-def compute_part_2():
-    procedure = parse_input_text_file()
-    result = logic_part_2(procedure)
-    return result
 
 
 def common_logic(
@@ -77,13 +78,13 @@ def move_stacks_lifo(
     destination.extend(reversed([source.pop() for _ in range(instruction.move)]))
 
 
-def parse_input_text_file() -> ProblemDataType:
+def parse_input_text_file() -> PuzzleInput:
     text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 
 
-def parse_text_input(text: str) -> ProblemDataType:
+def parse_text_input(text: str) -> PuzzleInput:
     stack_group, instruction_group = text.strip("\n").split("\n\n")
 
     stacks = parse_stack_text(stack_group)
@@ -115,4 +116,4 @@ def parse_instructions_text(instruction_group: str) -> tuple[InstructionTuple, .
 
 
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202205().solve_all())

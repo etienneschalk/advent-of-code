@@ -1,43 +1,39 @@
-from advent_of_code.common import load_input_text_file_from_filename
+from dataclasses import dataclass
 
-type ProblemDataType = list[list[int]]
+from advent_of_code.protocols import AdventOfCodeProblem
 
-
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-    print({1: result_part_1, 2: result_part_2})
+type PuzzleInput = list[list[int]]
 
 
-def compute_part_1():
-    parsed_input = parse_input_text_file()
-    result = compute_max_calories_part_1(parsed_input)
-    return result
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202201(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2022
+    day: int = 1
+
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        return parse_text_input(text)
+
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        result = compute_max_calories_part_1(puzzle_input)
+        return result
+
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        result = compute_max_calories_part_2(puzzle_input)
+        return result
 
 
-def compute_part_2():
-    parsed_input = parse_input_text_file()
-    result = compute_max_calories_part_2(parsed_input)
-    return result
-
-
-def compute_max_calories_part_1(parsed_input: ProblemDataType) -> int:
+def compute_max_calories_part_1(parsed_input: PuzzleInput) -> int:
     return max(sum(group) for group in parsed_input)
 
 
-def compute_max_calories_part_2(parsed_input: ProblemDataType, limit: int = 3) -> int:
+def compute_max_calories_part_2(parsed_input: PuzzleInput, limit: int = 3) -> int:
     return sum(sorted((sum(group) for group in parsed_input), reverse=True)[:limit])
 
 
-def parse_input_text_file() -> ProblemDataType:
-    text = load_input_text_file_from_filename(__file__)
-    parsed = parse_text_input(text)
-    return parsed
-
-
-def parse_text_input(text: str) -> ProblemDataType:
+def parse_text_input(text: str) -> PuzzleInput:
     return [[int(n) for n in group.split("\n")] for group in text.strip().split("\n\n")]
 
 
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202201().solve_all())

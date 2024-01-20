@@ -52,7 +52,7 @@ repos:
   #       ]
   # Pyright can replace mypy
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.345
+    rev: v1.1.347
     hooks:
     - id: pyright
       language: python_venv

@@ -1,27 +1,31 @@
+from dataclasses import dataclass
+
 import numpy as np
 import numpy.typing as npt
 
 from advent_of_code.common import load_input_text_file_from_filename
+from advent_of_code.protocols import AdventOfCodeProblem
 
-type ProblemDataType = list[str]
-
-
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-
-    print({1: result_part_1, 2: result_part_2})
+type PuzzleInput = list[str]
 
 
-def compute_part_1():
-    snafus = parse_input_text_file()
-    expected_decimal_sum = sum(convert_snafu_to_decimal(snafu) for snafu in snafus)
-    snafu_sum = convert_decimal_to_snafu(expected_decimal_sum)
-    return snafu_sum
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202225(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2022
+    day: int = 25
 
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        return parse_text_input(text)
 
-def compute_part_2():
-    return None
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        snafus = puzzle_input
+        expected_decimal_sum = sum(convert_snafu_to_decimal(snafu) for snafu in snafus)
+        snafu_sum = convert_decimal_to_snafu(expected_decimal_sum)
+        return snafu_sum
+
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        return "Part 2 of Day 25 is having solved all the 49 previous problems!"
 
 
 def convert_snafu_to_decimal(snafu: str) -> int:
@@ -79,17 +83,17 @@ def convert_decimal_to_snafu_ndarray(decimal: int) -> npt.NDArray[np.int8]:
     return coefficients
 
 
-def parse_input_text_file() -> ProblemDataType:
+def parse_input_text_file() -> PuzzleInput:
     text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 
 
-def parse_text_input(text: str) -> ProblemDataType:
+def parse_text_input(text: str) -> PuzzleInput:
     lines = text.strip().split("\n")
     ...
     return lines
 
 
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202225().solve_all())

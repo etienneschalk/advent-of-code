@@ -1,28 +1,31 @@
+from dataclasses import dataclass
+
 from advent_of_code.common import load_input_text_file_from_filename
+from advent_of_code.protocols import AdventOfCodeProblem
 
 type ProblemLine = tuple[tuple[int, int], tuple[int, int]]
-type ProblemDataType = tuple[ProblemLine, ...]
+type PuzzleInput = tuple[ProblemLine, ...]
 
 
-def main():
-    result_part_1 = compute_part_1()
-    result_part_2 = compute_part_2()
-    print({1: result_part_1, 2: result_part_2})
+@dataclass(kw_only=True)
+class AdventOfCodeProblem202204(AdventOfCodeProblem[PuzzleInput]):
+    year: int = 2022
+    day: int = 4
+
+    @staticmethod
+    def parse_text_input(text: str) -> PuzzleInput:
+        return parse_text_input(text)
+
+    def solve_part_1(self, puzzle_input: PuzzleInput):
+        fully_contained_count = compute_fully_contained_count(puzzle_input)
+        return fully_contained_count
+
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        overlapping_count = compute_overlapping_count(puzzle_input)
+        return overlapping_count
 
 
-def compute_part_1():
-    parsed_input = parse_input_text_file()
-    fully_contained_count = compute_fully_contained_count(parsed_input)
-    return fully_contained_count
-
-
-def compute_part_2():
-    parsed_input = parse_input_text_file()
-    overlapping_count = compute_overlapping_count(parsed_input)
-    return overlapping_count
-
-
-def compute_fully_contained_count(parsed_input: ProblemDataType):
+def compute_fully_contained_count(parsed_input: PuzzleInput):
     intersections = tuple(intersect_ranges_inclusive(*p) for p in parsed_input)
     fully_contained_count = sum(
         inter in set(pair) for inter, pair in zip(intersections, parsed_input)
@@ -31,7 +34,7 @@ def compute_fully_contained_count(parsed_input: ProblemDataType):
     return fully_contained_count
 
 
-def compute_overlapping_count(parsed_input: ProblemDataType):
+def compute_overlapping_count(parsed_input: PuzzleInput):
     intersections = tuple(intersect_ranges_inclusive(*p) for p in parsed_input)
     overlapping_count = sum(inter[0] <= inter[1] for inter in intersections)
 
@@ -44,7 +47,7 @@ def intersect_ranges_inclusive(
     return max(range_a[0], range_b[0]), min(range_a[1], range_b[1])
 
 
-def render_input_visualization(input_data: ProblemDataType) -> str:
+def render_input_visualization(input_data: PuzzleInput) -> str:
     max_value = max(i for p in input_data for j in p for i in j)
     digit_count = len(str(max_value))
     format_str = f"0{digit_count}d"
@@ -75,13 +78,13 @@ def render_interval_bar(start: int, stop: int, max_value: int, format_str: str) 
     )
 
 
-def parse_input_text_file() -> ProblemDataType:
+def parse_input_text_file() -> PuzzleInput:
     text = load_input_text_file_from_filename(__file__)
     parsed = parse_text_input(text)
     return parsed
 
 
-def parse_text_input(text: str) -> ProblemDataType:
+def parse_text_input(text: str) -> PuzzleInput:
     lines = text.strip().split("\n")
     parsed = tuple(parse_line(line) for line in lines)
     return parsed
@@ -98,4 +101,4 @@ def parse_sub_line(sub_line: str) -> tuple[int, int]:
 
 
 if __name__ == "__main__":
-    main()
+    print(AdventOfCodeProblem202204().solve_all())
