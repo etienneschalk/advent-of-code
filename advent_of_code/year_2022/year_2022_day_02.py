@@ -1,6 +1,6 @@
 from advent_of_code.common import load_input_text_file_from_filename
 
-ProblemDataType = tuple[tuple[str, str]]
+type ProblemDataType = tuple[tuple[str, str], ...]
 
 
 def main():
@@ -42,7 +42,7 @@ def compute_scores_for_part_2(parsed_input: ProblemDataType):
     return scores
 
 
-def compute_scores(int_pairs):
+def compute_scores(int_pairs: tuple[tuple[int, int], ...]) -> tuple[int, ...]:
     scores = tuple(3 * ((p[1] - p[0] + 1) % 3) + p[1] + 1 for p in int_pairs)
     return scores
 
@@ -54,7 +54,9 @@ def parse_input_text_file() -> ProblemDataType:
 
 
 def parse_text_input(text: str) -> ProblemDataType:
-    return tuple(tuple(line.split()) for line in text.strip().split("\n"))
+    return tuple(
+        (line.split()[0], line.split()[1]) for line in text.strip().split("\n")
+    )
 
 
 if __name__ == "__main__":

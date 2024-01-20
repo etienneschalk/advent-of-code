@@ -1,8 +1,9 @@
 import numpy as np
+import numpy.typing as npt
 
 from advent_of_code.common import load_input_text_file_from_filename
 
-ProblemDataType = ...
+type ProblemDataType = list[str]
 
 
 def main():
@@ -38,18 +39,18 @@ def convert_snafu_to_decimal(snafu: str) -> int:
 
 
 def convert_decimal_to_snafu(decimal: int) -> str:
-    coefs = convert_decimal_to_snafu_ndarray(decimal)
+    coefficients = convert_decimal_to_snafu_ndarray(decimal)
     mapping = {-2: "=", -1: "-", 0: "0", 1: "1", 2: "2"}
-    return "".join(mapping[coef] for coef in reversed(coefs)).lstrip("0")
+    return "".join(mapping[coef] for coef in reversed(coefficients)).lstrip("0")
 
 
-def convert_decimal_to_snafu_ndarray(decimal: int) -> str:
+def convert_decimal_to_snafu_ndarray(decimal: int) -> npt.NDArray[np.int8]:
     i = 0
 
     while decimal % (5**i) != decimal:
         i += 1
 
-    coefs = np.zeros(i + 1, dtype=np.int8)
+    coefficients = np.zeros(i + 1, dtype=np.int8)
 
     remainder = decimal
 
@@ -63,19 +64,19 @@ def convert_decimal_to_snafu_ndarray(decimal: int) -> str:
             remainder -= power
 
         if quotient == -3:
-            coefs[i + 1] -= 1
+            coefficients[i + 1] -= 1
             quotient = 2
         if quotient == 3:
-            coefs[i + 1] += 1
+            coefficients[i + 1] += 1
             quotient = -2
         if quotient == 4:
-            coefs[i + 1] += 1
+            coefficients[i + 1] += 1
             quotient = -1
-        coefs[i] = quotient
+        coefficients[i] = quotient
         i -= 1
 
-    coefs[0] = remainder
-    return coefs
+    coefficients[0] = remainder
+    return coefficients
 
 
 def parse_input_text_file() -> ProblemDataType:

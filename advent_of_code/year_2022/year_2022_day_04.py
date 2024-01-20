@@ -1,6 +1,7 @@
 from advent_of_code.common import load_input_text_file_from_filename
 
-ProblemDataType = tuple[tuple[tuple[int, int], tuple[int, int]], ...]
+type ProblemLine = tuple[tuple[int, int], tuple[int, int]]
+type ProblemDataType = tuple[ProblemLine, ...]
 
 
 def main():
@@ -40,7 +41,7 @@ def compute_overlapping_count(parsed_input: ProblemDataType):
 def intersect_ranges_inclusive(
     range_a: tuple[int, int], range_b: tuple[int, int]
 ) -> tuple[int, int]:
-    return tuple((max(range_a[0], range_b[0]), min(range_a[1], range_b[1])))
+    return max(range_a[0], range_b[0]), min(range_a[1], range_b[1])
 
 
 def render_input_visualization(input_data: ProblemDataType) -> str:
@@ -82,11 +83,18 @@ def parse_input_text_file() -> ProblemDataType:
 
 def parse_text_input(text: str) -> ProblemDataType:
     lines = text.strip().split("\n")
-    parsed = tuple(
-        tuple((tuple(int(c) for c in p.split("-"))) for p in line.split(","))
-        for line in lines
-    )
+    parsed = tuple(parse_line(line) for line in lines)
     return parsed
+
+
+def parse_line(line: str) -> ProblemLine:
+    s = line.split(",")
+    return parse_sub_line(s[0]), parse_sub_line(s[1])
+
+
+def parse_sub_line(sub_line: str) -> tuple[int, int]:
+    s = sub_line.split("-")
+    return int(s[0]), int(s[1])
 
 
 if __name__ == "__main__":

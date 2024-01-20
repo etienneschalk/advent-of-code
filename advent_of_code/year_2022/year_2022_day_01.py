@@ -1,6 +1,6 @@
 from advent_of_code.common import load_input_text_file_from_filename
 
-ProblemDataType = list[list[int]]
+type ProblemDataType = list[list[int]]
 
 
 def main():

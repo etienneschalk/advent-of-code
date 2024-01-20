@@ -23,20 +23,20 @@ def compute_part_2():
     return priority_sum
 
 
-def compute_priority_sum(shared_items):
+def compute_priority_sum(shared_items: tuple[str, ...]):
     lowercase_letters = "".join(chr(x) for x in range(ord("a"), ord("z") + 1))
     uppercase_letters = "".join(chr(x) for x in range(ord("A"), ord("Z") + 1))
     letters = lowercase_letters + uppercase_letters
-    priorities = dict(zip(letters, range(1, len(letters) + 1)))
+    priorities: dict[str, int] = dict(zip(letters, range(1, len(letters) + 1)))
     priority_sum = sum(priorities[si] for si in shared_items)
     return priority_sum
 
 
-def find_shared_items_for_part_1(parsed_input: ProblemDataType) -> tuple[int, ...]:
+def find_shared_items_for_part_1(parsed_input: ProblemDataType) -> tuple[str, ...]:
     return tuple(find_shared_item(set(p[0]), set(p[1])) for p in parsed_input)
 
 
-def find_shared_items_for_part_2(parsed_input: ProblemDataType) -> tuple[int, ...]:
+def find_shared_items_for_part_2(parsed_input: ProblemDataType) -> tuple[str, ...]:
     max_iter = len(parsed_input) // 3
 
     return tuple(
@@ -45,14 +45,14 @@ def find_shared_items_for_part_2(parsed_input: ProblemDataType) -> tuple[int, ..
     )
 
 
-def find_shared_items_for_group(parsed_input, group_index):
+def find_shared_items_for_group(parsed_input: ProblemDataType, group_index: int):
     group = parsed_input[3 * group_index : 3 * (group_index + 1)]
     group_set = tuple(set(t[0] + t[1]) for t in group)
     shared_items = find_shared_item(*group_set)
     return shared_items
 
 
-def find_shared_item(*sets: set[str]) -> int:
+def find_shared_item(*sets: set[str]) -> str:
     intersection = set.intersection(*sets)
     assert len(intersection) == 1
     return intersection.pop()

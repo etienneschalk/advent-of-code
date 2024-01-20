@@ -69,7 +69,7 @@ pytest --durations=50 # Slowest 50 tests
 
 ### Types of problems
 
-Note: To get an overview of all input datatypes, grep for `type PuzzleInput =` globally in the project. It gives a quick overview over the variety of data structures used.
+Note: To get an overview of all input data types, grep for `type PuzzleInput =` globally in the project. It gives a quick overview over the variety of data structures used.
 Scalar to Range manipulation, Sankey flow diagrams
 
 - Day 5: If You Give A Seed A Fertilizer

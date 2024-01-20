@@ -1,7 +1,9 @@
 import shutil
 from collections import defaultdict
 from pathlib import Path
+from typing import Mapping
 
+import click
 from PIL import Image
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -10,13 +12,17 @@ from PIL import Image
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-def main():
-    dir_path = None  # changeme
-    dir_path = Path(dir_path)
-
+@click.option(
+    "--input_dir_path",
+    help="Input directory path to photos",
+    type=click.Path(path_type=Path),
+)
+def main(input_dir_path: Path):
     # First pass: Identify dates
     img_paths = sorted(
-        path for path in dir_path.glob("IMG-*-WA*") if path.suffix in {".jpg", ".jpeg"}
+        path
+        for path in input_dir_path.glob("IMG-*-WA*")
+        if path.suffix in {".jpg", ".jpeg"}
     )
     print(f"There are [{len(img_paths)}] received pictures (shallow).")
 
@@ -27,7 +33,7 @@ def main():
     print(pictures_per_month)
 
     for year_month_key, paths in classified_by_year_month.items():
-        target_dir = dir_path / "sorted" / year_month_key
+        target_dir = input_dir_path / "sorted" / year_month_key
         target_dir.mkdir(parents=True, exist_ok=True)
         for source_path in paths:
             target_path = target_dir / source_path.name
@@ -38,7 +44,7 @@ def main():
                 exit(-1)
             source_path.rename(target_path)
 
-    sorted_dir = dir_path / "sorted"
+    sorted_dir = input_dir_path / "sorted"
     keys = sorted(x for x in sorted_dir.iterdir() if x.is_dir())
     year_month_to_paths = {
         key.name: sorted((sorted_dir / key).glob("*")) for key in keys
@@ -66,7 +72,7 @@ def main():
 
     for year_month_key, paths in classified_collages_by_year_month.items():
         flatten = True
-        target_dir = dir_path / "sorted_collages"
+        target_dir = input_dir_path / "sorted_collages"
         if flatten:
             target_dir = target_dir / "flatten"
         else:
@@ -82,11 +88,13 @@ def main():
             shutil.copy(source_path, target_path)
 
 
-def get_pictures_count(classified_by_year_month):
+def get_pictures_count(
+    classified_by_year_month: Mapping[str, list[Path]],
+) -> dict[str, int]:
     return {k: len(v) for k, v in classified_by_year_month.items()}
 
 
-def get_classified_paths(img_paths):
+def get_classified_paths(img_paths: list[Path]) -> Mapping[str, list[Path]]:
     classified_by_year_month = defaultdict(list)
     for path in img_paths:
         classified_by_year_month[get_month_from_img_filename(path)].append(path)
@@ -98,4 +106,4 @@ def get_month_from_img_filename(path: Path) -> str:
 
 
 if __name__ == "__main__":
-    main()
+    main()  # type: ignore

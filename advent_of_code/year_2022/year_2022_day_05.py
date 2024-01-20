@@ -1,13 +1,20 @@
 import re
-from collections import namedtuple
 from dataclasses import dataclass
+from typing import Callable, NamedTuple
 
 import numpy as np
 
 from advent_of_code.common import load_input_text_file_from_filename
 
-InstructionTuple = namedtuple("InstructionTuple", ["move", "source", "destination"])
-StacksType = dict[int, list[str]]
+InstructionTuple = NamedTuple(
+    "InstructionTuple", [("move", int), ("source", int), ("destination", int)]
+)
+type StacksType = dict[int, list[str]]
+type ProblemDataType = RearrangementProcedure
+type MovingFunctionSignatureType = Callable[
+    [InstructionTuple, list[str], list[str]], None
+]
+
 
 # [visu] Sankey flow diagram is the best suited
 
@@ -15,10 +22,7 @@ StacksType = dict[int, list[str]]
 @dataclass(frozen=True, kw_only=True)
 class RearrangementProcedure:
     stacks: StacksType
-    instructions: tuple[InstructionTuple]
-
-
-ProblemDataType = RearrangementProcedure
+    instructions: tuple[InstructionTuple, ...]
 
 
 def main():
@@ -39,7 +43,10 @@ def compute_part_2():
     return result
 
 
-def common_logic(procedure: RearrangementProcedure, move_func) -> str:
+def common_logic(
+    procedure: RearrangementProcedure,
+    move_func: MovingFunctionSignatureType,
+) -> str:
     stacks = procedure.stacks
     for instruction in procedure.instructions:
         destination = stacks[instruction.destination]
@@ -57,12 +64,16 @@ def logic_part_2(procedure: RearrangementProcedure) -> str:
     return common_logic(procedure, move_stacks_lifo)
 
 
-def move_stacks_fifo(instruction, destination, source):
+def move_stacks_fifo(
+    instruction: InstructionTuple, destination: list[str], source: list[str]
+) -> None:
     for _ in range(instruction.move):
         destination.append(source.pop())
 
 
-def move_stacks_lifo(instruction, destination, source):
+def move_stacks_lifo(
+    instruction: InstructionTuple, destination: list[str], source: list[str]
+) -> None:
     destination.extend(reversed([source.pop() for _ in range(instruction.move)]))
 
 
@@ -95,7 +106,7 @@ def parse_stack_text(stack_group: str) -> StacksType:
     return stacks
 
 
-def parse_instructions_text(instruction_group: str) -> tuple[InstructionTuple]:
+def parse_instructions_text(instruction_group: str) -> tuple[InstructionTuple, ...]:
     instructions = tuple(
         InstructionTuple(*(int(d) for d in re.findall(r"\d+", instruction)))
         for instruction in instruction_group.split("\n")
