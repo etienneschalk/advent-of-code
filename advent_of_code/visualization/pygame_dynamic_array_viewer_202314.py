@@ -59,7 +59,7 @@ class AOCVisualizer202314(AOCPygameVisualizer):
     history: xr.DataArray
     simulation_step: int
 
-    updates_per_second: int = 1
+    state_updates_per_second: int = 1
     min_luminance: int = 40
     max_luminance: int = 255 - min_luminance
 
@@ -67,39 +67,65 @@ class AOCVisualizer202314(AOCPygameVisualizer):
     _rocks_xda: xr.DataArray = field(init=False)
 
     @override
+    def init(self):
+        self.display_size = (
+            self.simulation_size[0] * self.cell_width_in_px,
+            self.simulation_size[1] * self.cell_width_in_px,
+        )
+        self.screen = pygame.display.set_mode(
+            (self.display_size[0] * 1.5, self.display_size[1] * 1.5)
+        )
+        pygame.display.set_caption(self.title)
+        self.screen.fill((0, 0, 0))
+        pygame.display.flip()
+
+        self.init_state()
+
+    @override
     def init_state(self):
         self._init_board_surf()
 
     @override
     def update_state(self) -> None:
-        self._update_rocks_xda(self.elapsed_frames)
+        self._update_rocks_xda()
 
     @override
     def update_surfaces(self):
+        self.screen.fill((0, 0, 0))
+
+        in_between_frames = self.target_fps // self.state_updates_per_second
+        angle_in_degrees = -25 + (
+            (90) * (self.elapsed_frames % (in_between_frames * 4)) / in_between_frames
+        )
+
         surf = pygame.surfarray.make_surface(self._rocks_xda.values)
         surf_scaled = pygame.transform.scale(surf, self.display_size)
-        self.screen.blit(surf_scaled, (0, 0))
-        self.screen.blit(self._board_array_surf, (0, 0))
+        surf_scaled.set_colorkey((0, 255, 0))
+        w, h = pygame.display.get_surface().get_size()
+        old_rect = surf_scaled.get_rect(center=(w // 2, h // 2))
+        surf_scaled, new_rect = rot_center(surf_scaled, old_rect, angle_in_degrees)
+        self.screen.blit(surf_scaled, new_rect)
+
+        surf = self._board_array_surf
+        surf.set_colorkey((0, 0, 0))
+        w, h = pygame.display.get_surface().get_size()
+        old_rect = surf.get_rect(center=(w // 2, h // 2))
+        surf, new_rect = rot_center(surf, old_rect, angle_in_degrees)
+        self.screen.blit(surf, new_rect)
 
     @override
     def consume_event(self, event: pygame.Event):
         if event.type == pygame.MOUSEBUTTONUP:
             self.update_simulation = not self.update_simulation
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_w:  # Potentiel issue with AZERTY keyboards?
-                self.simulation_step += 1
-            elif event.key == pygame.K_s:
-                self.simulation_step = (
-                    self.simulation_step - 1 if self.simulation_step > 0 else 0
-                )
-            elif event.key == pygame.K_SPACE:
+            if event.key == pygame.K_SPACE:
                 self.update_simulation = not self.update_simulation
             elif event.key == pygame.K_r:
                 self.elapsed_frames = 0
             elif event.key == pygame.K_t:
-                self.elapsed_frames -= 12 * self.simulation_step
+                self.elapsed_frames -= self.target_fps // self.state_updates_per_second
             elif event.key == pygame.K_g:
-                self.elapsed_frames += 12 * self.simulation_step
+                self.elapsed_frames += self.target_fps // self.state_updates_per_second
 
     def _init_board_surf(self):
         board_array = self._generate_board_array()
@@ -109,16 +135,25 @@ class AOCVisualizer202314(AOCPygameVisualizer):
         )
         self._board_array_surf.set_colorkey((0, 0, 0))
 
-    def _update_rocks_xda(self, total_elapsed_frames: int) -> None:
-        if total_elapsed_frames % (self.target_fps // self.updates_per_second) != 0:
+    def time(self, i: int) -> int:
+        time = (
+            i
+            + self.simulation_step
+            * (
+                self.elapsed_frames
+                // (self.target_fps // self.state_updates_per_second)
+            )
+        ) % self.history["time"].size
+        return time
+
+    def _update_rocks_xda(self) -> None:
+        if (
+            self.elapsed_frames % (self.target_fps // self.state_updates_per_second)
+            != 0
+        ):
             return
         for i in range(self.simulation_step):
-            time = (
-                i
-                + self.simulation_step
-                * (total_elapsed_frames // (self.target_fps // self.updates_per_second))
-            ) % self.history["time"].size
-
+            time = self.time(i)
             print(time)
             channel = (self.history.isel(time=time) == ord("O")).astype(np.uint8)
             self._rocks_xda = xr.concat(
@@ -130,6 +165,13 @@ class AOCVisualizer202314(AOCPygameVisualizer):
         return xr.concat([channel, channel, channel], dim="color").transpose(
             ..., "color"
         )
+
+
+def rot_center(image: pygame.Surface, rect: pygame.Rect, angle: float):
+    """rotate an image while keeping its center"""
+    rot_image = pygame.transform.rotate(image, angle)
+    rot_rect = rot_image.get_rect(center=rect.center)
+    return rot_image, rot_rect
 
 
 class AOCPygameVisualizerFactory202314(AOCPygameVisualizerFactory):
@@ -150,7 +192,7 @@ class AOCPygameVisualizerFactory202314(AOCPygameVisualizerFactory):
             ),
             history=history_xda,
             simulation_step=1,
-            updates_per_second=2,
+            state_updates_per_second=1,
         )
         return viewer
 
