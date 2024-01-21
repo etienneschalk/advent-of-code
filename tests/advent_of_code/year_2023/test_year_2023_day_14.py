@@ -5,10 +5,10 @@ from advent_of_code.year_2023.year_2023_day_14 import (
     attain_wanted_state,
     compute_total_load_for_north,
     compute_total_load_from_state_lines,
-    compute_total_load_legacy,
+    compute_total_load_part_1,
     detect_cycle,
     get_list_of_str,
-    run_one_full_cycle,
+    update_state_for_one_full_rotation,
 )
 
 EXAMPLE_INPUT = """
@@ -75,7 +75,7 @@ def test_year_2023_day_14_part_1():
     test_input = EXAMPLE_INPUT
     parsed_input = AdventOfCodeProblem202314.parse_text_input(test_input)
     list_of_str = get_list_of_str(parsed_input, 3)
-    total_load = compute_total_load_legacy(list_of_str)
+    total_load = compute_total_load_part_1(list_of_str)
     assert total_load == 136
 
 
@@ -95,11 +95,11 @@ def test_year_2023_day_14_part_2():
     expected_3 = EXPECTED_PART_2_3_CYCLE.strip().split("\n")
     init_rot = 4
 
-    after_one_cycle = run_one_full_cycle(parsed_input, init_rot)
+    after_one_cycle = update_state_for_one_full_rotation(parsed_input, init_rot)
     assert get_list_of_str(after_one_cycle, 0) == expected_1
-    after_two_cycles = run_one_full_cycle(after_one_cycle, init_rot)
+    after_two_cycles = update_state_for_one_full_rotation(after_one_cycle, init_rot)
     assert get_list_of_str(after_two_cycles, 0) == expected_2
-    after_three_cycles = run_one_full_cycle(after_two_cycles, init_rot)
+    after_three_cycles = update_state_for_one_full_rotation(after_two_cycles, init_rot)
     assert get_list_of_str(after_three_cycles, 0) == expected_3
 
 
@@ -113,7 +113,7 @@ def test_year_2023_day_14_part_2_more_iter():
     state = parsed_input
     state_history = [state]
     for i in range(max_iter):
-        state = run_one_full_cycle(state, init_rot)
+        state = update_state_for_one_full_rotation(state, init_rot)
         state_history.append(state.flatten().tostring())
 
     # Period of T=7 does appear at some point

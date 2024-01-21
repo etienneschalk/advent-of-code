@@ -30,146 +30,146 @@ from advent_of_code.year_2022.year_2022_day_25 import AdventOfCodeProblem202225
 
 @pytest.mark.integration
 def test_integration_202201():
-    assert AdventOfCodeProblem202201().solve_all() == {1: 69795, 2: 208437}
+    assert AdventOfCodeProblem202201().solve() == {1: 69795, 2: 208437}
 
 
 @pytest.mark.integration
 def test_integration_202202():
-    assert AdventOfCodeProblem202202().solve_all() == {1: 9759, 2: 12429}
+    assert AdventOfCodeProblem202202().solve() == {1: 9759, 2: 12429}
 
 
 @pytest.mark.integration
 def test_integration_202203():
-    assert AdventOfCodeProblem202203().solve_all() == {1: 8109, 2: 2738}
+    assert AdventOfCodeProblem202203().solve() == {1: 8109, 2: 2738}
 
 
 @pytest.mark.integration
 def test_integration_202204():
-    assert AdventOfCodeProblem202204().solve_all() == {1: 560, 2: 839}
+    assert AdventOfCodeProblem202204().solve() == {1: 560, 2: 839}
 
 
 @pytest.mark.integration
 def test_integration_202205():
-    assert AdventOfCodeProblem202205().solve_all() == {1: "HNSNMTLHQ", 2: "RNLFDJMCT"}
+    assert AdventOfCodeProblem202205().solve() == {1: "HNSNMTLHQ", 2: "RNLFDJMCT"}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202206():
-#     assert AdventOfCodeProblem202206().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202206().solve() == {1: None, 2: None}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202207():
-#     assert AdventOfCodeProblem202207().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202207().solve() == {1: None, 2: None}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202208():
-#     assert AdventOfCodeProblem202208().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202208().solve() == {1: None, 2: None}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202209():
-#     assert AdventOfCodeProblem202209().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202209().solve() == {1: None, 2: None}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202210():
-#     assert AdventOfCodeProblem202210().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202210().solve() == {1: None, 2: None}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202211():
-#     assert AdventOfCodeProblem202211().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202211().solve() == {1: None, 2: None}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202212():
-#     assert AdventOfCodeProblem202212().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202212().solve() == {1: None, 2: None}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202213():
-#     assert AdventOfCodeProblem202213().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202213().solve() == {1: None, 2: None}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202214():
-#     assert AdventOfCodeProblem202214().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202214().solve() == {1: None, 2: None}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202215():
-#     assert AdventOfCodeProblem202215().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202215().solve() == {1: None, 2: None}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202216():
-#     assert AdventOfCodeProblem202216().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202216().solve() == {1: None, 2: None}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202217():
-#     assert AdventOfCodeProblem202217().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202217().solve() == {1: None, 2: None}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202218():
-#     assert AdventOfCodeProblem202218().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202218().solve() == {1: None, 2: None}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202219():
-#     assert AdventOfCodeProblem202219().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202219().solve() == {1: None, 2: None}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202220():
-#     assert AdventOfCodeProblem202220().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202220().solve() == {1: None, 2: None}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202221():
-#     assert AdventOfCodeProblem202221().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202221().solve() == {1: None, 2: None}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202222():
-#     assert AdventOfCodeProblem202222().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202222().solve() == {1: None, 2: None}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202223():
-#     assert AdventOfCodeProblem202223().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202223().solve() == {1: None, 2: None}
 
 
 # @pytest.mark.skip(reason="not solved yet")
 # @pytest.mark.integration
 # def test_integration_202224():
-#     assert AdventOfCodeProblem202224().solve_all() == {1: None, 2: None}
+#     assert AdventOfCodeProblem202224().solve() == {1: None, 2: None}
 
 
 @pytest.mark.integration
 def test_integration_202225():
-    assert AdventOfCodeProblem202225().solve_all() == {
+    assert AdventOfCodeProblem202225().solve() == {
         1: "2=01-0-2-0=-0==-1=01",
         2: "Part 2 of Day 25 is having solved all the 49 previous problems!",
     }
