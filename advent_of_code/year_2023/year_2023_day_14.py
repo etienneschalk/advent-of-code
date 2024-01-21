@@ -59,7 +59,7 @@ class AdventOfCodeProblem202314(AdventOfCodeProblem[PuzzleInput]):
     def log_part_2(self, puzzle_input: PuzzleInput, max_full_rotations_count: int):
         init_rot = 4
         next_board = puzzle_input
-        next_board_xda = xr.DataArray(data=next_board, dims=["rows", "cols"])
+        next_board_xda = xr.DataArray(data=next_board, dims=["row", "col"])
         board_history = [next_board_xda]
         for full_rotation_count in range(max_full_rotations_count):
             print(full_rotation_count)
@@ -68,10 +68,10 @@ class AdventOfCodeProblem202314(AdventOfCodeProblem[PuzzleInput]):
                 next_board = np.rot90(
                     update_state(get_list_of_str(next_board, k)), 4 - k
                 )
-                next_board_xda = xr.DataArray(data=next_board, dims=["rows", "cols"])
+                next_board_xda = xr.DataArray(data=next_board, dims=["row", "col"])
                 board_history.append(next_board_xda)
 
-        output_file_path = self.get_visualizations_instructions_for_part_1_file_path()
+        output_file_path = self.get_visualizations_instructions_for_part_2_file_path()
         chunks = (
             len(board_history),
             next_board_xda.shape[0],
@@ -85,7 +85,7 @@ class AdventOfCodeProblem202314(AdventOfCodeProblem[PuzzleInput]):
         )
         print(f"Saved zarr to {output_file_path}")
 
-    def get_visualizations_instructions_for_part_1_file_path(self) -> Path:
+    def get_visualizations_instructions_for_part_2_file_path(self) -> Path:
         return create_output_file_path("history.zarr", "", self.year, self.day)
 
 
