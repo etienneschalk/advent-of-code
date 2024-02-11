@@ -174,6 +174,7 @@ def rot_center(image: pygame.Surface, rect: pygame.Rect, angle: float):
     return rot_image, rot_rect
 
 
+# TODO eschalk use pymunk
 class AOCPygameVisualizerFactory202314(AOCPygameVisualizerFactory):
     def create_visualizer(self) -> AOCVisualizer202314:
         problem = AdventOfCodeProblem202314()

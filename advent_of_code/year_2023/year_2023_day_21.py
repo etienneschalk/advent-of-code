@@ -3,13 +3,13 @@ from dataclasses import dataclass
 import numpy as np
 import xarray as xr
 
-from advent_of_code.common import (
+from advent_of_code.common.common import (
     load_input_text_file_from_filename,
     parse_2d_string_array_to_uint8_xarray,
     render_2d_data_array,
 )
-from advent_of_code.constants import NEIGHBOUR_MOVES, Position, is_out_of_bounds
-from advent_of_code.protocols import AdventOfCodeProblem
+from advent_of_code.common.constants import NEIGHBOUR_MOVES, Position, is_out_of_bounds
+from advent_of_code.common.protocols import AdventOfCodeProblem
 
 type PuzzleInput = xr.DataArray
 

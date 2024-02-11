@@ -8,7 +8,7 @@ import numpy as np
 import numpy.typing as npt
 import pygame
 
-from advent_of_code.common import parse_2d_string_array_to_uint8
+from advent_of_code.common.common import parse_2d_string_array_to_uint8
 from advent_of_code.visualization.protocols import (
     AOCPygameVisualizer,
     AOCPygameVisualizerFactory,

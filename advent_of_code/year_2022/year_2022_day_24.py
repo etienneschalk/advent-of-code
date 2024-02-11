@@ -3,7 +3,7 @@ from collections import defaultdict
 import numpy as np
 import xarray as xr
 
-from advent_of_code.common import (
+from advent_of_code.common.common import (
     adapt_recursion_limit,
     load_input_text_file_from_filename,
 )

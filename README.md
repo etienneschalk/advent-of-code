@@ -138,3 +138,13 @@ Pure Visualization
 - Day 24: Never Tell Me The Odds
   - Require solving a linear system of equation. The use of external tools seems mandatory, eg using `sympy` for symbolic mathematics. It is used to solve the system of equations.
   - This is one of the rare problems that are more "float-oriented", and not "int-oriented". Getting precise exact numbers from a simulation is hard. Hence pure math helping here.
+
+## Documentation
+
+```bash
+cd docs
+# sphinx-autobuild source _build/html
+poetry run sphinx-build -E source _build/html # clear cache
+poetry run sphinx-autobuild source _build/html # autobuild
+# sphinx-autobuild -E source _build/html # clear cache (not advised with autobuild)
+```

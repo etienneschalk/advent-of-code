@@ -2,8 +2,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from advent_of_code.common import adapt_recursion_limit
-from advent_of_code.protocols import AdventOfCodeProblem
+from advent_of_code.common.common import adapt_recursion_limit
+from advent_of_code.common.protocols import AdventOfCodeProblem
 
 type PuzzleInput = dict[str, tuple[str, ...]]
 type FlatSet = dict[str, set[str]]

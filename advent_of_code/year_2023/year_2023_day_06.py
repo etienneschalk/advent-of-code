@@ -4,7 +4,7 @@ from functools import reduce
 
 import numpy as np
 
-from advent_of_code.protocols import AdventOfCodeProblem
+from advent_of_code.common.protocols import AdventOfCodeProblem
 
 type PuzzleInput = dict[str, list[int]]
 

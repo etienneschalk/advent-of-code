@@ -33,7 +33,7 @@ def load_puzzle_input_text_file(year: int, day: int) -> str:
 
 def get_input_file_path(year: int, day: int) -> Path:
     input_path = render_central_input_path(year, day)
-    input_path = Path(input_path)
+    input_path = Path(__file__).parent.parent.parent.resolve() / Path(input_path)
     return input_path
 
 

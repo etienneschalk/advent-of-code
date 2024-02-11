@@ -1,7 +1,11 @@
+"""
+Module Docstring
+"""
+
 from dataclasses import dataclass
 from typing import Literal, get_args
 
-from advent_of_code.protocols import AdventOfCodeProblem
+from advent_of_code.common.protocols import AdventOfCodeProblem
 
 # Do not use the type keyword, as values are used dynamically
 # in the code too (not only the type declarations)

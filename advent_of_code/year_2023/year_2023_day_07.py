@@ -2,7 +2,7 @@ from collections import Counter
 from dataclasses import dataclass
 from typing import Any, Literal, get_args
 
-from advent_of_code.protocols import AdventOfCodeProblem
+from advent_of_code.common.protocols import AdventOfCodeProblem
 
 ALL_LABELS_PART_1 = tuple("AKQJT98765432")
 MAPPED_LABELS_PART_1 = tuple(range(len(ALL_LABELS_PART_1)))

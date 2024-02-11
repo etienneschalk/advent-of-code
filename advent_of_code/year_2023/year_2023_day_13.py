@@ -4,7 +4,7 @@ import numpy as np
 import numpy.typing as npt
 import xarray as xr
 
-from advent_of_code.protocols import AdventOfCodeProblem
+from advent_of_code.common.protocols import AdventOfCodeProblem
 
 # [visu] Would look good with seaborn / observable plot with facets x and y
 

@@ -6,8 +6,11 @@ from typing import Sequence, Union
 import numpy as np
 import numpy.typing as npt
 
-from advent_of_code.common import adapt_recursion_limit, parse_2d_string_array_to_uint8
-from advent_of_code.constants import (
+from advent_of_code.common.common import (
+    adapt_recursion_limit,
+    parse_2d_string_array_to_uint8,
+)
+from advent_of_code.common.constants import (
     EAST,
     NEIGHBOUR_MOVES,
     NORTH,
@@ -16,7 +19,7 @@ from advent_of_code.constants import (
     Direction,
     Position,
 )
-from advent_of_code.protocols import AdventOfCodeProblem
+from advent_of_code.common.protocols import AdventOfCodeProblem
 
 ALLOWED_MOVES: dict[int, Direction] = {
     ord(b">"): EAST,

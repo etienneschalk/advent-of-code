@@ -4,15 +4,15 @@ from dataclasses import dataclass, field
 import numpy as np
 import numpy.typing as npt
 
-from advent_of_code.common import parse_2d_string_array_to_uint8
-from advent_of_code.constants import (
+from advent_of_code.common.common import parse_2d_string_array_to_uint8
+from advent_of_code.common.constants import (
     NEIGHBOUR_MOVES,
     Direction,
     Position,
     is_opposite_direction,
     is_out_of_bounds,
 )
-from advent_of_code.protocols import AdventOfCodeProblem
+from advent_of_code.common.protocols import AdventOfCodeProblem
 
 # Literally copied from
 # https://github.com/tbeu/AdventOfCode/blob/master/2023/day17/day17.cpp

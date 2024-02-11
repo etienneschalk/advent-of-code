@@ -5,12 +5,12 @@ import numpy as np
 import numpy.typing as npt
 import xarray as xr
 
-from advent_of_code.common import (
+from advent_of_code.common.common import (
     create_output_file_path,
     lines_to_2d_uint8_array,
     parse_2d_string_array_to_uint8,
 )
-from advent_of_code.protocols import AdventOfCodeProblem
+from advent_of_code.common.protocols import AdventOfCodeProblem
 
 # NORTH = 0
 # WEST = 1

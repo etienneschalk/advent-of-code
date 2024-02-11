@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from advent_of_code.protocols import AdventOfCodeProblem
+from advent_of_code.common.protocols import AdventOfCodeProblem
 
 type PuzzleLine = tuple[str, tuple[int, ...]]
 type PuzzleInput = list[PuzzleLine]

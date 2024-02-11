@@ -3,8 +3,8 @@ from dataclasses import dataclass
 import numpy as np
 import numpy.typing as npt
 
-from advent_of_code.common import load_input_text_file_from_filename
-from advent_of_code.protocols import AdventOfCodeProblem
+from advent_of_code.common.common import load_input_text_file_from_filename
+from advent_of_code.common.protocols import AdventOfCodeProblem
 
 type PuzzleInput = list[str]
 

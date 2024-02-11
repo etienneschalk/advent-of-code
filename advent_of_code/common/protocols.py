@@ -2,10 +2,12 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from typing import Protocol
 
-from advent_of_code.common import load_puzzle_input_text_file
+from advent_of_code.common.common import load_puzzle_input_text_file
 
 
 class AdventOfCodeProblem[PuzzleInputT](Protocol):
+    """Base class for Advent of Code problems' implementations"""
+
     year: int  # This is a protocol member
     day: int
     tag: str = "v1"  # This one too (with default)

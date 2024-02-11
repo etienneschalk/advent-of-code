@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from advent_of_code.protocols import AdventOfCodeProblem
+from advent_of_code.common.protocols import AdventOfCodeProblem
 
 type PuzzleInput = list[Game]
 
@@ -24,6 +24,18 @@ class Game:
 
 @dataclass(kw_only=True)
 class AdventOfCodeProblem202302(AdventOfCodeProblem[PuzzleInput]):
+    """
+
+    Parameters
+    ----------
+    AdventOfCodeProblem
+        _description_
+
+    Returns
+    -------
+        _description_
+    """
+
     year: int = 2023
     day: int = 2
 

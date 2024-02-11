@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 import xarray as xr
 
-from advent_of_code.common import parse_2d_string_array_to_uint8_xarray
+from advent_of_code.common.common import parse_2d_string_array_to_uint8_xarray
 from advent_of_code.year_2023.year_2023_day_01 import AdventOfCodeProblem
 
 type PuzzleInput = xr.DataArray

@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import numpy as np
 import numpy.typing as npt
 
-from advent_of_code.constants import (
+from advent_of_code.common.constants import (
     DOWN,
     LEFT,
     NEIGHBOUR_MOVES,
@@ -12,7 +12,7 @@ from advent_of_code.constants import (
     WELL_KNOW_DIRECTION_MAPPING,
     Direction,
 )
-from advent_of_code.protocols import AdventOfCodeProblem
+from advent_of_code.common.protocols import AdventOfCodeProblem
 
 type PuzzleInput = str
 

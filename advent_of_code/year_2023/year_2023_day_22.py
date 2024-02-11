@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import numpy as np
 import numpy.typing as npt
 
-from advent_of_code.protocols import AdventOfCodeProblem
+from advent_of_code.common.protocols import AdventOfCodeProblem
 
 type SupportCounts = dict[int, int]
 type PuzzleInput = list[Brick]

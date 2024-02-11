@@ -6,15 +6,15 @@ import numpy.typing as npt
 import xarray as xr
 from skimage.morphology import flood_fill  # pyright: ignore[reportUnknownVariableType]
 
-from advent_of_code.common import (
+from advent_of_code.common.common import (
     adapt_recursion_limit,
     parse_2d_string_array_to_u1,
     save_txt,
 )
-from advent_of_code.common_img import (
+from advent_of_code.common.common_img import (
     save_img,  # pyright: ignore[reportUnknownVariableType]
 )
-from advent_of_code.protocols import AdventOfCodeProblem
+from advent_of_code.common.protocols import AdventOfCodeProblem
 
 type PuzzleInput = npt.NDArray[Any]
 
