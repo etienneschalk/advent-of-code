@@ -1,8 +1,10 @@
 # advent-of-code
 
+<!-- start include sphinx -->
+
 ## Development
 
-### (:warning: Legacy) Template Files
+### (⚠️ Legacy) Template Files
 
 Start development for a given day and year by generating template files:
 
@@ -149,3 +151,8 @@ poetry run sphinx-autobuild source _build/html # autobuild
 poetry run sphinx-serve -h 127.0.0.0 -p 8080 # just serve
 # sphinx-autobuild -E source _build/html # clear cache (not advised with autobuild)
 ```
+
+<!-- end include sphinx -->
+
+Keep sidebar constant:
+https://stackoverflow.com/questions/74075617/side-bar-navigation-incomplete-in-sphinx

@@ -1,7 +1,7 @@
 # Videos
 
-```{toctree}
-:maxdepth: 1
+🎥
 
+```{toctree}
 year_2023_day_16
 ```

@@ -26,7 +26,7 @@ extensions = [
     "autoapi.extension",
     "nbsphinx",
     "myst_parser",
-    "sphinxemoji.sphinxemoji",
+    # "sphinxemoji.sphinxemoji",
     # "sphinx_mdinclude",
     "sphinxcontrib.youtube",
 ]

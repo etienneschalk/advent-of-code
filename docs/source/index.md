@@ -8,7 +8,7 @@ hide-toc: true
 :caption:
 :hidden:
 
-README
+readme_link
 ```
 
 ```{toctree}
@@ -34,11 +34,8 @@ autoapi/index
 
 ```{toctree}
 :caption: Indexes
-:hidden:
 
-:ref:`genindex`
-:ref:`modindex`
-:ref:`search`
+
 ```
 
 {ref}`genindex`
