@@ -1,3 +1,4 @@
+from advent_of_code.common.store import ExampleInputsStore
 from advent_of_code.year_2023.year_2023_day_21 import (
     count_reached_garden_plots,
     get_starting_position,
@@ -6,80 +7,9 @@ from advent_of_code.year_2023.year_2023_day_21 import (
     run_steps_old,
 )
 
-EXAMPLE_INPUT = """
 
-...........
-.....###.#.
-.###.##..#.
-..#.#...#..
-....#.#....
-.##..S####.
-.##..#...#.
-.......##..
-.##.#.####.
-.##..##.##.
-...........
-
-"""
-
-EXPECTED_PART_1_HISTORY = {
-    1: """
-...........
-.....###.#.
-.###.##..#.
-..#.#...#..
-....#O#....
-.##.OS####.
-.##..#...#.
-.......##..
-.##.#.####.
-.##..##.##.
-...........
-    """.strip(),
-    2: """
-...........
-.....###.#.
-.###.##..#.
-..#.#O..#..
-....#.#....
-.##O.O####.
-.##.O#...#.
-.......##..
-.##.#.####.
-.##..##.##.
-...........
-    """.strip(),
-    3: """
-...........
-.....###.#.
-.###.##..#.
-..#.#.O.#..
-...O#O#....
-.##.OS####.
-.##O.#...#.
-....O..##..
-.##.#.####.
-.##..##.##.
-...........
-    """.strip(),
-    6: """
-...........
-.....###.#.
-.###.##.O#.
-.O#O#O.O#..
-O.O.#.#.O..
-.##O.O####.
-.##.O#O..#.
-.O.O.O.##..
-.##.#.####.
-.##O.##.##.
-...........
-    """.strip(),
-}
-
-
-def test_year_2023_day_21_part_1_naive():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_21_part_1_naive(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     garden = parse_text_input(test_input)
 
     initial_pos = get_starting_position(garden)
@@ -89,12 +19,16 @@ def test_year_2023_day_21_part_1_naive():
     history = run_steps_old(garden, initial_pos, max_iter)
 
     assert count_reached_garden_plots(max_iter, history) == 16
+    EXPECTED_PART_1_HISTORY = {
+        i: example_inputs.retrieve(__file__, f"EXPECTED_PART_1_HISTORY_{i}").strip()
+        for i in (1, 2, 3, 6)
+    }
     for index_plus_one, array_string in EXPECTED_PART_1_HISTORY.items():
         assert history[index_plus_one - 1] == array_string
 
 
-def test_year_2023_day_21_part_1():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_21_part_1(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     garden = parse_text_input(test_input)
 
     initial_pos = get_starting_position(garden)
