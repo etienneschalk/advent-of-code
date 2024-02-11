@@ -2,21 +2,31 @@
 hide-toc: true
 ---
 
-# Advent of Code Blog
+# Advent of Blog
 
-```{include} ../../README.md
-   :parser: myst_parser.sphinx_
+```{toctree}
+:caption:
+:hidden:
+
+README
 ```
 
 ```{toctree}
-:caption: Notebooks
+:caption:
+:hidden:
+
+videos/index
+```
+
+```{toctree}
+:caption:
 :hidden:
 
 notebooks/index
 ```
 
 ```{toctree}
-:caption: API Reference
+:caption:
 :hidden:
 
 autoapi/index
@@ -26,6 +36,9 @@ autoapi/index
 :caption: Indexes
 :hidden:
 
+:ref:`genindex`
+:ref:`modindex`
+:ref:`search`
 ```
 
 {ref}`genindex`

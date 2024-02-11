@@ -10,7 +10,7 @@ project = "advent-of-code-blog"
 copyright = "2024, Etienne Schalk"
 author = "Etienne Schalk"
 
-html_title = "Advent of Code Blog"
+html_title = "Advent of Blog"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -28,6 +28,7 @@ extensions = [
     "myst_parser",
     "sphinxemoji.sphinxemoji",
     # "sphinx_mdinclude",
+    "sphinxcontrib.youtube",
 ]
 
 source_suffix = [".rst", ".md"]
@@ -81,7 +82,8 @@ add_module_names = False
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
+    # Numpy seems broken
     "python": ("https://docs.python.org/3.12/", None),
-    "numpy": ("https://numpy.org/doc/stable", None),
+    "numpy": ("https://numpy.org/doc/stable/", None),
     "xarray": ("https://xarray.pydata.org/en/stable/", None),
 }

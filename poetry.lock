@@ -3783,6 +3783,26 @@ standalone = ["Sphinx (>=5)"]
 test = ["pytest"]
 
 [[package]]
+name = "sphinxcontrib-youtube"
+version = "1.4.1"
+description = "Sphinx \"youtube\" extension."
+optional = false
+python-versions = "*"
+files = [
+    {file = "sphinxcontrib_youtube-1.4.1-py2.py3-none-any.whl", hash = "sha256:de9cb454f066d580a1e7ad64efae7dd9e12c1b1567a31faa330b1aeaeed40460"},
+    {file = "sphinxcontrib_youtube-1.4.1.tar.gz", hash = "sha256:eb7871c8af47fd2b5c9727615354b7f95bce554be8be45b9fa8e5bc022f88059"},
+]
+
+[package.dependencies]
+requests = "*"
+Sphinx = ">=6.1"
+
+[package.extras]
+dev = ["nox"]
+doc = ["pydata-sphinx-theme", "sphinx-copybutton", "sphinx-design"]
+test = ["beautifulsoup4", "pytest", "pytest-cov", "pytest-regressions"]
+
+[[package]]
 name = "sphinxemoji"
 version = "0.3.1"
 description = "An extension to use emoji codes in your Sphinx documentation"
@@ -4169,4 +4189,4 @@ jupyter = ["ipytree (>=0.2.2)", "ipywidgets (>=8.0.0)", "notebook"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "0dfafd40f0878123862b0fead2b646478bb4aad4c064ed9d03da5dca241d0b5e"
+content-hash = "7de6d8624a51492426ea69e4b6a60720ce23f5a372425cabb592f50984bef89b"
