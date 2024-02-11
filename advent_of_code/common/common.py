@@ -1,4 +1,5 @@
 import sys
+import tomllib
 from pathlib import Path
 from typing import Any
 
@@ -33,8 +34,23 @@ def load_puzzle_input_text_file(year: int, day: int) -> str:
 
 def get_input_file_path(year: int, day: int) -> Path:
     input_path = render_central_input_path(year, day)
-    input_path = Path(__file__).parent.parent.parent.resolve() / Path(input_path)
+    input_path = get_private_resources_path() / Path(input_path)
     return input_path
+
+
+def get_private_resources_path() -> Path:
+    return (Path.home() / Path("dev/advent-of-code-private")).resolve()
+
+
+def get_example_inputs_file_contents() -> dict[str, dict[str, str]]:
+    with get_example_inputs_file_path().open(mode="rb") as fp:
+        contents = tomllib.load(fp)
+    return contents
+
+
+def get_example_inputs_file_path() -> Path:
+    example_inputs_path = "resources/advent_of_code/example_inputs.toml"
+    return get_private_resources_path() / example_inputs_path
 
 
 def save_txt(text: str, filename: str, module_name: str, *, output_subdir: str = ""):
@@ -58,7 +74,10 @@ def create_output_file_path(
 
 
 def render_central_input_path(year: int, day: int):
-    return f"resources/advent_of_code/year_{year}/input_year_{year}_day_{day:02d}.txt"
+    return (
+        f"resources/advent_of_code/personalized_inputs/"
+        f"year_{year}/input_year_{year}_day_{day:02d}.txt"
+    )
 
 
 def render_central_output_dir(year: int, day: int):

@@ -146,5 +146,6 @@ cd docs
 # sphinx-autobuild source _build/html
 poetry run sphinx-build -E source _build/html # clear cache
 poetry run sphinx-autobuild source _build/html # autobuild
+poetry run sphinx-serve -h 127.0.0.0 -p 8080 # just serve
 # sphinx-autobuild -E source _build/html # clear cache (not advised with autobuild)
 ```

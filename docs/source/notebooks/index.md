@@ -1,6 +1,8 @@
 # Notebooks
 
 ```{toctree}
+:maxdepth: 1
+
 example
 notes_ratios
 year_2023_day_20

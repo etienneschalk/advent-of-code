@@ -1,4 +1,5 @@
-from advent_of_code.common import render_2d_data_array
+from advent_of_code.common.common import render_2d_data_array
+from advent_of_code.common.store import ExampleInputsStore
 from advent_of_code.year_2023.year_2023_day_13 import (
     find_number_of_cols_above_symmetry_axis,
     find_number_of_rows_above_symmetry_axis,
@@ -6,56 +7,9 @@ from advent_of_code.year_2023.year_2023_day_13 import (
     summarize_pattern_notes,
 )
 
-EXAMPLE_INPUT = """
 
-#.##..##.
-..#.##.#.
-##......#
-##......#
-..#.##.#.
-..##..##.
-#.#.##.#.
-
-#...##..#
-#....#..#
-..##..###
-#####.##.
-#####.##.
-..##..###
-#....#..#
-
-"""
-
-# ! Second example without two first lines is symmetric too!
-
-"""
-xxxxxxxxx
-xxxxxxxxx
-..##..### 2
-#####.##. 1
---------
-#####.##. 1
-..##..### 2
-#....#..#
-
-"""
-EXAMPLE_PROBLEMATIC = """
-
-#......#...
-.#.#.##....
-##..####.##
-...##....##
-..#...##...
-#..#.......
-##..#.#..##
-###..#.####
-###..#.#.##
-
-"""
-
-
-def test_year_2023_day_13_part_1_problematic():
-    test_input = EXAMPLE_PROBLEMATIC
+def test_year_2023_day_13_part_1_problematic(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__, "EXAMPLE_PROBLEMATIC")
     pattern = parse_text_input(test_input)[0]
 
     # Vertical symmetry
@@ -65,8 +19,8 @@ def test_year_2023_day_13_part_1_problematic():
     assert find_number_of_rows_above_symmetry_axis(pattern) == 0
 
 
-def test_year_2023_day_13_part_2_problematic():
-    test_input = EXAMPLE_PROBLEMATIC
+def test_year_2023_day_13_part_2_problematic(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__, "EXAMPLE_PROBLEMATIC")
     pattern = parse_text_input(test_input)[0]
 
     # Vertical symmetry
@@ -76,8 +30,8 @@ def test_year_2023_day_13_part_2_problematic():
     assert find_number_of_rows_above_symmetry_axis(pattern) == 0
 
 
-def test_year_2023_day_13_part_1():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_13_part_1(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     patterns = parse_text_input(test_input)
 
     example_1, example_2 = patterns
@@ -109,8 +63,8 @@ def test_year_2023_day_13_part_1():
     ...
 
 
-def test_year_2023_day_13_part_2():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_13_part_2(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     patterns = parse_text_input(test_input)
 
     example_1, example_2 = patterns

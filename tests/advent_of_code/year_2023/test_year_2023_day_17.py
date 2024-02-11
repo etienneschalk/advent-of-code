@@ -1,36 +1,9 @@
+from advent_of_code.common.store import ExampleInputsStore
 from advent_of_code.year_2023.year_2023_day_17 import (
     AdventOfCodeProblem202317,
     State,
     dijkstra,
 )
-
-EXAMPLE_INPUT = """
-
-2413432311323
-3215453535623
-3255245654254
-3446585845452
-4546657867536
-1438598798454
-4457876987766
-3637877979653
-4654967986887
-4564679986453
-1224686865563
-2546548887735
-4322674655533
-
-"""
-
-EXAMPLE_INPUT_PART_2 = """
-
-111111111111
-999999999991
-999999999991
-999999999991
-999999999991
-
-"""
 
 
 def test_year_2023_day_17_misc():
@@ -54,8 +27,8 @@ def test_year_2023_day_17_misc():
     assert dict_hashmap[hash(different_heat_state)] == different_heat_state
 
 
-def test_year_2023_day_17_part_1():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_17_part_1(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     parsed_input = AdventOfCodeProblem202317.parse_text_input(test_input)
 
     start = (0, 0)
@@ -65,8 +38,8 @@ def test_year_2023_day_17_part_1():
     assert least_heat_loss == 102
 
 
-def test_year_2023_day_17_part_2_a():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_17_part_2_a(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     parsed_input = AdventOfCodeProblem202317.parse_text_input(test_input)
 
     start = (0, 0)
@@ -76,8 +49,8 @@ def test_year_2023_day_17_part_2_a():
     assert least_heat_loss == 94
 
 
-def test_year_2023_day_17_part_2_b():
-    test_input = EXAMPLE_INPUT_PART_2
+def test_year_2023_day_17_part_2_b(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__, "EXAMPLE_INPUT_PART_2")
     parsed_input = AdventOfCodeProblem202317.parse_text_input(test_input)
 
     start = (0, 0)

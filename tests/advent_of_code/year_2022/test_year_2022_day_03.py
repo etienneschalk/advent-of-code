@@ -1,3 +1,4 @@
+from advent_of_code.common.store import ExampleInputsStore
 from advent_of_code.year_2022.year_2022_day_03 import (
     compute_priority_sum,
     find_shared_items_for_part_1,
@@ -5,20 +6,10 @@ from advent_of_code.year_2022.year_2022_day_03 import (
     parse_text_input,
 )
 
-EXAMPLE_INPUT = """
 
-vJrwpWtwJgWrhcsFMMfFFhFp
-jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
-PmmdzqPrVvPwwTWBwg
-wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
-ttgJtRGJQctTZtZT
-CrZsJsPPZsGzwwsLwLmpwMDw
+def test_year_2022_day_03_part_1(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
 
-"""
-
-
-def test_year_2022_day_03_part_1():
-    test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)
     assert parsed_input[0][0] == "vJrwpWtwJgWr"
     assert parsed_input[0][1] == "hcsFMMfFFhFp"
@@ -35,8 +26,9 @@ def test_year_2022_day_03_part_1():
     assert priority_sum == 157
 
 
-def test_year_2022_day_03_part_2():
-    test_input = EXAMPLE_INPUT
+def test_year_2022_day_03_part_2(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
+
     parsed_input = parse_text_input(test_input)
 
     expected_shared_items = ("r", "Z")

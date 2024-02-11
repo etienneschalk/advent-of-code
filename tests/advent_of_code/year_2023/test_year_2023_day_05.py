@@ -1,5 +1,6 @@
 import pytest
 
+from advent_of_code.common.store import ExampleInputsStore
 from advent_of_code.year_2023.year_2023_day_05 import (
     AlmanacRange,
     compute_lowest_location_number,
@@ -10,47 +11,10 @@ from advent_of_code.year_2023.year_2023_day_05 import (
     sort_ranges_in_place,
 )
 
-EXAMPLE_INPUT = """
 
-seeds: 79 14 55 13
-
-seed-to-soil map:
-50 98 2
-52 50 48
-
-soil-to-fertilizer map:
-0 15 37
-37 52 2
-39 0 15
-
-fertilizer-to-water map:
-49 53 8
-0 11 42
-42 0 7
-57 7 4
-
-water-to-light map:
-88 18 7
-18 25 70
-
-light-to-temperature map:
-45 77 23
-81 45 19
-68 64 13
-
-temperature-to-humidity map:
-0 69 1
-1 0 69
-
-humidity-to-location map:
-60 56 37
-56 93 4
-
-"""
-
-
-def test_year_2023_day_5_part_1_parse_almanac():
-    almanac = parse_almanac(EXAMPLE_INPUT)
+def test_year_2023_day_5_part_1_parse_almanac(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
+    almanac = parse_almanac(test_input)
     assert almanac.seeds == [79, 14, 55, 13]
 
     first_map = almanac.maps[0]
@@ -146,8 +110,9 @@ def test_year_2023_day_5_part_1_parse_almanac():
 
 
 @pytest.mark.skip(reason="not implemented yet")
-def test_year_2023_day_5_part_2_parse_almanac():
-    almanac = parse_almanac(EXAMPLE_INPUT)
+def test_year_2023_day_5_part_2_parse_almanac(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
+    almanac = parse_almanac(test_input)
     assert almanac.seeds == [79, 14, 55, 13]
     assert almanac.seed_ranges == [range(79, 79 + 14), range(55, 55 + 13)]
 
@@ -206,8 +171,9 @@ def test_year_2023_day_5_part_2_parse_almanac():
     # 92: 60
 
 
-def test_year_2023_day_5_part_2_second_try():
-    almanac = parse_almanac(EXAMPLE_INPUT)
+def test_year_2023_day_5_part_2_second_try(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
+    almanac = parse_almanac(test_input)
     assert almanac.seeds == [79, 14, 55, 13]
     assert almanac.seed_ranges == [range(79, 79 + 14), range(55, 55 + 13)]
     assert almanac.seed_ranges == [range(79, 93), range(55, 68)]
@@ -242,14 +208,16 @@ def test_year_2023_day_5_part_2_second_try():
     # ranges[0].start == 46
 
 
-def test_year_2023_day_5_part_2_third_try():
-    almanac = parse_almanac(EXAMPLE_INPUT)
+def test_year_2023_day_5_part_2_third_try(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
+    almanac = parse_almanac(test_input)
     min_location_number = compute_lowest_location_number(almanac)
     assert min_location_number == 46
 
 
-def test_detect_max_value_in_almanac():
-    almanac = parse_almanac(EXAMPLE_INPUT)
+def test_detect_max_value_in_almanac(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
+    almanac = parse_almanac(test_input)
     (
         almanac.maps[0].ranges[0].destination_range_start
         + almanac.maps[0].ranges[0].range_length
@@ -258,6 +226,7 @@ def test_detect_max_value_in_almanac():
     assert max_almanac == 100
 
 
-def test_clean_almanac():
-    almanac = parse_almanac(EXAMPLE_INPUT)
+def test_clean_almanac(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
+    almanac = parse_almanac(test_input)
     fill_almanac_in_place(almanac)

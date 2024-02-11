@@ -1,33 +1,12 @@
+from advent_of_code.common.store import ExampleInputsStore
 from advent_of_code.year_2023.year_2023_day_19 import (
     construct_initial_part_range,
     parse_text_input,
 )
 
-EXAMPLE_INPUT = """
 
-px{a<2006:qkq,m>2090:A,rfg}
-pv{a>1716:R,A}
-lnx{m>1548:A,A}
-rfg{s<537:gd,x>2440:R,A}
-qs{s>3448:A,lnx}
-qkq{x<1416:A,crn}
-crn{x>2662:A,R}
-in{s<1351:px,qqz}
-qqz{s>2770:qs,m<1801:hdj,R}
-gd{a>3333:R,R}
-hdj{m>838:A,pv}
-
-{x=787,m=2655,a=1222,s=2876}
-{x=1679,m=44,a=2067,s=496}
-{x=2036,m=264,a=79,s=2244}
-{x=2461,m=1339,a=466,s=291}
-{x=2127,m=1623,a=2188,s=1013}
-
-"""
-
-
-def test_year_2023_day_19_part_1():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_19_part_1(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     parsed_input = parse_text_input(test_input)
     assert parsed_input.apply_to_all() == list("ARARA")
     solve_1 = parsed_input.solve_part_1()
@@ -36,8 +15,8 @@ def test_year_2023_day_19_part_1():
     ...
 
 
-def test_year_2023_day_19_part_2():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_19_part_2(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     parsed_input = parse_text_input(test_input)
     initial_part_range = construct_initial_part_range()
     solve_2 = parsed_input.apply_to_range(initial_part_range)

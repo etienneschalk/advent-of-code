@@ -1,5 +1,6 @@
 import numpy as np
 
+from advent_of_code.common.store import ExampleInputsStore
 from advent_of_code.year_2023.year_2023_day_14 import (
     AdventOfCodeProblem202314,
     attain_wanted_state,
@@ -11,88 +12,35 @@ from advent_of_code.year_2023.year_2023_day_14 import (
     update_state_for_one_full_rotation,
 )
 
-EXAMPLE_INPUT = """
 
-O....#....
-O.OO#....#
-.....##...
-OO.#O....O
-.O.....O#.
-O.#..O.#.#
-..O..#O..O
-.......O..
-#....###..
-#OO..#....
-
-"""
-
-EXPECTED_PART_2_1_CYCLE = """
-
-.....#....
-....#...O#
-...OO##...
-.OO#......
-.....OOO#.
-.O#...O#.#
-....O#....
-......OOOO
-#...O###..
-#..OO#....
-
-"""
-
-EXPECTED_PART_2_2_CYCLE = """
-
-.....#....
-....#...O#
-.....##...
-..O#......
-.....OOO#.
-.O#...O#.#
-....O#...O
-.......OOO
-#..OO###..
-#.OOO#...O
-
-"""
-EXPECTED_PART_2_3_CYCLE = """
-
-.....#....
-....#...O#
-.....##...
-..O#......
-.....OOO#.
-.O#...O#.#
-....O#...O
-.......OOO
-#...O###.O
-#.OOO#...O
-
-"""
-
-
-def test_year_2023_day_14_part_1():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_14_part_1(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     parsed_input = AdventOfCodeProblem202314.parse_text_input(test_input)
     list_of_str = get_list_of_str(parsed_input, 3)
     total_load = compute_total_load_part_1(list_of_str)
     assert total_load == 136
 
 
-def test_year_2023_day_14_part_1_refactored():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_14_part_1_refactored(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     parsed_input = AdventOfCodeProblem202314.parse_text_input(test_input)
     total_load = compute_total_load_for_north(parsed_input)
     assert total_load == 136
 
 
-def test_year_2023_day_14_part_2():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_14_part_2(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     parsed_input = AdventOfCodeProblem202314.parse_text_input(test_input)
 
-    expected_1 = EXPECTED_PART_2_1_CYCLE.strip().split("\n")
-    expected_2 = EXPECTED_PART_2_2_CYCLE.strip().split("\n")
-    expected_3 = EXPECTED_PART_2_3_CYCLE.strip().split("\n")
+    expected_1 = (
+        example_inputs.retrieve(__file__, "EXPECTED_PART_2_1_CYCLE").strip().split("\n")
+    )
+    expected_2 = (
+        example_inputs.retrieve(__file__, "EXPECTED_PART_2_2_CYCLE").strip().split("\n")
+    )
+    expected_3 = (
+        example_inputs.retrieve(__file__, "EXPECTED_PART_2_3_CYCLE").strip().split("\n")
+    )
     init_rot = 4
 
     after_one_cycle = update_state_for_one_full_rotation(parsed_input, init_rot)
@@ -103,8 +51,8 @@ def test_year_2023_day_14_part_2():
     assert get_list_of_str(after_three_cycles, 0) == expected_3
 
 
-def test_year_2023_day_14_part_2_more_iter():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_14_part_2_more_iter(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     parsed_input = AdventOfCodeProblem202314.parse_text_input(test_input)
 
     init_rot = 4
@@ -126,8 +74,10 @@ def test_year_2023_day_14_part_2_more_iter():
     ...
 
 
-def test_year_2023_day_14_part_2_validate_problem_description():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_14_part_2_validate_problem_description(
+    example_inputs: ExampleInputsStore,
+):
+    test_input = example_inputs.retrieve(__file__)
     parsed_input = AdventOfCodeProblem202314.parse_text_input(test_input)
 
     init_rot = 4

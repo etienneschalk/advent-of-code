@@ -1,4 +1,5 @@
-from advent_of_code.constants import DOWN, LEFT, RIGHT, UP
+from advent_of_code.common.constants import DOWN, LEFT, RIGHT, UP
+from advent_of_code.common.store import ExampleInputsStore
 from advent_of_code.year_2023.year_2023_day_18 import (
     compute_area,
     compute_internal_perimeter,
@@ -9,51 +10,15 @@ from advent_of_code.year_2023.year_2023_day_18 import (
     parse_text_input_part_2,
 )
 
-EXAMPLE_INPUT_3_X_3_LOOP = """
 
-R 2 (#70c710)
-D 2 (#0dc571)
-L 2 (#5713f0)
-U 2 (#d2c081)
-
-"""
-
-EXAMPLE_INPUT_3_X_4_LOOP = """
-
-R 2 (#70c710)
-D 3 (#0dc571)
-L 2 (#5713f0)
-U 3 (#d2c081)
-
-"""
-EXAMPLE_INPUT = """
-
-R 6 (#70c710)
-D 5 (#0dc571)
-L 2 (#5713f0)
-D 2 (#d2c081)
-R 2 (#59c680)
-D 2 (#411b91)
-L 5 (#8ceee2)
-U 2 (#caa173)
-L 1 (#1b58a2)
-U 2 (#caa171)
-R 2 (#7807d2)
-U 3 (#a77fa3)
-L 2 (#015232)
-U 2 (#7a21e3)
-
-"""
-
-
-def test_year_2023_day_18_part_1_basic():
+def test_year_2023_day_18_part_1_basic(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__, "EXAMPLE_INPUT_3_X_3_LOOP")
     # Sources
     # Visualization (spoilers)
     # See https://www.reddit.com/r/adventofcode/comments/
     # 18l2tap/2023_day_18_the_elves_and_the_shoemaker/
     # Shoelace formula https://en.wikipedia.org/wiki/Shoelace_formula
     # Pick's theorem https://en.wikipedia.org/wiki/Pick%27s_theorem
-    test_input = EXAMPLE_INPUT_3_X_3_LOOP
     dig_plan = parse_text_input_part_1(test_input)
 
     internal_perimeter = compute_internal_perimeter(dig_plan)
@@ -68,8 +33,8 @@ def test_year_2023_day_18_part_1_basic():
     assert pick_area_including_exterior == 9
 
 
-def test_year_2023_day_18_part_1_basic_2():
-    test_input = EXAMPLE_INPUT_3_X_4_LOOP
+def test_year_2023_day_18_part_1_basic_2(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__, "EXAMPLE_INPUT_3_X_4_LOOP")
     dig_plan = parse_text_input_part_1(test_input)
 
     internal_perimeter = compute_internal_perimeter(dig_plan)
@@ -84,8 +49,8 @@ def test_year_2023_day_18_part_1_basic_2():
     assert pick_area_including_exterior == 12
 
 
-def test_year_2023_day_18_part_1():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_18_part_1(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     dig_plan = parse_text_input_part_1(test_input)
 
     internal_perimeter = compute_internal_perimeter(dig_plan)
@@ -99,8 +64,8 @@ def test_year_2023_day_18_part_1():
     assert pick_area_including_exterior == 62
 
 
-def test_year_2023_day_18_part_2():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_18_part_2(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     dig_plan = parse_text_input_part_2(test_input)
 
     mapping = {

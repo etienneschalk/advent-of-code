@@ -1,3 +1,4 @@
+from advent_of_code.common.store import ExampleInputsStore
 from advent_of_code.year_2023.year_2023_day_02 import (
     Game,
     Handful,
@@ -6,19 +7,9 @@ from advent_of_code.year_2023.year_2023_day_02 import (
     parse_text_input,
 )
 
-EXAMPLE_INPUT = """
 
-Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
-Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
-Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
-Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
-Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
-
-"""
-
-
-def test_year_2023_day_2_part_1():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_2_part_1(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     games = parse_text_input(test_input)
 
     assert len(games) == 5
@@ -70,8 +61,8 @@ def test_year_2023_day_2_part_1():
     assert sum(possible_games_identifiers) == 8
 
 
-def test_year_2023_day_2_part_2():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_2_part_2(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     games = parse_text_input(test_input)
 
     # 12 red cubes, 13 green cubes, and 14 blue cubes

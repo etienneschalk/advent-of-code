@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 
+from advent_of_code.common.store import ExampleInputsStore
 from advent_of_code.year_2022.year_2022_day_24 import (
     advance_blizzard,
     build_graph_part_1,
@@ -10,33 +11,9 @@ from advent_of_code.year_2022.year_2022_day_24 import (
     parse_text_input,
 )
 
-EXAMPLE_INPUT_DUMMY = """
 
-#.#####
-#.....#
-#>....#
-#.....#
-#...v.#
-#.....#
-#####.#
-
-"""
-
-
-EXAMPLE_INPUT = """
-
-#E######
-#>>.<^<#
-#.<..<<#
-#>v.><>#
-#<^v^^>#
-######.#
-
-"""
-
-
-def test_year_2022_day_24_part_1_period_dummy():
-    test_input = EXAMPLE_INPUT_DUMMY
+def test_year_2022_day_24_part_1_period_dummy(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__, "EXAMPLE_INPUT_DUMMY")
     parsed_input = parse_text_input(test_input)
     blizzard = initialize_blizzard(parsed_input)
     initial_blizzard_backup = blizzard.copy(deep=True)
@@ -47,8 +24,9 @@ def test_year_2022_day_24_part_1_period_dummy():
     assert all(v for v in np.all(initial_blizzard_backup == blizzard).values())
 
 
-def test_year_2022_day_24_part_1_period():
-    test_input = EXAMPLE_INPUT
+def test_year_2022_day_24_part_1_period(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
+
     parsed_input = parse_text_input(test_input)
     blizzard = initialize_blizzard(parsed_input)
     initial_blizzard_backup = blizzard.copy(deep=True)
@@ -60,8 +38,9 @@ def test_year_2022_day_24_part_1_period():
 
 
 @pytest.mark.skip(reason="displays voxel array")
-def test_year_2022_day_24_part_1_period_stack():
-    test_input = EXAMPLE_INPUT
+def test_year_2022_day_24_part_1_period_stack(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
+
     parsed_input = parse_text_input(test_input)
     blizzard_cube = compute_simulation_for_cross_period(parsed_input)
 
@@ -132,8 +111,9 @@ def test_year_2022_day_24_part_1_period_stack():
 
 
 @pytest.mark.slow
-def test_year_2022_day_24_part_1():
-    test_input = EXAMPLE_INPUT
+def test_year_2022_day_24_part_1(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
+
     parsed_input = parse_text_input(test_input)
     minutes = build_graph_part_1(parsed_input)
     # free_cube.isel(time=2) ^ free_cube.isel(time=1)

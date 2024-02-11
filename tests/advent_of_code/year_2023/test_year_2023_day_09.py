@@ -1,20 +1,13 @@
+from advent_of_code.common.store import ExampleInputsStore
 from advent_of_code.year_2023.year_2023_day_09 import (
     AdventOfCodeProblem202309,
     predict_next_value_backward,
     predict_next_value_forward,
 )
 
-EXAMPLE_INPUT = """
 
-0 3 6 9 12 15
-1 3 6 10 15 21
-10 13 16 21 30 45
-
-"""
-
-
-def test_year_2023_day_09_part_1():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_09_part_1(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     parsed_input = AdventOfCodeProblem202309.parse_text_input(test_input)
 
     expected_predictions = [18, 28, 68]
@@ -25,8 +18,8 @@ def test_year_2023_day_09_part_1():
     ...
 
 
-def test_year_2023_day_09_part_2():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_09_part_2(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     parsed_input = AdventOfCodeProblem202309.parse_text_input(test_input)
 
     expected_predictions = [-3, 0, 5]

@@ -76,6 +76,8 @@ napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 napoleon_use_param = False
 napoleon_use_ivar = True
+# Do not show fully qualified paths to classes and functions
+add_module_names = False
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {

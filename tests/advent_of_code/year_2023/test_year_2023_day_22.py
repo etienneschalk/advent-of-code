@@ -1,5 +1,6 @@
 import numpy as np
 
+from advent_of_code.common.store import ExampleInputsStore
 from advent_of_code.year_2023.year_2023_day_22 import (
     compute_disintegrable_bricks,
     compute_fallen_bricks,
@@ -12,18 +13,6 @@ from advent_of_code.year_2023.year_2023_day_22 import (
     parse_text_input,
     solve_part_2,
 )
-
-EXAMPLE_INPUT = """
-
-1,0,1~1,2,1
-0,0,2~2,0,2
-0,2,3~2,2,3
-0,0,4~0,2,4
-2,0,5~2,2,5
-0,1,6~2,1,6
-1,1,8~1,1,9
-
-"""
 
 EXPECTED_SPACE_PART_1 = np.array(
     [
@@ -66,8 +55,8 @@ EXPECTED_CAN_BE_DISINTEGRATED_PART_1 = {
 }
 
 
-def test_year_2023_day_22_part_1_whole():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_22_part_1_whole(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     unsorted_bricks = parse_text_input(test_input)
 
     result = compute_safely_removable_bricks_count(unsorted_bricks)
@@ -75,8 +64,8 @@ def test_year_2023_day_22_part_1_whole():
     assert result == 5
 
 
-def test_year_2023_day_22_part_1_details():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_22_part_1_details(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     unsorted_bricks = parse_text_input(test_input)
 
     # Bricks that are the closest to the ground have the most priority (low-leaning z)
@@ -116,8 +105,8 @@ def test_year_2023_day_22_part_1_details():
     assert safely_removable_bricks == 5
 
 
-def test_year_2023_day_22_part_2():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_22_part_2(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     unsorted_bricks = parse_text_input(test_input)
     # Bricks that are the closest to the ground have the most priority (low-leaning z)
     sorted_bricks = sorted(unsorted_bricks, key=lambda b: b.rank)

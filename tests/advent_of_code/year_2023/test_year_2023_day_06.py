@@ -1,15 +1,9 @@
+from advent_of_code.common.store import ExampleInputsStore
 from advent_of_code.year_2023.year_2023_day_06 import (
     compute_number_of_ways_to_win,
     correct_data,
     parse_text_input,
 )
-
-EXAMPLE_INPUT = """
-
-Time:      7  15   30
-Distance:  9  40  200
-
-"""
 
 
 def test_year_2023_day_6_part_intro():
@@ -45,8 +39,8 @@ def test_year_2023_day_6_part_intro():
     assert len(winnings) == 9
 
 
-def test_year_2023_day_6_part_1():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_6_part_1(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     parsed_input = parse_text_input(test_input)  # noqa: F841
     assert parsed_input == {"Time:": [7, 15, 30], "Distance:": [9, 40, 200]}
     number_of_ways = compute_number_of_ways_to_win(parsed_input)
@@ -54,8 +48,8 @@ def test_year_2023_day_6_part_1():
     ...
 
 
-def test_year_2023_day_6_part_2():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_6_part_2(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     parsed_input = parse_text_input(test_input)  # noqa: F841
     data = correct_data(parsed_input)
     assert data == {"Time:": [71530], "Distance:": [940200]}

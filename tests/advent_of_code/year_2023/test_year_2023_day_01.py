@@ -1,3 +1,4 @@
+from advent_of_code.common.store import ExampleInputsStore
 from advent_of_code.year_2023.year_2023_day_01 import (
     build_part_2_mappings,
     correct_input_for_part_2,
@@ -7,15 +8,9 @@ from advent_of_code.year_2023.year_2023_day_01 import (
 )
 
 
-def test_year_2023_day_1_part_1():
-    test_input = """
+def test_year_2023_day_1_part_1(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__, "TEST_INPUT_1")
 
-1abc2
-pqr3stu8vwx
-a1b2c3d4e5f
-treb7uchet
-
-"""
     words = parse_text_input(test_input)
 
     assert len(words) == 4
@@ -25,18 +20,9 @@ treb7uchet
     assert recover_calibration_value(words[3]) == 77
 
 
-def test_year_2023_day_1_part_2():
-    test_input = """
+def test_year_2023_day_1_part_2(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__, "TEST_INPUT_2")
 
-two1nine
-eightwothree
-abcone2threexyz
-xtwone3four
-4nineeightseven2
-zoneight234
-7pqrstsixteen
-
-"""
     words = parse_text_input(test_input)
 
     assert len(words) == 7

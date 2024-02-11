@@ -1,30 +1,13 @@
+from advent_of_code.common.store import ExampleInputsStore
 from advent_of_code.year_2023.year_2023_day_25 import (
     compute_result_from_exploration,
     disconnect_then_explore,
     parse_text_input,
 )
 
-EXAMPLE_INPUT = """
 
-jqt: rhn xhk nvd
-rsh: frs pzl lsr
-xhk: hfx
-cmg: qnr nvd lhk bvb
-rhn: xhk bvb hfx
-bvb: xhk hfx
-pzl: lsr hfx nvd
-qnr: nvd
-ntq: jqt hfx bvb xhk
-nvd: lhk
-lsr: lhk
-rzs: qnr cmg lsr rsh
-frs: qnr lhk lsr
-
-"""
-
-
-def test_year_2023_day_25_part_1():
-    test_input = EXAMPLE_INPUT
+def test_year_2023_day_25_part_1(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
     components = parse_text_input(test_input)
     assert components == {
         "jqt": ("rhn", "xhk", "nvd"),

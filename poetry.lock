@@ -3679,6 +3679,16 @@ mistune = ">=2.0,<3.0"
 pygments = ">=2.8"
 
 [[package]]
+name = "sphinx-serve"
+version = "1.0.1"
+description = "Preview sphinx documentation locally"
+optional = false
+python-versions = "*"
+files = [
+    {file = "sphinx-serve-1.0.1.tar.gz", hash = "sha256:8d90f6595114108500b1f935d3f4d07bf5192783c67ce83f944ef289099669c9"},
+]
+
+[[package]]
 name = "sphinxcontrib-applehelp"
 version = "1.0.8"
 description = "sphinxcontrib-applehelp is a Sphinx extension which outputs Apple help books"
@@ -4159,4 +4169,4 @@ jupyter = ["ipytree (>=0.2.2)", "ipywidgets (>=8.0.0)", "notebook"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "e53973173930a41fcfa4bb453ae610d8c1ef00a3c6c7774ad885794e1759ef26"
+content-hash = "0dfafd40f0878123862b0fead2b646478bb4aad4c064ed9d03da5dca241d0b5e"

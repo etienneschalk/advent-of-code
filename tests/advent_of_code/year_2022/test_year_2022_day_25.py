@@ -1,68 +1,35 @@
 import numpy as np
 
+from advent_of_code.common.store import ExampleInputsStore
 from advent_of_code.year_2022.year_2022_day_25 import (
     convert_decimal_to_snafu,
     convert_snafu_to_decimal,
     parse_text_input,
 )
 
-EXAMPLE_INPUT = """
 
-1=-0-2
-12111
-2=0=
-21
-2=01
-111
-20012
-112
-1=-1=
-1-12
-12
-1=
-122
+def test_year_2022_day_25_part_1(example_inputs: ExampleInputsStore):
+    test_input = example_inputs.retrieve(__file__)
 
-"""
+    # TODO eschalk convert them to true text input as in problem descr in TOML
+    example_snafu_to_decimal = example_inputs.retrieve(
+        __file__, "EXPECTED_SNAFU_TO_DECIMAL"
+    )
+    example_decimal_to_snafu = example_inputs.retrieve(
+        __file__, "EXAMPLE_DECIMAL_TO_SNAFU"
+    )
 
-EXAMPLE_DECIMAL_TO_SNAFU = {
-    1: "1",
-    2: "2",
-    3: "1=",
-    4: "1-",
-    5: "10",
-    6: "11",
-    7: "12",
-    8: "2=",
-    9: "2-",
-    10: "20",
-    15: "1=0",
-    20: "1-0",
-    2022: "1=11-2",
-    12345: "1-0---0",
-    314159265: "1121-1110-1=0",
-}
+    example_snafu_to_decimal = dict(
+        ((kv[:6].strip()), int(kv[6:].strip()))
+        for kv in example_snafu_to_decimal.strip().split("\n")[1:]
+    )
+    example_decimal_to_snafu = dict(
+        (int(kv[:10].strip()), kv[10:].strip())
+        for kv in example_decimal_to_snafu.strip().split("\n")[1:]
+    )
 
-EXPECTED_SNAFU_TO_DECIMAL = {
-    "1=-0-2": 1747,
-    "12111": 906,
-    "2=0=": 198,
-    "21": 11,
-    "2=01": 201,
-    "111": 31,
-    "20012": 1257,
-    "112": 32,
-    "1=-1=": 353,
-    "1-12": 107,
-    "12": 7,
-    "1=": 3,
-    "122": 37,
-}
-
-
-def test_year_2022_day_25_part_1():
-    test_input = EXAMPLE_INPUT
     parsed_input = parse_text_input(test_input)
-    assert parsed_input == list(EXPECTED_SNAFU_TO_DECIMAL.keys())
+    assert parsed_input == list(example_snafu_to_decimal.keys())
 
     example_snafu = "2=-01"
     expected_decimal = 976
@@ -71,16 +38,16 @@ def test_year_2022_day_25_part_1():
 
     assert all(
         convert_snafu_to_decimal(snafu) == decimal
-        for snafu, decimal in EXPECTED_SNAFU_TO_DECIMAL.items()
+        for snafu, decimal in example_snafu_to_decimal.items()
     )
 
     expected_decimal_sum = sum(
-        convert_snafu_to_decimal(snafu) for snafu in EXPECTED_SNAFU_TO_DECIMAL.keys()
+        convert_snafu_to_decimal(snafu) for snafu in example_snafu_to_decimal.keys()
     )
     assert expected_decimal_sum == 4890
     assert all(
         convert_snafu_to_decimal(snafu) == decimal
-        for decimal, snafu in EXAMPLE_DECIMAL_TO_SNAFU.items()
+        for decimal, snafu in example_decimal_to_snafu.items()
     )
     assert convert_snafu_to_decimal("2=-1=0") == expected_decimal_sum
     assert convert_snafu_to_decimal("1-111=") == 1747 + 906
@@ -122,10 +89,10 @@ def test_year_2022_day_25_part_1():
     # Decimal to SNAFU
     assert all(
         convert_decimal_to_snafu(decimal) == snafu
-        for snafu, decimal in EXPECTED_SNAFU_TO_DECIMAL.items()
+        for snafu, decimal in example_snafu_to_decimal.items()
     )
     assert all(
         convert_decimal_to_snafu(decimal) == snafu
-        for decimal, snafu in EXAMPLE_DECIMAL_TO_SNAFU.items()
+        for decimal, snafu in example_decimal_to_snafu.items()
     )
     ...
