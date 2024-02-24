@@ -43,8 +43,6 @@ autoapi/index
 
 {ref}`modindex`
 
-{ref}`search`
-
 ## Test title
 
 ```python

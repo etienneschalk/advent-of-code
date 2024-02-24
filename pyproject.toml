@@ -67,7 +67,6 @@ build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core"]
 
 [tool.pyright]
-# ...
 exclude = ["tests/"] # Be lenient for tests.
 reportUnknownArgumentType = false
 reportUnknownMemberType = false

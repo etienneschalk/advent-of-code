@@ -4,16 +4,15 @@
 
 - [advent-of-code](#advent-of-code)
   - [Table of Contents](#table-of-contents)
-  - [Description](#description)
+  - [Introduction](#introduction)
   - [Terminology](#terminology)
   - [Documentation](#documentation)
-    - [Deploy documentation on GitHub Pages](#deploy-documentation-on-github-pages)
+    - [Deploy on GitHub Pages](#deploy-on-github-pages)
     - [Local](#local)
     - [Miscellaneous](#miscellaneous)
-  - [Installation](#installation)
-    - [Code](#code)
+    - [Sources](#sources)
       - [From GitHub](#from-github)
-    - [Test Data](#test-data)
+    - [Resources](#resources)
       - [From GitHub](#from-github-1)
       - [Create your own Test Data](#create-your-own-test-data)
   - [Development](#development)
@@ -22,13 +21,18 @@
     - [Code quality](#code-quality)
       - [pre-commit](#pre-commit)
     - [Troubleshooting](#troubleshooting)
-    - [(⚠️ Legacy) Template Files](#️-legacy-template-files)
+    - [(Legacy) Template Files](#legacy-template-files)
   - [Experience Feedback](#experience-feedback)
     - [Types of problems](#types-of-problems)
 
 <!-- start include sphinx -->
 
-## Description
+## Introduction
+
+<!-- TODO eschalk differentiate technical and non-technical sections with emojis
+
+🧑‍💼 Non-technical
+🧑‍💻 Technical -->
 
 ## Terminology
 
@@ -72,18 +76,21 @@ Data Model TODO eschalk
 
 This documentation also fulfills the role of being a blog to share my solutions and visualizations.
 
-### Deploy documentation on GitHub Pages
+### Deploy on GitHub Pages
 
+```{admonition-todo}
 TODO eschalk Deploy the documentation on GitHub pages.
+```
 
 ### Local
 
-:::{note}
+````{note}
 The documentation's dependencies are included in the `docs` dependency group of poetry in `pyproject.toml`
 
 ```bash
 poetry install --with docs
 ```
+````
 
 ```bash
 cd docs
@@ -101,27 +108,25 @@ poetry run sphinx-serve -h 127.0.0.1 -p 8080 # just serve
 Keep sidebar constant:
 https://stackoverflow.com/questions/74075617/side-bar-navigation-incomplete-in-sphinx
 
-## Installation
-
-This is a work in progress section.
-Indeed, in order to comply with the Advent of Code rules,
-
-TODO eschalk: Remove all traces of personalized inputs
-TODO eschalk: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository
-
-### Code
+### Sources
 
 #### From GitHub
 
-### Test Data
+Repository can be found on GitHub: https://github.com/etienneschalk/advent-of-code
+
+### Resources
 
 #### From GitHub
 
 In an effort not to share any personalized puzzle input nor personalized answer, as well as not reproducing the public example puzzle inputs, this data is not stored publicly in GitHub.
 
+I previously stored. If it happens to you, you can consult the following GitHub documentation page: [Removing sensitive data from a repository](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository)
+
+TODO eschalk: Remove all traces of personalized inputs
+
 #### Create your own Test Data
 
-You can create a configuration file that points to a folder. There is a "well-known structure", using "convention over configuration" principle:
+You can create a configuration file that points to a folder. The following is a "well-known structure", using "convention over configuration" principle:
 
 ```raw
 ${path_to_directory_with_private_resources}
@@ -141,12 +146,14 @@ ${path_to_directory_with_private_resources}
                      └── (1) example_inputs_${year}.toml
 ```
 
+However, each file name is unique, and the resources reader internally use `rglob` with the expected filename, hence making the directory hierarchy irrelevant. However, I still respect this structure in my private resources, in the case that `rglob` would need to be replaced if it hampers too much the performance of the testing. For now, this has not happened.
+
 1. Configuration file to point to `${path_to_directory_with_private_resources}`
 2. Puzzle Inputs are the raw content you can get from problem description
 3. Expected Answers are to be completed by yourself once you solve the problem, for future reproducibility of your solutions
 4. Example Puzzle Inputs are scrapped from the problem description. It is done manually as they are largely problem-specific
 
-:::{note}
+```{note}
 This would be a nice TODO to have an interface that automatically extracts all of the raw contents to such a folder, privately, and that generates this structure automatically.
 
 This would be like this: Logged in AoC -> Download to well-known resources directory -> Usable by the solutions.
@@ -154,7 +161,7 @@ This would be like this: Logged in AoC -> Download to well-known resources direc
 The well-know format could be language-independent.
 
 Note: the expected answers would still need to be filled manually.
-:::
+```
 
 ## Development
 
@@ -164,12 +171,13 @@ Note: the expected answers would still need to be filled manually.
 
 TODO eschalk include pytest to pre-commit (ut, it, and slow)
 
-:::{note}
+````{note}
 pytest is included in the `dev` dependency group of poetry in `pyproject.toml`
 
 ```bash
 poetry install --with dev
 ```
+````
 
 Integration tests:
 
@@ -209,14 +217,14 @@ pytest --durations=50 # Slowest 50 tests
 
 #### pre-commit
 
-:::{note}
+````{note}
 pre-commit is included in the `dev` dependency group of poetry in `pyproject.toml`
 
 ```bash
 poetry install --with dev
 ```
+````
 
-:::
 Code quality is managed by [pre-commit](https://pre-commit.com/). This wonderful tool can be seen as a _local CI (continuous integration)_.
 
 It runs all the useful tools improving the overall quality of a codebase. Here is a non-exhaustive list below (consult `.pre-commit-config.yaml` for more details):
@@ -253,7 +261,7 @@ TODO eschalk as pytest is not yet included, nor integration tests.
 
 Nothing yet.
 
-### (⚠️ Legacy) Template Files
+### (Legacy) Template Files
 
 Start development for a given day and year by generating template files:
 

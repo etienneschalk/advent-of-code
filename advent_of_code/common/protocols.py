@@ -44,18 +44,18 @@ class AdventOfCodeProblem[PuzzleInputT](Protocol):
 
 
 @dataclass(kw_only=True, frozen=True)
-class ExampleAdventOfCodePuzzleInput202206:
+class ExampleAdventOfCodePuzzleInputYYYYDD1:
     number: int
 
 
 @dataclass(kw_only=True, frozen=True)
-class ExampleAdventOfCodePuzzleInput202207:
+class ExampleAdventOfCodePuzzleInputYYYYDD2:
     number_bis: int
 
 
 @dataclass(kw_only=True, frozen=True)
 class ExampleAdventOfCodeProblem202206(
-    AdventOfCodeProblem[ExampleAdventOfCodePuzzleInput202206]
+    AdventOfCodeProblem[ExampleAdventOfCodePuzzleInputYYYYDD1]
 ):
     year: int
     day: int
@@ -63,15 +63,15 @@ class ExampleAdventOfCodeProblem202206(
     # But it can still be overridden
     tag: str = "retest"
 
-    def solve_part_1(self, puzzle_input: ExampleAdventOfCodePuzzleInput202206):
+    def solve_part_1(self, puzzle_input: ExampleAdventOfCodePuzzleInputYYYYDD1):
         return 1
 
-    def solve_part_2(self, puzzle_input: ExampleAdventOfCodePuzzleInput202206):
+    def solve_part_2(self, puzzle_input: ExampleAdventOfCodePuzzleInputYYYYDD1):
         return "hey"
 
     @staticmethod
-    def parse_text_input(text: str) -> ExampleAdventOfCodePuzzleInput202206:
-        return ExampleAdventOfCodePuzzleInput202206(number=int(text))
+    def parse_text_input(text: str) -> ExampleAdventOfCodePuzzleInputYYYYDD1:
+        return ExampleAdventOfCodePuzzleInputYYYYDD1(number=int(text))
 
     #  Explicit subclassing = We get the parse_input_text_file default implementation for free
 
@@ -83,19 +83,19 @@ class ExampleAdventOfCodeProblem202207:
     tag: str = "v1"
     # Implicit subclassing requires setting the tag attribute manually
 
-    def solve_part_1(self, puzzle_input: ExampleAdventOfCodePuzzleInput202207) -> int:
+    def solve_part_1(self, puzzle_input: ExampleAdventOfCodePuzzleInputYYYYDD2) -> int:
         return 231
 
-    def solve_part_2(self, puzzle_input: ExampleAdventOfCodePuzzleInput202207) -> str:
+    def solve_part_2(self, puzzle_input: ExampleAdventOfCodePuzzleInputYYYYDD2) -> str:
         return "hop"
 
     @staticmethod
-    def parse_text_input(text: str) -> ExampleAdventOfCodePuzzleInput202207:
-        return ExampleAdventOfCodePuzzleInput202207(number_bis=int(text))
+    def parse_text_input(text: str) -> ExampleAdventOfCodePuzzleInputYYYYDD2:
+        return ExampleAdventOfCodePuzzleInputYYYYDD2(number_bis=int(text))
 
     # Implicit subclassing = We need to manually define this boilerplate method
     # Conclusion: if default implementation is needed, use explicit subclassing
-    def parse_input_text_file(self) -> ExampleAdventOfCodePuzzleInput202207:
+    def parse_input_text_file(self) -> ExampleAdventOfCodePuzzleInputYYYYDD2:
         text = load_puzzle_input_text_file(self.year, self.day)
         parsed = self.parse_text_input(text)
         return parsed
@@ -117,13 +117,13 @@ def function_that_solve_part_1[PuzzleInputT](
 if __name__ == "__main__":
     # Explicit subclassing. With Protocol as a dataclass itself, the tag attribute is inherited
     problem = ExampleAdventOfCodeProblem202206(year=2022, day=6)
-    puzzle_input = ExampleAdventOfCodePuzzleInput202206(number=34)
+    puzzle_input = ExampleAdventOfCodePuzzleInputYYYYDD1(number=34)
 
     res1 = function_that_solve_part_1(problem, puzzle_input)
 
     # Implicit subclassing. The tag cannot be passed directly, it must be declared
     problem = ExampleAdventOfCodeProblem202207(year=2022, day=7)
-    puzzle_input = ExampleAdventOfCodePuzzleInput202207(number_bis=343)
+    puzzle_input = ExampleAdventOfCodePuzzleInputYYYYDD2(number_bis=343)
 
     res2 = function_that_solve_part_1(problem, puzzle_input)
 

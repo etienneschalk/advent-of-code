@@ -44,9 +44,12 @@ exclude_patterns = []
 
 html_theme = "furo"
 html_static_path = ["_static"]
+html_css_files = [
+    "css/custom.css",
+]
 
 html_theme_options = {
-    "announcement": "This blog is work in progress",
+    "announcement": "🛠️ This blog is work in progress",
 }
 
 pygments_style = "default"
@@ -87,3 +90,5 @@ intersphinx_mapping = {
     "numpy": ("https://numpy.org/doc/stable/", None),
     "xarray": ("https://xarray.pydata.org/en/stable/", None),
 }
+
+myst_enable_extensions = ["deflist", "tasklist"]

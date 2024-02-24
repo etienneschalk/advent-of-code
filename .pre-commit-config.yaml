@@ -88,3 +88,13 @@ repos:
     - id: pyright
       language: python_venv
       language_version: python3.12
+  - repo: local
+    hooks:
+    - id: pytest
+      name: pytest
+      entry: poetry run pytest
+      language: python
+      types: [python]
+      stages: [commit]
+      pass_filenames: false
+      always_run: true
