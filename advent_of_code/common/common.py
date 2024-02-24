@@ -86,12 +86,12 @@ def create_output_file_path(
 def render_central_input_path(year: int, day: int):
     return (
         f"resources/advent_of_code/personalized_inputs/"
-        f"year_{year}/input_year_{year}_day_{day:02d}.txt"
+        f"year_{year}/problem_{year}{day:02d}.txt"
     )
 
 
 def render_central_output_dir(year: int, day: int):
-    return f"generated/advent_of_code/year_{year}/day_{day:02d}"
+    return f"generated/advent_of_code/year_{year}/output_problem_{year}{day:02d}"
 
 
 def adapt_recursion_limit(new_value: int = 15000, *, silent: bool = False):

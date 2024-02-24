@@ -15,6 +15,8 @@ def main():
         print(paths)
         for path in paths:
             result = re.search(r"year_(\d+)_day_(\d+)", path.stem)
+            if result is None:
+                continue
             year, day = result.group(1), result.group(2)
             print(year, day)
             new_stem = f"problem_{year}{day}"
@@ -26,6 +28,11 @@ def main():
             # year_(\d+)_day_(\d+)
             # Output regexp:
             # problem_$1$2
+
+    # Prefix test_ files
+    tests_dir_path = Path("tests/advent_of_code")
+    for path in sorted(tests_dir_path.rglob("problem_*.py")):
+        path.resolve().rename(path.with_stem(f"test_{path.stem}").resolve())
 
 
 if __name__ == "__main__":
