@@ -83,9 +83,12 @@ This documentation also fulfills the role of being a blog to share my solutions 
 
 ### Deploy on GitHub Pages
 
-```{admonition-todo}
-TODO eschalk Deploy the documentation on GitHub pages.
-```
+Current issues with GitHub Actions:
+
+- How to correctly install dependencies with poetry in the context of GitHub Actions, and make them available in the notebook runner when building the Sphinx documentation?
+- How to access the private resources (personalized puzzle inputs, etc.)
+
+Current solution: fallback on publish via branch
 
 ### Local
 
