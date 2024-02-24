@@ -86,7 +86,7 @@ def create_output_file_path(
 def render_central_input_path(year: int, day: int):
     return (
         f"resources/advent_of_code/personalized_inputs/"
-        f"year_{year}/problem_{year}{day:02d}.txt"
+        f"year_{year}/puzzle_input_{year}{day:02d}.txt"
     )
 
 

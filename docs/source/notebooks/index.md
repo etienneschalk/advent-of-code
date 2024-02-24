@@ -2,10 +2,9 @@
 
 ```{toctree}
 example
-notes_ratios
-problem_202320
-problem_202321
-problem_202322
-problem_202323
-problem_202325
+notebook_problem_202320
+notebook_problem_202321
+notebook_problem_202322
+notebook_problem_202323
+notebook_problem_202325
 ```

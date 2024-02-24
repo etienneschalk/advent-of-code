@@ -8,6 +8,7 @@ hide-toc: true
 :caption:
 :hidden:
 
+index
 readme_link
 ```
 

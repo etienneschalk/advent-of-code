@@ -5,9 +5,9 @@ from pathlib import Path
 def main():
     # Rename all filenames like "year_YYYY_day_DD" to "problem_YYYYDD"
 
-    input_path = Path()
-
-    for input_path in (Path(), Path().resolve().parent / "advent-of-code-private"):
+    code_dir_path = Path()
+    private_repo_dir_path = Path().resolve().parent / "advent-of-code-private"
+    for input_path in (code_dir_path, private_repo_dir_path):
         print(input_path)
         paths = sorted(
             (*input_path.rglob("*year_*day*.py"), *input_path.rglob("*year_*day*.txt"))
@@ -33,6 +33,13 @@ def main():
     tests_dir_path = Path("tests/advent_of_code")
     for path in sorted(tests_dir_path.rglob("problem_*.py")):
         path.resolve().rename(path.with_stem(f"test_{path.stem}").resolve())
+
+    # Rename inputs
+    print(private_repo_dir_path)
+    paths = sorted(private_repo_dir_path.rglob("problem_*.txt"))
+    print(paths)
+    for path in paths:
+        path.resolve().rename(path.with_stem(f"puzzle_input_{path.stem[8:]}").resolve())
 
 
 if __name__ == "__main__":

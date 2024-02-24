@@ -1,37 +1,174 @@
 # advent-of-code
 
+## Table of Contents
+
+- [advent-of-code](#advent-of-code)
+  - [Table of Contents](#table-of-contents)
+  - [Description](#description)
+  - [Terminology](#terminology)
+  - [Documentation](#documentation)
+    - [Deploy documentation on GitHub Pages](#deploy-documentation-on-github-pages)
+    - [Local](#local)
+    - [Miscellaneous](#miscellaneous)
+  - [Installation](#installation)
+    - [Code](#code)
+      - [From GitHub](#from-github)
+    - [Test Data](#test-data)
+      - [From GitHub](#from-github-1)
+      - [Create your own Test Data](#create-your-own-test-data)
+  - [Development](#development)
+    - [Testing](#testing)
+      - [pytest](#pytest)
+    - [Code quality](#code-quality)
+      - [pre-commit](#pre-commit)
+    - [(⚠️ Legacy) Template Files](#️-legacy-template-files)
+  - [Experience Feedback](#experience-feedback)
+    - [Types of problems](#types-of-problems)
+
 <!-- start include sphinx -->
+
+## Description
+
+## Terminology
+
+[Advent of Code](https://adventofcode.com/about)
+: Yearly coding challenge occurring in December
+
+Puzzle (or _Problem_)
+: A puzzle is defined by its year and day. It contains a Puzzle Description, and an associated
+
+Puzzle Description
+: The description associated to a Puzzle. It contains Puzzle Examples
+
+Puzzle Example
+: Any fenced raw text content in the Puzzle Description. Visually, it has a different background that the rest of the Puzzle Description. Include Example Puzzle Inputs
+
+Solution
+: An algorithm that takes as an input the Puzzle Input and produces as an output the associated answer.
+
+Puzzle Input
+: Raw text contents that the Solution takes as an input. The Solution is correct if its output is the Answer.
+
+Personalized Puzzle Input
+: Each user logged on the Advent of Code website gets a personalized Puzzle Input and a Personalized Answer. This is done to prevent copy pasting others' Answers, and also prevents the Advent of Code's website content to be stole and reproduced by third parties.
+
+Example Puzzle Input
+: One of the examples in the problem description. This is a sub-category of Puzzle Examples.
+
+Answer
+: A number or a string solving the associated Puzzle Input
+
+Personalized Expected Answer
+: Each user logged on the Advent of Code website gets a personalized Puzzle Input and a Personalized Answer. This is done to prevent copy pasting others' Answers, and also prevents the Advent of Code's website content to be stole and reproduced by third parties.
+
+Data Model TODO eschalk
+
+<!-- ```mermaid
+
+``` -->
+
+## Documentation
+
+This documentation also fulfills the role of being a blog to share my solutions and visualizations.
+
+### Deploy documentation on GitHub Pages
+
+TODO eschalk Deploy the documentation on GitHub pages.
+
+### Local
+
+:::{note}
+The documentation's dependencies are included in the `docs` dependency group of poetry in `pyproject.toml`
+
+```bash
+poetry install --with docs
+```
+
+```bash
+cd docs
+poetry run sphinx-build source _build/html
+poetry run sphinx-build -E source _build/html # clear cache with -E
+
+poetry run sphinx-autobuild source _build/html # autobuild (useful in development)
+poetry run sphinx-autobuild -E source _build/html # clear cache (not advised with autobuild)
+
+poetry run sphinx-serve -h 127.0.0.1 -p 8080 # just serve
+```
+
+### Miscellaneous
+
+Keep sidebar constant:
+https://stackoverflow.com/questions/74075617/side-bar-navigation-incomplete-in-sphinx
+
+## Installation
+
+This is a work in progress section.
+Indeed, in order to comply with the Advent of Code rules,
+
+TODO eschalk: Remove all traces of personalized inputs
+TODO eschalk: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository
+
+### Code
+
+#### From GitHub
+
+### Test Data
+
+#### From GitHub
+
+In an effort not to share any personalized puzzle input nor personalized answer, as well as not reproducing the public example puzzle inputs, this data is not stored publicly in GitHub.
+
+#### Create your own Test Data
+
+You can create a configuration file that points to a folder. There is a "well-known structure", using "convention over configuration" principle:
+
+```raw
+${path_to_directory_with_private_resources}
+└── resources
+    └── advent_of_code
+        ├── personalized
+        │   └── ${username}
+        │       ├── expected_answers
+        │       │   └──  y_${year}
+        │       │        └── (1) expected_answers_${year}.json
+        │       └── puzzle_inputs
+        │           └──  y_${year}
+        │                └── (+) puzzle_input_${year}${day}.txt
+        └── common
+            └── example_puzzle_inputs
+                └──  y_${year}
+                     └── (1) example_inputs_${year}.toml
+```
+
+1. Configuration file to point to `${path_to_directory_with_private_resources}`
+2. Puzzle Inputs are the raw content you can get from problem description
+3. Expected Answers are to be completed by yourself once you solve the problem, for future reproducibility of your solutions
+4. Example Puzzle Inputs are scrapped from the problem description. It is done manually as they are largely problem-specific
+
+:::{note}
+This would be a nice TODO to have an interface that automatically extracts all of the raw contents to such a folder, privately, and that generates this structure automatically.
+
+This would be like this: Logged in AoC -> Download to well-known resources directory -> Usable by the solutions.
+
+The well-know format could be language-independent.
+
+Note: the expected answers would still need to be filled manually.
+:::
 
 ## Development
 
-### (⚠️ Legacy) Template Files
-
-Start development for a given day and year by generating template files:
-
-```bash
-python advent_of_code/jobs/code_generation.py --year 2022 --day 5
-```
-
-```txt
-Started Generation
-Generating puzzle_input
-    Written puzzle_input to resources/advent_of_code/year_2022/input_problem_202205.txt
-Generating source_code
-    Written source_code to advent_of_code/year_2022/problem_202205.py
-Generating test_code
-    Written test_code to tests/advent_of_code/year_2022/test_problem_202205.py
-Finished Generation
-```
-
-### Pre-commit
-
-To run all checks on the whole project:
-
-```bash
-pre-commit run --all
-```
-
 ### Testing
+
+#### pytest
+
+TODO eschalk include pytest to pre-commit (ut, it, and slow)
+
+:::{note}
+pytest is included in the `dev` dependency group of poetry in `pyproject.toml`
+
+```bash
+poetry install --with dev
+```
 
 Integration tests:
 
@@ -65,6 +202,69 @@ See [Stack Overflow - Show durations of tests for pytest](https://stackoverflow.
 pytest --durations=0 # Show all times for tests and setup and teardown
 pytest --durations=1 # Slowest test
 pytest --durations=50 # Slowest 50 tests
+```
+
+### Code quality
+
+#### pre-commit
+
+:::{note}
+pre-commit is included in the `dev` dependency group of poetry in `pyproject.toml`
+
+```bash
+poetry install --with dev
+```
+
+:::
+Code quality is managed by [pre-commit](https://pre-commit.com/). This wonderful tool can be seen as a _local CI (continuous integration)_.
+
+It runs all the useful tools improving the overall quality of a codebase. Here is a non-exhaustive list below (consult `.pre-commit-config.yaml` for more details):
+
+- [autoflake](https://pypi.org/project/autoflake/): _autoflake removes unused imports and unused variables from Python code_
+- [isort](https://pycqa.github.io/isort/): _isort is a Python utility / library to sort imports alphabetically, and automatically separated into sections and by type_
+- [blackdoc](https://blackdoc.readthedocs.io/en/latest/): _apply black to code in documentation_
+- [ruff](https://github.com/astral-sh/ruff): An extremely fast Python linter and code formatter, written in Rust.
+- [pyright](https://github.com/microsoft/pyright): _Static Type Checker for Python_
+
+It runs every time a commit is attempted, on the set of relevant files according to the diff.
+
+There is a way to disable it (use with parcimony, bypassing today equals technical debt for tomorrow) with the `--no-verify` git flag. Example:
+
+```bash
+git commit -m "bypass pre-commit" --no-verify
+```
+
+To run all checks on the whole project:
+
+```bash
+pre-commit run --all
+```
+
+Run it on all the codebase, with the "manual" hook (for long operations that you don't want to have to wait for on every commit, like slow integration tests):
+
+```bash
+pre-commit run --all --hook-stage manual
+```
+
+TODO eschalk as pytest is not yet included, nor integration tests.
+
+### (⚠️ Legacy) Template Files
+
+Start development for a given day and year by generating template files:
+
+```bash
+python advent_of_code/jobs/code_generation.py --year 2022 --day 5
+```
+
+```raw
+Started Generation
+Generating puzzle_input
+    Written puzzle_input to resources/advent_of_code/year_2022/input_problem_202205.txt
+Generating source_code
+    Written source_code to advent_of_code/year_2022/problem_202205.py
+Generating test_code
+    Written test_code to tests/advent_of_code/year_2022/test_problem_202205.py
+Finished Generation
 ```
 
 ## Experience Feedback
@@ -141,18 +341,4 @@ Pure Visualization
   - Require solving a linear system of equation. The use of external tools seems mandatory, eg using `sympy` for symbolic mathematics. It is used to solve the system of equations.
   - This is one of the rare problems that are more "float-oriented", and not "int-oriented". Getting precise exact numbers from a simulation is hard. Hence pure math helping here.
 
-## Documentation
-
-```bash
-cd docs
-# sphinx-autobuild source _build/html
-poetry run sphinx-build -E source _build/html # clear cache
-poetry run sphinx-autobuild source _build/html # autobuild
-poetry run sphinx-serve -h 127.0.0.0 -p 8080 # just serve
-# sphinx-autobuild -E source _build/html # clear cache (not advised with autobuild)
-```
-
 <!-- end include sphinx -->
-
-Keep sidebar constant:
-https://stackoverflow.com/questions/74075617/side-bar-navigation-incomplete-in-sphinx
