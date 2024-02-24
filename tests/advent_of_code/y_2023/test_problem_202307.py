@@ -10,8 +10,8 @@ from advent_of_code.y_2023.problem_202307 import (
 )
 
 
-def test_problem_202307_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202307_part_1(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = parse_text_input(test_input)
     mapped_input = map_puzzle_input(parsed_input, MAPPING_SRC_TO_DEST_PART_1)
     sorted_by_hand_type = sort_by_hand_type_part_1(mapped_input)
@@ -20,8 +20,8 @@ def test_problem_202307_part_1(example_inputs: ExampleInputsStore):
     ...
 
 
-def test_problem_202307_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202307_part_2(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = parse_text_input(test_input)
     mapped_input = map_puzzle_input(parsed_input, MAPPING_SRC_TO_DEST_PART_2)
     sorted_by_hand_type = sort_by_hand_type_part_2(

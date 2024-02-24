@@ -12,8 +12,8 @@ from advent_of_code.y_2022.problem_202224 import (
 )
 
 
-def test_problem_202224_part_1_period_dummy(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__, "EXAMPLE_INPUT_DUMMY")
+def test_problem_202224_part_1_period_dummy(example_inputs_2022: ExampleInputsStore):
+    test_input = example_inputs_2022.retrieve(__file__, "EXAMPLE_INPUT_DUMMY")
     parsed_input = parse_text_input(test_input)
     blizzard = initialize_blizzard(parsed_input)
     initial_blizzard_backup = blizzard.copy(deep=True)
@@ -24,8 +24,8 @@ def test_problem_202224_part_1_period_dummy(example_inputs: ExampleInputsStore):
     assert all(v for v in np.all(initial_blizzard_backup == blizzard).values())
 
 
-def test_problem_202224_part_1_period(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202224_part_1_period(example_inputs_2022: ExampleInputsStore):
+    test_input = example_inputs_2022.retrieve(__file__)
 
     parsed_input = parse_text_input(test_input)
     blizzard = initialize_blizzard(parsed_input)
@@ -38,8 +38,8 @@ def test_problem_202224_part_1_period(example_inputs: ExampleInputsStore):
 
 
 @pytest.mark.skip(reason="displays voxel array")
-def test_problem_202224_part_1_period_stack(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202224_part_1_period_stack(example_inputs_2022: ExampleInputsStore):
+    test_input = example_inputs_2022.retrieve(__file__)
 
     parsed_input = parse_text_input(test_input)
     blizzard_cube = compute_simulation_for_cross_period(parsed_input)
@@ -111,8 +111,8 @@ def test_problem_202224_part_1_period_stack(example_inputs: ExampleInputsStore):
 
 
 @pytest.mark.slow
-def test_problem_202224_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202224_part_1(example_inputs_2022: ExampleInputsStore):
+    test_input = example_inputs_2022.retrieve(__file__)
 
     parsed_input = parse_text_input(test_input)
     minutes = build_graph_part_1(parsed_input)

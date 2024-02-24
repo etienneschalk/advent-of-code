@@ -10,36 +10,36 @@ from advent_of_code.y_2022.problem_202225 import AdventOfCodeProblem202225
 
 
 @pytest.mark.integration
-def test_integration_202201(expected_answers: ExpectedAnswersStore):
+def test_integration_202201(expected_answers_2022: ExpectedAnswersStore):
     problem = AdventOfCodeProblem202201()
-    assert problem.solve() == expected_answers.retrieve(problem)
+    assert problem.solve() == expected_answers_2022.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202202(expected_answers: ExpectedAnswersStore):
+def test_integration_202202(expected_answers_2022: ExpectedAnswersStore):
     problem = AdventOfCodeProblem202202()
-    assert problem.solve() == expected_answers.retrieve(problem)
+    assert problem.solve() == expected_answers_2022.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202203(expected_answers: ExpectedAnswersStore):
+def test_integration_202203(expected_answers_2022: ExpectedAnswersStore):
     problem = AdventOfCodeProblem202203()
-    assert problem.solve() == expected_answers.retrieve(problem)
+    assert problem.solve() == expected_answers_2022.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202204(expected_answers: ExpectedAnswersStore):
+def test_integration_202204(expected_answers_2022: ExpectedAnswersStore):
     problem = AdventOfCodeProblem202204()
-    assert problem.solve() == expected_answers.retrieve(problem)
+    assert problem.solve() == expected_answers_2022.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202205(expected_answers: ExpectedAnswersStore):
+def test_integration_202205(expected_answers_2022: ExpectedAnswersStore):
     problem = AdventOfCodeProblem202205()
-    assert problem.solve() == expected_answers.retrieve(problem)
+    assert problem.solve() == expected_answers_2022.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202225(expected_answers: ExpectedAnswersStore):
+def test_integration_202225(expected_answers_2022: ExpectedAnswersStore):
     problem = AdventOfCodeProblem202225()
-    assert problem.solve() == expected_answers.retrieve(problem)
+    assert problem.solve() == expected_answers_2022.retrieve(problem)

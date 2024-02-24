@@ -11,8 +11,8 @@ from advent_of_code.y_2023.problem_202318 import (
 )
 
 
-def test_problem_202318_part_1_basic(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__, "EXAMPLE_INPUT_3_X_3_LOOP")
+def test_problem_202318_part_1_basic(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_3_X_3_LOOP")
     # Sources
     # Visualization (spoilers)
     # See https://www.reddit.com/r/adventofcode/comments/
@@ -33,8 +33,8 @@ def test_problem_202318_part_1_basic(example_inputs: ExampleInputsStore):
     assert pick_area_including_exterior == 9
 
 
-def test_problem_202318_part_1_basic_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__, "EXAMPLE_INPUT_3_X_4_LOOP")
+def test_problem_202318_part_1_basic_2(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_3_X_4_LOOP")
     dig_plan = parse_text_input_part_1(test_input)
 
     internal_perimeter = compute_internal_perimeter(dig_plan)
@@ -49,8 +49,8 @@ def test_problem_202318_part_1_basic_2(example_inputs: ExampleInputsStore):
     assert pick_area_including_exterior == 12
 
 
-def test_problem_202318_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202318_part_1(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     dig_plan = parse_text_input_part_1(test_input)
 
     internal_perimeter = compute_internal_perimeter(dig_plan)
@@ -64,8 +64,8 @@ def test_problem_202318_part_1(example_inputs: ExampleInputsStore):
     assert pick_area_including_exterior == 62
 
 
-def test_problem_202318_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202318_part_2(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     dig_plan = parse_text_input_part_2(test_input)
 
     mapping = {

@@ -21,8 +21,8 @@ class ExampleInputsStore:
         return content
 
     @classmethod
-    def from_private_resources_repository(cls) -> Self:
-        parsed_toml = get_example_inputs_file_contents()
+    def from_private_resources_repository(cls, year: int) -> Self:
+        parsed_toml = get_example_inputs_file_contents(year)
         return cls(_store=parsed_toml)
 
 
@@ -38,6 +38,6 @@ class ExpectedAnswersStore:
         return content
 
     @classmethod
-    def from_private_resources_repository(cls) -> Self:
-        parsed_json = get_expected_answers_file_contents()
+    def from_private_resources_repository(cls, year: int) -> Self:
+        parsed_json = get_expected_answers_file_contents(year)
         return cls(_store=parsed_json)

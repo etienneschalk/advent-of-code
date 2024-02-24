@@ -6,8 +6,8 @@ from advent_of_code.y_2023.problem_202303 import (
 )
 
 
-def test_problem_20233_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_20233_part_1(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     array = parse_text_input(test_input)
 
     flattened = find_part_numbers(array)
@@ -18,8 +18,8 @@ def test_problem_20233_part_1(example_inputs: ExampleInputsStore):
     assert sum(flattened) == 4361
 
 
-def test_problem_20233_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_20233_part_2(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     array = parse_text_input(test_input)
 
     gear_part_numbers_tuples = find_part_numbers_and_gears(array)

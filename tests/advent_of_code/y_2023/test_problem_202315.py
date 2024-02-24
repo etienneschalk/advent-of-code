@@ -14,8 +14,8 @@ def test_problem_202315_simple_hash():
     assert hash_problem_202315("HASH") == 52
 
 
-def test_problem_202315_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202315_part_1(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = parse_text_input(test_input)
     actual_result = {i: hash_problem_202315(i) for i in parsed_input}
     expected_result = {
@@ -35,8 +35,8 @@ def test_problem_202315_part_1(example_inputs: ExampleInputsStore):
     assert sum(expected_result.values()) == 1320
 
 
-def test_problem_202315_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202315_part_2(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     init_sequence = parse_text_input(test_input)
 
     rendered_steps = []
@@ -46,7 +46,7 @@ def test_problem_202315_part_2(example_inputs: ExampleInputsStore):
         rendered_steps.append(render_step(boxes, first_steps[-1]))
 
     rendered_steps_visu = "\n\n".join(rendered_steps)
-    expected = example_inputs.retrieve(
+    expected = example_inputs_2023.retrieve(
         __file__, "EXPECTED_INITIALIZATION_SEQUENCE_PART_2"
     )
     assert rendered_steps_visu == expected.strip()

@@ -6,8 +6,8 @@ from advent_of_code.y_2023.problem_202309 import (
 )
 
 
-def test_problem_202309_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202309_part_1(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = AdventOfCodeProblem202309.parse_text_input(test_input)
 
     expected_predictions = [18, 28, 68]
@@ -18,8 +18,8 @@ def test_problem_202309_part_1(example_inputs: ExampleInputsStore):
     ...
 
 
-def test_problem_202309_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202309_part_2(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = AdventOfCodeProblem202309.parse_text_input(test_input)
 
     expected_predictions = [-3, 0, 5]

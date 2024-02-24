@@ -8,8 +8,8 @@ from advent_of_code.y_2023.problem_202321 import (
 )
 
 
-def test_problem_202321_part_1_naive(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202321_part_1_naive(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     garden = parse_text_input(test_input)
 
     initial_pos = get_starting_position(garden)
@@ -20,15 +20,17 @@ def test_problem_202321_part_1_naive(example_inputs: ExampleInputsStore):
 
     assert count_reached_garden_plots(max_iter, history) == 16
     EXPECTED_PART_1_HISTORY = {
-        i: example_inputs.retrieve(__file__, f"EXPECTED_PART_1_HISTORY_{i}").strip()
+        i: example_inputs_2023.retrieve(
+            __file__, f"EXPECTED_PART_1_HISTORY_{i}"
+        ).strip()
         for i in (1, 2, 3, 6)
     }
     for index_plus_one, array_string in EXPECTED_PART_1_HISTORY.items():
         assert history[index_plus_one - 1] == array_string
 
 
-def test_problem_202321_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202321_part_1(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     garden = parse_text_input(test_input)
 
     initial_pos = get_starting_position(garden)

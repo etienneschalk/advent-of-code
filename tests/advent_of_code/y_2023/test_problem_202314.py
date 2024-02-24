@@ -13,33 +13,39 @@ from advent_of_code.y_2023.problem_202314 import (
 )
 
 
-def test_problem_202314_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202314_part_1(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = AdventOfCodeProblem202314.parse_text_input(test_input)
     list_of_str = get_list_of_str(parsed_input, 3)
     total_load = compute_total_load_part_1(list_of_str)
     assert total_load == 136
 
 
-def test_problem_202314_part_1_refactored(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202314_part_1_refactored(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = AdventOfCodeProblem202314.parse_text_input(test_input)
     total_load = compute_total_load_for_north(parsed_input)
     assert total_load == 136
 
 
-def test_problem_202314_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202314_part_2(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = AdventOfCodeProblem202314.parse_text_input(test_input)
 
     expected_1 = (
-        example_inputs.retrieve(__file__, "EXPECTED_PART_2_1_CYCLE").strip().split("\n")
+        example_inputs_2023.retrieve(__file__, "EXPECTED_PART_2_1_CYCLE")
+        .strip()
+        .split("\n")
     )
     expected_2 = (
-        example_inputs.retrieve(__file__, "EXPECTED_PART_2_2_CYCLE").strip().split("\n")
+        example_inputs_2023.retrieve(__file__, "EXPECTED_PART_2_2_CYCLE")
+        .strip()
+        .split("\n")
     )
     expected_3 = (
-        example_inputs.retrieve(__file__, "EXPECTED_PART_2_3_CYCLE").strip().split("\n")
+        example_inputs_2023.retrieve(__file__, "EXPECTED_PART_2_3_CYCLE")
+        .strip()
+        .split("\n")
     )
     init_rot = 4
 
@@ -51,8 +57,8 @@ def test_problem_202314_part_2(example_inputs: ExampleInputsStore):
     assert get_list_of_str(after_three_cycles, 0) == expected_3
 
 
-def test_problem_202314_part_2_more_iter(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202314_part_2_more_iter(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = AdventOfCodeProblem202314.parse_text_input(test_input)
 
     init_rot = 4
@@ -75,9 +81,9 @@ def test_problem_202314_part_2_more_iter(example_inputs: ExampleInputsStore):
 
 
 def test_problem_202314_part_2_validate_problem_description(
-    example_inputs: ExampleInputsStore,
+    example_inputs_2023: ExampleInputsStore,
 ):
-    test_input = example_inputs.retrieve(__file__)
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = AdventOfCodeProblem202314.parse_text_input(test_input)
 
     init_rot = 4

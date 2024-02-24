@@ -12,8 +12,8 @@ from advent_of_code.y_2023.problem_202316 import (
 )
 
 
-def test_problem_202316_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202316_part_1(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = parse_text_input(test_input)
     print()
     print(render_parsed_input(parsed_input))
@@ -24,8 +24,8 @@ def test_problem_202316_part_1(example_inputs: ExampleInputsStore):
     ...
 
 
-def test_problem_202316_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202316_part_2(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = parse_text_input(test_input)
     print()
     print(render_parsed_input(parsed_input))

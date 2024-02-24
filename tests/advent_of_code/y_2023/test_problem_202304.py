@@ -9,8 +9,8 @@ from advent_of_code.y_2023.problem_202304 import (
 )
 
 
-def test_problem_20234_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_20234_part_1(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     cards = parse_text_input(test_input)
 
     expected_winning_numbers_you_have = [
@@ -31,8 +31,8 @@ def test_problem_20234_part_1(example_inputs: ExampleInputsStore):
     assert sum(card_worths) == 13
 
 
-def test_problem_20234_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_20234_part_2(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     cards = parse_text_input(test_input)
 
     expected_instances = [

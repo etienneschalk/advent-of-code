@@ -27,40 +27,36 @@ def get_year_and_day_from_filename(filename: str) -> tuple[int, int]:
 
 
 def load_puzzle_input_text_file(year: int, day: int) -> str:
-    input_path = get_input_file_path(year, day)
+    input_path = get_puzzle_input_file_path(year, day)
     assert input_path.is_file()
     text = input_path.read_text()
     return text
 
 
-def get_input_file_path(year: int, day: int) -> Path:
-    input_path = render_central_input_path(year, day)
-    input_path = get_private_resources_path() / Path(input_path)
-    return input_path
+def get_example_inputs_file_contents(year: int) -> dict[str, dict[str, str]]:
+    with get_example_inputs_file_path(year).open(mode="rb") as fp:
+        contents = tomllib.load(fp)
+    return contents
+
+
+def get_expected_answers_file_contents(year: int) -> dict[str, dict[str, int | str]]:
+    return json.loads(get_expected_answers_file_path(year).read_text())
 
 
 def get_private_resources_path() -> Path:
     return (Path.home() / Path("dev/advent-of-code-private")).resolve()
 
 
-def get_example_inputs_file_contents() -> dict[str, dict[str, str]]:
-    with get_example_inputs_file_path().open(mode="rb") as fp:
-        contents = tomllib.load(fp)
-    return contents
+def get_puzzle_input_file_path(year: int, day: int) -> Path:
+    return next(get_private_resources_path().rglob(f"puzzle_input_{year}{day:02d}.txt"))
 
 
-def get_expected_answers_file_contents() -> dict[str, dict[str, int | str]]:
-    return json.loads(get_expected_answers_file_path().read_text())
+def get_example_inputs_file_path(year: int) -> Path:
+    return next(get_private_resources_path().rglob(f"example_inputs_{year}.toml"))
 
 
-def get_example_inputs_file_path() -> Path:
-    example_inputs_path = "resources/advent_of_code/example_inputs.toml"
-    return get_private_resources_path() / example_inputs_path
-
-
-def get_expected_answers_file_path() -> Path:
-    expected_answers_path = "resources/advent_of_code/expected_answers.json"
-    return get_private_resources_path() / expected_answers_path
+def get_expected_answers_file_path(year: int) -> Path:
+    return next(get_private_resources_path().rglob(f"expected_answers_{year}.json"))
 
 
 def save_txt(text: str, filename: str, module_name: str, *, output_subdir: str = ""):

@@ -11,11 +11,11 @@ from advent_of_code.y_2023.problem_202311 import (
 )
 
 
-def test_problem_202311_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202311_part_1(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = parse_text_input(test_input)
 
-    test_expected_expanded = example_inputs.retrieve(
+    test_expected_expanded = example_inputs_2023.retrieve(
         __file__, "EXAMPLE_EXPECTED_EXPANSION"
     )
 
@@ -34,8 +34,8 @@ def test_problem_202311_part_1(example_inputs: ExampleInputsStore):
     assert actual_result == 374
 
 
-def test_problem_202311_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202311_part_2(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = parse_text_input(test_input)
     space_xda = parsed_input
 

@@ -27,8 +27,8 @@ def test_problem_202317_misc():
     assert dict_hashmap[hash(different_heat_state)] == different_heat_state
 
 
-def test_problem_202317_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202317_part_1(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = AdventOfCodeProblem202317.parse_text_input(test_input)
 
     start = (0, 0)
@@ -38,8 +38,8 @@ def test_problem_202317_part_1(example_inputs: ExampleInputsStore):
     assert least_heat_loss == 102
 
 
-def test_problem_202317_part_2_a(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202317_part_2_a(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = AdventOfCodeProblem202317.parse_text_input(test_input)
 
     start = (0, 0)
@@ -49,8 +49,8 @@ def test_problem_202317_part_2_a(example_inputs: ExampleInputsStore):
     assert least_heat_loss == 94
 
 
-def test_problem_202317_part_2_b(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__, "EXAMPLE_INPUT_PART_2")
+def test_problem_202317_part_2_b(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_PART_2")
     parsed_input = AdventOfCodeProblem202317.parse_text_input(test_input)
 
     start = (0, 0)

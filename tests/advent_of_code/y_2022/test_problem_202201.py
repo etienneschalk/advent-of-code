@@ -6,13 +6,13 @@ from advent_of_code.y_2022.problem_202201 import (
 )
 
 
-def test_problem_202201_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202201_part_1(example_inputs_2022: ExampleInputsStore):
+    test_input = example_inputs_2022.retrieve(__file__)
     parsed_input = parse_text_input(test_input)
     assert compute_max_calories_part_1(parsed_input) == 24000
 
 
-def test_problem_202201_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202201_part_2(example_inputs_2022: ExampleInputsStore):
+    test_input = example_inputs_2022.retrieve(__file__)
     parsed_input = parse_text_input(test_input)
     assert compute_max_calories_part_2(parsed_input) == 45000

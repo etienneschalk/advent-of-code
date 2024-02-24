@@ -10,13 +10,13 @@ from advent_of_code.y_2023.problem_202310 import (
 )
 
 
-def test_problem_202310_part_1(example_inputs: ExampleInputsStore):
+def test_problem_202310_part_1(example_inputs_2023: ExampleInputsStore):
     test_inputs = (
-        example_inputs.retrieve(__file__, "EXAMPLE_INPUT_1_1"),
-        example_inputs.retrieve(__file__, "EXAMPLE_INPUT_1_2"),
-        example_inputs.retrieve(__file__, "EXAMPLE_INPUT_1_3"),
-        example_inputs.retrieve(__file__, "EXAMPLE_INPUT_2_1"),
-        example_inputs.retrieve(__file__, "EXAMPLE_INPUT_2_2"),
+        example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_1_1"),
+        example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_1_2"),
+        example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_1_3"),
+        example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_2_1"),
+        example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_2_2"),
     )
     parsed_inputs = [parse_text_input(test_input) for test_input in test_inputs]
     for p in parsed_inputs:
@@ -52,15 +52,15 @@ def test_problem_202310_part_1(example_inputs: ExampleInputsStore):
 
 
 @pytest.mark.skip(reason="_fill_macro_pixel_first_try not available anymore")
-def test_problem_202310_part_2(example_inputs: ExampleInputsStore):
+def test_problem_202310_part_2(example_inputs_2023: ExampleInputsStore):
     test_inputs = (
-        example_inputs.retrieve(__file__, "EXAMPLE_INPUT_PART_2_1_1a"),
-        example_inputs.retrieve(__file__, "EXAMPLE_INPUT_PART_2_1_1b"),
-        example_inputs.retrieve(__file__, "EXAMPLE_INPUT_PART_2_1_2"),
-        example_inputs.retrieve(__file__, "EXAMPLE_INPUT_PART_2_2_1"),
-        example_inputs.retrieve(__file__, "EXAMPLE_INPUT_PART_2_2_2"),
-        example_inputs.retrieve(__file__, "EXAMPLE_INPUT_PART_2_3_1"),
-        example_inputs.retrieve(__file__, "EXAMPLE_INPUT_PART_2_3_2"),
+        example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_PART_2_1_1a"),
+        example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_PART_2_1_1b"),
+        example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_PART_2_1_2"),
+        example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_PART_2_2_1"),
+        example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_PART_2_2_2"),
+        example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_PART_2_3_1"),
+        example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_PART_2_3_2"),
     )
 
     parsed_inputs = [parse_text_input(test_input) for test_input in test_inputs]
@@ -93,7 +93,9 @@ def test_problem_202310_part_2(example_inputs: ExampleInputsStore):
     _ = arr_2x
     print(render_2d_array_to_text(arr_2x))
     xda = (
-        xr.DataArray(arr_2x, dims=("i", "j")).coarsen(i=2, j=2).sum()  # pyright: ignore[reportGeneralTypeIssues]
+        xr.DataArray(arr_2x, dims=("i", "j"))
+        .coarsen(i=2, j=2)
+        .sum()  # pyright: ignore[reportGeneralTypeIssues]
     )
     print(render_2d_array_to_text(xda.data))
 

@@ -5,8 +5,8 @@ from advent_of_code.y_2023.problem_202319 import (
 )
 
 
-def test_problem_202319_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202319_part_1(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = parse_text_input(test_input)
     assert parsed_input.apply_to_all() == list("ARARA")
     solve_1 = parsed_input.solve_part_1()
@@ -15,8 +15,8 @@ def test_problem_202319_part_1(example_inputs: ExampleInputsStore):
     ...
 
 
-def test_problem_202319_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202319_part_2(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = parse_text_input(test_input)
     initial_part_range = construct_initial_part_range()
     solve_2 = parsed_input.apply_to_range(initial_part_range)

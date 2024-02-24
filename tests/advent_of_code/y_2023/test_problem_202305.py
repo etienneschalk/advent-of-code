@@ -12,8 +12,8 @@ from advent_of_code.y_2023.problem_202305 import (
 )
 
 
-def test_problem_20235_part_1_parse_almanac(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_20235_part_1_parse_almanac(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     almanac = parse_almanac(test_input)
     assert almanac.seeds == [79, 14, 55, 13]
 
@@ -110,8 +110,8 @@ def test_problem_20235_part_1_parse_almanac(example_inputs: ExampleInputsStore):
 
 
 @pytest.mark.skip(reason="not implemented yet")
-def test_problem_20235_part_2_parse_almanac(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_20235_part_2_parse_almanac(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     almanac = parse_almanac(test_input)
     assert almanac.seeds == [79, 14, 55, 13]
     assert almanac.seed_ranges == [range(79, 79 + 14), range(55, 55 + 13)]
@@ -171,8 +171,8 @@ def test_problem_20235_part_2_parse_almanac(example_inputs: ExampleInputsStore):
     # 92: 60
 
 
-def test_problem_20235_part_2_second_try(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_20235_part_2_second_try(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     almanac = parse_almanac(test_input)
     assert almanac.seeds == [79, 14, 55, 13]
     assert almanac.seed_ranges == [range(79, 79 + 14), range(55, 55 + 13)]
@@ -208,15 +208,15 @@ def test_problem_20235_part_2_second_try(example_inputs: ExampleInputsStore):
     # ranges[0].start == 46
 
 
-def test_problem_20235_part_2_third_try(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_20235_part_2_third_try(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     almanac = parse_almanac(test_input)
     min_location_number = compute_lowest_location_number(almanac)
     assert min_location_number == 46
 
 
-def test_detect_max_value_in_almanac(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_detect_max_value_in_almanac(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     almanac = parse_almanac(test_input)
     (
         almanac.maps[0].ranges[0].destination_range_start
@@ -226,7 +226,7 @@ def test_detect_max_value_in_almanac(example_inputs: ExampleInputsStore):
     assert max_almanac == 100
 
 
-def test_clean_almanac(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_clean_almanac(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     almanac = parse_almanac(test_input)
     fill_almanac_in_place(almanac)

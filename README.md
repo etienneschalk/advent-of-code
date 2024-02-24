@@ -21,6 +21,7 @@
       - [pytest](#pytest)
     - [Code quality](#code-quality)
       - [pre-commit](#pre-commit)
+    - [Troubleshooting](#troubleshooting)
     - [(⚠️ Legacy) Template Files](#️-legacy-template-files)
   - [Experience Feedback](#experience-feedback)
     - [Types of problems](#types-of-problems)
@@ -247,6 +248,10 @@ pre-commit run --all --hook-stage manual
 ```
 
 TODO eschalk as pytest is not yet included, nor integration tests.
+
+### Troubleshooting
+
+Nothing yet.
 
 ### (⚠️ Legacy) Template Files
 

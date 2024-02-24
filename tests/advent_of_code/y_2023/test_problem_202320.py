@@ -7,9 +7,9 @@ from advent_of_code.y_2023.problem_202320 import (
 )
 
 
-def test_problem_202320_part_1_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__, "EXAMPLE_INPUT_1")
-    expected_output = example_inputs.retrieve(__file__, "EXPECTED_OUTPUT_1")
+def test_problem_202320_part_1_1(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_1")
+    expected_output = example_inputs_2023.retrieve(__file__, "EXPECTED_OUTPUT_1")
 
     start_module_dict = parse_text_to_module_dict(test_input)
     module_dict = parse_text_to_module_dict(test_input)
@@ -25,8 +25,8 @@ def test_problem_202320_part_1_1(example_inputs: ExampleInputsStore):
     assert result_1 == 32000000
 
 
-def test_problem_202320_part_1_1bis(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__, "EXAMPLE_INPUT_1")
+def test_problem_202320_part_1_1bis(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_1")
     start_module_dict = parse_text_to_module_dict(test_input)
     module_dict = parse_text_to_module_dict(test_input)
     histories = compute_successive_histories_until_circle_back(
@@ -36,12 +36,12 @@ def test_problem_202320_part_1_1bis(example_inputs: ExampleInputsStore):
     assert result == 32000000
 
 
-def test_problem_202320_part_1_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__, "EXAMPLE_INPUT_2")
-    expected_output_2_1 = example_inputs.retrieve(__file__, "EXPECTED_OUTPUT_2_1")
-    expected_output_2_2 = example_inputs.retrieve(__file__, "EXPECTED_OUTPUT_2_2")
-    expected_output_2_3 = example_inputs.retrieve(__file__, "EXPECTED_OUTPUT_2_3")
-    expected_output_2_4 = example_inputs.retrieve(__file__, "EXPECTED_OUTPUT_2_4")
+def test_problem_202320_part_1_2(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_2")
+    expected_output_2_1 = example_inputs_2023.retrieve(__file__, "EXPECTED_OUTPUT_2_1")
+    expected_output_2_2 = example_inputs_2023.retrieve(__file__, "EXPECTED_OUTPUT_2_2")
+    expected_output_2_3 = example_inputs_2023.retrieve(__file__, "EXPECTED_OUTPUT_2_3")
+    expected_output_2_4 = example_inputs_2023.retrieve(__file__, "EXPECTED_OUTPUT_2_4")
 
     start_module_dict = parse_text_to_module_dict(test_input)
     module_dict = parse_text_to_module_dict(test_input)
@@ -69,8 +69,8 @@ def test_problem_202320_part_1_2(example_inputs: ExampleInputsStore):
     assert result == 11687500
 
 
-def test_problem_202320_part_1_2bis(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__, "EXAMPLE_INPUT_2")
+def test_problem_202320_part_1_2bis(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_2")
     start_module_dict = parse_text_to_module_dict(test_input)
     module_dict = parse_text_to_module_dict(test_input)
     histories = compute_successive_histories_until_circle_back(

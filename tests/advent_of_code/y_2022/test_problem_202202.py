@@ -6,8 +6,8 @@ from advent_of_code.y_2022.problem_202202 import (
 )
 
 
-def test_problem_202202_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202202_part_1(example_inputs_2022: ExampleInputsStore):
+    test_input = example_inputs_2022.retrieve(__file__)
     parsed_input = parse_text_input(test_input)
     scores = compute_scores_for_part_1(parsed_input)
     assert scores == (8, 1, 6)
@@ -15,8 +15,8 @@ def test_problem_202202_part_1(example_inputs: ExampleInputsStore):
     assert total_score == 15
 
 
-def test_problem_202202_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202202_part_2(example_inputs_2022: ExampleInputsStore):
+    test_input = example_inputs_2022.retrieve(__file__)
 
     parsed_input = parse_text_input(test_input)
     scores = compute_scores_for_part_2(parsed_input)

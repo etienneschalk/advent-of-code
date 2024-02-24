@@ -8,8 +8,8 @@ from advent_of_code.y_2023.problem_202313 import (
 )
 
 
-def test_problem_202313_part_1_problematic(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__, "EXAMPLE_PROBLEMATIC")
+def test_problem_202313_part_1_problematic(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__, "EXAMPLE_PROBLEMATIC")
     pattern = parse_text_input(test_input)[0]
 
     # Vertical symmetry
@@ -19,8 +19,8 @@ def test_problem_202313_part_1_problematic(example_inputs: ExampleInputsStore):
     assert find_number_of_rows_above_symmetry_axis(pattern) == 0
 
 
-def test_problem_202313_part_2_problematic(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__, "EXAMPLE_PROBLEMATIC")
+def test_problem_202313_part_2_problematic(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__, "EXAMPLE_PROBLEMATIC")
     pattern = parse_text_input(test_input)[0]
 
     # Vertical symmetry
@@ -30,8 +30,8 @@ def test_problem_202313_part_2_problematic(example_inputs: ExampleInputsStore):
     assert find_number_of_rows_above_symmetry_axis(pattern) == 0
 
 
-def test_problem_202313_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202313_part_1(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     patterns = parse_text_input(test_input)
 
     example_1, example_2 = patterns
@@ -63,8 +63,8 @@ def test_problem_202313_part_1(example_inputs: ExampleInputsStore):
     ...
 
 
-def test_problem_202313_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202313_part_2(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     patterns = parse_text_input(test_input)
 
     example_1, example_2 = patterns

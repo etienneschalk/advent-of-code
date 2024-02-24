@@ -8,13 +8,13 @@ from advent_of_code.y_2022.problem_202225 import (
 )
 
 
-def test_problem_202225_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202225_part_1(example_inputs_2022: ExampleInputsStore):
+    test_input = example_inputs_2022.retrieve(__file__)
 
-    example_snafu_to_decimal = example_inputs.retrieve(
+    example_snafu_to_decimal = example_inputs_2022.retrieve(
         __file__, "EXPECTED_SNAFU_TO_DECIMAL"
     )
-    example_decimal_to_snafu = example_inputs.retrieve(
+    example_decimal_to_snafu = example_inputs_2022.retrieve(
         __file__, "EXAMPLE_DECIMAL_TO_SNAFU"
     )
 

@@ -7,8 +7,8 @@ from advent_of_code.y_2022.problem_202203 import (
 )
 
 
-def test_problem_202203_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202203_part_1(example_inputs_2022: ExampleInputsStore):
+    test_input = example_inputs_2022.retrieve(__file__)
 
     parsed_input = parse_text_input(test_input)
     assert parsed_input[0][0] == "vJrwpWtwJgWr"
@@ -26,8 +26,8 @@ def test_problem_202203_part_1(example_inputs: ExampleInputsStore):
     assert priority_sum == 157
 
 
-def test_problem_202203_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202203_part_2(example_inputs_2022: ExampleInputsStore):
+    test_input = example_inputs_2022.retrieve(__file__)
 
     parsed_input = parse_text_input(test_input)
 

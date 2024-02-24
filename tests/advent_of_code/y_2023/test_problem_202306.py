@@ -39,8 +39,8 @@ def test_problem_20236_part_intro():
     assert len(winnings) == 9
 
 
-def test_problem_20236_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_20236_part_1(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = parse_text_input(test_input)  # noqa: F841
     assert parsed_input == {"Time:": [7, 15, 30], "Distance:": [9, 40, 200]}
     number_of_ways = compute_number_of_ways_to_win(parsed_input)
@@ -48,8 +48,8 @@ def test_problem_20236_part_1(example_inputs: ExampleInputsStore):
     ...
 
 
-def test_problem_20236_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_20236_part_2(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     parsed_input = parse_text_input(test_input)  # noqa: F841
     data = correct_data(parsed_input)
     assert data == {"Time:": [71530], "Distance:": [940200]}

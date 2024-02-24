@@ -7,11 +7,11 @@ from advent_of_code.y_2022.problem_202204 import (
 )
 
 
-def test_problem_202204_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202204_part_1(example_inputs_2022: ExampleInputsStore):
+    test_input = example_inputs_2022.retrieve(__file__)
 
     parsed_input = parse_text_input(test_input)
-    expected_visualization = example_inputs.retrieve(
+    expected_visualization = example_inputs_2022.retrieve(
         __file__, "EXPECTED_VISUALIZATION"
     ).strip()
     visu = render_input_visualization(parsed_input)
@@ -22,8 +22,8 @@ def test_problem_202204_part_1(example_inputs: ExampleInputsStore):
     assert actual_fully_contained_count == expected_fully_contained_count
 
 
-def test_problem_202204_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202204_part_2(example_inputs_2022: ExampleInputsStore):
+    test_input = example_inputs_2022.retrieve(__file__)
 
     parsed_input = parse_text_input(test_input)
 

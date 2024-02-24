@@ -8,8 +8,8 @@ from advent_of_code.y_2023.problem_202301 import (
 )
 
 
-def test_problem_20231_part_1(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__, "TEST_INPUT_1")
+def test_problem_20231_part_1(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__, "TEST_INPUT_1")
 
     words = parse_text_input(test_input)
 
@@ -20,8 +20,8 @@ def test_problem_20231_part_1(example_inputs: ExampleInputsStore):
     assert recover_calibration_value(words[3]) == 77
 
 
-def test_problem_20231_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__, "TEST_INPUT_2")
+def test_problem_20231_part_2(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__, "TEST_INPUT_2")
 
     words = parse_text_input(test_input)
 

@@ -55,8 +55,8 @@ EXPECTED_CAN_BE_DISINTEGRATED_PART_1 = {
 }
 
 
-def test_problem_202322_part_1_whole(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202322_part_1_whole(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     unsorted_bricks = parse_text_input(test_input)
 
     result = compute_safely_removable_bricks_count(unsorted_bricks)
@@ -64,8 +64,8 @@ def test_problem_202322_part_1_whole(example_inputs: ExampleInputsStore):
     assert result == 5
 
 
-def test_problem_202322_part_1_details(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202322_part_1_details(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     unsorted_bricks = parse_text_input(test_input)
 
     # Bricks that are the closest to the ground have the most priority (low-leaning z)
@@ -105,8 +105,8 @@ def test_problem_202322_part_1_details(example_inputs: ExampleInputsStore):
     assert safely_removable_bricks == 5
 
 
-def test_problem_202322_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__)
+def test_problem_202322_part_2(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__)
     unsorted_bricks = parse_text_input(test_input)
     # Bricks that are the closest to the ground have the most priority (low-leaning z)
     sorted_bricks = sorted(unsorted_bricks, key=lambda b: b.rank)

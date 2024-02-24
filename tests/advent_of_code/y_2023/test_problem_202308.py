@@ -7,22 +7,22 @@ from advent_of_code.y_2023.problem_202308 import (
 )
 
 
-def test_problem_202308_part_1_1(example_inputs: ExampleInputsStore):
-    test_input_1 = example_inputs.retrieve(__file__, "EXAMPLE_INPUT_1")
+def test_problem_202308_part_1_1(example_inputs_2023: ExampleInputsStore):
+    test_input_1 = example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_1")
     network_1 = parse_text_input(test_input_1)
     steps_1 = count_required_steps(network_1)
     assert steps_1 == 2
 
 
-def test_problem_202308_part_1_2(example_inputs: ExampleInputsStore):
-    test_input_2 = example_inputs.retrieve(__file__, "EXAMPLE_INPUT_2")
+def test_problem_202308_part_1_2(example_inputs_2023: ExampleInputsStore):
+    test_input_2 = example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_2")
     network_2 = parse_text_input(test_input_2)
     steps_2 = count_required_steps(network_2)
     assert steps_2 == 6
 
 
-def test_problem_202308_part_2_bruteforce(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__, "EXAMPLE_INPUT_PART_2")
+def test_problem_202308_part_2_bruteforce(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_PART_2")
     network_1 = parse_text_input(test_input)
     starts = ("11A", "22A")
     ends = ("11Z", "22Z")
@@ -31,8 +31,8 @@ def test_problem_202308_part_2_bruteforce(example_inputs: ExampleInputsStore):
     assert steps_1 == 6
 
 
-def test_problem_202308_part_2(example_inputs: ExampleInputsStore):
-    test_input = example_inputs.retrieve(__file__, "EXAMPLE_INPUT_PART_2")
+def test_problem_202308_part_2(example_inputs_2023: ExampleInputsStore):
+    test_input = example_inputs_2023.retrieve(__file__, "EXAMPLE_INPUT_PART_2")
     network = parse_text_input(test_input)
 
     sources = tuple(sorted(key for key in network.nodes.keys() if key.endswith("A")))
