@@ -91,6 +91,11 @@ Current issues with GitHub Actions:
 No current solution for now. The issue is "how to make a GitHub action access private data"
 https://docs.github.com/en/actions/creating-actions/sharing-actions-and-workflows-from-your-private-repository
 
+A hack: Pre-run the notebook locally so that nbsphinx does not attempt to run it.
+This remove the need of the notebook execution by the GitHub Action, and the problem of accessing the private resources.
+However it means versioning the notebooks' outputs.
+https://nbsphinx.readthedocs.io/en/0.5.0/pre-executed.html#Long-Running-Cells
+
 ### Local
 
 ````{note}
