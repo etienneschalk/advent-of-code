@@ -11,7 +11,6 @@ from advent_of_code.year_2022.year_2022_day_25 import (
 def test_year_2022_day_25_part_1(example_inputs: ExampleInputsStore):
     test_input = example_inputs.retrieve(__file__)
 
-    # TODO eschalk convert them to true text input as in problem descr in TOML
     example_snafu_to_decimal = example_inputs.retrieve(
         __file__, "EXPECTED_SNAFU_TO_DECIMAL"
     )

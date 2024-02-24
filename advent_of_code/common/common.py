@@ -1,3 +1,4 @@
+import json
 import sys
 import tomllib
 from pathlib import Path
@@ -48,9 +49,18 @@ def get_example_inputs_file_contents() -> dict[str, dict[str, str]]:
     return contents
 
 
+def get_expected_answers_file_contents() -> dict[str, dict[str, int | str]]:
+    return json.loads(get_expected_answers_file_path().read_text())
+
+
 def get_example_inputs_file_path() -> Path:
     example_inputs_path = "resources/advent_of_code/example_inputs.toml"
     return get_private_resources_path() / example_inputs_path
+
+
+def get_expected_answers_file_path() -> Path:
+    expected_answers_path = "resources/advent_of_code/expected_answers.json"
+    return get_private_resources_path() / expected_answers_path
 
 
 def save_txt(text: str, filename: str, module_name: str, *, output_subdir: str = ""):

@@ -267,7 +267,6 @@ def flatten_exploration_tree(initial_tree: TrailNode) -> PositionToTreeNodeDict:
         tree = q.pop(0)
         if tree.starting_position in explored:
             continue
-        # Wrong, TODO ,[tree] and append if explored
         explored.add(tree.starting_position)
         graph[tree.starting_position] = tree
         q.extend(tree.children)

@@ -1,5 +1,6 @@
 import pytest
 
+from advent_of_code.common.store import ExpectedAnswersStore
 from advent_of_code.year_2023.year_2023_day_01 import AdventOfCodeProblem202301
 from advent_of_code.year_2023.year_2023_day_02 import AdventOfCodeProblem202302
 from advent_of_code.year_2023.year_2023_day_03 import AdventOfCodeProblem202303
@@ -26,136 +27,156 @@ from advent_of_code.year_2023.year_2023_day_23 import AdventOfCodeProblem202323
 from advent_of_code.year_2023.year_2023_day_24 import AdventOfCodeProblem202324
 from advent_of_code.year_2023.year_2023_day_25 import AdventOfCodeProblem202325
 
-# TODO use /home/tselano/dev/advent-of-code/resources/advent_of_code/year_2023/expected_results_year_2023.json
+
+@pytest.mark.integration
+def test_integration_202301(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202301()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202301():
-    assert AdventOfCodeProblem202301().solve() == {1: 54630, 2: 54770}
+def test_integration_202302(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202302()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202302():
-    assert AdventOfCodeProblem202302().solve() == {1: 2061, 2: 72596}
+def test_integration_202303(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202303()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202303():
-    assert AdventOfCodeProblem202303().solve() == {1: 529618, 2: 77509019}
+def test_integration_202304(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202304()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202304():
-    assert AdventOfCodeProblem202304().solve() == {1: 23750, 2: 13261850}
+def test_integration_202305(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202305()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202305():
-    assert AdventOfCodeProblem202305().solve() == {1: 323142486, 2: 79874951}
+def test_integration_202306(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202306()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202306():
-    assert AdventOfCodeProblem202306().solve() == {1: 2269432, 2: 35865985}
+def test_integration_202307(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202307()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202307():
-    assert AdventOfCodeProblem202307().solve() == {1: 252052080, 2: 252898370}
+def test_integration_202308(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202308()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202308():
-    assert AdventOfCodeProblem202308().solve() == {1: 15871, 2: 11283670395017}
+def test_integration_202309(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202309()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202309():
-    assert AdventOfCodeProblem202309().solve() == {1: 1884768153, 2: 1031}
+def test_integration_202310(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202310()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202310():
-    assert AdventOfCodeProblem202310().solve() == {1: 6599, 2: 477}
+def test_integration_202311(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202311()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202311():
-    assert AdventOfCodeProblem202311().solve() == {1: 9370588, 2: 746207878188}
+def test_integration_202312(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202312()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202312():
-    assert AdventOfCodeProblem202312().solve() == {1: 7670, 2: 157383940585037}
+def test_integration_202313(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202313()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202313():
-    assert AdventOfCodeProblem202313().solve() == {1: 34918, 2: 33054}
+def test_integration_202314(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202314()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202314():
-    assert AdventOfCodeProblem202314().solve() == {1: 110677, 2: 90551}
-
-
-@pytest.mark.integration
-def test_integration_202315():
-    assert AdventOfCodeProblem202315().solve() == {1: 514281, 2: 244199}
+def test_integration_202315(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202315()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.slow
 @pytest.mark.integration
-def test_integration_202316():
-    assert AdventOfCodeProblem202316().solve() == {1: 7236, 2: 7521}
+def test_integration_202316(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202316()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.slow
 @pytest.mark.integration
-def test_integration_202317():
-    assert AdventOfCodeProblem202317().solve() == {1: 1001, 2: 1197}
+def test_integration_202317(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202317()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202318():
-    assert AdventOfCodeProblem202318().solve() == {1: 47139, 2: 173152345887206}
+def test_integration_202318(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202318()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202319():
-    assert AdventOfCodeProblem202319().solve() == {1: 348378, 2: 121158073425385}
+def test_integration_202319(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202319()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202320():
-    assert AdventOfCodeProblem202320().solve() == {1: 684125385, 2: 225872806380073}
+def test_integration_202320(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202320()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.slow
 @pytest.mark.integration
-def test_integration_202321():
-    assert AdventOfCodeProblem202321().solve() == {1: 3740, 2: 620962518745459}
+def test_integration_202321(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202321()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202322():
-    assert AdventOfCodeProblem202322().solve() == {1: 393, 2: 58440}
+def test_integration_202322(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202322()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.slow
 @pytest.mark.integration
-def test_integration_202323():
-    assert AdventOfCodeProblem202323().solve() == {1: 1998, 2: 6434}
+def test_integration_202323(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202323()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202324():
-    assert AdventOfCodeProblem202324().solve() == {1: 19523, 2: 566373506408017}
+def test_integration_202324(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202324()
+    assert problem.solve() == expected_answers.retrieve(problem)
 
 
 @pytest.mark.integration
-def test_integration_202325():
-    assert AdventOfCodeProblem202325().solve() == {
-        1: 601310,
-        2: "Part 2 of Day 25 is having solved all the 49 previous problems!",
-    }
+def test_integration_202325(expected_answers: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem202325()
+    assert problem.solve() == expected_answers.retrieve(problem)
