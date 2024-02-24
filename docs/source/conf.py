@@ -49,7 +49,10 @@ html_css_files = [
 ]
 
 html_theme_options = {
-    "announcement": "🛠️ This blog is work in progress",
+    "announcement": "🚧 This blog is work in progress",
+    "light_logo": "img/light-logo_arr_3x_red_filled_from_center.png",
+    "dark_logo": "img/dark-logo_arr_3x_red_filled_from_center.png",
+    # "dark_logo": "img/dark-logo_arr_3x_red_filled_from_center.png",
 }
 
 pygments_style = "default"

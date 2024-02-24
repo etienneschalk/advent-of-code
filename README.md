@@ -14,6 +14,7 @@
       - [From GitHub](#from-github)
     - [Resources](#resources)
       - [From GitHub](#from-github-1)
+        - [How-to: Obliterate private files from GitHub history](#how-to-obliterate-private-files-from-github-history)
       - [Create your own Test Data](#create-your-own-test-data)
   - [Development](#development)
     - [Testing](#testing)
@@ -28,6 +29,10 @@
 <!-- start include sphinx -->
 
 ## Introduction
+
+[Information about Advent of Code](https://adventofcode.com/2023/about)
+
+🚧 This section is work in progress
 
 <!-- TODO eschalk differentiate technical and non-technical sections with emojis
 
@@ -120,9 +125,68 @@ Repository can be found on GitHub: https://github.com/etienneschalk/advent-of-co
 
 In an effort not to share any personalized puzzle input nor personalized answer, as well as not reproducing the public example puzzle inputs, this data is not stored publicly in GitHub.
 
-I previously stored. If it happens to you, you can consult the following GitHub documentation page: [Removing sensitive data from a repository](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository)
+I previously stored. If it happens to you, you can read the following procedure to remove all traces of personalizes inputs in your git repository.
 
-TODO eschalk: Remove all traces of personalized inputs
+##### How-to: Obliterate private files from GitHub history
+
+- Consult the following GitHub documentation page: [Removing sensitive data from a repository](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository)
+- Download BFG from https://rtyley.github.io/bfg-repo-cleaner/
+- Identifying the pattern of my personalized input filenames as I did store them: `"input_year_*.txt`
+- Run the tool: `java -jar ~/bfg-1.14.0.jar --delete-files "input_year_*.txt"`
+- Check the contents of `deleted-files.txt` in the tool's report to verify that all files of interest were removed.
+- The tool indicated to run the following command: `BFG run is complete! When ready, run: git reflog expire --expire=now --all && git gc --prune=now --aggressive`
+- `git push --force`
+- Verify that the files were indeed obliterated from history
+  - In my case, I checked a link to an old commit on GitHub. In fact, the files were still accessible but with a new admonition: `This commit does not belong to any branch on this repository, and may belong to a fork outside of the repository.`.
+  - The offending files are _de facto_ not publicly anymore as one may need the old commit's hash to access it. One cannot just use the regular way of checking the git history in the GitHub UI anymore to access easily the removed files.
+  - Maybe these orphan commits will be somehow garbage collected, but with a delay?
+
+````{note}
+Here is what the contents of `deleted-files.txt` in the BFG report looks like in my cas (only filenames):
+
+```txt
+input_year_2022_day_01.txt
+input_year_2022_day_02.txt
+input_year_2022_day_03.txt
+input_year_2022_day_04.txt
+input_year_2022_day_05.txt
+input_year_2022_day_24.txt
+input_year_2022_day_25.txt
+input_year_2023_day_00.txt
+input_year_2023_day_01.txt
+input_year_2023_day_02.txt
+input_year_2023_day_03.txt
+input_year_2023_day_04.txt
+input_year_2023_day_05.txt
+input_year_2023_day_06.txt
+input_year_2023_day_07.txt
+input_year_2023_day_08.txt
+input_year_2023_day_08.txt
+input_year_2023_day_09.txt
+input_year_2023_day_09.txt
+input_year_2023_day_1.txt
+input_year_2023_day_10.txt
+input_year_2023_day_11.txt
+input_year_2023_day_12.txt
+input_year_2023_day_13.txt
+input_year_2023_day_14.txt
+input_year_2023_day_15.txt
+input_year_2023_day_15.txt
+input_year_2023_day_16.txt
+input_year_2023_day_17.txt
+input_year_2023_day_18.txt
+input_year_2023_day_19.txt
+input_year_2023_day_2.txt
+input_year_2023_day_20.txt
+input_year_2023_day_21.txt
+input_year_2023_day_22.txt
+input_year_2023_day_23.txt
+input_year_2023_day_24.txt
+input_year_2023_day_25.txt
+input_year_2023_day_3.txt
+input_year_2023_day_4.txt
+```
+````
 
 #### Create your own Test Data
 
@@ -146,17 +210,31 @@ ${path_to_directory_with_private_resources}
                      └── (1) example_inputs_${year}.toml
 ```
 
-However, each file name is unique, and the resources reader internally use `rglob` with the expected filename, hence making the directory hierarchy irrelevant. However, I still respect this structure in my private resources, in the case that `rglob` would need to be replaced if it hampers too much the performance of the testing. For now, this has not happened.
+However, each file name is unique, and the resources reader internally use `rglob` with the expected filename, hence making the directory hierarchy irrelevant. I still respect this structure in my private resources, in the case that `rglob` would need to be replaced if it hampers too much the performance of the testing. For now, this has not happened.
+
+It means only the filename convention is enforced, not the directory hierarchy.
 
 1. Configuration file to point to `${path_to_directory_with_private_resources}`
-2. Puzzle Inputs are the raw content you can get from problem description
+2. Puzzle Inputs are the raw content you can get from problem description, without any further addition.
 3. Expected Answers are to be completed by yourself once you solve the problem, for future reproducibility of your solutions
+
+_Example_:
+
+```json
+{
+  "202325": {
+    "1": 11111111111,
+    "2": "Part 2 of Day 25 is having solved all the 49 previous problems!"
+  }
+}
+```
+
 4. Example Puzzle Inputs are scrapped from the problem description. It is done manually as they are largely problem-specific
 
 ```{note}
-This would be a nice TODO to have an interface that automatically extracts all of the raw contents to such a folder, privately, and that generates this structure automatically.
+This would be a nice addition to have an interface that automatically extracts all of the raw contents to such a folder, privately, and that generates this structure automatically.
 
-This would be like this: Logged in AoC -> Download to well-known resources directory -> Usable by the solutions.
+This would be like this: Logged in AoC -> Download to well-known resources directory thanks to the scrapper and an auth token  -> Complete the resource folder once -> Usable by the solutions.
 
 The well-know format could be language-independent.
 
