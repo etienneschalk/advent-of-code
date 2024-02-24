@@ -160,12 +160,11 @@ def solve_part_2(
     hailstones: list[Hailstone],
 ) -> int:
     """
-    !!! CHEATING !!!
+    CHEATING
 
     Source largely taken from:
     https://www.reddit.com/r/adventofcode/comments/18pnycy/comment/keqorhn/
 
-    -------
     The sum of the coordinates of the initial position
     """
 
