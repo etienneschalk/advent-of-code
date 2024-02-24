@@ -1,3 +1,5 @@
+#!/bin/bash
+
 INPUT_PNG_DIR=$HOME/dev/advent-of-code/generated/advent_of_code/year_2023/day_10/mazegen
 OUTPUT_VID=$HOME/dev/advent-of-code/generated/advent_of_code/year_2023/day_10
 cd "${INPUT_PNG_DIR}"

@@ -93,9 +93,7 @@ def test_problem_202310_part_2(example_inputs_2023: ExampleInputsStore):
     _ = arr_2x
     print(render_2d_array_to_text(arr_2x))
     xda = (
-        xr.DataArray(arr_2x, dims=("i", "j"))
-        .coarsen(i=2, j=2)
-        .sum()  # pyright: ignore[reportGeneralTypeIssues]
+        xr.DataArray(arr_2x, dims=("i", "j")).coarsen(i=2, j=2).sum()  # pyright: ignore[reportGeneralTypeIssues]
     )
     print(render_2d_array_to_text(xda.data))
 

@@ -23,7 +23,6 @@ repos:
       - id: destroyed-symlinks
       - id: detect-private-key
       # - id: detect-aws-credentials
-      - id: detect-private-key
       # - id: double-quote-string-fixer # taken care of by ruff
       - id: end-of-file-fixer
       # - id: file-contents-sorter
@@ -83,18 +82,28 @@ repos:
   #       ]
   # Pyright can replace mypy
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.347
+    rev: v1.1.351
     hooks:
     - id: pyright
       language: python_venv
       language_version: python3.12
   - repo: local
     hooks:
-    - id: pytest
+    - id: pytest-bare-minimum
       name: pytest
       entry: poetry run pytest
       language: python
       types: [python]
       stages: [commit]
+      pass_filenames: false
+      always_run: true
+    # Run with
+    # pre-commit run --all --hook-stage manual
+    - id: pytest-integration
+      name: pytest
+      entry: poetry run pytest -v --with-integration --durations=0
+      language: python
+      types: [python]
+      stages: [manual]
       pass_filenames: false
       always_run: true
