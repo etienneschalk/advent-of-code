@@ -1,0 +1,10 @@
+# Workaround: adapted from pyproject.toml as poetry groups are non standard.
+furo==2024.1.29
+myst-parser==2.0.0
+nbsphinx==0.9.3
+sphinx-autoapi==3.0.0
+sphinx-autobuild==2024.2.4
+sphinx-mdinclude==0.5.3
+sphinx-serve==1.0.1
+sphinxcontrib-youtube==1.4.1
+sphinxemoji==0.3.1
