@@ -14,7 +14,9 @@ jobs:
       pages: write
       id-token: write
     steps:
-    - id: deployment
+    - id: install_pandoc
+      run: sudo apt-get install pandoc
+    - id: github-pages-deployment
       uses: sphinx-notes/pages@v3
       with:
         python_version: 3.12
