@@ -88,7 +88,8 @@ Current issues with GitHub Actions:
 - How to correctly install dependencies with poetry in the context of GitHub Actions, and make them available in the notebook runner when building the Sphinx documentation?
 - How to access the private resources (personalized puzzle inputs, etc.)
 
-Current solution: fallback on publish via branch
+No current solution for now. The issue is "how to make a GitHub action access private data"
+https://docs.github.com/en/actions/creating-actions/sharing-actions-and-workflows-from-your-private-repository
 
 ### Local
 

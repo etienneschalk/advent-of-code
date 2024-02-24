@@ -16,6 +16,14 @@ jobs:
     steps:
     - id: install_pandoc
       run: sudo apt-get install pandoc
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+        installer-parallel: true
+    - id: install_project_with_poetry
+      run: poetry install --no-interaction --no-root
     - id: github-pages-deployment
       uses: sphinx-notes/pages@v3
       with:
