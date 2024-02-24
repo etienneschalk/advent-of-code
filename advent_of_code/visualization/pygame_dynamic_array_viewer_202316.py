@@ -13,7 +13,7 @@ from advent_of_code.visualization.protocols import (
     AOCPygameVisualizer,
     AOCPygameVisualizerFactory,
 )
-from advent_of_code.year_2023.year_2023_day_16 import (
+from advent_of_code.year_2023.problem_202316 import (
     CELL_EMPTY_SPACE,
     CELL_MIRROR_BACKSLASH,
     CELL_MIRROR_SLASH,

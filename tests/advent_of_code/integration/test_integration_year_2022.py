@@ -1,12 +1,12 @@
 import pytest
 
 from advent_of_code.common.store import ExpectedAnswersStore
-from advent_of_code.year_2022.year_2022_day_01 import AdventOfCodeProblem202201
-from advent_of_code.year_2022.year_2022_day_02 import AdventOfCodeProblem202202
-from advent_of_code.year_2022.year_2022_day_03 import AdventOfCodeProblem202203
-from advent_of_code.year_2022.year_2022_day_04 import AdventOfCodeProblem202204
-from advent_of_code.year_2022.year_2022_day_05 import AdventOfCodeProblem202205
-from advent_of_code.year_2022.year_2022_day_25 import AdventOfCodeProblem202225
+from advent_of_code.year_2022.problem_202201 import AdventOfCodeProblem202201
+from advent_of_code.year_2022.problem_202202 import AdventOfCodeProblem202202
+from advent_of_code.year_2022.problem_202203 import AdventOfCodeProblem202203
+from advent_of_code.year_2022.problem_202204 import AdventOfCodeProblem202204
+from advent_of_code.year_2022.problem_202205 import AdventOfCodeProblem202205
+from advent_of_code.year_2022.problem_202225 import AdventOfCodeProblem202225
 
 
 @pytest.mark.integration

@@ -10,7 +10,7 @@ from advent_of_code.visualization.protocols import (
     AOCPygameVisualizer,
     AOCPygameVisualizerFactory,
 )
-from advent_of_code.year_2023.year_2023_day_14 import AdventOfCodeProblem202314
+from advent_of_code.year_2023.problem_202314 import AdventOfCodeProblem202314
 
 
 @click.command

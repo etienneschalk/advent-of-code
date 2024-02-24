@@ -3,5 +3,5 @@
 🎥
 
 ```{toctree}
-year_2023_day_16
+problem_202316
 ```
