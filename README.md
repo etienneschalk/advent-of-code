@@ -341,6 +341,8 @@ Nothing yet.
 
 ### (Legacy) Template Files
 
+TODO -> Adapt the templating
+
 Start development for a given day and year by generating template files:
 
 ```bash
