@@ -1,0 +1,58 @@
+:py:mod:`advent_of_code.year_2023.problem_202303`
+=================================================
+
+.. py:module:: advent_of_code.year_2023.problem_202303
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem202303
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 3
+
+      
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+
+.. py:function:: parse_text_input(text: str) -> PuzzleInput
+
+
+.. py:function:: find_part_numbers(array: PuzzleInput) -> list[int]
+
+
+.. py:function:: find_part_numbers_and_gears(array: PuzzleInput) -> list[tuple[int, Ellipsis]]
+
+
+.. py:function:: detect_adjacent_numbers_in_line(array: PuzzleInput, row_index: int)
+
+
+.. py:function:: is_solitary_number(array: PuzzleInput, row_index: int, col_start_inclusive: int, col_end_exclusive: int) -> bool
+
+
+.. py:function:: get_candidate_gear_coordinates_list(array: PuzzleInput, row_index: int, col_start_inclusive: int, col_end_exclusive: int) -> set[tuple[int, int]]
+
+
+.. py:function:: get_neighbouring_coordinates_tuple(row_index: int, col_start_inclusive: int, col_end_exclusive: int) -> tuple[tuple[int, int], Ellipsis]
+
+

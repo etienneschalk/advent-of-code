@@ -1,0 +1,24 @@
+:py:mod:`advent_of_code.visualization`
+======================================
+
+.. py:module:: advent_of_code.visualization
+
+.. autoapi-nested-parse::
+
+   Advent of Code - init
+
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   protocols/index.rst
+   pygame_dynamic_array_viewer_202314/index.rst
+   pygame_dynamic_array_viewer_202316/index.rst
+   pygame_dynamic_array_viewer_example/index.rst
+   ursina_demo/index.rst
+
+

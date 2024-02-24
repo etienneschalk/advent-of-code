@@ -1,0 +1,45 @@
+advent\_of\_code.year\_2022.year\_2022\_day\_05
+===============================================
+
+.. automodule:: advent_of_code.year_2022.year_2022_day_05
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      common_logic
+      logic_part_1
+      logic_part_2
+      move_stacks_fifo
+      move_stacks_lifo
+      parse_input_text_file
+      parse_instructions_text
+      parse_stack_text
+      parse_text_input
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AdventOfCodeProblem202205
+      InstructionTuple
+      RearrangementProcedure
+   
+   
+
+   
+   
+   
+
+
+

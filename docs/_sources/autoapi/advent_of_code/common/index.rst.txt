@@ -1,0 +1,20 @@
+:py:mod:`advent_of_code.common`
+===============================
+
+.. py:module:: advent_of_code.common
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   common/index.rst
+   common_img/index.rst
+   constants/index.rst
+   graph_visualization/index.rst
+   protocols/index.rst
+   store/index.rst
+
+

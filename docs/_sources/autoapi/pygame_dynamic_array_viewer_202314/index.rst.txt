@@ -1,0 +1,131 @@
+:py:mod:`pygame_dynamic_array_viewer_202314`
+============================================
+
+.. py:module:: pygame_dynamic_array_viewer_202314
+
+
+Module Contents
+---------------
+
+.. py:function:: main(choice: str, part: str)
+
+
+.. py:class:: AOCVisualizer202314
+
+
+   Bases: :py:obj:`advent_of_code.visualization.protocols.AOCPygameVisualizer`
+
+   .. py:attribute:: history
+      :type: xarray.DataArray
+
+      
+
+   .. py:attribute:: simulation_step
+      :type: int
+
+      
+
+   .. py:attribute:: state_updates_per_second
+      :type: int
+      :value: 1
+
+      
+
+   .. py:attribute:: min_luminance
+      :type: int
+      :value: 40
+
+      
+
+   .. py:attribute:: max_luminance
+      :type: int
+
+      
+
+   .. py:attribute:: _board_array_surf
+      :type: pygame.Surface
+
+      
+
+   .. py:attribute:: _rocks_xda
+      :type: xarray.DataArray
+
+      
+
+   .. py:method:: init()
+
+
+   .. py:method:: init_state()
+
+
+   .. py:method:: update_state() -> None
+
+
+   .. py:method:: update_surfaces()
+
+
+   .. py:method:: consume_event(event: pygame.Event)
+
+
+   .. py:method:: _init_board_surf()
+
+
+   .. py:method:: time(i: int) -> int
+
+
+   .. py:method:: _update_rocks_xda() -> None
+
+
+   .. py:method:: _generate_board_array() -> xarray.DataArray
+
+
+
+.. py:function:: rot_center(image: pygame.Surface, rect: pygame.Rect, angle: float)
+
+   rotate an image while keeping its center
+
+
+.. py:class:: AOCPygameVisualizerFactory202314
+
+
+   Bases: :py:obj:`advent_of_code.visualization.protocols.AOCPygameVisualizerFactory`
+
+   Base class for protocol classes.
+
+   Protocol classes are defined as::
+
+       class Proto(Protocol):
+           def meth(self) -> int:
+               ...
+
+   Such classes are primarily used with static type checkers that recognize
+   structural subtyping (static duck-typing).
+
+   For example::
+
+       class C:
+           def meth(self) -> int:
+               return 0
+
+       def func(x: Proto) -> int:
+           return x.meth()
+
+       func(C())  # Passes static type check
+
+   See PEP 544 for details. Protocol classes decorated with
+   @typing.runtime_checkable act as simple-minded runtime protocols that check
+   only the presence of given attributes, ignoring their type signatures.
+   Protocol classes can be generic, they are defined as::
+
+       class GenProto[T](Protocol):
+           def meth(self) -> T:
+               ...
+
+   .. py:method:: create_visualizer() -> AOCVisualizer202314
+
+
+   .. py:method:: read_history(problem: advent_of_code.year_2023.year_2023_day_14.AdventOfCodeProblem202314) -> xarray.DataArray
+      :staticmethod:
+
+
+

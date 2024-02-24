@@ -1,0 +1,496 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="advent_of_code.year_2023.problem_202322" href="../problem_202322/index.html" /><link rel="prev" title="advent_of_code.year_2023.problem_202320" href="../problem_202320/index.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+        <title>advent_of_code.year_2023.problem_202321 - Advent of Blog</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     This blog is work in progress 
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">Advent of Blog</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">Advent of Blog</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../readme_link.html">README</a></li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../videos/index.html">Videos</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Videos</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../videos/video_problem_202316.html">Video - Year 2023 Day 16</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../notebooks/index.html">Notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Notebooks</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/example.html">Example Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/notebook_problem_202320.html">Year 2023 Day 20</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/notebook_problem_202321.html">Year 2023 Day 21</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/notebook_problem_202322.html">Year 2023 Day 22</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/notebook_problem_202323.html">Year 2023 Day 23</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/notebook_problem_202325.html">Year 2023 Day 25</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of advent_of_code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../common/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of advent_of_code.common</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../common/common/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common.common</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../common/common_img/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common.common_img</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../common/constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common.constants</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../common/graph_visualization/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common.graph_visualization</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../common/protocols/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common.protocols</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../common/store/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common.store</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../jobs/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.jobs</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of advent_of_code.jobs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../jobs/code_generation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.jobs.code_generation</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../visualization/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.visualization</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of advent_of_code.visualization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../visualization/protocols/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.visualization.protocols</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../visualization/pygame_dynamic_array_viewer_202314/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.visualization.pygame_dynamic_array_viewer_202314</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../visualization/pygame_dynamic_array_viewer_202316/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.visualization.pygame_dynamic_array_viewer_202316</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../visualization/pygame_dynamic_array_viewer_example/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.visualization.pygame_dynamic_array_viewer_example</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../visualization/ursina_demo/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.visualization.ursina_demo</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../year_2022/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of advent_of_code.year_2022</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../year_2022/problem_202201/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.problem_202201</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../year_2022/problem_202202/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.problem_202202</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../year_2022/problem_202203/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.problem_202203</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../year_2022/problem_202204/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.problem_202204</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../year_2022/problem_202205/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.problem_202205</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../year_2022/problem_202224/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.problem_202224</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../year_2022/problem_202225/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.problem_202225</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of advent_of_code.year_2023</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../problem_202301/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202301</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202302/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202302</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202303/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202303</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202304/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202304</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202305/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202305</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202306/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202306</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202307/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202307</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202308/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202308</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202309/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202309</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202310/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202310</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202311/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202311</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202312/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202312</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202313/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202313</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202314/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202314</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202315/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202315</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202316/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202316</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202317/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202317</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202318/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202318</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202319/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202319</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202320/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202320</span></code></a></li>
+<li class="toctree-l4 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202321</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202322/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202322</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202323/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202323</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202324/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202324</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../problem_202325/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202325</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../sort_whatsapp_pictures/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.sort_whatsapp_pictures</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="module-advent_of_code.year_2023.problem_202321">
+<span id="advent-of-code-year-2023-problem-202321"></span><h1><a class="reference internal" href="#module-advent_of_code.year_2023.problem_202321" title="advent_of_code.year_2023.problem_202321"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202321</span></code></a><a class="headerlink" href="#module-advent_of_code.year_2023.problem_202321" title="Link to this heading">#</a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="advent_of_code.year_2023.problem_202321.AdventOfCodeProblem202321">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AdventOfCodeProblem202321</span></span><a class="headerlink" href="#advent_of_code.year_2023.problem_202321.AdventOfCodeProblem202321" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../common/protocols/index.html#advent_of_code.common.protocols.AdventOfCodeProblem" title="advent_of_code.common.protocols.AdventOfCodeProblem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">advent_of_code.common.protocols.AdventOfCodeProblem</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">PuzzleInput</span></code>]</p>
+<p>Base class for Advent of Code problems’ implementations</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="advent_of_code.year_2023.problem_202321.AdventOfCodeProblem202321.year">
+<span class="sig-name descname"><span class="pre">year</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2023</span></em><a class="headerlink" href="#advent_of_code.year_2023.problem_202321.AdventOfCodeProblem202321.year" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="advent_of_code.year_2023.problem_202321.AdventOfCodeProblem202321.day">
+<span class="sig-name descname"><span class="pre">day</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">21</span></em><a class="headerlink" href="#advent_of_code.year_2023.problem_202321.AdventOfCodeProblem202321.day" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="advent_of_code.year_2023.problem_202321.AdventOfCodeProblem202321.solve_part_1">
+<span class="sig-name descname"><span class="pre">solve_part_1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">puzzle_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PuzzleInput</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#advent_of_code.year_2023.problem_202321.AdventOfCodeProblem202321.solve_part_1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="advent_of_code.year_2023.problem_202321.AdventOfCodeProblem202321.solve_part_2">
+<span class="sig-name descname"><span class="pre">solve_part_2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">puzzle_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PuzzleInput</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#advent_of_code.year_2023.problem_202321.AdventOfCodeProblem202321.solve_part_2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="advent_of_code.year_2023.problem_202321.AdventOfCodeProblem202321.parse_text_input">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_text_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">PuzzleInput</span></span></span><a class="headerlink" href="#advent_of_code.year_2023.problem_202321.AdventOfCodeProblem202321.parse_text_input" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="advent_of_code.year_2023.problem_202321.count_reached_garden_plots">
+<span class="sig-name descname"><span class="pre">count_reached_garden_plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">history</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#advent_of_code.year_2023.problem_202321.count_reached_garden_plots" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="advent_of_code.year_2023.problem_202321.run_steps">
+<span class="sig-name descname"><span class="pre">run_steps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">garden</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.2.1.dev0)"><span class="pre">xarray.DataArray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">advent_of_code.common.constants.Position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#advent_of_code.year_2023.problem_202321.run_steps" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="advent_of_code.year_2023.problem_202321.run_steps_details">
+<span class="sig-name descname"><span class="pre">run_steps_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">garden</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.2.1.dev0)"><span class="pre">xarray.DataArray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">advent_of_code.common.constants.Position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#set" title="(in Python v3.12)"><span class="pre">set</span></a><span class="p"><span class="pre">[</span></span><span class="pre">advent_of_code.common.constants.Position</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.2.1.dev0)"><span class="pre">xarray.DataArray</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.2.1.dev0)"><span class="pre">xarray.DataArray</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#advent_of_code.year_2023.problem_202321.run_steps_details" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="advent_of_code.year_2023.problem_202321.run_steps_old">
+<span class="sig-name descname"><span class="pre">run_steps_old</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">garden</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.2.1.dev0)"><span class="pre">xarray.DataArray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">advent_of_code.common.constants.Position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#advent_of_code.year_2023.problem_202321.run_steps_old" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="advent_of_code.year_2023.problem_202321.get_free_cells_xda">
+<span class="sig-name descname"><span class="pre">get_free_cells_xda</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">garden</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PuzzleInput</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#advent_of_code.year_2023.problem_202321.get_free_cells_xda" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="advent_of_code.year_2023.problem_202321.get_starting_position">
+<span class="sig-name descname"><span class="pre">get_starting_position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">garden</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PuzzleInput</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">advent_of_code.common.constants.Position</span></span></span><a class="headerlink" href="#advent_of_code.year_2023.problem_202321.get_starting_position" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="advent_of_code.year_2023.problem_202321.create_diamond_mask_array">
+<span class="sig-name descname"><span class="pre">create_diamond_mask_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_xda</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.2.1.dev0)"><span class="pre">xarray.DataArray</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.2.1.dev0)"><span class="pre">xarray.DataArray</span></a></span></span><a class="headerlink" href="#advent_of_code.year_2023.problem_202321.create_diamond_mask_array" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="advent_of_code.year_2023.problem_202321.create_diamond_int_array">
+<span class="sig-name descname"><span class="pre">create_diamond_int_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xda</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.2.1.dev0)"><span class="pre">xarray.DataArray</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.2.1.dev0)"><span class="pre">xarray.DataArray</span></a></span></span><a class="headerlink" href="#advent_of_code.year_2023.problem_202321.create_diamond_int_array" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="advent_of_code.year_2023.problem_202321.parse_input_text_file">
+<span class="sig-name descname"><span class="pre">parse_input_text_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">PuzzleInput</span></span></span><a class="headerlink" href="#advent_of_code.year_2023.problem_202321.parse_input_text_file" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="advent_of_code.year_2023.problem_202321.evaluate_quadratic_equation">
+<span class="sig-name descname"><span class="pre">evaluate_quadratic_equation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#advent_of_code.year_2023.problem_202321.evaluate_quadratic_equation" title="Link to this definition">#</a></dt>
+<dd><p>Evaluate Quadratic Equation with Numpy</p>
+<p>Thanks <a class="reference external" href="https://www.reddit.com/r/adventofcode/comments/18nevo3/comment/kebm6ak/?utm_source=share&amp;utm_medium=web3x&amp;utm_name=web3xcss&amp;utm_term=1&amp;utm_content=share_button">https://www.reddit.com/r/adventofcode/comments/18nevo3/comment/kebm6ak/?utm_source=share&amp;utm_medium=web3x&amp;utm_name=web3xcss&amp;utm_term=1&amp;utm_content=share_button</a>
+Alternatively, Lagrange polynomials could have been reimplemented.
+See <a class="reference external" href="https://en.wikipedia.org/wiki/Lagrange_polynomial">https://en.wikipedia.org/wiki/Lagrange_polynomial</a></p>
+<p>The area growing is x**2, so 3 points are required to interpolate, hence the previous computing
+of 1x1, 3x3 and 5x5 grids</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – Control Points’ abscissa</p></li>
+<li><p><strong>y</strong> – Control Points’ ordinates</p></li>
+<li><p><strong>target</strong> – Value to feed to the interpolated polynomial</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Rounded evaluation of the polynomial for given target</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="advent_of_code.year_2023.problem_202321.parse_text_input">
+<span class="sig-name descname"><span class="pre">parse_text_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">PuzzleInput</span></span></span><a class="headerlink" href="#advent_of_code.year_2023.problem_202321.parse_text_input" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="advent_of_code.year_2023.problem_202321.compute_points_for_interpolation">
+<span class="sig-name descname"><span class="pre">compute_points_for_interpolation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concat_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.2.1.dev0)"><span class="pre">xarray.DataArray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">diamond_1x1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.2.1.dev0)"><span class="pre">xarray.DataArray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">concat_3</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.2.1.dev0)"><span class="pre">xarray.DataArray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">diamond_3x3</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.2.1.dev0)"><span class="pre">xarray.DataArray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">concat_5</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.2.1.dev0)"><span class="pre">xarray.DataArray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">diamond_5x5</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2024.2.1.dev0)"><span class="pre">xarray.DataArray</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#advent_of_code.year_2023.problem_202321.compute_points_for_interpolation" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../problem_202322/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202322</span></code></div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../problem_202320/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202320</span></code></div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, Etienne Schalk
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202321</span></code></a><ul>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#advent_of_code.year_2023.problem_202321.AdventOfCodeProblem202321"><code class="docutils literal notranslate"><span class="pre">AdventOfCodeProblem202321</span></code></a><ul>
+<li><a class="reference internal" href="#advent_of_code.year_2023.problem_202321.AdventOfCodeProblem202321.year"><code class="docutils literal notranslate"><span class="pre">AdventOfCodeProblem202321.year</span></code></a></li>
+<li><a class="reference internal" href="#advent_of_code.year_2023.problem_202321.AdventOfCodeProblem202321.day"><code class="docutils literal notranslate"><span class="pre">AdventOfCodeProblem202321.day</span></code></a></li>
+<li><a class="reference internal" href="#advent_of_code.year_2023.problem_202321.AdventOfCodeProblem202321.solve_part_1"><code class="docutils literal notranslate"><span class="pre">AdventOfCodeProblem202321.solve_part_1()</span></code></a></li>
+<li><a class="reference internal" href="#advent_of_code.year_2023.problem_202321.AdventOfCodeProblem202321.solve_part_2"><code class="docutils literal notranslate"><span class="pre">AdventOfCodeProblem202321.solve_part_2()</span></code></a></li>
+<li><a class="reference internal" href="#advent_of_code.year_2023.problem_202321.AdventOfCodeProblem202321.parse_text_input"><code class="docutils literal notranslate"><span class="pre">AdventOfCodeProblem202321.parse_text_input()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advent_of_code.year_2023.problem_202321.count_reached_garden_plots"><code class="docutils literal notranslate"><span class="pre">count_reached_garden_plots()</span></code></a></li>
+<li><a class="reference internal" href="#advent_of_code.year_2023.problem_202321.run_steps"><code class="docutils literal notranslate"><span class="pre">run_steps()</span></code></a></li>
+<li><a class="reference internal" href="#advent_of_code.year_2023.problem_202321.run_steps_details"><code class="docutils literal notranslate"><span class="pre">run_steps_details()</span></code></a></li>
+<li><a class="reference internal" href="#advent_of_code.year_2023.problem_202321.run_steps_old"><code class="docutils literal notranslate"><span class="pre">run_steps_old()</span></code></a></li>
+<li><a class="reference internal" href="#advent_of_code.year_2023.problem_202321.get_free_cells_xda"><code class="docutils literal notranslate"><span class="pre">get_free_cells_xda()</span></code></a></li>
+<li><a class="reference internal" href="#advent_of_code.year_2023.problem_202321.get_starting_position"><code class="docutils literal notranslate"><span class="pre">get_starting_position()</span></code></a></li>
+<li><a class="reference internal" href="#advent_of_code.year_2023.problem_202321.create_diamond_mask_array"><code class="docutils literal notranslate"><span class="pre">create_diamond_mask_array()</span></code></a></li>
+<li><a class="reference internal" href="#advent_of_code.year_2023.problem_202321.create_diamond_int_array"><code class="docutils literal notranslate"><span class="pre">create_diamond_int_array()</span></code></a></li>
+<li><a class="reference internal" href="#advent_of_code.year_2023.problem_202321.parse_input_text_file"><code class="docutils literal notranslate"><span class="pre">parse_input_text_file()</span></code></a></li>
+<li><a class="reference internal" href="#advent_of_code.year_2023.problem_202321.evaluate_quadratic_equation"><code class="docutils literal notranslate"><span class="pre">evaluate_quadratic_equation()</span></code></a></li>
+<li><a class="reference internal" href="#advent_of_code.year_2023.problem_202321.parse_text_input"><code class="docutils literal notranslate"><span class="pre">parse_text_input()</span></code></a></li>
+<li><a class="reference internal" href="#advent_of_code.year_2023.problem_202321.compute_points_for_interpolation"><code class="docutils literal notranslate"><span class="pre">compute_points_for_interpolation()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>

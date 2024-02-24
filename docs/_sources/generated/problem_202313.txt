@@ -1,0 +1,43 @@
+advent\_of\_code.year\_2023.year\_2023\_day\_13
+===============================================
+
+.. automodule:: advent_of_code.year_2023.year_2023_day_13
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      compute_symmetry_amounts
+      find_number_of_cols_above_symmetry_axis
+      find_number_of_rows_above_symmetry_axis
+      find_number_of_rows_above_symmetry_axis_both_parts
+      find_number_of_rows_above_symmetry_axis_part_1
+      find_number_of_rows_above_symmetry_axis_part_2
+      numpy_to_xarray
+      parse_text_input
+      summarize_pattern_notes
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AdventOfCodeProblem202313
+   
+   
+
+   
+   
+   
+
+
+

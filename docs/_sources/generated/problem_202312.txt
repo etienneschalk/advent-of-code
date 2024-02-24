@@ -1,0 +1,38 @@
+advent\_of\_code.year\_2023.year\_2023\_day\_12
+===============================================
+
+.. automodule:: advent_of_code.year_2023.year_2023_day_12
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      count_arrangements
+      parse_text_input_v2
+      unfold_records_v2
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AdventOfCodeProblem202312
+      StateKey
+   
+   
+
+   
+   
+   
+
+
+

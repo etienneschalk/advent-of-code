@@ -1,0 +1,54 @@
+:py:mod:`advent_of_code.y_2023.problem_202325`
+==============================================
+
+.. py:module:: advent_of_code.y_2023.problem_202325
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem202325
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   Base class for Advent of Code problems' implementations
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 25
+
+      
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+
+.. py:function:: disconnect_then_explore(components: PuzzleInput, nodes_to_disconnect: dict[str, str], nodes_to_explore: set[str]) -> dict[str, int]
+
+
+.. py:function:: compute_result_from_exploration(result: dict[str, int]) -> int
+
+
+.. py:function:: create_bidirectional(disconnected_components: PuzzleInput) -> FlatSet
+
+
+.. py:function:: explore_bidirectional(flatset: FlatSet, start_node: str, explored: set[str], depth: int) -> None
+
+
+.. py:function:: parse_text_input(text: str) -> PuzzleInput
+
+

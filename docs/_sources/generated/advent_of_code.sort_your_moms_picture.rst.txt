@@ -1,0 +1,32 @@
+advent\_of\_code.sort\_your\_moms\_picture
+==========================================
+
+.. automodule:: advent_of_code.sort_your_moms_picture
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      get_classified_paths
+      get_month_from_img_filename
+      get_pictures_count
+      main
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

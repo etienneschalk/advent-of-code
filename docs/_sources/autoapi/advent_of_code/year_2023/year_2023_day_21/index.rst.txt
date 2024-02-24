@@ -1,0 +1,90 @@
+:py:mod:`advent_of_code.year_2023.year_2023_day_21`
+===================================================
+
+.. py:module:: advent_of_code.year_2023.year_2023_day_21
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem202321
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   Base class for Advent of Code problems' implementations
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 21
+
+      
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+
+.. py:function:: count_reached_garden_plots(max_iter: int, history: list[str])
+
+
+.. py:function:: run_steps(garden: xarray.DataArray, initial_pos: advent_of_code.common.constants.Position, max_iter: int)
+
+
+.. py:function:: run_steps_details(garden: xarray.DataArray, initial_pos: advent_of_code.common.constants.Position, max_iter: int, *, silent: bool = True) -> tuple[list[str], set[advent_of_code.common.constants.Position], xarray.DataArray, xarray.DataArray]
+
+
+.. py:function:: run_steps_old(garden: xarray.DataArray, initial_pos: advent_of_code.common.constants.Position, max_iter: int, *, silent: bool = True) -> list[str]
+
+
+.. py:function:: get_free_cells_xda(garden: PuzzleInput)
+
+
+.. py:function:: get_starting_position(garden: PuzzleInput) -> advent_of_code.common.constants.Position
+
+
+.. py:function:: create_diamond_mask_array(input_xda: xarray.DataArray) -> xarray.DataArray
+
+
+.. py:function:: create_diamond_int_array(xda: xarray.DataArray) -> xarray.DataArray
+
+
+.. py:function:: parse_input_text_file() -> PuzzleInput
+
+
+.. py:function:: evaluate_quadratic_equation(x: tuple[int, int, int], y: tuple[int, int, int], target: int) -> int
+
+   Evaluate Quadratic Equation with Numpy
+
+   Thanks https://www.reddit.com/r/adventofcode/comments/18nevo3/comment/kebm6ak/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+   Alternatively, Lagrange polynomials could have been reimplemented.
+   See https://en.wikipedia.org/wiki/Lagrange_polynomial
+
+   The area growing is x**2, so 3 points are required to interpolate, hence the previous computing
+   of 1x1, 3x3 and 5x5 grids
+
+   :Parameters: * **x** -- Control Points' abscissa
+                * **y** -- Control Points' ordinates
+                * **target** -- Value to feed to the interpolated polynomial
+
+   :rtype: Rounded evaluation of the polynomial for given target
+
+
+.. py:function:: parse_text_input(text: str) -> PuzzleInput
+
+
+.. py:function:: compute_points_for_interpolation(concat_1: xarray.DataArray, diamond_1x1: xarray.DataArray, concat_3: xarray.DataArray, diamond_3x3: xarray.DataArray, concat_5: xarray.DataArray, diamond_5x5: xarray.DataArray) -> tuple[tuple[int, int, int], tuple[int, int, int]]
+
+

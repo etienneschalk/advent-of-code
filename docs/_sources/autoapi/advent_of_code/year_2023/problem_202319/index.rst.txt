@@ -1,0 +1,219 @@
+:py:mod:`advent_of_code.year_2023.problem_202319`
+=================================================
+
+.. py:module:: advent_of_code.year_2023.problem_202319
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem202319
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 19
+
+      
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+
+.. py:class:: PartRating
+
+
+   .. py:attribute:: x
+      :type: int
+
+      
+
+   .. py:attribute:: m
+      :type: int
+
+      
+
+   .. py:attribute:: a
+      :type: int
+
+      
+
+   .. py:attribute:: s
+      :type: int
+
+      
+
+   .. py:method:: __getitem__(item: Any)
+
+
+
+.. py:class:: PartRatingRange
+
+
+   .. py:attribute:: x
+      :type: range
+
+      
+
+   .. py:attribute:: m
+      :type: range
+
+      
+
+   .. py:attribute:: a
+      :type: range
+
+      
+
+   .. py:attribute:: s
+      :type: range
+
+      
+
+   .. py:method:: __getitem__(item: Any)
+
+
+   .. py:method:: volume() -> int
+
+
+
+.. py:class:: PartRatingRangeTree
+
+
+   .. py:attribute:: mapping
+      :type: dict[str, list[PartRatingRange]]
+
+      
+
+   .. py:attribute:: children
+      :type: dict[str, list[PartRatingRangeTree]] | None
+
+      
+
+   .. py:method:: __getitem__(item: Any)
+
+
+
+.. py:class:: Rule
+
+
+   .. py:attribute:: category
+      :type: str
+
+      
+
+   .. py:attribute:: operator
+      :type: str
+
+      
+
+   .. py:attribute:: rating
+      :type: int
+
+      
+
+   .. py:attribute:: destination_workflow
+      :type: str
+
+      
+
+   .. py:method:: apply(part: PartRating) -> bool
+
+
+   .. py:method:: apply_to_range(part_range: PartRatingRange) -> tuple[PartRatingRange, PartRatingRange]
+
+
+
+.. py:class:: Workflow
+
+
+   .. py:attribute:: name
+      :type: str
+
+      
+
+   .. py:attribute:: rules
+      :type: tuple[Rule, Ellipsis]
+
+      
+
+   .. py:attribute:: destination_workflow_else
+      :type: str
+
+      
+
+   .. py:method:: apply(part: PartRating) -> str
+
+
+   .. py:method:: apply_to_range(part_range: PartRatingRange) -> dict[str, list[PartRatingRange]]
+
+
+
+.. py:class:: PuzzleInputData
+
+
+   .. py:attribute:: workflows
+      :type: dict[str, Workflow]
+
+      
+
+   .. py:attribute:: part_ratings
+      :type: list[PartRating]
+
+      
+
+   .. py:method:: apply(part: PartRating) -> str
+
+
+   .. py:method:: apply_to_all() -> list[str]
+
+
+   .. py:method:: solve_part_1() -> dict[int, int]
+
+
+   .. py:method:: apply_to_range(initial_part_range: PartRatingRange, initial_dest: str = 'in') -> PartRatingRangeTree | None
+
+
+   .. py:method:: solve_part_2(initial_part_range: PartRatingRange) -> int
+
+
+
+.. py:function:: gather_accepted_and_rejected_ranges(tree: PartRatingRangeTree, acc: list[list[PartRatingRange]], rej: list[list[PartRatingRange]])
+
+
+.. py:function:: construct_initial_part_range() -> PartRatingRange
+
+
+.. py:function:: intersect_ranges(a: range, b: range) -> range
+
+
+.. py:function:: parse_input_text_file() -> PuzzleInputData
+
+
+.. py:function:: parse_text_input(text: str) -> PuzzleInputData
+
+
+.. py:function:: parse_workflow(wf: str) -> Workflow
+
+
+.. py:function:: parse_rule(ru: str) -> Rule
+
+
+.. py:function:: visu_recur_dict_part_2(mapping: PartRatingRangeTree, suffix: str = '')
+
+

@@ -1,0 +1,87 @@
+:py:mod:`advent_of_code.year_2023.year_2023_day_18`
+===================================================
+
+.. py:module:: advent_of_code.year_2023.year_2023_day_18
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem202318
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   Base class for Advent of Code problems' implementations
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 18
+
+      
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+
+.. py:class:: DigInstruction
+
+
+   .. py:attribute:: direction
+      :type: advent_of_code.common.constants.Direction
+
+      
+
+   .. py:attribute:: meters
+      :type: int
+
+      
+
+   .. py:attribute:: color
+      :type: str
+
+      
+
+   .. py:method:: from_string(string: str) -> DigInstruction
+      :classmethod:
+
+
+   .. py:method:: from_hexadecimal_string(string: str) -> DigInstruction
+      :classmethod:
+
+
+
+.. py:function:: compute_area(dig_plan: list[DigInstruction]) -> int
+
+
+.. py:function:: compute_pick_polygon_area_formula(interior_points_count: int, boundary_points_count: int)
+
+
+.. py:function:: compute_shoelace_formula(coords: numpy.typing.NDArray[numpy.int32])
+
+
+.. py:function:: compute_polygon_coords(dig_plan: list[DigInstruction]) -> numpy.typing.NDArray[numpy.int32]
+
+
+.. py:function:: compute_internal_perimeter(dig_plan: list[DigInstruction])
+
+
+.. py:function:: parse_text_input_part_1(text: str) -> list[DigInstruction]
+
+
+.. py:function:: parse_text_input_part_2(text: str) -> list[DigInstruction]
+
+

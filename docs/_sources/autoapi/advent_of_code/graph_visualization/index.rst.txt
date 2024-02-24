@@ -1,0 +1,15 @@
+:py:mod:`advent_of_code.graph_visualization`
+============================================
+
+.. py:module:: advent_of_code.graph_visualization
+
+
+Module Contents
+---------------
+
+.. py:function:: construct_dot_graph_from_dict(graph_dict: Mapping[Any, Sequence[Any]], *, dir: Literal[forward, back, both, none] = 'forward', nodesep: float = 0.25) -> graphviz.Digraph
+
+
+.. py:function:: construct_dot_graph_from_couples(ordered_set: Mapping[Any, None]) -> graphviz.Digraph
+
+

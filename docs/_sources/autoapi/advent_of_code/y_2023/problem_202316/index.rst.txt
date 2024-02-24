@@ -1,0 +1,144 @@
+:py:mod:`advent_of_code.y_2023.problem_202316`
+==============================================
+
+.. py:module:: advent_of_code.y_2023.problem_202316
+
+
+Module Contents
+---------------
+
+.. py:data:: CELL_EMPTY_SPACE
+
+   
+
+.. py:data:: CELL_MIRROR_SLASH
+
+   
+
+.. py:data:: CELL_MIRROR_BACKSLASH
+
+   
+
+.. py:data:: CELL_SPLITTER_V
+
+   
+
+.. py:data:: CELL_SPLITTER_H
+
+   
+
+.. py:data:: CELL_WALL
+
+   
+
+.. py:data:: CELL_ENERGY
+
+   
+
+.. py:data:: CELL_DIRECTIONS
+   :type: dict[tuple[int, Ellipsis], int]
+
+   
+
+.. py:data:: EXPLORED_IDX
+   :type: dict[tuple[int, Ellipsis], int]
+
+   
+
+.. py:class:: AdventOfCodeProblem202316
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 16
+
+      
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: write_visualizations_instructions_for_part_1()
+
+
+   .. py:method:: log_part_1(puzzle_input: PuzzleInput, max_depth: int)
+
+
+   .. py:method:: get_visualizations_instructions_for_part_1_file_path() -> pathlib.Path
+
+
+
+.. py:class:: Beam
+
+
+   .. py:attribute:: position
+      :type: numpy.typing.NDArray[numpy.int32]
+
+      
+
+   .. py:attribute:: speed
+      :type: numpy.typing.NDArray[numpy.int32]
+
+      
+
+   .. py:attribute:: children
+      :type: list[Beam]
+
+      
+
+
+.. py:class:: PrioritizedBeam
+
+
+   .. py:attribute:: priority
+      :type: int
+
+      
+
+   .. py:attribute:: item
+      :type: Beam
+
+      
+
+
+.. py:function:: explore_beam_breadth_first(root_beam: Beam, max_depth: int = 2501) -> list[tuple[int, list[int], list[int]]]
+
+
+.. py:function:: do_part_1(board: PuzzleInput, initial_beam: Beam, max_depth: int = 100) -> int
+
+
+.. py:function:: do_part_2(board: PuzzleInput, max_depth: int = 100) -> int
+
+
+.. py:function:: update_simulation(board: PuzzleInput, beam: Beam, depth: int, max_depth: int, explored: PuzzleInput) -> None
+
+
+.. py:function:: append_children_to_beam(beam: Beam, next_position: numpy.typing.NDArray[numpy.int32], cell: int)
+
+
+.. py:function:: draw_energized(board: PuzzleInput, beam: Beam, fill_value: bytes)
+
+
+.. py:function:: render_parsed_input(parsed_input: PuzzleInput) -> str
+
+
+.. py:function:: parse_input_text_file() -> PuzzleInput
+
+
+.. py:function:: parse_text_input(text: str) -> PuzzleInput
+
+

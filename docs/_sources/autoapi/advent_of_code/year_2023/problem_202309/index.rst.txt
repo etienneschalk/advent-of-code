@@ -1,0 +1,46 @@
+:py:mod:`advent_of_code.year_2023.problem_202309`
+=================================================
+
+.. py:module:: advent_of_code.year_2023.problem_202309
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem202309
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 9
+
+      
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+
+.. py:function:: predict_next_value_forward(arr: PuzzleInput) -> int
+
+
+.. py:function:: predict_next_value_backward(arr: PuzzleInput) -> int
+
+
+.. py:function:: compute_finite_difference_forward(arr: PuzzleInput) -> PuzzleInput
+
+

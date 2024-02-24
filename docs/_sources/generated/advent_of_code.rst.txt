@@ -1,0 +1,38 @@
+﻿advent\_of\_code
+================
+
+.. automodule:: advent_of_code
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   advent_of_code.common
+   advent_of_code.common_img
+   advent_of_code.constants
+   advent_of_code.graph_visualization
+   advent_of_code.protocols
+   advent_of_code.sort_your_moms_picture
+   advent_of_code.year_2022
+   advent_of_code.year_2023
+

@@ -1,0 +1,29 @@
+:py:mod:`advent_of_code.visualization.pygame_dynamic_array_viewer_example`
+==========================================================================
+
+.. py:module:: advent_of_code.visualization.pygame_dynamic_array_viewer_example
+
+
+Module Contents
+---------------
+
+.. py:class:: Viewer(update_func: PureSideEffect, display_size: tuple[int, int])
+
+
+   .. py:method:: set_title(title: str)
+
+
+   .. py:method:: start()
+
+
+   .. py:method:: inner_game_loop(total_elapsed_frames: int)
+
+
+
+.. py:function:: update_with_random_array()
+
+
+.. py:data:: viewer
+
+   
+

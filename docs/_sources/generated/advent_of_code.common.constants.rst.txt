@@ -1,0 +1,30 @@
+advent\_of\_code.common.constants
+=================================
+
+.. automodule:: advent_of_code.common.constants
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      is_opposite_direction
+      is_out_of_bounds
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

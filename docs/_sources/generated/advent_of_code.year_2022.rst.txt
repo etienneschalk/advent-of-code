@@ -1,0 +1,37 @@
+advent\_of\_code.year\_2022
+===========================
+
+.. automodule:: advent_of_code.year_2022
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   advent_of_code.year_2022.year_2022_day_01
+   advent_of_code.year_2022.year_2022_day_02
+   advent_of_code.year_2022.year_2022_day_03
+   advent_of_code.year_2022.year_2022_day_04
+   advent_of_code.year_2022.year_2022_day_05
+   advent_of_code.year_2022.year_2022_day_24
+   advent_of_code.year_2022.year_2022_day_25
+

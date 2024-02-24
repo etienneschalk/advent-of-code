@@ -1,0 +1,173 @@
+:py:mod:`advent_of_code.y_2023.problem_202305`
+==============================================
+
+.. py:module:: advent_of_code.y_2023.problem_202305
+
+
+Module Contents
+---------------
+
+.. py:class:: AlmanacRange
+
+
+   .. py:property:: destination_range
+
+
+   .. py:property:: source_range
+
+
+   .. py:attribute:: destination_range_start
+      :type: int
+
+      
+
+   .. py:attribute:: source_range_start
+      :type: int
+
+      
+
+   .. py:attribute:: range_length
+      :type: int
+
+      
+
+   .. py:method:: is_source_in_source_range(source: int) -> bool
+
+
+   .. py:method:: source_to_target(source: int) -> int
+
+
+
+.. py:class:: AlmanacMap
+
+
+   .. py:attribute:: source_category
+      :type: str
+
+      
+
+   .. py:attribute:: destination_category
+      :type: str
+
+      
+
+   .. py:attribute:: ranges
+      :type: list[AlmanacRange]
+
+      
+
+   .. py:method:: source_to_target(source: int) -> int
+
+
+
+.. py:class:: Almanac
+
+
+   .. py:attribute:: seeds
+      :type: list[int]
+
+      
+
+   .. py:attribute:: maps
+      :type: list[AlmanacMap]
+
+      
+
+   .. py:method:: unroll_almanac_dict(source: int) -> dict[str, int]
+
+
+   .. py:method:: unroll_almanac_part_2(source: int) -> int
+
+
+   .. py:method:: find_lowest_number_for_category(category: str) -> int
+
+
+   .. py:method:: seed_ranges() -> list[range]
+
+
+   .. py:method:: find_lowest_number_for_seed_ranges_bruteforce()
+
+
+
+.. py:class:: AdventOfCodeProblem202305
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 5
+
+      
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+
+.. py:function:: compute_lowest_location_number(almanac: Almanac) -> int
+
+
+.. py:function:: find_min_range_in_tree(tree: RecursiveSequenceOfRanges | range) -> int
+
+
+.. py:function:: recur_map_ranges_tree(almanac: Almanac, input_ranges: list[range], almanac_map_index: int = 0) -> RecursiveSequenceOfRanges
+
+
+.. py:function:: map_ranges_tree(input_ranges: list[range], mapping: AlmanacMap) -> list[list[range]]
+
+
+.. py:function:: intersect_ranges(range_a: range, range_b: range) -> range
+
+
+.. py:function:: sort_mapping_by_source_range_start_in_place(almanac_ranges: list[AlmanacRange]) -> None
+
+
+.. py:function:: sort_ranges_in_place(ranges: list[range])
+
+
+.. py:function:: find_max_destination_stop_in_almanac(almanac: Almanac) -> int
+
+
+.. py:function:: find_max_destination_stop_in_almanac_map(am: AlmanacMap) -> int
+
+
+.. py:function:: find_max_destination_stop_in_almanac_range(ar: AlmanacRange) -> int
+
+
+.. py:function:: fill_almanac_in_place(almanac: Almanac) -> None
+
+
+.. py:function:: fill_almanac_map_in_place(mapping: AlmanacMap, max_stop: int) -> None
+
+
+.. py:function:: parse_input_text_file() -> Almanac
+
+
+.. py:function:: parse_text_input(text: str) -> Almanac
+
+
+.. py:function:: parse_almanac_range(line: str) -> AlmanacRange
+
+
+.. py:function:: parse_almanac_map(lines: list[str]) -> AlmanacMap
+
+
+.. py:function:: parse_almanac(text: str) -> Almanac
+
+
+.. py:function:: map_ranges_prototype(input_ranges: list[range], mapping: AlmanacMap) -> list[range]
+
+

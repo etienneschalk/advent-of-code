@@ -1,0 +1,118 @@
+:py:mod:`advent_of_code.year_2022.problem_202224`
+=================================================
+
+.. py:module:: advent_of_code.year_2022.problem_202224
+
+
+Module Contents
+---------------
+
+.. py:data:: ProblemDataType
+
+   
+
+.. py:data:: MOVE_NULL
+
+   
+
+.. py:data:: MOVE_DOWN
+
+   
+
+.. py:data:: MOVE_UP
+
+   
+
+.. py:data:: MOVE_RIGHT
+
+   
+
+.. py:data:: MOVE_LEFT
+
+   
+
+.. py:data:: ROLL_DOWN
+   :value: 1
+
+   
+
+.. py:data:: ROLL_UP
+
+   
+
+.. py:data:: ROLL_RIGHT
+
+   
+
+.. py:data:: ROLL_LEFT
+
+   
+
+.. py:data:: ROW_AXIS
+   :value: 0
+
+   
+
+.. py:data:: COL_AXIS
+   :value: 1
+
+   
+
+.. py:data:: MAX_ITER
+   :value: 20
+
+   
+
+.. py:data:: MOVE_STRATEGY_DOWN
+
+   
+
+.. py:data:: MOVE_STRATEGY_RIGHT
+
+   
+
+.. py:function:: main()
+
+
+.. py:function:: compute_part_1()
+
+
+.. py:function:: compute_part_2()
+
+
+.. py:function:: logic_part_1_first_try(simulation_map: ProblemDataType) -> int
+
+
+.. py:function:: build_graph_part_1(simulation_map: ProblemDataType) -> list[tuple]
+
+
+.. py:function:: breadth_first_search(graph: dict[tuple[int, int, int], list[tuple[int, int, int]]], starting_node: tuple[int, int, int])
+
+
+.. py:function:: build_graph_breadth_first_part_1(graph: dict[tuple[int, int, int], list[tuple[int, int, int]]], free_cube: xarray.DataArray, time: int, initial_pos: numpy.ndarray)
+
+
+.. py:function:: build_graph_recursive_part_1(graph: dict[tuple[int, int, int], list[tuple[int, int, int]]], free_cube: xarray.DataArray, time: int, initial_pos: numpy.ndarray)
+
+
+.. py:function:: compute_children_positions(free_cube_moment: xarray.DataArray, initial_pos: numpy.ndarray)
+
+
+.. py:function:: compute_simulation_for_cross_period(parsed_input, *, limit: int | None = None)
+
+
+.. py:function:: advance_blizzard(blizzard)
+
+
+.. py:function:: initialize_blizzard(simulation_map: numpy.ndarray)
+
+
+.. py:function:: parse_input_text_file() -> ProblemDataType
+
+
+.. py:function:: parse_text_input(text: str) -> ProblemDataType
+
+
+.. py:function:: render_history_moves(history_moves: list[numpy.ndarray]) -> list[str]
+
+

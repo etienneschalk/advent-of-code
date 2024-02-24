@@ -1,0 +1,895 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="API Reference" href="../autoapi/index.html" /><link rel="prev" title="Example Notebook" href="example.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+        <title>Notes Ratios - Advent of Blog</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     This blog is work in progress 
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Advent of Blog</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">Advent of Blog</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../readme_link.html">README</a></li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../videos/index.html">Videos</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Videos</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Notebooks</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Notebooks</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="example.html">Example Notebook</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Notes Ratios</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../autoapi/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../autoapi/advent_of_code/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of advent_of_code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autoapi/advent_of_code/common/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of advent_of_code.common</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/common/common/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common.common</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/common/common_img/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common.common_img</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/common/constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common.constants</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/common/graph_visualization/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common.graph_visualization</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/common/protocols/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common.protocols</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/common/store/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common.store</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autoapi/advent_of_code/jobs/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.jobs</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of advent_of_code.jobs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/jobs/code_generation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.jobs.code_generation</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autoapi/advent_of_code/visualization/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.visualization</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of advent_of_code.visualization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/visualization/protocols/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.visualization.protocols</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/visualization/pygame_dynamic_array_viewer_202314/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.visualization.pygame_dynamic_array_viewer_202314</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/visualization/pygame_dynamic_array_viewer_202316/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.visualization.pygame_dynamic_array_viewer_202316</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/visualization/pygame_dynamic_array_viewer_example/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.visualization.pygame_dynamic_array_viewer_example</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/visualization/ursina_demo/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.visualization.ursina_demo</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autoapi/advent_of_code/year_2022/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of advent_of_code.year_2022</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2022/problem_202201/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.problem_202201</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2022/problem_202202/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.problem_202202</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2022/problem_202203/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.problem_202203</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2022/problem_202204/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.problem_202204</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2022/problem_202205/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.problem_202205</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2022/problem_202224/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.problem_202224</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2022/problem_202225/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.problem_202225</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of advent_of_code.year_2023</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202301/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202301</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202302/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202302</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202303/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202303</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202304/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202304</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202305/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202305</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202306/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202306</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202307/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202307</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202308/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202308</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202309/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202309</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202310/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202310</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202311/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202311</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202312/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202312</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202313/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202313</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202314/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202314</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202315/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202315</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202316/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202316</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202317/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202317</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202318/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202318</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202319/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202319</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202320/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202320</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202321/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202321</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202322/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202322</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202323/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202323</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202324/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202324</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoapi/advent_of_code/year_2023/problem_202325/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.problem_202325</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../autoapi/advent_of_code/sort_your_moms_picture/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.sort_your_moms_picture</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="Notes-Ratios">
+<h1>Notes Ratios<a class="headerlink" href="#Notes-Ratios" title="Link to this heading">#</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">formatter</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;float&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{0:0.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">)})</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># semi-tones</span>
+<span class="n">ionian_interval_sequence</span> <span class="o">=</span> <span class="s2">&quot;WWHWWWH&quot;</span>
+<span class="n">ionian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="nb">list</span><span class="p">(</span><span class="mi">2</span> <span class="k">if</span> <span class="n">interval</span> <span class="o">==</span> <span class="s2">&quot;W&quot;</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="n">ionian_interval_sequence</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">ionian</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([2, 2, 1, 2, 2, 2, 1])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xda</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">ionian</span><span class="p">,</span> <span class="o">-</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">)),</span>
+    <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;ionian&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dorian&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;phyrgian&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;lydian&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;mixolydian&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;aeolian&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;locrian&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;note&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">)),</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="n">xda</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body[data-theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-index-preview {
+  grid-column: 2 / 5;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data,
+.xr-index-data-in:checked ~ .xr-index-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-index-name div,
+.xr-index-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2,
+.xr-no-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray (mode: 7, note: 7)&gt;
+array([[2, 2, 1, 2, 2, 2, 1],
+       [2, 1, 2, 2, 2, 1, 2],
+       [1, 2, 2, 2, 1, 2, 2],
+       [2, 2, 2, 1, 2, 2, 1],
+       [2, 2, 1, 2, 2, 1, 2],
+       [2, 1, 2, 2, 1, 2, 2],
+       [1, 2, 2, 1, 2, 2, 2]])
+Coordinates:
+  * mode     (mode) &lt;U10 &#x27;ionian&#x27; &#x27;dorian&#x27; &#x27;phyrgian&#x27; ... &#x27;aeolian&#x27; &#x27;locrian&#x27;
+  * note     (note) int64 1 2 3 4 5 6 7</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'></div><ul class='xr-dim-list'><li><span class='xr-has-index'>mode</span>: 7</li><li><span class='xr-has-index'>note</span>: 7</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-ba3e6dda-1867-430d-b3f1-9d4bb99cce81' class='xr-array-in' type='checkbox' checked><label for='section-ba3e6dda-1867-430d-b3f1-9d4bb99cce81' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>2 2 1 2 2 2 1 2 1 2 2 2 1 2 1 2 2 ... 1 2 2 1 2 2 1 2 2 1 2 2 1 2 2 2</span></div><div class='xr-array-data'><pre>array([[2, 2, 1, 2, 2, 2, 1],
+       [2, 1, 2, 2, 2, 1, 2],
+       [1, 2, 2, 2, 1, 2, 2],
+       [2, 2, 2, 1, 2, 2, 1],
+       [2, 2, 1, 2, 2, 1, 2],
+       [2, 1, 2, 2, 1, 2, 2],
+       [1, 2, 2, 1, 2, 2, 2]])</pre></div></div></li><li class='xr-section-item'><input id='section-7b330411-7472-4778-9f40-53d046d5726a' class='xr-section-summary-in' type='checkbox'  checked><label for='section-7b330411-7472-4778-9f40-53d046d5726a' class='xr-section-summary' >Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>mode</span></div><div class='xr-var-dims'>(mode)</div><div class='xr-var-dtype'>&lt;U10</div><div class='xr-var-preview xr-preview'>&#x27;ionian&#x27; &#x27;dorian&#x27; ... &#x27;locrian&#x27;</div><input id='attrs-0acce1f3-7c7f-4ec5-aed3-f2fa8415ec10' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-0acce1f3-7c7f-4ec5-aed3-f2fa8415ec10' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-783d9049-21ea-4018-b723-9d78f833ae61' class='xr-var-data-in' type='checkbox'><label for='data-783d9049-21ea-4018-b723-9d78f833ae61' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;ionian&#x27;, &#x27;dorian&#x27;, &#x27;phyrgian&#x27;, &#x27;lydian&#x27;, &#x27;mixolydian&#x27;, &#x27;aeolian&#x27;,
+       &#x27;locrian&#x27;], dtype=&#x27;&lt;U10&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>note</span></div><div class='xr-var-dims'>(note)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>1 2 3 4 5 6 7</div><input id='attrs-797aa788-a275-4a26-b4a0-17ec69736bb9' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-797aa788-a275-4a26-b4a0-17ec69736bb9' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-76d019ab-47ed-497e-a725-1a6067fd4e6d' class='xr-var-data-in' type='checkbox'><label for='data-76d019ab-47ed-497e-a725-1a6067fd4e6d' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([1, 2, 3, 4, 5, 6, 7])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-6a2d9e32-ee26-46d8-845e-2c63cf762729' class='xr-section-summary-in' type='checkbox'  ><label for='section-6a2d9e32-ee26-46d8-845e-2c63cf762729' class='xr-section-summary' >Indexes: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>mode</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-0a77a27e-8b79-4a04-9522-d2c39c8659fa' class='xr-index-data-in' type='checkbox'/><label for='index-0a77a27e-8b79-4a04-9522-d2c39c8659fa' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([&#x27;ionian&#x27;, &#x27;dorian&#x27;, &#x27;phyrgian&#x27;, &#x27;lydian&#x27;, &#x27;mixolydian&#x27;, &#x27;aeolian&#x27;,
+       &#x27;locrian&#x27;],
+      dtype=&#x27;object&#x27;, name=&#x27;mode&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>note</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-98c4a8d8-c9ee-4d26-ad12-fb7ed1e61176' class='xr-index-data-in' type='checkbox'/><label for='index-98c4a8d8-c9ee-4d26-ad12-fb7ed1e61176' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([1, 2, 3, 4, 5, 6, 7], dtype=&#x27;int64&#x27;, name=&#x27;note&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-549fece6-d306-44df-b127-1015d57cf3be' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-549fece6-d306-44df-b127-1015d57cf3be' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">mode_sequence</span> <span class="ow">in</span> <span class="n">xda</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">mode_sequence</span><span class="p">)</span>
+    <span class="n">mode_absolute_sequence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">accumulate</span><span class="p">(</span><span class="n">mode_sequence</span><span class="o">.</span><span class="n">values</span><span class="p">),</span>
+        <span class="n">pad_width</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">constant_values</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">mode_absolute_sequence</span><span class="p">)</span>
+    <span class="n">powers_of_two</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="n">mode_absolute_sequence</span> <span class="o">/</span> <span class="mi">12</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">powers_of_two</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;xarray.DataArray (note: 7)&gt;
+array([2, 2, 1, 2, 2, 2, 1])
+Coordinates:
+    mode     &lt;U10 &#39;ionian&#39;
+  * note     (note) int64 1 2 3 4 5 6 7
+[ 0  2  4  5  7  9 11 12]
+[1.00 1.12 1.26 1.33 1.50 1.68 1.89 2.00]
+&lt;xarray.DataArray (note: 7)&gt;
+array([2, 1, 2, 2, 2, 1, 2])
+Coordinates:
+    mode     &lt;U10 &#39;dorian&#39;
+  * note     (note) int64 1 2 3 4 5 6 7
+[ 0  2  3  5  7  9 10 12]
+[1.00 1.12 1.19 1.33 1.50 1.68 1.78 2.00]
+&lt;xarray.DataArray (note: 7)&gt;
+array([1, 2, 2, 2, 1, 2, 2])
+Coordinates:
+    mode     &lt;U10 &#39;phyrgian&#39;
+  * note     (note) int64 1 2 3 4 5 6 7
+[ 0  1  3  5  7  8 10 12]
+[1.00 1.06 1.19 1.33 1.50 1.59 1.78 2.00]
+&lt;xarray.DataArray (note: 7)&gt;
+array([2, 2, 2, 1, 2, 2, 1])
+Coordinates:
+    mode     &lt;U10 &#39;lydian&#39;
+  * note     (note) int64 1 2 3 4 5 6 7
+[ 0  2  4  6  7  9 11 12]
+[1.00 1.12 1.26 1.41 1.50 1.68 1.89 2.00]
+&lt;xarray.DataArray (note: 7)&gt;
+array([2, 2, 1, 2, 2, 1, 2])
+Coordinates:
+    mode     &lt;U10 &#39;mixolydian&#39;
+  * note     (note) int64 1 2 3 4 5 6 7
+[ 0  2  4  5  7  9 10 12]
+[1.00 1.12 1.26 1.33 1.50 1.68 1.78 2.00]
+&lt;xarray.DataArray (note: 7)&gt;
+array([2, 1, 2, 2, 1, 2, 2])
+Coordinates:
+    mode     &lt;U10 &#39;aeolian&#39;
+  * note     (note) int64 1 2 3 4 5 6 7
+[ 0  2  3  5  7  8 10 12]
+[1.00 1.12 1.19 1.33 1.50 1.59 1.78 2.00]
+&lt;xarray.DataArray (note: 7)&gt;
+array([1, 2, 2, 1, 2, 2, 2])
+Coordinates:
+    mode     &lt;U10 &#39;locrian&#39;
+  * note     (note) int64 1 2 3 4 5 6 7
+[ 0  1  3  5  6  8 10 12]
+[1.00 1.06 1.19 1.33 1.41 1.59 1.78 2.00]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">13</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([2.00, 1.50, 1.33, 1.25, 1.20, 1.17, 1.14, 1.12, 1.11, 1.10, 1.09,
+       1.08])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">13</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([3.00, 2.00, 1.67, 1.50, 1.40, 1.33, 1.29, 1.25, 1.22, 1.20, 1.18,
+       1.17])
+</pre></div></div>
+</div>
+<p>for</p>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../autoapi/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">API Reference</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="example.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Example Notebook</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, Etienne Schalk
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>

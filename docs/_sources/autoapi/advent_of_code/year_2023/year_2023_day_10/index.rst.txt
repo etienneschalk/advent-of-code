@@ -1,0 +1,109 @@
+:py:mod:`advent_of_code.year_2023.year_2023_day_10`
+===================================================
+
+.. py:module:: advent_of_code.year_2023.year_2023_day_10
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem202310
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 10
+
+      
+
+   .. py:attribute:: config_verbose
+      :type: bool
+      :value: False
+
+      
+
+   .. py:attribute:: config_save_img
+      :type: bool
+      :value: False
+
+      
+
+   .. py:attribute:: config_save_txt
+      :type: bool
+      :value: False
+
+      
+
+   .. py:attribute:: config_save_img_for_video
+      :type: bool
+      :value: False
+
+      
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: compute_minimum_distances(maze: PuzzleInput) -> numpy.typing.NDArray[numpy.int32]
+
+
+   .. py:method:: compute_tiles_enclosed_by_loop_part_2(maze: PuzzleInput, minimum_distances: numpy.typing.NDArray[numpy.int32])
+
+
+   .. py:method:: rasterize_main_loop(main_loop: numpy.typing.NDArray[Any])
+
+
+
+.. py:function:: parse_text_input(text: str) -> PuzzleInput
+
+
+.. py:function:: locate_starting_index(maze: PuzzleInput) -> tuple[int, int]
+
+
+.. py:function:: get_neighbour_indices_dict(i: int, j: int)
+
+
+.. py:function:: get_neighbour_indices(i: int, j: int) -> tuple[tuple[int, int], Ellipsis]
+
+
+.. py:function:: explore_maze(maze: PuzzleInput, values: PuzzleInput, distance: int, i: int, j: int)
+
+
+.. py:function:: put_good_pipe_in_place_of_starting_point(main_loop: numpy.typing.NDArray[Any])
+
+
+.. py:function:: fill_macro_pixel_3x(maze: PuzzleInput, maze_3x: PuzzleInput, pipe_to_pattern_mapping: dict[str, numpy.bool_], i: int, j: int)
+
+
+.. py:function:: get_good_pipe(directions: list[str])
+
+
+.. py:function:: render_2d_array_to_text(data: PuzzleInput) -> str
+
+
+.. py:function:: get_allowed_pipes_for_direction()
+
+
+.. py:function:: get_simple_pipes_mapping()
+
+
+.. py:function:: get_double_pipes_mapping()
+
+
+.. py:function:: get_pipe_to_pattern_mapping() -> dict[str, numpy.bool_]
+
+

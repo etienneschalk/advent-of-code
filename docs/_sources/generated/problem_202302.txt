@@ -1,0 +1,42 @@
+advent\_of\_code.year\_2023.year\_2023\_day\_02
+===============================================
+
+.. automodule:: advent_of_code.year_2023.year_2023_day_02
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      compute_minimal_required_handful
+      compute_possible_games
+      is_handful_possible
+      parse_game_str
+      parse_handful_str
+      parse_text_input
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AdventOfCodeProblem202302
+      Game
+      Handful
+   
+   
+
+   
+   
+   
+
+
+

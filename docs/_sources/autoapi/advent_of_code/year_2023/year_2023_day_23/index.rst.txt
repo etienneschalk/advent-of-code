@@ -1,0 +1,100 @@
+:py:mod:`advent_of_code.year_2023.year_2023_day_23`
+===================================================
+
+.. py:module:: advent_of_code.year_2023.year_2023_day_23
+
+
+Module Contents
+---------------
+
+.. py:data:: ALLOWED_MOVES
+   :type: dict[int, advent_of_code.common.constants.Direction]
+
+   
+
+.. py:class:: AdventOfCodeProblem202323
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 23
+
+      
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+
+.. py:class:: TrailNode
+
+
+   .. py:attribute:: starting_position
+      :type: advent_of_code.common.constants.Position
+
+      
+
+   .. py:attribute:: length
+      :type: int
+
+      
+
+   .. py:attribute:: children
+      :type: list[TrailNode]
+
+      
+
+
+.. py:function:: solve_part_2(hiking_trail: PuzzleInput, target: tuple[int, tuple[int, int]])
+
+
+.. py:function:: explore_flatset(flatset: FlatTreeSet, start_node_pos_weight: NodePrimaryKey, explored: set[NodePrimaryKey], depth: int, steps: int, target_node_pos_weight: NodePrimaryKey, track: list[tuple[int, NodePrimaryKey, int]]) -> None
+
+
+.. py:function:: bruteforce_paths_in_exploration_tree(tree: TrailNode, total_length: int = 0) -> RecursiveSequenceOfInts | int
+
+
+.. py:function:: explore_hiking_trail(pos: advent_of_code.common.constants.Position, hiking_trail: PuzzleInput, explored: numpy.typing.NDArray[numpy.bool_], node: TrailNode, flat_graph: PositionToTreeNodeDict) -> None
+
+
+.. py:function:: compute_all_path_lengths(bf: RecursiveSequenceOfInts | int)
+
+
+.. py:function:: make_undirected_graph(flat: FlatTreeList, *, bidirectional: bool = False)
+
+
+.. py:function:: compute_exploration_tree(hiking_trail: PuzzleInput, starting_position: advent_of_code.common.constants.Position)
+
+
+.. py:function:: flatten_exploration_tree(initial_tree: TrailNode) -> PositionToTreeNodeDict
+
+
+.. py:function:: create_flat_simplified_tuple(to_flatten: PositionToTreeNodeDict) -> FlatTreeList
+
+
+.. py:function:: create_flatset(flat: FlatTreeList) -> FlatTreeSet
+
+
+.. py:function:: label_pk_node(node: TrailNode) -> NodePrimaryKey
+
+
+.. py:function:: create_flat_simplified(to_flatten: PositionToTreeNodeDict) -> FlatTreeListStr
+
+
+.. py:function:: format_node(node: TrailNode) -> str
+
+

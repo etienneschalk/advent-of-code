@@ -1,0 +1,19 @@
+:py:mod:`advent_of_code.common.common_img`
+==========================================
+
+.. py:module:: advent_of_code.common.common_img
+
+
+Module Contents
+---------------
+
+.. py:function:: save_img(array: numpy.typing.NDArray[numpy.uint8] | numpy.typing.NDArray[numpy.bool_], filename: str, module_name: str, *, output_subdir: str = '')
+
+   Saves an image
+
+   :Parameters: * **array** -- _description_
+                * **filename** -- _description_
+                * **module_name** -- _description_
+                * **output_subdir, optional** -- _description_, by default ""
+
+

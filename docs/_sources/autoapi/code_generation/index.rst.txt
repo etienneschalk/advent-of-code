@@ -1,0 +1,27 @@
+:py:mod:`code_generation`
+=========================
+
+.. py:module:: code_generation
+
+
+Module Contents
+---------------
+
+.. py:function:: code_generation_entrypoint(year: int, day: int, dry_run: bool)
+
+   Example usage:
+
+   python advent_of_code/jobs/code_generation.py --year 2023 --day 9 --dry_run
+
+   python advent_of_code/jobs/code_generation.py --year 2023 --day 9
+
+
+.. py:function:: create_files_for_year_and_day_from_templates(year: int, day: int, dry_run: bool) -> None
+
+
+.. py:function:: render_test_code_template(year_repr: str, day_repr: str) -> str
+
+
+.. py:function:: render_source_code_template() -> str
+
+

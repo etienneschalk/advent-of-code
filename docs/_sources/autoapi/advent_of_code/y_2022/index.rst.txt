@@ -1,0 +1,26 @@
+:py:mod:`advent_of_code.y_2022`
+===============================
+
+.. py:module:: advent_of_code.y_2022
+
+.. autoapi-nested-parse::
+
+   Advent of Code - init
+
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   problem_202201/index.rst
+   problem_202202/index.rst
+   problem_202203/index.rst
+   problem_202204/index.rst
+   problem_202205/index.rst
+   problem_202224/index.rst
+   problem_202225/index.rst
+
+

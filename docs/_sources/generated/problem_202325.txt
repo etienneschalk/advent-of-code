@@ -1,0 +1,39 @@
+advent\_of\_code.year\_2023.year\_2023\_day\_25
+===============================================
+
+.. automodule:: advent_of_code.year_2023.year_2023_day_25
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      compute_result_from_exploration
+      create_bidirectional
+      disconnect_then_explore
+      explore_bidirectional
+      parse_text_input
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AdventOfCodeProblem202325
+   
+   
+
+   
+   
+   
+
+
+

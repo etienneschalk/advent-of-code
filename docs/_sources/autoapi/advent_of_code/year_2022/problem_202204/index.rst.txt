@@ -1,0 +1,69 @@
+:py:mod:`advent_of_code.year_2022.problem_202204`
+=================================================
+
+.. py:module:: advent_of_code.year_2022.problem_202204
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem202204
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   Base class for Advent of Code problems' implementations
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2022
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 4
+
+      
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+
+.. py:function:: compute_fully_contained_count(parsed_input: PuzzleInput)
+
+
+.. py:function:: compute_overlapping_count(parsed_input: PuzzleInput)
+
+
+.. py:function:: intersect_ranges_inclusive(range_a: tuple[int, int], range_b: tuple[int, int]) -> tuple[int, int]
+
+
+.. py:function:: render_input_visualization(input_data: PuzzleInput) -> str
+
+
+.. py:function:: render_interval(p: tuple[int, int], format_str: str)
+
+
+.. py:function:: render_interval_bar(start: int, stop: int, max_value: int, format_str: str) -> str
+
+
+.. py:function:: parse_input_text_file() -> PuzzleInput
+
+
+.. py:function:: parse_text_input(text: str) -> PuzzleInput
+
+
+.. py:function:: parse_line(line: str) -> ProblemLine
+
+
+.. py:function:: parse_sub_line(sub_line: str) -> tuple[int, int]
+
+

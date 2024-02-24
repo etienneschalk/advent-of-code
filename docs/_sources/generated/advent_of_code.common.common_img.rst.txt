@@ -1,0 +1,29 @@
+advent\_of\_code.common.common\_img
+===================================
+
+.. automodule:: advent_of_code.common.common_img
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      save_img
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,546 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Videos" href="videos/index.html" /><link rel="prev" title="Advent of Blog" href="index.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+        <title>advent-of-code - Advent of Blog</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     This blog is work in progress 
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Advent of Blog</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">Advent of Blog</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">advent-of-code</a></li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="videos/index.html">Videos</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Videos</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="videos/year_2023_day_16.html">Video - Year 2023 Day 16</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/index.html">Notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Notebooks</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example.html">Example Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/notes_ratios.html">Notes Ratios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/year_2023_day_20.html">Year 2023 Day 20</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/year_2023_day_21.html">Year 2023 Day 21</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/year_2023_day_22.html">Year 2023 Day 22</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/year_2023_day_23.html">Year 2023 Day 23</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/year_2023_day_25.html">Year 2023 Day 25</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/advent_of_code/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of advent_of_code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/advent_of_code/common/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of advent_of_code.common</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/common/common/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common.common</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/common/common_img/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common.common_img</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/common/constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common.constants</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/common/graph_visualization/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common.graph_visualization</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/common/protocols/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common.protocols</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/common/store/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.common.store</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/advent_of_code/jobs/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.jobs</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of advent_of_code.jobs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/jobs/code_generation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.jobs.code_generation</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/advent_of_code/visualization/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.visualization</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of advent_of_code.visualization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/visualization/protocols/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.visualization.protocols</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/visualization/pygame_dynamic_array_viewer_202314/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.visualization.pygame_dynamic_array_viewer_202314</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/visualization/pygame_dynamic_array_viewer_202316/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.visualization.pygame_dynamic_array_viewer_202316</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/visualization/pygame_dynamic_array_viewer_example/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.visualization.pygame_dynamic_array_viewer_example</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/visualization/ursina_demo/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.visualization.ursina_demo</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/advent_of_code/year_2022/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of advent_of_code.year_2022</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2022/year_2022_day_01/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.year_2022_day_01</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2022/year_2022_day_02/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.year_2022_day_02</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2022/year_2022_day_03/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.year_2022_day_03</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2022/year_2022_day_04/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.year_2022_day_04</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2022/year_2022_day_05/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.year_2022_day_05</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2022/year_2022_day_24/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.year_2022_day_24</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2022/year_2022_day_25/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2022.year_2022_day_25</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/advent_of_code/year_2023/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of advent_of_code.year_2023</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_01/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_01</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_02/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_02</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_03/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_03</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_04/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_04</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_05/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_05</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_06/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_06</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_07/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_07</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_08/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_08</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_09/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_09</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_10/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_10</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_11/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_11</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_12/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_12</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_13/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_13</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_14/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_14</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_15/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_15</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_16/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_16</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_17/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_17</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_18/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_18</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_19/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_19</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_20/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_20</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_21/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_21</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_22/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_22</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_23/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_23</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_24/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_24</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/advent_of_code/year_2023/year_2023_day_25/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.year_2023.year_2023_day_25</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/advent_of_code/sort_your_moms_picture/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">advent_of_code.sort_your_moms_picture</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="advent-of-code">
+<h1>advent-of-code<a class="headerlink" href="#advent-of-code" title="Link to this heading">#</a></h1>
+<section id="development">
+<h2>Development<a class="headerlink" href="#development" title="Link to this heading">#</a></h2>
+<section id="warning-legacy-template-files">
+<h3>(:warning: Legacy) Template Files<a class="headerlink" href="#warning-legacy-template-files" title="Link to this heading">#</a></h3>
+<p>Start development for a given day and year by generating template files:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>advent_of_code/jobs/code_generation.py<span class="w"> </span>--year<span class="w"> </span><span class="m">2022</span><span class="w"> </span>--day<span class="w"> </span><span class="m">5</span>
+</pre></div>
+</div>
+<div class="highlight-txt notranslate"><div class="highlight"><pre><span></span>Started Generation
+Generating puzzle_input
+    Written puzzle_input to resources/advent_of_code/year_2022/input_year_2022_day_05.txt
+Generating source_code
+    Written source_code to advent_of_code/year_2022/year_2022_day_05.py
+Generating test_code
+    Written test_code to tests/advent_of_code/year_2022/test_year_2022_day_05.py
+Finished Generation
+</pre></div>
+</div>
+</section>
+<section id="pre-commit">
+<h3>Pre-commit<a class="headerlink" href="#pre-commit" title="Link to this heading">#</a></h3>
+<p>To run all checks on the whole project:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit<span class="w"> </span>run<span class="w"> </span>--all
+</pre></div>
+</div>
+</section>
+<section id="testing">
+<h3>Testing<a class="headerlink" href="#testing" title="Link to this heading">#</a></h3>
+<p>Integration tests:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>--with-integration<span class="w"> </span>-k<span class="w"> </span>integration<span class="w"> </span>--durations<span class="o">=</span><span class="m">0</span>
+</pre></div>
+</div>
+<p>All tests : unit + integration tests. Slow tests are excluded.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-v<span class="w"> </span>--with-integration<span class="w"> </span>--durations<span class="o">=</span><span class="m">0</span>
+</pre></div>
+</div>
+<p>Only slow tests, using multiple workers (requires <code class="docutils literal notranslate"><span class="pre">pytest-xdist</span></code>).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-v<span class="w"> </span>--with-integration<span class="w"> </span>-m<span class="w"> </span>slow<span class="w"> </span>--durations<span class="o">=</span><span class="m">0</span><span class="w"> </span>-n<span class="w"> </span><span class="m">4</span>
+</pre></div>
+</div>
+<p>Drawback: duration is displayed globally per worker, not for each individual test</p>
+<p>Note: durations &lt; 0.005 seem to be hidden. Use <code class="docutils literal notranslate"><span class="pre">-vv</span></code> to truly get all</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-vv<span class="w"> </span>--with-integration<span class="w"> </span>-m<span class="w"> </span>slow<span class="w"> </span>--durations<span class="o">=</span><span class="m">0</span><span class="w"> </span>-n<span class="w"> </span><span class="m">4</span>
+</pre></div>
+</div>
+<p>See <a class="reference external" href="https://stackoverflow.com/questions/27884404/printing-test-execution-times-and-pinning-down-slow-tests-with-py-test">Stack Overflow - Show durations of tests for pytest</a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>--durations<span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="c1"># Show all times for tests and setup and teardown</span>
+pytest<span class="w"> </span>--durations<span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="c1"># Slowest test</span>
+pytest<span class="w"> </span>--durations<span class="o">=</span><span class="m">50</span><span class="w"> </span><span class="c1"># Slowest 50 tests</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="experience-feedback">
+<h2>Experience Feedback<a class="headerlink" href="#experience-feedback" title="Link to this heading">#</a></h2>
+<section id="types-of-problems">
+<h3>Types of problems<a class="headerlink" href="#types-of-problems" title="Link to this heading">#</a></h3>
+<p>Note: To get an overview of all input data types, grep for <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">PuzzleInput</span> <span class="pre">=</span></code> globally in the project. It gives a quick overview over the variety of data structures used.
+Scalar to Range manipulation, Sankey flow diagrams</p>
+<ul class="simple">
+<li><p>Day 5: If You Give A Seed A Fertilizer</p>
+<ul>
+<li><p>Tags: Sankey, graph, mapping</p></li>
+<li><p>The first problem on which I blocked. Visualizations on reddit helped</p></li>
+</ul>
+</li>
+<li><p>Day 19: Aplenty</p>
+<ul>
+<li><p>Tags: Sankey, graph, mapping, rules</p></li>
+<li><p>Very similar to</p></li>
+</ul>
+</li>
+</ul>
+<p>recursion</p>
+<p>graph shortest path</p>
+<ul class="simple">
+<li><p>Day 17: Clumsy Crucible</p>
+<ul>
+<li><p>Tags: 2D-array, graph, dijkstra, shortest-path</p></li>
+<li><p>This is Dijkstra with a custom State that supports consecutive moves constraints</p></li>
+</ul>
+</li>
+<li><p>Day 23: A Long Walk</p>
+<ul>
+<li><p>Tags: 2D-array, graph, shortest-path</p></li>
+<li><p>The essence of the problem must be first extracted: walks can be represented as a graph</p></li>
+<li><p>Then, find the shortest path inside this graph.</p></li>
+<li><p>The first part is easier as the slopes make the graph a DAG</p></li>
+<li><p>The second part includes cycles and must be bruteforce. The underlying graph is simple enough to enable smart bruteforcing.</p></li>
+</ul>
+</li>
+</ul>
+<p>Pure Simulation</p>
+<ul class="simple">
+<li><p>Day 22: Sand Slabs</p>
+<ul>
+<li><p>Tags: 3D-array, graph</p></li>
+<li><p>This problem is at first pure simulation. The simulation must be ran until the end. The final state is clear: all bricks must have fallen.</p></li>
+<li><p>Not sure if there is a general solution that does not imply some simulation bruteforcing</p></li>
+<li><p>This problem also embeds graph manipulation logic for part 2, but getting the simulation right was the most difficult.</p></li>
+</ul>
+</li>
+<li><p>Day 16: The Floor Will Be Lava</p>
+<ul>
+<li><p>Tags: 2D-array</p></li>
+<li><p>Run the simulation until a stable end state is reached. We can assume the inputs are crafted specifically so that such an end-state does exist.</p></li>
+<li><p>There is likely no “mathematical solution”. So this problems leans at 100% dev, 0% math</p></li>
+</ul>
+</li>
+</ul>
+<p>Simulation for long enough then “smart pattern/cycle” to dramatically simplify the problem</p>
+<ul class="simple">
+<li><p>Day 8: Haunted Wasteland</p>
+<ul>
+<li><p>Tags: graph, LCM</p></li>
+<li><p>Input is a graph</p></li>
+<li><p>Explosion of problem complexity in part 2</p></li>
+<li><p>detect loops, then use lowest common multiple (LCM)</p></li>
+</ul>
+</li>
+<li><p>Day 14: Parabolic Reflector Dish</p>
+<ul>
+<li><p>Tags: 2D-array, simulation, cycle</p></li>
+<li><p>A simulation of the tilting platform with moving rocks with obstacles must first be written</p></li>
+<li><p>The input problem description requires an excessively huge simulation step count, fortunately a cycle emerges pretty soon, above which there is no point to continue running the simulation.</p></li>
+<li><p>Part 2 is similar to Day 8</p></li>
+</ul>
+</li>
+<li><p>Day 20: Pulse Propagation</p>
+<ul>
+<li><p>Tags: simulation, graph, cycle, high-level-visualization-helps, rules</p></li>
+<li><p>A simulation of an electronic circuit must first be written</p></li>
+<li><p>Then, the essence of the problem must be extracted. Using graphviz to visualize the constructed graph resulting from the simulation setup is essential to get the big picture. Otherwise it is impossible to solve. It requires to find the pattern in the input</p></li>
+<li><p>A cycle emerge, and then multiplying all the minimum-cycle for all branches helps reducing the simulation step count. This is like getting a low-frequency (high period) clock from several high-frequency (low period) ones combined with and AND gate. Note: if some periods are multiples between each other, the LCM applies</p></li>
+</ul>
+</li>
+<li><p>Day 21: Step Counter</p>
+<ul>
+<li><p>Tags: 2D-array, simulation, pattern, LCM, high-level-visualization-help</p></li>
+<li><p>A simulation of the cellular automata must be ran for long enough</p></li>
+<li><p>Then, the simulation becomes way too computational heavy, with an explosion of the size of the input data (becoming orders of magnitude larger, with <code class="docutils literal notranslate"><span class="pre">O(n**2)</span></code>)</p></li>
+<li><p>The space becomes infinite, tiling the original finite provided input data</p></li>
+</ul>
+</li>
+</ul>
+<p>Pure Visualization</p>
+<ul class="simple">
+<li><p>Day 25: Snowverload</p>
+<ul>
+<li><p>Tags: graph, high-level-visualization-help</p></li>
+<li><p>Using graphviz to visualize the graph is a way to identify clusters in this “clustering graph”. Graphviz already contains logic to smartly place nodes relatively to each others.</p></li>
+</ul>
+</li>
+<li><p>Pure Math</p></li>
+<li><p>Day 24: Never Tell Me The Odds</p>
+<ul>
+<li><p>Require solving a linear system of equation. The use of external tools seems mandatory, eg using <code class="docutils literal notranslate"><span class="pre">sympy</span></code> for symbolic mathematics. It is used to solve the system of equations.</p></li>
+<li><p>This is one of the rare problems that are more “float-oriented”, and not “int-oriented”. Getting precise exact numbers from a simulation is hard. Hence pure math helping here.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>docs
+<span class="c1"># sphinx-autobuild source _build/html</span>
+poetry<span class="w"> </span>run<span class="w"> </span>sphinx-build<span class="w"> </span>-E<span class="w"> </span><span class="nb">source</span><span class="w"> </span>_build/html<span class="w"> </span><span class="c1"># clear cache</span>
+poetry<span class="w"> </span>run<span class="w"> </span>sphinx-autobuild<span class="w"> </span><span class="nb">source</span><span class="w"> </span>_build/html<span class="w"> </span><span class="c1"># autobuild</span>
+poetry<span class="w"> </span>run<span class="w"> </span>sphinx-serve<span class="w"> </span>-h<span class="w"> </span><span class="m">127</span>.0.0.0<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span><span class="w"> </span><span class="c1"># just serve</span>
+<span class="c1"># sphinx-autobuild -E source _build/html # clear cache (not advised with autobuild)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="videos/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Videos</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Home</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, Etienne Schalk
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">advent-of-code</a><ul>
+<li><a class="reference internal" href="#development">Development</a><ul>
+<li><a class="reference internal" href="#warning-legacy-template-files">(:warning: Legacy) Template Files</a></li>
+<li><a class="reference internal" href="#pre-commit">Pre-commit</a></li>
+<li><a class="reference internal" href="#testing">Testing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#experience-feedback">Experience Feedback</a><ul>
+<li><a class="reference internal" href="#types-of-problems">Types of problems</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>

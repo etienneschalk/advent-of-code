@@ -1,0 +1,147 @@
+:py:mod:`advent_of_code.common.protocols`
+=========================================
+
+.. py:module:: advent_of_code.common.protocols
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem
+
+
+   Bases: :py:obj:`Protocol`
+
+   Base class for Advent of Code problems' implementations
+
+   .. py:attribute:: year
+      :type: int
+
+      
+
+   .. py:attribute:: day
+      :type: int
+
+      
+
+   .. py:attribute:: tag
+      :type: str
+      :value: 'v1'
+
+      
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInputT) -> int | str
+      :abstractmethod:
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInputT) -> int | str
+      :abstractmethod:
+
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInputT
+      :staticmethod:
+      :abstractmethod:
+
+
+   .. py:method:: parse_input_text_file() -> PuzzleInputT
+
+
+   .. py:method:: solve(part_1: bool = True, part_2: bool = True)
+
+
+
+.. py:class:: ExampleAdventOfCodePuzzleInputYYYYDD1
+
+
+   .. py:attribute:: number
+      :type: int
+
+      
+
+
+.. py:class:: ExampleAdventOfCodePuzzleInputYYYYDD2
+
+
+   .. py:attribute:: number_bis
+      :type: int
+
+      
+
+
+.. py:class:: ExampleAdventOfCodeProblem202206
+
+
+   Bases: :py:obj:`AdventOfCodeProblem`\ [\ :py:obj:`ExampleAdventOfCodePuzzleInputYYYYDD1`\ ]
+
+   Base class for Advent of Code problems' implementations
+
+   .. py:attribute:: year
+      :type: int
+
+      
+
+   .. py:attribute:: day
+      :type: int
+
+      
+
+   .. py:attribute:: tag
+      :type: str
+      :value: 'retest'
+
+      
+
+   .. py:method:: solve_part_1(puzzle_input: ExampleAdventOfCodePuzzleInputYYYYDD1)
+
+
+   .. py:method:: solve_part_2(puzzle_input: ExampleAdventOfCodePuzzleInputYYYYDD1)
+
+
+   .. py:method:: parse_text_input(text: str) -> ExampleAdventOfCodePuzzleInputYYYYDD1
+      :staticmethod:
+
+
+
+.. py:class:: ExampleAdventOfCodeProblem202207
+
+
+   .. py:attribute:: year
+      :type: int
+
+      
+
+   .. py:attribute:: day
+      :type: int
+
+      
+
+   .. py:attribute:: tag
+      :type: str
+      :value: 'v1'
+
+      
+
+   .. py:method:: solve_part_1(puzzle_input: ExampleAdventOfCodePuzzleInputYYYYDD2) -> int
+
+
+   .. py:method:: solve_part_2(puzzle_input: ExampleAdventOfCodePuzzleInputYYYYDD2) -> str
+
+
+   .. py:method:: parse_text_input(text: str) -> ExampleAdventOfCodePuzzleInputYYYYDD2
+      :staticmethod:
+
+
+   .. py:method:: parse_input_text_file() -> ExampleAdventOfCodePuzzleInputYYYYDD2
+
+
+   .. py:method:: solve(part_1: bool = True, part_2: bool = True)
+
+
+
+.. py:function:: function_that_solve_part_1(problem: AdventOfCodeProblem[function_that_solve_part_1.PuzzleInputT], puzzle_input: function_that_solve_part_1.PuzzleInputT) -> int | str
+
+
+.. py:data:: problem
+
+   
+

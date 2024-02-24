@@ -1,0 +1,37 @@
+advent\_of\_code.year\_2022.year\_2022\_day\_01
+===============================================
+
+.. automodule:: advent_of_code.year_2022.year_2022_day_01
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      compute_max_calories_part_1
+      compute_max_calories_part_2
+      parse_text_input
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AdventOfCodeProblem202201
+   
+   
+
+   
+   
+   
+
+
+

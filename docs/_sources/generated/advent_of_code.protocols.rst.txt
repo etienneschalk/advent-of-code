@@ -1,0 +1,39 @@
+advent\_of\_code.protocols
+==========================
+
+.. automodule:: advent_of_code.protocols
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      function_that_solve_part_1
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AdventOfCodeProblem
+      ExampleAdventOfCodeProblem202206
+      ExampleAdventOfCodeProblem202207
+      ExampleAdventOfCodePuzzleInput202206
+      ExampleAdventOfCodePuzzleInput202207
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,66 @@
+:py:mod:`advent_of_code.year_2023.year_2023_day_13`
+===================================================
+
+.. py:module:: advent_of_code.year_2023.year_2023_day_13
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem202313
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   Base class for Advent of Code problems' implementations
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 13
+
+      
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+
+.. py:function:: summarize_pattern_notes(patterns: PuzzleInput, *, smudge_mode: bool = False) -> int
+
+
+.. py:function:: compute_symmetry_amounts(patterns: PuzzleInput, *, smudge_mode: bool = False) -> tuple[tuple[int, Ellipsis], tuple[int, Ellipsis]]
+
+
+.. py:function:: find_number_of_cols_above_symmetry_axis(xda: xarray.DataArray, *, smudge_mode: bool = False) -> int
+
+
+.. py:function:: find_number_of_rows_above_symmetry_axis(xda: xarray.DataArray, *, smudge_mode: bool = False) -> int
+
+
+.. py:function:: find_number_of_rows_above_symmetry_axis_part_1(xda: xarray.DataArray, row: str, col: str) -> int
+
+
+.. py:function:: find_number_of_rows_above_symmetry_axis_part_2(xda: xarray.DataArray, row: str, col: str) -> int
+
+
+.. py:function:: find_number_of_rows_above_symmetry_axis_both_parts(xda: xarray.DataArray, target_sum: int, row: str, col: str) -> int
+
+
+.. py:function:: numpy_to_xarray(numpy_array: numpy.typing.NDArray[numpy.uint8]) -> xarray.DataArray
+
+
+.. py:function:: parse_text_input(text: str) -> PuzzleInput
+
+

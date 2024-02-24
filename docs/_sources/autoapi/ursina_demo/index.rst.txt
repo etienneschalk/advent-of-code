@@ -1,0 +1,6 @@
+:py:mod:`ursina_demo`
+=====================
+
+.. py:module:: ursina_demo
+
+

@@ -1,0 +1,78 @@
+:py:mod:`advent_of_code.y_2023.problem_202301`
+==============================================
+
+.. py:module:: advent_of_code.y_2023.problem_202301
+
+.. autoapi-nested-parse::
+
+   Module Docstring
+
+
+
+Module Contents
+---------------
+
+.. py:data:: Keys
+
+   
+
+.. py:class:: AdventOfCodeProblem202301
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   Base class for Advent of Code problems' implementations
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 1
+
+      
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+
+.. py:function:: parse_text_input(text: str) -> list[str]
+
+
+.. py:function:: is_lowercase_alphanumeric_character(c: str)
+
+
+.. py:function:: compute_calibration_sum(words: list[str]) -> int
+
+
+.. py:function:: recover_calibration_value(word: str) -> int
+
+
+.. py:function:: correct_input_for_part_2(words: list[str]) -> list[str]
+
+
+.. py:function:: build_part_2_mappings() -> Mappings
+
+
+.. py:function:: build_part_2_mapping()
+
+
+.. py:function:: replace_first_last_spelled_digits(word: str, mappings: Mappings) -> str
+
+
+.. py:function:: replace_first_spelled_digit(word: str, mapping: dict[Keys, str]) -> str
+
+
+.. py:function:: find_first_digit_index(word: str, reverse: bool)
+
+

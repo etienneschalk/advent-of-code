@@ -1,0 +1,99 @@
+:py:mod:`advent_of_code.y_2023.problem_202302`
+==============================================
+
+.. py:module:: advent_of_code.y_2023.problem_202302
+
+
+Module Contents
+---------------
+
+.. py:class:: Handful
+
+
+   .. py:property:: power
+      :type: int
+
+
+   .. py:attribute:: red
+      :type: int
+      :value: 0
+
+      
+
+   .. py:attribute:: green
+      :type: int
+      :value: 0
+
+      
+
+   .. py:attribute:: blue
+      :type: int
+      :value: 0
+
+      
+
+
+.. py:class:: Game
+
+
+   .. py:attribute:: identifier
+      :type: int
+
+      
+
+   .. py:attribute:: handfuls
+      :type: list[Handful]
+
+      
+
+
+.. py:class:: AdventOfCodeProblem202302
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   :Parameters: **AdventOfCodeProblem** -- _description_
+
+   :rtype: _description_
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 2
+
+      
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+
+.. py:function:: parse_text_input(text: str) -> list[Game]
+
+
+.. py:function:: parse_game_str(game_str: str) -> Game
+
+
+.. py:function:: parse_handful_str(handful_str: str) -> Handful
+
+
+.. py:function:: compute_possible_games(bag: Handful, candidate_games: list[Game]) -> list[Game]
+
+
+.. py:function:: is_handful_possible(bag: Handful, handful: Handful) -> bool
+
+
+.. py:function:: compute_minimal_required_handful(game: Game) -> Handful
+
+

@@ -1,0 +1,21 @@
+:py:mod:`advent_of_code.sort_your_moms_picture`
+===============================================
+
+.. py:module:: advent_of_code.sort_your_moms_picture
+
+
+Module Contents
+---------------
+
+.. py:function:: main(input_dir_path: pathlib.Path)
+
+
+.. py:function:: get_pictures_count(classified_by_year_month: Mapping[str, list[pathlib.Path]]) -> dict[str, int]
+
+
+.. py:function:: get_classified_paths(img_paths: list[pathlib.Path]) -> Mapping[str, list[pathlib.Path]]
+
+
+.. py:function:: get_month_from_img_filename(path: pathlib.Path) -> str
+
+

@@ -1,0 +1,54 @@
+:py:mod:`advent_of_code.year_2022.year_2022_day_25`
+===================================================
+
+.. py:module:: advent_of_code.year_2022.year_2022_day_25
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem202225
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   Base class for Advent of Code problems' implementations
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2022
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 25
+
+      
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+
+.. py:function:: convert_snafu_to_decimal(snafu: str) -> int
+
+
+.. py:function:: convert_decimal_to_snafu(decimal: int) -> str
+
+
+.. py:function:: convert_decimal_to_snafu_ndarray(decimal: int) -> numpy.typing.NDArray[numpy.int8]
+
+
+.. py:function:: parse_input_text_file() -> PuzzleInput
+
+
+.. py:function:: parse_text_input(text: str) -> PuzzleInput
+
+

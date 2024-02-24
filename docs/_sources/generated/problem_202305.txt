@@ -1,0 +1,55 @@
+advent\_of\_code.year\_2023.year\_2023\_day\_05
+===============================================
+
+.. automodule:: advent_of_code.year_2023.year_2023_day_05
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      compute_lowest_location_number
+      fill_almanac_in_place
+      fill_almanac_map_in_place
+      find_max_destination_stop_in_almanac
+      find_max_destination_stop_in_almanac_map
+      find_max_destination_stop_in_almanac_range
+      find_min_range_in_tree
+      intersect_ranges
+      map_ranges_prototype
+      map_ranges_tree
+      parse_almanac
+      parse_almanac_map
+      parse_almanac_range
+      parse_input_text_file
+      parse_text_input
+      recur_map_ranges_tree
+      sort_mapping_by_source_range_start_in_place
+      sort_ranges_in_place
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AdventOfCodeProblem202305
+      Almanac
+      AlmanacMap
+      AlmanacRange
+   
+   
+
+   
+   
+   
+
+
+

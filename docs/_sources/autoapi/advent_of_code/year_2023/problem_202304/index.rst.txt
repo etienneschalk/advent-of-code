@@ -1,0 +1,68 @@
+:py:mod:`advent_of_code.year_2023.problem_202304`
+=================================================
+
+.. py:module:: advent_of_code.year_2023.problem_202304
+
+
+Module Contents
+---------------
+
+.. py:class:: Card
+
+
+   .. py:attribute:: identifier
+      :type: int
+
+      
+
+   .. py:attribute:: winning_numbers
+      :type: numpy.typing.NDArray[numpy.int32]
+
+      
+
+   .. py:attribute:: numbers_you_have
+      :type: numpy.typing.NDArray[numpy.int32]
+
+      
+
+
+.. py:class:: AdventOfCodeProblem202304
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 4
+
+      
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+
+.. py:function:: parse_text_input(text: str) -> list[Card]
+
+
+.. py:function:: find_winning_numbers_you_have(card: Card) -> set[int]
+
+
+.. py:function:: find_card_worth(card: Card) -> int
+
+
+.. py:function:: update_card_instances(instances: numpy.typing.NDArray[numpy.int32], card: Card)
+
+

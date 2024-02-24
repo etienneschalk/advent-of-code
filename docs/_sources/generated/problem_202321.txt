@@ -1,0 +1,46 @@
+advent\_of\_code.year\_2023.year\_2023\_day\_21
+===============================================
+
+.. automodule:: advent_of_code.year_2023.year_2023_day_21
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      compute_points_for_interpolation
+      count_reached_garden_plots
+      create_diamond_int_array
+      create_diamond_mask_array
+      evaluate_quadratic_equation
+      get_free_cells_xda
+      get_starting_position
+      parse_input_text_file
+      parse_text_input
+      run_steps
+      run_steps_details
+      run_steps_old
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AdventOfCodeProblem202321
+   
+   
+
+   
+   
+   
+
+
+

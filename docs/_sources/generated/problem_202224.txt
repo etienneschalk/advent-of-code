@@ -1,0 +1,43 @@
+advent\_of\_code.year\_2022.year\_2022\_day\_24
+===============================================
+
+.. automodule:: advent_of_code.year_2022.year_2022_day_24
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      advance_blizzard
+      breadth_first_search
+      build_graph_breadth_first_part_1
+      build_graph_part_1
+      build_graph_recursive_part_1
+      compute_children_positions
+      compute_part_1
+      compute_part_2
+      compute_simulation_for_cross_period
+      initialize_blizzard
+      logic_part_1_first_try
+      main
+      parse_input_text_file
+      parse_text_input
+      render_history_moves
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,74 @@
+:py:mod:`advent_of_code.year_2023.problem_202308`
+=================================================
+
+.. py:module:: advent_of_code.year_2023.problem_202308
+
+
+Module Contents
+---------------
+
+.. py:class:: Network
+
+
+   .. py:attribute:: instructions
+      :type: str
+
+      
+
+   .. py:attribute:: nodes
+      :type: dict[str, tuple[str, str]]
+
+      
+
+
+.. py:class:: AdventOfCodeProblem202308
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   Base class for Advent of Code problems' implementations
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 8
+
+      
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+
+.. py:function:: count_required_steps(network: Network, starting_node: str = 'AAA', target_node: str = 'ZZZ') -> int
+
+
+.. py:function:: count_required_steps_simultaneously_bruteforce(network: Network, starting_node_tuple: tuple[str, Ellipsis], target_end_letter: str) -> int
+
+
+.. py:function:: compute_steps_for_part_2(network: Network, source_nodes: tuple[str, Ellipsis], target_end_letter: str)
+
+
+.. py:function:: detect_loop(network: Network, starting_node: str, target_end_letter: str)
+
+
+.. py:function:: parse_input_text_file() -> PuzzleInput
+
+
+.. py:function:: parse_text_input(text: str) -> PuzzleInput
+
+
+.. py:function:: parse_node_from_line(line: str) -> tuple[str, tuple[str, str]]
+
+

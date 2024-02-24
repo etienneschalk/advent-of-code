@@ -1,0 +1,12 @@
+:py:mod:`advent_of_code.jobs.shorten_file_names`
+================================================
+
+.. py:module:: advent_of_code.jobs.shorten_file_names
+
+
+Module Contents
+---------------
+
+.. py:function:: main()
+
+

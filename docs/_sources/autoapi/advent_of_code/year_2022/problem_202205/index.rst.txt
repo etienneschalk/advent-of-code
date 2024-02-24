@@ -1,0 +1,82 @@
+:py:mod:`advent_of_code.year_2022.problem_202205`
+=================================================
+
+.. py:module:: advent_of_code.year_2022.problem_202205
+
+
+Module Contents
+---------------
+
+.. py:data:: InstructionTuple
+
+   
+
+.. py:class:: AdventOfCodeProblem202205
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2022
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 5
+
+      
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+
+.. py:class:: RearrangementProcedure
+
+
+   .. py:attribute:: stacks
+      :type: StacksType
+
+      
+
+   .. py:attribute:: instructions
+      :type: tuple[InstructionTuple, Ellipsis]
+
+      
+
+
+.. py:function:: common_logic(procedure: RearrangementProcedure, move_func: MovingFunctionSignatureType) -> str
+
+
+.. py:function:: logic_part_1(procedure: RearrangementProcedure) -> str
+
+
+.. py:function:: logic_part_2(procedure: RearrangementProcedure) -> str
+
+
+.. py:function:: move_stacks_fifo(instruction: InstructionTuple, destination: list[str], source: list[str]) -> None
+
+
+.. py:function:: move_stacks_lifo(instruction: InstructionTuple, destination: list[str], source: list[str]) -> None
+
+
+.. py:function:: parse_input_text_file() -> PuzzleInput
+
+
+.. py:function:: parse_text_input(text: str) -> PuzzleInput
+
+
+.. py:function:: parse_stack_text(stack_group: str) -> StacksType
+
+
+.. py:function:: parse_instructions_text(instruction_group: str) -> tuple[InstructionTuple, Ellipsis]
+
+

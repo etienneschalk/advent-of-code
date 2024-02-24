@@ -1,0 +1,375 @@
+:py:mod:`advent_of_code.visualization.pygame_dynamic_array_viewer_202316`
+=========================================================================
+
+.. py:module:: advent_of_code.visualization.pygame_dynamic_array_viewer_202316
+
+
+Module Contents
+---------------
+
+.. py:function:: main(choice: str, part: str)
+
+
+.. py:data:: PATTERN_EMPTY_SPACE_3X3
+   :value: Multiline-String
+
+    .. raw:: html
+
+        <details><summary>Show Value</summary>
+
+    .. code-block:: python
+
+        """
+        ...
+        ...
+        ...
+        """
+
+    .. raw:: html
+
+        </details>
+
+   
+
+.. py:data:: PATTERN_MIRROR_SLASH_3X3
+   :value: Multiline-String
+
+    .. raw:: html
+
+        <details><summary>Show Value</summary>
+
+    .. code-block:: python
+
+        """
+        ..O
+        .O.
+        O..
+        """
+
+    .. raw:: html
+
+        </details>
+
+   
+
+.. py:data:: PATTERN_MIRROR_BACKSLASH_3X3
+   :value: Multiline-String
+
+    .. raw:: html
+
+        <details><summary>Show Value</summary>
+
+    .. code-block:: python
+
+        """
+        O..
+        .O.
+        ..O
+        """
+
+    .. raw:: html
+
+        </details>
+
+   
+
+.. py:data:: PATTERN_SPLITTER_V_3X3
+   :value: Multiline-String
+
+    .. raw:: html
+
+        <details><summary>Show Value</summary>
+
+    .. code-block:: python
+
+        """
+        .O.
+        .O.
+        .O.
+        """
+
+    .. raw:: html
+
+        </details>
+
+   
+
+.. py:data:: PATTERN_SPLITTER_H_3X3
+   :value: Multiline-String
+
+    .. raw:: html
+
+        <details><summary>Show Value</summary>
+
+    .. code-block:: python
+
+        """
+        ...
+        OOO
+        ...
+        """
+
+    .. raw:: html
+
+        </details>
+
+   
+
+.. py:data:: PATTERN_WALL_3X3
+   :value: Multiline-String
+
+    .. raw:: html
+
+        <details><summary>Show Value</summary>
+
+    .. code-block:: python
+
+        """
+        OOO
+        OOO
+        OOO
+        """
+
+    .. raw:: html
+
+        </details>
+
+   
+
+.. py:data:: CELL_CHAR_TO_PATTERN_3X3_STRINGS
+
+   
+
+.. py:data:: PATTERN_EMPTY_SPACE_5X5
+   :value: Multiline-String
+
+    .. raw:: html
+
+        <details><summary>Show Value</summary>
+
+    .. code-block:: python
+
+        """
+        .....
+        .....
+        .....
+        .....
+        .....
+        """
+
+    .. raw:: html
+
+        </details>
+
+   
+
+.. py:data:: PATTERN_MIRROR_SLASH_5X5
+   :value: Multiline-String
+
+    .. raw:: html
+
+        <details><summary>Show Value</summary>
+
+    .. code-block:: python
+
+        """
+        ....O
+        ...O.
+        ..O..
+        .O...
+        O....
+        """
+
+    .. raw:: html
+
+        </details>
+
+   
+
+.. py:data:: PATTERN_MIRROR_BACKSLASH_5X5
+   :value: Multiline-String
+
+    .. raw:: html
+
+        <details><summary>Show Value</summary>
+
+    .. code-block:: python
+
+        """
+        O....
+        .O...
+        ..O..
+        ...O.
+        ....O
+        """
+
+    .. raw:: html
+
+        </details>
+
+   
+
+.. py:data:: PATTERN_SPLITTER_V_5X5
+   :value: Multiline-String
+
+    .. raw:: html
+
+        <details><summary>Show Value</summary>
+
+    .. code-block:: python
+
+        """
+        ..O..
+        ..O..
+        ..O..
+        ..O..
+        ..O..
+        """
+
+    .. raw:: html
+
+        </details>
+
+   
+
+.. py:data:: PATTERN_SPLITTER_H_5X5
+   :value: Multiline-String
+
+    .. raw:: html
+
+        <details><summary>Show Value</summary>
+
+    .. code-block:: python
+
+        """
+        .....
+        .....
+        OOOOO
+        .....
+        .....
+        """
+
+    .. raw:: html
+
+        </details>
+
+   
+
+.. py:data:: PATTERN_WALL_5X5
+
+   
+
+.. py:data:: CELL_CHAR_TO_PATTERN_5X5_STRINGS
+
+   
+
+.. py:class:: AOCVisualizer202316
+
+
+   Bases: :py:obj:`advent_of_code.visualization.protocols.AOCPygameVisualizer`
+
+   .. py:attribute:: problem_input_array
+      :type: numpy.typing.NDArray[numpy.uint8]
+
+      
+
+   .. py:attribute:: history
+      :type: HistoryDictPerDepth
+
+      
+
+   .. py:attribute:: simulation_step
+      :type: int
+
+      
+
+   .. py:attribute:: min_luminance
+      :type: int
+      :value: 40
+
+      
+
+   .. py:attribute:: max_luminance
+      :type: int
+
+      
+
+   .. py:attribute:: _mirror_surf
+      :type: pygame.Surface
+
+      
+
+   .. py:attribute:: _ray_array
+      :type: numpy.typing.NDArray[numpy.uint8]
+
+      
+
+   .. py:method:: init_state()
+
+
+   .. py:method:: update_state() -> None
+
+
+   .. py:method:: update_surfaces()
+
+
+   .. py:method:: consume_event(event: pygame.Event)
+
+
+   .. py:method:: _init_mirror_surf()
+
+
+   .. py:method:: _update_ray_array(total_elapsed_frames: int) -> None
+
+
+   .. py:method:: _generate_ray_array() -> numpy.typing.NDArray[numpy.uint8]
+
+
+   .. py:method:: _generate_mirror_array() -> numpy.typing.NDArray[numpy.uint8]
+
+
+
+.. py:class:: AOCPygameVisualizerFactory202316
+
+
+   Bases: :py:obj:`advent_of_code.visualization.protocols.AOCPygameVisualizerFactory`
+
+   Base class for protocol classes.
+
+   Protocol classes are defined as::
+
+       class Proto(Protocol):
+           def meth(self) -> int:
+               ...
+
+   Such classes are primarily used with static type checkers that recognize
+   structural subtyping (static duck-typing).
+
+   For example::
+
+       class C:
+           def meth(self) -> int:
+               return 0
+
+       def func(x: Proto) -> int:
+           return x.meth()
+
+       func(C())  # Passes static type check
+
+   See PEP 544 for details. Protocol classes decorated with
+   @typing.runtime_checkable act as simple-minded runtime protocols that check
+   only the presence of given attributes, ignoring their type signatures.
+   Protocol classes can be generic, they are defined as::
+
+       class GenProto[T](Protocol):
+           def meth(self) -> T:
+               ...
+
+   .. py:method:: create_visualizer() -> AOCVisualizer202316
+
+
+   .. py:method:: read_history(problem: advent_of_code.y_2023.problem_202316.AdventOfCodeProblem202316)
+      :staticmethod:
+
+
+

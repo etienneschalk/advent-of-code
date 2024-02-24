@@ -1,0 +1,48 @@
+:py:mod:`advent_of_code.year_2022.problem_202201`
+=================================================
+
+.. py:module:: advent_of_code.year_2022.problem_202201
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem202201
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   Base class for Advent of Code problems' implementations
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2022
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 1
+
+      
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+
+.. py:function:: compute_max_calories_part_1(parsed_input: PuzzleInput) -> int
+
+
+.. py:function:: compute_max_calories_part_2(parsed_input: PuzzleInput, limit: int = 3) -> int
+
+
+.. py:function:: parse_text_input(text: str) -> PuzzleInput
+
+

@@ -1,0 +1,39 @@
+advent\_of\_code.year\_2022.year\_2022\_day\_25
+===============================================
+
+.. automodule:: advent_of_code.year_2022.year_2022_day_25
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      convert_decimal_to_snafu
+      convert_decimal_to_snafu_ndarray
+      convert_snafu_to_decimal
+      parse_input_text_file
+      parse_text_input
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AdventOfCodeProblem202225
+   
+   
+
+   
+   
+   
+
+
+

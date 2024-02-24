@@ -1,0 +1,44 @@
+:py:mod:`advent_of_code.year_2023`
+==================================
+
+.. py:module:: advent_of_code.year_2023
+
+.. autoapi-nested-parse::
+
+   Advent of Code - init
+
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   problem_202301/index.rst
+   problem_202302/index.rst
+   problem_202303/index.rst
+   problem_202304/index.rst
+   problem_202305/index.rst
+   problem_202306/index.rst
+   problem_202307/index.rst
+   problem_202308/index.rst
+   problem_202309/index.rst
+   problem_202310/index.rst
+   problem_202311/index.rst
+   problem_202312/index.rst
+   problem_202313/index.rst
+   problem_202314/index.rst
+   problem_202315/index.rst
+   problem_202316/index.rst
+   problem_202317/index.rst
+   problem_202318/index.rst
+   problem_202319/index.rst
+   problem_202320/index.rst
+   problem_202321/index.rst
+   problem_202322/index.rst
+   problem_202323/index.rst
+   problem_202324/index.rst
+   problem_202325/index.rst
+
+

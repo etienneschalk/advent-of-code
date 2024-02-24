@@ -1,0 +1,81 @@
+:py:mod:`advent_of_code.year_2023.problem_202317`
+=================================================
+
+.. py:module:: advent_of_code.year_2023.problem_202317
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem202317
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 17
+
+      
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part(puzzle_input: PuzzleInput, min_step: int, max_step: int, max_iter: int)
+
+
+
+.. py:class:: State
+
+
+   .. py:attribute:: heat
+      :type: int
+
+      
+
+   .. py:attribute:: position
+      :type: advent_of_code.common.constants.Position
+
+      
+
+   .. py:attribute:: direction
+      :type: advent_of_code.common.constants.Direction
+
+      
+
+   .. py:attribute:: step
+      :type: int
+
+      
+
+
+.. py:function:: dijkstra(heatmap: HeatMap, start: advent_of_code.common.constants.Position, end: advent_of_code.common.constants.Position, min_step: int = 1, max_step: int = 3, *, max_iter: int = 2000) -> int
+
+   Compute the shortest path from start to end in given heatmap,
+   using min and max steps.
+
+   :Parameters: * **heatmap** -- Numpy 2-D array containing heat (weight), positive integers.
+                * **start** -- Initial given position in the heatmap
+                * **end** -- Final wanted position in the heatmap
+                * **min_step, optional** -- Permitted minimal amount of consecutive steps in the
+                  same direction, inclusive, by default 1
+                * **max_step, optional** -- Permitted maximal amount of consecutive steps in the
+                  same direction, inclusive, by default 3
+                * **max_iter, optional** -- Guard not to be stuck if an infinite loop
+
+   :rtype: The path with the least heat loss from start to end in the heatmap.
+
+

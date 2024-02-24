@@ -1,0 +1,208 @@
+:py:mod:`advent_of_code.year_2023.year_2023_day_20`
+===================================================
+
+.. py:module:: advent_of_code.year_2023.year_2023_day_20
+
+
+Module Contents
+---------------
+
+.. py:data:: LowPulseType
+
+   
+
+.. py:data:: HighPulseType
+
+   
+
+.. py:data:: OffType
+
+   
+
+.. py:data:: OnType
+
+   
+
+.. py:data:: LowPulse
+
+   
+
+.. py:data:: HighPulse
+
+   
+
+.. py:data:: Off
+
+   
+
+.. py:data:: On
+
+   
+
+.. py:class:: AdventOfCodeProblem202320
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   Base class for Advent of Code problems' implementations
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 20
+
+      
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+
+.. py:class:: Module
+
+
+   .. py:attribute:: prefix
+      :value: ''
+
+      
+
+   .. py:attribute:: name
+      :type: str
+
+      
+
+   .. py:attribute:: destination_names
+      :type: tuple[str, Ellipsis]
+
+      
+
+   .. py:method:: init(name: str, destination_names: tuple[str, Ellipsis]) -> Module
+      :staticmethod:
+
+
+   .. py:method:: receive(source: str, pulse: Pulse) -> list[Message]
+      :abstractmethod:
+
+
+
+.. py:data:: ModuleDict
+
+   
+
+.. py:class:: Message
+
+
+   .. py:attribute:: source
+      :type: str
+
+      
+
+   .. py:attribute:: destination
+      :type: str
+
+      
+
+   .. py:attribute:: pulse
+      :type: Pulse
+
+      
+
+   .. py:method:: __repr__() -> str
+
+      Return repr(self).
+
+
+
+.. py:class:: BroadcasterModule
+
+
+   Bases: :py:obj:`Module`
+
+   .. py:method:: init(name: str, destination_names: tuple[str, Ellipsis]) -> BroadcasterModule
+      :staticmethod:
+
+
+   .. py:method:: receive(source: str, pulse: Pulse) -> list[Message]
+
+
+
+.. py:class:: FlipFlopModule
+
+
+   Bases: :py:obj:`Module`
+
+   .. py:attribute:: state
+      :type: FlipFlopState
+
+      
+
+   .. py:attribute:: pulses_to_send
+      :type: list[Pulse]
+
+      
+
+   .. py:method:: init(name: str, destination_names: tuple[str, Ellipsis]) -> FlipFlopModule
+      :staticmethod:
+
+
+   .. py:method:: receive(source: str, pulse: Pulse) -> list[Message]
+
+
+
+.. py:class:: ConjunctionModule
+
+
+   Bases: :py:obj:`Module`
+
+   .. py:attribute:: prefix
+      :value: '&'
+
+      
+
+   .. py:attribute:: inputs
+      :type: dict[str, Pulse]
+
+      
+
+   .. py:attribute:: pulses_to_send
+      :type: list[Pulse]
+
+      
+
+   .. py:method:: init(name: str, destination_names: tuple[str, Ellipsis]) -> ConjunctionModule
+      :staticmethod:
+
+
+   .. py:method:: receive(source: str, pulse: Pulse) -> list[Message]
+
+
+
+.. py:function:: load_input_text_file_y2023_d20() -> str
+
+
+.. py:function:: compute_simulation_history(modules: ModuleDict)
+
+
+.. py:function:: compute_result_for_part_1(histories: list[list[Message]], button_push_count: int) -> int
+
+
+.. py:function:: compute_successive_histories_until_circle_back(start_module_dict: ModuleDict, module_dict: ModuleDict, max_iter: int = 1000, *, keep_history: bool = True)
+
+
+.. py:function:: detect_periods_part_2(module_dict: ModuleDict, max_iter: int = 5000, target_module: str = 'hb') -> list[tuple[int, Message]]
+
+
+.. py:function:: parse_text_to_module_dict(text: str) -> ModuleDict
+
+

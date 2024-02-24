@@ -1,0 +1,41 @@
+advent\_of\_code.year\_2022.year\_2022\_day\_03
+===============================================
+
+.. automodule:: advent_of_code.year_2022.year_2022_day_03
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      compute_priority_sum
+      find_shared_item
+      find_shared_items_for_group
+      find_shared_items_for_part_1
+      find_shared_items_for_part_2
+      parse_input_text_file
+      parse_text_input
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AdventOfCodeProblem202203
+   
+   
+
+   
+   
+   
+
+
+

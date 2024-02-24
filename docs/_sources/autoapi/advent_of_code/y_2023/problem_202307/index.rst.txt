@@ -1,0 +1,91 @@
+:py:mod:`advent_of_code.y_2023.problem_202307`
+==============================================
+
+.. py:module:: advent_of_code.y_2023.problem_202307
+
+
+Module Contents
+---------------
+
+.. py:data:: ALL_LABELS_PART_1
+
+   
+
+.. py:data:: MAPPED_LABELS_PART_1
+
+   
+
+.. py:data:: MAPPING_SRC_TO_DEST_PART_1
+
+   
+
+.. py:data:: ALL_LABELS_PART_2
+
+   
+
+.. py:data:: MAPPED_LABELS_PART_2
+
+   
+
+.. py:data:: MAPPING_SRC_TO_DEST_PART_2
+
+   
+
+.. py:data:: HandType
+
+   
+
+.. py:data:: UNIQUE_OCCURRENCES_TO_HAND_TYPE
+   :type: dict[tuple[int, Ellipsis], str]
+
+   
+
+.. py:data:: ALL_HAND_TYPES
+
+   
+
+.. py:class:: AdventOfCodeProblem202307
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   Base class for Advent of Code problems' implementations
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 7
+
+      
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+
+.. py:function:: compute_total_winnings(sorted_by_hand_type: SortedByHandType)
+
+
+.. py:function:: map_puzzle_input(puzzle_input: PuzzleInput, mapping: dict[str, int]) -> PuzzleMappedInput
+
+
+.. py:function:: sort_by_hand_type_part_1(hands_and_bids: PuzzleMappedInput) -> SortedByHandType
+
+
+.. py:function:: sort_by_hand_type_part_2(hands_and_bids: PuzzleMappedInput, mapping: dict[str, int]) -> SortedByHandType
+
+
+.. py:function:: parse_text_input(text: str)
+
+

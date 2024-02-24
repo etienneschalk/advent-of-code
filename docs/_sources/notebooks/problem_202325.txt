@@ -1,0 +1,256 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Year 2023 Day 25\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from advent_of_code.year_2023.problem_202325 import create_bidirectional\n",
+    "from advent_of_code.common.common import get_input_file_path\n",
+    "from advent_of_code.year_2023.problem_202325 import (\n",
+    "    parse_text_input,\n",
+    ")\n",
+    "from advent_of_code.common.store import ExampleInputsStore\n",
+    "\n",
+    "from advent_of_code.common.graph_visualization import construct_dot_graph_from_dict"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Test input\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "EXAMPLE_INPUT = ExampleInputsStore.from_private_toml().retrieve(\"test_problem_202325\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "text = EXAMPLE_INPUT\n",
+    "components = parse_text_input(text)\n",
+    "components"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "construct_dot_graph_from_dict(components, dir=\"forward\", nodesep=\"0.1\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The edges to cut can be guessed by drawing an imaginary line between the two clusters.\n",
+    "All edges intersecting this cluster are to be cut.\n",
+    "This observation can also be made on the actual input... though more difficult\n",
+    "to manually analyze from the visualization (the graph is huge)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "len(components.keys())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sum(len(e) for e in components.values())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "nodes_to_disconnect = {\n",
+    "    \"cmg\",\n",
+    "    \"jqt\",\n",
+    "    \"pzl\",\n",
+    "}\n",
+    "disconnected = {k: () if k in nodes_to_disconnect else v for k, v in components.items()}\n",
+    "len(disconnected.keys())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "construct_dot_graph_from_dict(disconnected, dir=\"forward\", nodesep=\"0.1\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "disconnected"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "bidir = create_bidirectional(disconnected)\n",
+    "bidir"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Actual input\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "text = (get_input_file_path(2023, 25)).read_text()\n",
+    "components = parse_text_input(text)\n",
+    "components[\"hcp\"]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "len(components.keys())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sum(len(e) for e in components.values())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "disconnected = {\n",
+    "    k: v\n",
+    "    for k, v in components.items()\n",
+    "    if k\n",
+    "    not in {\n",
+    "        \"vgf\",\n",
+    "        \"nmz\",\n",
+    "        \"fdb\",\n",
+    "    }\n",
+    "}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "len(disconnected.keys())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# dsdsdsdsd"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Manual observation:\n",
+    "\n",
+    "- vgf - jpn\n",
+    "- nmz - nml\n",
+    "- fdb - txm\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "construct_dot_graph_from_dict(components, nodesep=\"0.25\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "construct_dot_graph_from_dict(disconnected, nodesep=\"0.25\")"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "advent-of-code-CEbbwEIT-py3.10",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.12"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

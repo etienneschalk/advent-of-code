@@ -1,0 +1,54 @@
+:py:mod:`advent_of_code.year_2023.problem_202306`
+=================================================
+
+.. py:module:: advent_of_code.year_2023.problem_202306
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem202306
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   Base class for Advent of Code problems' implementations
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 6
+
+      
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+
+.. py:function:: parse_text_input(text: str) -> PuzzleInput
+
+
+.. py:function:: correct_data(races: PuzzleInput) -> PuzzleInput
+
+
+.. py:function:: compute_number_of_ways_to_win(parsed_input: PuzzleInput)
+
+
+.. py:function:: compute_ranges(races: PuzzleInput) -> list[tuple[int, int]]
+
+
+.. py:function:: compute_range(time: int, record_distance: int)
+
+

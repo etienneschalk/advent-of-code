@@ -1,0 +1,28 @@
+:py:mod:`advent_of_code`
+========================
+
+.. py:module:: advent_of_code
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   common/index.rst
+   jobs/index.rst
+   visualization/index.rst
+   y_2022/index.rst
+   y_2023/index.rst
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   sort_whatsapp_pictures/index.rst
+
+

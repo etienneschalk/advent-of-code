@@ -1,0 +1,84 @@
+:py:mod:`advent_of_code.common.common`
+======================================
+
+.. py:module:: advent_of_code.common.common
+
+
+Module Contents
+---------------
+
+.. py:function:: load_input_text_file_from_filename(filename: str) -> str
+
+
+.. py:function:: create_output_file_path_from_filename(output_filename: str, output_subdir: str, current_filename: str) -> pathlib.Path
+
+
+.. py:function:: get_year_and_day_from_filename(filename: str) -> tuple[int, int]
+
+
+.. py:function:: load_puzzle_input_text_file(year: int, day: int) -> str
+
+
+.. py:function:: get_example_inputs_file_contents(year: int) -> dict[str, dict[str, str]]
+
+
+.. py:function:: get_expected_answers_file_contents(year: int) -> dict[str, dict[str, int | str]]
+
+
+.. py:function:: get_private_resources_path() -> pathlib.Path
+
+
+.. py:function:: get_puzzle_input_file_path(year: int, day: int) -> pathlib.Path
+
+
+.. py:function:: get_example_inputs_file_path(year: int) -> pathlib.Path
+
+
+.. py:function:: get_expected_answers_file_path(year: int) -> pathlib.Path
+
+
+.. py:function:: save_txt(text: str, filename: str, module_name: str, *, output_subdir: str = '')
+
+
+.. py:function:: create_output_file_path(output_filename: str, output_subdir: str, year: int, day: int) -> pathlib.Path
+
+
+.. py:function:: render_central_input_path(year: int, day: int)
+
+
+.. py:function:: render_central_output_dir(year: int, day: int)
+
+
+.. py:function:: adapt_recursion_limit(new_value: int = 15000, *, silent: bool = False)
+
+
+.. py:function:: render_2d_data_array(xda: xarray.DataArray) -> str
+
+
+.. py:function:: render_2d_numpy_array(data: numpy.typing.NDArray[numpy.uint8]) -> str
+
+
+.. py:function:: parse_2d_string_array_to_uint8_xarray(text: str) -> xarray.DataArray
+
+
+.. py:function:: numpy_2d_to_xarray_row_col(input_array: numpy.typing.NDArray[Any])
+
+
+.. py:function:: parse_2d_string_array_to_uint8(text: str) -> numpy.typing.NDArray[numpy.uint8]
+
+
+.. py:function:: lines_to_2d_uint8_array(lines: list[str]) -> numpy.typing.NDArray[numpy.uint8]
+
+
+.. py:function:: view_uint8_as_s1(array: numpy.typing.NDArray[numpy.uint8]) -> numpy.typing.NDArray[Any]
+
+
+.. py:function:: parse_2d_string_array_to_u1(text: str) -> numpy.typing.NDArray[Any]
+
+
+.. py:function:: parse_2d_list_int_array(text: str) -> numpy.typing.NDArray[numpy.int32]
+
+
+.. py:function:: parse_2d_int_array(text: str) -> numpy.typing.NDArray[numpy.int32]
+
+

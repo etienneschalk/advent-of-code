@@ -1,0 +1,41 @@
+advent\_of\_code.year\_2023.year\_2023\_day\_03
+===============================================
+
+.. automodule:: advent_of_code.year_2023.year_2023_day_03
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      detect_adjacent_numbers_in_line
+      find_part_numbers
+      find_part_numbers_and_gears
+      get_candidate_gear_coordinates_list
+      get_neighbouring_coordinates_tuple
+      is_solitary_number
+      parse_text_input
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AdventOfCodeProblem202303
+   
+   
+
+   
+   
+   
+
+
+

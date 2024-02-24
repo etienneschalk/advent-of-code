@@ -1,0 +1,114 @@
+:py:mod:`advent_of_code.constants`
+==================================
+
+.. py:module:: advent_of_code.constants
+
+
+Module Contents
+---------------
+
+.. py:data:: Position
+
+   
+
+.. py:data:: EastType
+
+   
+
+.. py:data:: NorthType
+
+   
+
+.. py:data:: WestType
+
+   
+
+.. py:data:: SouthType
+
+   
+
+.. py:data:: Direction
+
+   
+
+.. py:data:: EAST
+   :type: EastType
+   :value: 0
+
+   
+
+.. py:data:: NORTH
+   :type: NorthType
+   :value: 1
+
+   
+
+.. py:data:: WEST
+   :type: WestType
+   :value: 2
+
+   
+
+.. py:data:: SOUTH
+   :type: SouthType
+   :value: 3
+
+   
+
+.. py:data:: RIGHT
+
+   
+
+.. py:data:: UP
+
+   
+
+.. py:data:: LEFT
+
+   
+
+.. py:data:: DOWN
+
+   
+
+.. py:data:: MOVE_NULL
+   :type: numpy.typing.NDArray[numpy.int32]
+
+   
+
+.. py:data:: MOVE_EAST
+   :type: numpy.typing.NDArray[numpy.int32]
+
+   
+
+.. py:data:: MOVE_NORTH
+   :type: numpy.typing.NDArray[numpy.int32]
+
+   
+
+.. py:data:: MOVE_WEST
+   :type: numpy.typing.NDArray[numpy.int32]
+
+   
+
+.. py:data:: MOVE_SOUTH
+   :type: numpy.typing.NDArray[numpy.int32]
+
+   
+
+.. py:data:: NEIGHBOUR_MOVES
+   :type: dict[Direction, numpy.typing.NDArray[numpy.int32]]
+
+   
+
+.. py:data:: WELL_KNOW_DIRECTION_MAPPING
+   :type: dict[str, Direction]
+
+   
+
+.. py:function:: is_out_of_bounds(direction: Direction, position: Position, shape: tuple[int, int]) -> bool
+
+
+.. py:function:: is_opposite_direction(a: Direction, b: Direction) -> bool
+
+

@@ -1,0 +1,65 @@
+:py:mod:`advent_of_code.year_2023.year_2023_day_12`
+===================================================
+
+.. py:module:: advent_of_code.year_2023.year_2023_day_12
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem202312
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   Base class for Advent of Code problems' implementations
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 12
+
+      
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+   .. py:method:: solve_part(puzzle_input: PuzzleInput, iter_count: int)
+
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+
+.. py:class:: StateKey
+
+
+   .. py:attribute:: group
+      :type: int
+
+      
+
+   .. py:attribute:: amount
+      :type: int
+
+      
+
+
+.. py:function:: count_arrangements(springs: str, groups: tuple[int, Ellipsis]) -> int
+
+
+.. py:function:: parse_text_input_v2(text: str) -> PuzzleInput
+
+
+.. py:function:: unfold_records_v2(input_line: PuzzleLine, iter_count: int = 5)
+
+

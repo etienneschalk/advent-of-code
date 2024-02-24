@@ -1,0 +1,153 @@
+:py:mod:`advent_of_code.year_2023.problem_202322`
+=================================================
+
+.. py:module:: advent_of_code.year_2023.problem_202322
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem202322
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 22
+
+      
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+
+.. py:class:: Brick
+
+
+   .. py:property:: rank
+      :type: int
+
+
+   .. py:property:: x0
+      :type: int
+
+
+   .. py:property:: x1
+      :type: int
+
+
+   .. py:property:: y0
+      :type: int
+
+
+   .. py:property:: y1
+      :type: int
+
+
+   .. py:property:: z0
+      :type: int
+
+
+   .. py:property:: z1
+      :type: int
+
+
+   .. py:property:: pos0
+      :type: numpy.typing.NDArray[numpy.int64]
+
+
+   .. py:property:: pos1
+      :type: numpy.typing.NDArray[numpy.int64]
+
+
+   .. py:property:: length
+      :type: numpy.int64
+
+
+   .. py:property:: height
+      :type: int
+
+
+   .. py:property:: indexer
+      :type: tuple[int | slice, Ellipsis]
+
+
+   .. py:property:: is_position_ordered
+      :type: numpy.bool_
+
+
+   .. py:attribute:: position
+      :type: tuple[numpy.typing.NDArray[numpy.int64], numpy.typing.NDArray[numpy.int64]]
+
+      
+
+   .. py:attribute:: falling
+      :type: bool
+
+      
+
+   .. py:attribute:: identifier
+      :type: int
+
+      
+
+
+.. py:function:: solve_part_2(supported_bricks: dict[int, tuple[int, Ellipsis]], support_counts: SupportCounts, dangerous_only: bool = False)
+
+
+.. py:function:: compute_updated_support_counts_when_node_removed(supported_bricks: dict[int, tuple[int, Ellipsis]], support_counts: SupportCounts)
+
+
+.. py:function:: compute_chain_reaction_other_fallen_bricks_count(updated_support_counts_when_node_removed: dict[int, SupportCounts])
+
+
+.. py:function:: compute_safely_removable_bricks_count(unsorted_bricks: list[Brick]) -> int
+
+
+.. py:function:: compute_supported_bricks_from_initial_bricks(unsorted_bricks: list[Brick]) -> dict[int, tuple[int, Ellipsis]]
+
+
+.. py:function:: compute_disintegrable_bricks(supported_bricks: dict[int, tuple[int, Ellipsis]], support_counts: SupportCounts) -> dict[int, bool]
+
+
+.. py:function:: compute_supported_bricks(fallen_bricks: list[Brick], space: numpy.typing.NDArray[numpy.int64]) -> dict[int, tuple[int, Ellipsis]]
+
+
+.. py:function:: compute_support_counts(supported_bricks: dict[int, tuple[int, Ellipsis]]) -> SupportCounts
+
+
+.. py:function:: fill_space_with_bricks_identifiers(fallen_bricks: list[Brick], space: numpy.typing.NDArray[numpy.int64]) -> None
+
+
+.. py:function:: create_space_datacuboid(fallen_bricks: list[Brick]) -> numpy.typing.NDArray[numpy.int64]
+
+
+.. py:function:: compute_fallen_bricks(sorted_bricks: list[Brick], elevation_map: numpy.typing.NDArray[numpy.int64]) -> list[Brick]
+
+
+.. py:function:: create_fallen_brick(elevation_map: numpy.typing.NDArray[numpy.int64], identifier: int, brick: Brick) -> Brick
+
+
+.. py:function:: create_elevation_map(sorted_bricks: list[Brick]) -> numpy.typing.NDArray[numpy.int64]
+
+
+.. py:function:: parse_text_input(text: str) -> PuzzleInput
+
+
+.. py:function:: parse_brick(line: str)
+
+

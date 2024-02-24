@@ -1,0 +1,16 @@
+:py:mod:`advent_of_code.jobs`
+=============================
+
+.. py:module:: advent_of_code.jobs
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   code_generation/index.rst
+   shorten_file_names/index.rst
+
+

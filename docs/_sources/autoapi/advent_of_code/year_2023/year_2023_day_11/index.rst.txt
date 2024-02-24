@@ -1,0 +1,75 @@
+:py:mod:`advent_of_code.year_2023.year_2023_day_11`
+===================================================
+
+.. py:module:: advent_of_code.year_2023.year_2023_day_11
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem202311
+
+
+   Bases: :py:obj:`advent_of_code.year_2023.year_2023_day_01.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   Base class for Advent of Code problems' implementations
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 11
+
+      
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+   .. py:method:: solve_part_1_naive(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+
+.. py:function:: compute_sum_of_shortest_paths_part_2(space_xda: xarray.DataArray, expansion_coef: int) -> int
+
+
+.. py:function:: compute_sum_of_shortest_paths_between_pairs(adjacency_matrix: xarray.DataArray) -> int
+
+
+.. py:function:: create_chunk_coord_array(space_xda: xarray.DataArray, coord_array: xarray.DataArray) -> xarray.DataArray
+
+
+.. py:function:: compute_adjacency_matrix(space_xda: xarray.DataArray) -> xarray.DataArray
+
+
+.. py:function:: compute_adjacency_matrix_from_coord_array(coord_array: xarray.DataArray) -> xarray.DataArray
+
+
+.. py:function:: create_coord_array(space_xda: xarray.DataArray) -> xarray.DataArray
+
+
+.. py:function:: expand_space(parsed_input: xarray.DataArray) -> xarray.DataArray
+
+
+.. py:function:: get_compartiments(xda: xarray.DataArray, chunks_dim: str, dim_reduce: str) -> dict[int, range]
+
+
+.. py:function:: find_compartiment_id(value: int, compartiments: dict[int, range]) -> int
+
+
+.. py:function:: pad_xda(xda: xarray.DataArray, dim_reduce: str, dim_concat: str) -> xarray.DataArray
+
+
+.. py:function:: parse_text_input(text: str) -> PuzzleInput
+
+

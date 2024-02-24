@@ -1,0 +1,45 @@
+advent\_of\_code.year\_2023.year\_2023\_day\_16
+===============================================
+
+.. automodule:: advent_of_code.year_2023.year_2023_day_16
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      append_children_to_beam
+      do_part_1
+      do_part_2
+      draw_energized
+      explore_beam_breadth_first
+      parse_input_text_file
+      parse_text_input
+      render_parsed_input
+      update_simulation
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AdventOfCodeProblem202316
+      Beam
+      PrioritizedBeam
+   
+   
+
+   
+   
+   
+
+
+

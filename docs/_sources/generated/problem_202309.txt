@@ -1,0 +1,37 @@
+advent\_of\_code.year\_2023.year\_2023\_day\_09
+===============================================
+
+.. automodule:: advent_of_code.year_2023.year_2023_day_09
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      compute_finite_difference_forward
+      predict_next_value_backward
+      predict_next_value_forward
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AdventOfCodeProblem202309
+   
+   
+
+   
+   
+   
+
+
+

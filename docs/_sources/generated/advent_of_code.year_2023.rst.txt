@@ -1,0 +1,55 @@
+advent\_of\_code.year\_2023
+===========================
+
+.. automodule:: advent_of_code.year_2023
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   advent_of_code.year_2023.year_2023_day_01
+   advent_of_code.year_2023.year_2023_day_02
+   advent_of_code.year_2023.year_2023_day_03
+   advent_of_code.year_2023.year_2023_day_04
+   advent_of_code.year_2023.year_2023_day_05
+   advent_of_code.year_2023.year_2023_day_06
+   advent_of_code.year_2023.year_2023_day_07
+   advent_of_code.year_2023.year_2023_day_08
+   advent_of_code.year_2023.year_2023_day_09
+   advent_of_code.year_2023.year_2023_day_10
+   advent_of_code.year_2023.year_2023_day_11
+   advent_of_code.year_2023.year_2023_day_12
+   advent_of_code.year_2023.year_2023_day_13
+   advent_of_code.year_2023.year_2023_day_14
+   advent_of_code.year_2023.year_2023_day_15
+   advent_of_code.year_2023.year_2023_day_16
+   advent_of_code.year_2023.year_2023_day_17
+   advent_of_code.year_2023.year_2023_day_18
+   advent_of_code.year_2023.year_2023_day_19
+   advent_of_code.year_2023.year_2023_day_20
+   advent_of_code.year_2023.year_2023_day_21
+   advent_of_code.year_2023.year_2023_day_22
+   advent_of_code.year_2023.year_2023_day_23
+   advent_of_code.year_2023.year_2023_day_24
+   advent_of_code.year_2023.year_2023_day_25
+

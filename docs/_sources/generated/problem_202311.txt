@@ -1,0 +1,45 @@
+advent\_of\_code.year\_2023.year\_2023\_day\_11
+===============================================
+
+.. automodule:: advent_of_code.year_2023.year_2023_day_11
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      compute_adjacency_matrix
+      compute_adjacency_matrix_from_coord_array
+      compute_sum_of_shortest_paths_between_pairs
+      compute_sum_of_shortest_paths_part_2
+      create_chunk_coord_array
+      create_coord_array
+      expand_space
+      find_compartiment_id
+      get_compartiments
+      pad_xda
+      parse_text_input
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AdventOfCodeProblem202311
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,48 @@
+advent\_of\_code.common.common
+==============================
+
+.. automodule:: advent_of_code.common.common
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      adapt_recursion_limit
+      create_output_file_path
+      create_output_file_path_from_filename
+      get_input_file_path
+      get_year_and_day_from_filename
+      lines_to_2d_uint8_array
+      load_input_text_file_from_filename
+      load_puzzle_input_text_file
+      numpy_2d_to_xarray_row_col
+      parse_2d_int_array
+      parse_2d_list_int_array
+      parse_2d_string_array_to_u1
+      parse_2d_string_array_to_uint8
+      parse_2d_string_array_to_uint8_xarray
+      render_2d_data_array
+      render_2d_numpy_array
+      render_central_input_path
+      render_central_output_dir
+      save_txt
+      view_uint8_as_s1
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

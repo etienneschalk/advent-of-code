@@ -1,0 +1,129 @@
+:py:mod:`advent_of_code.year_2023.year_2023_day_24`
+===================================================
+
+.. py:module:: advent_of_code.year_2023.year_2023_day_24
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem202324
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 24
+
+      
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+
+.. py:class:: Hailstone
+
+
+   .. py:property:: px
+      :type: int
+
+
+   .. py:property:: py
+      :type: int
+
+
+   .. py:property:: pz
+      :type: int
+
+
+   .. py:property:: vx
+      :type: int
+
+
+   .. py:property:: vy
+      :type: int
+
+
+   .. py:property:: vz
+      :type: int
+
+
+   .. py:attribute:: position
+      :type: numpy.typing.NDArray[numpy.int32]
+
+      
+
+   .. py:attribute:: velocity
+      :type: numpy.typing.NDArray[numpy.int32]
+
+      
+
+   .. py:method:: __str__()
+
+      Return str(self).
+
+
+   .. py:method:: from_string(string: str) -> Hailstone
+      :classmethod:
+
+
+
+.. py:function:: solve_part_1(hailstones: list[Hailstone], qualified: list[tuple[Hailstone, Hailstone]], xmin: int, ymin: int, xmax: int, ymax: int, *, logs: list[str] | None = None)
+
+
+.. py:function:: solve_part_2(hailstones: list[Hailstone]) -> int
+
+   !!! CHEATING !!!
+
+   Source: https://www.reddit.com/r/adventofcode/comments/18pnycy/comment/keqorhn/
+
+   > [Language: Python]
+   >
+   > Part 1 is some 'easy' linear algebra.
+   >
+   > For Part 2 I use SymPy to solve a set of six equations in six unknowns.
+   > The equations come from the fact that the vectors taking you from
+   > H_0 to H_1, H_0 to H_2, and H_0 to H_3 must all be parallel to each other, i.e.
+   >
+   > (H_2 - H_0) = lambda_1 (H_1 - H_0)
+   > (H_3 - H_0) = lambda_2 (H_1 - H_0)
+   >
+   > where
+   >
+   > H_i = a_i + t_i b_i
+   >
+   > These two 3D vector equations turn into six 'normal' equations,
+   > which SymPy can solve in way less than a second.
+   > We then have two points, together with two times,
+   > that the rock must go through.
+   > It's easy to then calculate the starting position of the rock.
+
+   :rtype: The sum of the coordinates of the initial position
+
+
+.. py:function:: check_intersection_in_future(hailstone: Hailstone, x_sol: float)
+
+
+.. py:function:: get_affine_coefficients(hailstone: Hailstone) -> tuple[float, float]
+
+
+.. py:function:: parse_input_text_file() -> PuzzleInput
+
+
+.. py:function:: parse_text_input(text: str) -> PuzzleInput
+
+

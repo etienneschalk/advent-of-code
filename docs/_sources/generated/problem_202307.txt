@@ -1,0 +1,39 @@
+advent\_of\_code.year\_2023.year\_2023\_day\_07
+===============================================
+
+.. automodule:: advent_of_code.year_2023.year_2023_day_07
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      compute_total_winnings
+      map_puzzle_input
+      parse_text_input
+      sort_by_hand_type_part_1
+      sort_by_hand_type_part_2
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AdventOfCodeProblem202307
+   
+   
+
+   
+   
+   
+
+
+

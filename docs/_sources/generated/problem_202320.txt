@@ -1,0 +1,45 @@
+advent\_of\_code.year\_2023.year\_2023\_day\_20
+===============================================
+
+.. automodule:: advent_of_code.year_2023.year_2023_day_20
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      compute_result_for_part_1
+      compute_simulation_history
+      compute_successive_histories_until_circle_back
+      detect_periods_part_2
+      load_input_text_file_y2023_d20
+      parse_text_to_module_dict
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AdventOfCodeProblem202320
+      BroadcasterModule
+      ConjunctionModule
+      FlipFlopModule
+      Message
+      Module
+   
+   
+
+   
+   
+   
+
+
+

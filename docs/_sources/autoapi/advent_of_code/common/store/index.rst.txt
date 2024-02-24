@@ -1,0 +1,41 @@
+:py:mod:`advent_of_code.common.store`
+=====================================
+
+.. py:module:: advent_of_code.common.store
+
+
+Module Contents
+---------------
+
+.. py:class:: ExampleInputsStore
+
+
+   .. py:attribute:: _store
+      :type: dict[str, Any]
+
+      
+
+   .. py:method:: retrieve(test_file_path: str, content_id: str = 'EXAMPLE_INPUT') -> str
+
+
+   .. py:method:: from_private_resources_repository(year: int) -> Self
+      :classmethod:
+
+
+
+.. py:class:: ExpectedAnswersStore
+
+
+   .. py:attribute:: _store
+      :type: dict[str, Any]
+
+      
+
+   .. py:method:: retrieve(aoc_problem: advent_of_code.common.protocols.AdventOfCodeProblem[Any]) -> dict[int, str | int]
+
+
+   .. py:method:: from_private_resources_repository(year: int) -> Self
+      :classmethod:
+
+
+

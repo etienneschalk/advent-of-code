@@ -1,0 +1,44 @@
+advent\_of\_code.year\_2023.year\_2023\_day\_01
+===============================================
+
+.. automodule:: advent_of_code.year_2023.year_2023_day_01
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      build_part_2_mapping
+      build_part_2_mappings
+      compute_calibration_sum
+      correct_input_for_part_2
+      find_first_digit_index
+      is_lowercase_alphanumeric_character
+      parse_text_input
+      recover_calibration_value
+      replace_first_last_spelled_digits
+      replace_first_spelled_digit
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AdventOfCodeProblem202301
+   
+   
+
+   
+   
+   
+
+
+

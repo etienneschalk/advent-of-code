@@ -1,0 +1,79 @@
+:py:mod:`advent_of_code.y_2023.problem_202314`
+==============================================
+
+.. py:module:: advent_of_code.y_2023.problem_202314
+
+
+Module Contents
+---------------
+
+.. py:class:: AdventOfCodeProblem202314
+
+
+   Bases: :py:obj:`advent_of_code.common.protocols.AdventOfCodeProblem`\ [\ :py:obj:`PuzzleInput`\ ]
+
+   .. py:attribute:: year
+      :type: int
+      :value: 2023
+
+      
+
+   .. py:attribute:: day
+      :type: int
+      :value: 14
+
+      
+
+   .. py:method:: parse_text_input(text: str) -> PuzzleInput
+      :staticmethod:
+
+
+   .. py:method:: solve_part_1(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: solve_part_2(puzzle_input: PuzzleInput)
+
+
+   .. py:method:: write_visualizations_instructions_for_part_2()
+
+
+   .. py:method:: log_part_2(puzzle_input: PuzzleInput, max_full_rotations_count: int)
+
+
+   .. py:method:: get_visualizations_instructions_for_part_2_file_path() -> pathlib.Path
+
+
+
+.. py:function:: compute_total_load_for_north(data: PuzzleInput) -> int
+
+
+.. py:function:: compute_total_load_part_1(parsed_input: list[str])
+
+
+.. py:function:: sum_rock_values(goal: int, length: int) -> int
+
+
+.. py:function:: detect_cycle(init_rot: int, max_iter: int, state: PuzzleInput) -> tuple[int, int, list[PuzzleInput]] | None
+
+
+.. py:function:: attain_wanted_state(wanted_cycles: int, start: int, period: int, state_history: list[PuzzleInput])
+
+
+.. py:function:: update_state_for_one_full_rotation(parsed_input: PuzzleInput, rot: int) -> PuzzleInput
+
+
+.. py:function:: update_state(parsed_input: list[str]) -> PuzzleInput
+
+
+.. py:function:: get_minimal_representation(parsed_input: list[str]) -> list[list[tuple[int, int]]]
+
+
+.. py:function:: minimal_to_list_of_str(minimal_repr: list[list[tuple[int, int]]]) -> list[str]
+
+
+.. py:function:: compute_total_load_from_state_lines(state_lines: list[str])
+
+
+.. py:function:: get_list_of_str(input_array: PuzzleInput, k: int) -> list[str]
+
+
