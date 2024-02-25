@@ -201,8 +201,6 @@ Run the simulation for long enough then "smart pattern/cycle" to dramatically si
   - [`np.roll`](https://numpy.org/doc/stable/reference/generated/numpy.roll.html) is your friend
   - Solving part 2 involves reusing the same function as in part 1 but with a different argument
 
-<!-- end include sphinx -->
-
 ```{toctree}
 :caption:
 :hidden:
