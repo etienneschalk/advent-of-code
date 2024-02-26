@@ -45,7 +45,8 @@ def compute_sum_of_shortest_paths_part_2(
     coord_array = create_coord_array(space_xda)
     chunk_coord_array = create_chunk_coord_array(space_xda, coord_array)
 
-    adjacency_matrix = compute_adjacency_matrix(space_xda)
+    # adjacency_matrix = compute_adjacency_matrix(space_xda)
+    adjacency_matrix = compute_adjacency_matrix_from_coord_array(coord_array)
     adjacency_matrix_chunks = compute_adjacency_matrix_from_coord_array(
         chunk_coord_array
     )

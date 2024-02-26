@@ -50,6 +50,7 @@ sphinx-serve = "^1.0.1"
 sphinxcontrib-youtube = "^1.4.1"
 sphinxemoji = "^0.3.1"
 sphinx-favicon = "^1.0.1"
+pyobsplot = "^0.4.2"
 
 [tool.poetry.group.visu2d]
 optional = true
