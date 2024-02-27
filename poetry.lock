@@ -1146,6 +1146,26 @@ files = [
 ]
 
 [[package]]
+name = "ipydatawidgets"
+version = "4.3.5"
+description = "A set of widgets to help facilitate reuse of large datasets across widgets"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "ipydatawidgets-4.3.5-py2.py3-none-any.whl", hash = "sha256:d590cdb7c364f2f6ab346f20b9d2dd661d27a834ef7845bc9d7113118f05ec87"},
+    {file = "ipydatawidgets-4.3.5.tar.gz", hash = "sha256:394f2489576587cfd755377a09a067f46cad22081965092021fd1abcbe7852a8"},
+]
+
+[package.dependencies]
+ipywidgets = ">=7.0.0"
+numpy = "*"
+traittypes = ">=0.2.0"
+
+[package.extras]
+docs = ["recommonmark", "sphinx", "sphinx-rtd-theme"]
+test = ["nbval (>=0.9.2)", "pytest (>=4)", "pytest-cov"]
+
+[[package]]
 name = "ipykernel"
 version = "6.29.2"
 description = "IPython Kernel for Jupyter"
@@ -3274,6 +3294,28 @@ files = [
 ]
 
 [[package]]
+name = "pythreejs"
+version = "2.4.2"
+description = "Interactive 3D graphics for the Jupyter Notebook and JupyterLab, using Three.js and Jupyter Widgets."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "pythreejs-2.4.2-py3-none-any.whl", hash = "sha256:8418807163ad91f4df53b58c4e991b26214852a1236f28f1afeaadf99d095818"},
+    {file = "pythreejs-2.4.2.tar.gz", hash = "sha256:a568bfdc4c3797c4c2339158928edc7dcf6fa4a267b08e3cec5121e2078b5bd6"},
+]
+
+[package.dependencies]
+ipydatawidgets = ">=1.1.1"
+ipywidgets = ">=7.2.1"
+numpy = "*"
+traitlets = "*"
+
+[package.extras]
+docs = ["nbsphinx (>=0.2.13)", "nbsphinx-link", "sphinx (>=1.5)", "sphinx-rtd-theme"]
+examples = ["ipywebrtc", "matplotlib", "scikit-image", "scipy"]
+test = ["nbval", "numpy (>=1.14)", "pytest-check-links"]
+
+[[package]]
 name = "pytz"
 version = "2024.1"
 description = "World timezone definitions, modern and historical"
@@ -4264,6 +4306,23 @@ docs = ["myst-parser", "pydata-sphinx-theme", "sphinx"]
 test = ["argcomplete (>=3.0.3)", "mypy (>=1.7.0)", "pre-commit", "pytest (>=7.0,<7.5)", "pytest-mock", "pytest-mypy-testing"]
 
 [[package]]
+name = "traittypes"
+version = "0.2.1"
+description = "Scipy trait types"
+optional = false
+python-versions = "*"
+files = [
+    {file = "traittypes-0.2.1-py2.py3-none-any.whl", hash = "sha256:1340af133810b6eee1a2eb2e988f862b0d12b6c2d16f282aaf3207b782134c2e"},
+    {file = "traittypes-0.2.1.tar.gz", hash = "sha256:be6fa26294733e7489822ded4ae25da5b4824a8a7a0e0c2dccfde596e3489bd6"},
+]
+
+[package.dependencies]
+traitlets = ">=4.2.2"
+
+[package.extras]
+test = ["numpy", "pandas", "pytest", "xarray"]
+
+[[package]]
 name = "types-python-dateutil"
 version = "2.8.19.20240106"
 description = "Typing stubs for python-dateutil"
@@ -4591,4 +4650,4 @@ jupyter = ["ipytree (>=0.2.2)", "ipywidgets (>=8.0.0)", "notebook"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "6257456118183955bae66f9ba44d9fbb8b40b7ce8951be8317a7c84d3896b99b"
+content-hash = "ddb9281c91a831f8540ab51dee83ab9674146e2fb1c009fb12b5426de20a3ea1"
