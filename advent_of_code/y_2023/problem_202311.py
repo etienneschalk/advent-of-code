@@ -22,8 +22,8 @@ class AdventOfCodeProblem202311(AdventOfCodeProblem[PuzzleInput]):
 
     def solve_part_1_naive(self, puzzle_input: PuzzleInput):
         expanded_space = expand_space(puzzle_input)
-        adjacency_matrix = compute_adjacency_matrix(expanded_space)
-        result = compute_sum_of_shortest_paths_between_pairs(adjacency_matrix)
+        proximity_matrix = compute_proximity_matrix(expanded_space)
+        result = compute_sum_of_shortest_paths_between_pairs(proximity_matrix)
         return result
 
     def solve_part_1(self, puzzle_input: PuzzleInput):
@@ -42,22 +42,52 @@ class AdventOfCodeProblem202311(AdventOfCodeProblem[PuzzleInput]):
 def compute_sum_of_shortest_paths_part_2(
     space_xda: xr.DataArray, expansion_coef: int
 ) -> int:
+    """Compute sum of shortest paths for Part 2
+
+    The trick is to apply the same logic to both stars, and chunks.
+    The first "star matrix" contains the distance between stars, without expansion.
+    The second "chunk matrix" contains the distance between the chunks they are being a part of.
+    The two matrices have the same shape, and can be added together, with the "chunk matrix"
+    being multiplied by the expansion factor scalar.
+
+    Parameters
+    ----------
+    space_xda
+        Array containing stars
+    expansion_coef
+        Expansion coefficient
+
+    Returns
+    -------
+        The sum of shortest paths
+    """
     coord_array = create_coord_array(space_xda)
     chunk_coord_array = create_chunk_coord_array(space_xda, coord_array)
 
-    # adjacency_matrix = compute_adjacency_matrix(space_xda)
-    adjacency_matrix = compute_adjacency_matrix_from_coord_array(coord_array)
-    adjacency_matrix_chunks = compute_adjacency_matrix_from_coord_array(
+    proximity_matrix_stars = compute_proximity_matrix_from_coord_array(coord_array)
+    proximity_matrix_chunks = compute_proximity_matrix_from_coord_array(
         chunk_coord_array
     )
 
-    total_adjacency = adjacency_matrix + expansion_coef * adjacency_matrix_chunks
-    result = compute_sum_of_shortest_paths_between_pairs(total_adjacency)
+    total_proximity = proximity_matrix_stars + expansion_coef * proximity_matrix_chunks
+    result = compute_sum_of_shortest_paths_between_pairs(total_proximity)
     return result
 
 
-def compute_sum_of_shortest_paths_between_pairs(adjacency_matrix: xr.DataArray) -> int:
-    return np.triu(adjacency_matrix).sum()
+def compute_sum_of_shortest_paths_between_pairs(proximity_matrix: xr.DataArray) -> int:
+    return np.triu(proximity_matrix).sum()
+
+
+def create_coord_array(space_xda: xr.DataArray) -> xr.DataArray:
+    stacked = (space_xda == ord(b"#")).stack(z=("row", "col"), create_index=False)
+    indices = stacked[stacked]
+    coord_array = xr.DataArray(
+        np.array([indices.row, indices.col]),
+        dims=("idx", "z"),
+        coords={"idx": ["row", "col"]},
+    ).T
+
+    return coord_array
 
 
 def create_chunk_coord_array(
@@ -76,47 +106,70 @@ def create_chunk_coord_array(
     return chunk_coord_array
 
 
-def compute_adjacency_matrix(space_xda: xr.DataArray) -> xr.DataArray:
-    coord_array = create_coord_array(space_xda)
-    adjacency_matrix = compute_adjacency_matrix_from_coord_array(coord_array)
-
-    return adjacency_matrix
-
-
-def compute_adjacency_matrix_from_coord_array(
+def compute_proximity_matrix_from_coord_array(
     coord_array: xr.DataArray,
 ) -> xr.DataArray:
-    print("compute_adjacency_matrix_from_coord_array start")
+    """Compute proximity matrix from coordinates array
 
-    # 425*425 = 180625 -> this operation is O(n**2) with n=425
-    # This is because for each node, the distance to all its peers must be computed
-    # This is
-    # An optimization would be to only compute the triangular par of the matrix
-    # (2 among n) = n(n-1) / 2  (edge count in graphe complet)
-    # -> but still O(n)
+    Parameters
+    ----------
+    coord_array
+        Array containing coordinates of the graph nodes (stars)
+
+    Returns
+    -------
+        Proximity matrix: Pair-wise distance of nodes
+
+    Notes
+    -----
+    425*425 = 180625 -> this operation is O(n**2) with n=425
+    This is because for each node, the distance to all its peers must be computed
+    This is
+    An optimization would be to only compute the triangular par of the matrix
+    (2 among n) = n(n-1) / 2  (edge count in graphe complet)
+    -> but still O(n)
+    """
+
+    print("compute_proximity_matrix_from_coord_array start")
+
     array_list = [
         abs(coord_array.isel(z=i) - coord_array).sum(dim="idx")
         for i in coord_array["z"]
     ]
 
-    adjacency_matrix = xr.concat(  # pyright: ignore[reportUnknownMemberType]
-        array_list, dim="z2"
-    )
-    print("compute_adjacency_matrix_from_coord_array end")
+    proximity_matrix = xr.concat(array_list, dim="z2")
 
-    return adjacency_matrix
+    print("compute_proximity_matrix_from_coord_array end")
+
+    return proximity_matrix
 
 
-def create_coord_array(space_xda: xr.DataArray) -> xr.DataArray:
-    stacked = (space_xda == ord(b"#")).stack(z=("row", "col"), create_index=False)
-    indices = stacked[stacked]
-    coord_array = xr.DataArray(
-        np.array([indices.row, indices.col]),
-        dims=("idx", "z"),
-        coords={"idx": ["row", "col"]},
-    ).T
+def compute_proximity_matrix(space_xda: xr.DataArray) -> xr.DataArray:
+    """Compute proximity matrix
 
-    return coord_array
+    First, coordinates of each star are gathered.
+    Then, the matrix of Manhattan distances between each of them is returned
+
+    Parameters
+    ----------
+    space_xda
+        Data Array representing stars
+
+    Returns
+    -------
+        Proximity matrix
+
+    Notes
+    -----
+    This way of storing distance between stars is inspired from the
+    "Adjacency matrix" concept from graph theory.
+
+    See `Adjacency matrix on Wikipédia <https://en.wikipedia.org/wiki/proximity_matrix/>`_.
+
+    """
+    coord_array = create_coord_array(space_xda)
+    proximity_matrix = compute_proximity_matrix_from_coord_array(coord_array)
+    return proximity_matrix
 
 
 def expand_space(parsed_input: xr.DataArray) -> xr.DataArray:
