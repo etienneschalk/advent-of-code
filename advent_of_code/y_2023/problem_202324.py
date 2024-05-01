@@ -168,6 +168,8 @@ def solve_part_2(
     The sum of the coordinates of the initial position
     """
 
+    # TODO eschalk Write latex expr in a notebook.
+
     # All vector positions are aligned at their own time when crossing the thrown hailstone.
     # The equation solver solves this
     # h_i = p_i + t_i b_i

@@ -201,9 +201,9 @@ def gather_accepted_and_rejected_ranges(
                 gather_accepted_and_rejected_ranges(el, acc, rej)
 
 
-def construct_initial_part_range() -> PartRatingRange:
-    min_inclusive = 1
-    max_inclusive = 4000
+def construct_initial_part_range(
+    *, min_inclusive: int = 1, max_inclusive: int = 4000
+) -> PartRatingRange:
     initial_range = range(min_inclusive, max_inclusive + 1)
     initial_part_rating_range = PartRatingRange(
         x=initial_range, m=initial_range, a=initial_range, s=initial_range
