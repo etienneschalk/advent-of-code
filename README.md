@@ -107,6 +107,7 @@ poetry install --with docs
 
 ```bash
 cd docs
+
 poetry run sphinx-build source _build/html
 poetry run sphinx-build -E source _build/html # clear cache with -E
 
@@ -157,7 +158,7 @@ I previously stored. If it happens to you, you can read the following procedure 
 ````{note}
 Here is what the contents of `deleted-files.txt` in the BFG report looks like in my cas (only filenames):
 
-```txt
+```text
 input_year_2022_day_01.txt
 input_year_2022_day_02.txt
 input_year_2022_day_03.txt
@@ -205,7 +206,7 @@ input_year_2023_day_4.txt
 
 You can create a configuration file that points to a folder. The following is a "well-known structure", using "convention over configuration" principle:
 
-```raw
+```text
 ${path_to_directory_with_private_resources}
 └── resources
     └── advent_of_code
@@ -362,7 +363,7 @@ Start development for a given day and year by generating template files:
 python advent_of_code/jobs/code_generation.py --year 2022 --day 5
 ```
 
-```raw
+```text
 Started Generation
 Generating puzzle_input
     Written puzzle_input to resources/advent_of_code/year_2022/input_problem_202205.txt

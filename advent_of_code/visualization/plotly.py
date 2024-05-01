@@ -68,7 +68,10 @@ def to_plotly_sankey_input(
     return PlotlySankeyInput(labels, sources, targets, values, node_colors, link_colors)
 
 
-def build_sankey_figure(sankey_input: PlotlySankeyInput) -> go.Figure:
+def build_sankey_figure(
+    sankey_input: PlotlySankeyInput,
+    title: str | None = None,
+) -> go.Figure:
     node_style_dict = dict(
         pad=15,
         thickness=20,
@@ -89,5 +92,6 @@ def build_sankey_figure(sankey_input: PlotlySankeyInput) -> go.Figure:
         ]
     )
 
-    fig.update_layout(title_text="Basic Sankey Diagram", font_size=10)
+    title_text = title if title is not None else "Basic Sankey Diagram"
+    fig.update_layout(title_text=title_text, font_size=10)
     return fig
