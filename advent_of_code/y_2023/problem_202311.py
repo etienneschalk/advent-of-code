@@ -35,8 +35,14 @@ class AdventOfCodeProblem202311(AdventOfCodeProblem[PuzzleInput]):
 
     def solve_part_2(self, puzzle_input: PuzzleInput):
         # Do not expand space manually
-        result = compute_sum_of_shortest_paths_part_2(puzzle_input, 1000000 - 1)
+        result = compute_sum_of_shortest_paths_part_2(
+            puzzle_input, get_expansion_coef_part_2()
+        )
         return result
+
+
+def get_expansion_coef_part_2() -> int:
+    return 1000000 - 1
 
 
 def compute_sum_of_shortest_paths_part_2(
@@ -79,6 +85,7 @@ def compute_sum_of_shortest_paths_between_pairs(proximity_matrix: xr.DataArray) 
 
 
 def create_coord_array(space_xda: xr.DataArray) -> xr.DataArray:
+    # From the space matrix, compute pairs of stars' coordinates
     stacked = (space_xda == ord(b"#")).stack(z=("row", "col"), create_index=False)
     indices = stacked[stacked]
     coord_array = xr.DataArray(

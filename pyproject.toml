@@ -52,6 +52,7 @@ sphinxemoji = "^0.3.1"
 sphinx-favicon = "^1.0.1"
 pyobsplot = "^0.4.2"
 pythreejs = "^2.4.2"
+plotly = "^5.19.0"
 
 [tool.poetry.group.visu2d]
 optional = true
