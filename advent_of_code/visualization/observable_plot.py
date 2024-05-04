@@ -3,9 +3,16 @@ from typing import Any, Callable
 import numpy as np
 import pandas as pd
 import xarray as xr
-from pyobsplot import Plot
+from pyobsplot import Obsplot, Plot
 
 from advent_of_code.y_2023.problem_202311 import get_compartiments
+
+# See https://juba.github.io/pyobsplot/usage.html#renderers
+# This is a singleton instance of observable plot, allowing further customization like
+# changing the renderer from 'widget' to 'json'.
+op = Obsplot(renderer="jsdom", theme="current")  # Literal['current','light','dark']
+# op = Obsplot(renderer="jsdom", theme="dark")
+# op = Obsplot(renderer="widget")
 
 
 def visualize_puzzle_input_202311(
@@ -56,7 +63,7 @@ def visualize_puzzle_input_202311(
 
             table = pd.DataFrame.from_dict(table)
             marks.append(
-                Plot.link(
+                Plot.link(  # type:ignore
                     table,
                     {
                         "x1": "x1",
@@ -74,13 +81,13 @@ def visualize_puzzle_input_202311(
             col_chunks = get_compartiments(space_xda, "col", "row")
 
             marks.append(
-                Plot.ruleY(
+                Plot.ruleY(  # type:ignore
                     [chunk.start - 0.5 for chunk in list(row_chunks.values())[1:]],
                     {"stroke": "red"},
                 ),
             )
             marks.append(
-                Plot.ruleX(
+                Plot.ruleX(  # type:ignore
                     [chunk.start - 0.5 for chunk in list(col_chunks.values())[1:]],
                     {"stroke": "red"},
                 ),
@@ -98,7 +105,7 @@ def visualize_puzzle_input_202311(
                     points.append([col_middle, row_middle])
 
             marks.append(
-                Plot.dot(
+                Plot.dot(  # type:ignore# type:ignore
                     points,
                     {"stroke": "#00ff00"},
                 ),
@@ -107,13 +114,13 @@ def visualize_puzzle_input_202311(
             with_chunk_rules = True
             if with_chunk_rules:
                 marks.append(
-                    Plot.ruleY(
+                    Plot.ruleY(  # type:ignore
                         row_middles,
                         {"stroke": "#00ff00", "strokeWidth": 0.5},
                     ),
                 )
                 marks.append(
-                    Plot.ruleX(
+                    Plot.ruleX(  # type:ignore
                         col_middles,
                         {"stroke": "#00ff00", "strokeWidth": 0.5},
                     ),
@@ -133,11 +140,12 @@ def build_base_xarray_plot(
     grid = (xda == ord("#")).astype(int) * 255
     marks = []
     marks.append(
-        Plot.axisX({"anchor": "top"}),
+        Plot.axisX({"anchor": "top"}),  # type:ignore
     )
+
     marks.append(
-        Plot.raster(
-            grid.values.reshape(-1),
+        Plot.raster(  # type:ignore
+            grid.values.reshape(-1).tolist(),
             {
                 "width": grid.col.size,
                 "height": grid.row.size,
@@ -156,7 +164,7 @@ def build_base_xarray_plot(
     else:
         style = {}
 
-    return Plot.plot(
+    return op(  # type:ignore
         {
             # weight seems to break aspectRatio
             # whereas width does not, hence it is kept.

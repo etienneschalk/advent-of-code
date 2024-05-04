@@ -9,6 +9,7 @@
   - [Documentation](#documentation)
     - [Deploy on GitHub Pages](#deploy-on-github-pages)
     - [Local](#local)
+      - [About pre-running the Notebooks](#about-pre-running-the-notebooks)
     - [Miscellaneous](#miscellaneous)
   - [Installation](#installation)
     - [Sources](#sources)
@@ -115,6 +116,15 @@ poetry run sphinx-autobuild source _build/html # autobuild (useful in developmen
 poetry run sphinx-autobuild -E source _build/html # clear cache (not advised with autobuild)
 
 poetry run sphinx-serve -h 127.0.0.1 -p 8080 # just serve
+```
+
+#### About pre-running the Notebooks
+
+Run non-interactively all notebooks for a glob path:
+
+```bash
+YEAR=2023
+jupyter nbconvert --inplace --execute /home/tselano/dev/advent-of-code/docs/source/notebooks/$YEAR/notebook_problem_*.ipynb
 ```
 
 ### Miscellaneous
