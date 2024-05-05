@@ -173,45 +173,37 @@ def solve_part_2(
     # All vector positions are aligned at their own time when crossing the thrown hailstone.
     # The equation solver solves this
     # h_i = p_i + t_i b_i
-    p = [[h.px, h.py, h.pz] for h in hailstones]
-    v = [[h.vx, h.vy, h.vz] for h in hailstones]
+    # Only 4 hailstones are needed.
+    p = [[h.px, h.py, h.pz] for h in hailstones[:4]]
+    v = [[h.vx, h.vy, h.vz] for h in hailstones[:4]]
 
-    t0, t1, t2, t3, l1, l2 = sym.symbols("t0, t1, t2, t3, l1, l2")
+    t0, t1, t2, t3, l2, l3 = sym.symbols("t0, t1, t2, t3, l2, l3")
+
+    p0t0 = [p[0][i] + t0 * v[0][i] for i in range(3)]
+    p1t1 = [p[1][i] + t1 * v[1][i] for i in range(3)]
+    p2t2 = [p[2][i] + t2 * v[2][i] for i in range(3)]
+    p3t3 = [p[3][i] + t3 * v[3][i] for i in range(3)]
 
     eqs = [
-        # (p_2(t_2) - p_0(t_0)) = lambda_1 (p_1(t_1) - p_0(t_0))
-        *[
-            sym.Eq(
-                (p[2][i] - p[0][i]) + t2 * v[2][i] - t0 * v[0][i],
-                l1 * ((p[1][i] - p[0][i]) + t1 * v[1][i] - t0 * v[0][i]),
-            )
-            for i in range(3)
-        ],
-        # (p_3(t_3) - p_0(t_0)) = lambda_1 (p_1(t_1) - p_0(t_0))
-        *[
-            sym.Eq(
-                (p[3][i] - p[0][i]) + t3 * v[3][i] - t0 * v[0][i],
-                l2 * ((p[1][i] - p[0][i]) + t1 * v[1][i] - t0 * v[0][i]),
-            )
-            for i in range(3)
-        ],
+        *[sym.Eq(p2t2[i] - p0t0[i], l2 * (p1t1[i] - p0t0[i])) for i in range(3)],
+        *[sym.Eq(p3t3[i] - p0t0[i], l3 * (p1t1[i] - p0t0[i])) for i in range(3)],
     ]
 
-    solution = sym.solve(eqs, [t0, t1, t2, t3, l1, l2])
+    solution = sym.solve(eqs, [t0, t1, t2, t3, l2, l3])
     s = solution[0]
 
-    # s[0] = t0, s[1] = t1
-    rocks = [
+    # s[0] = t0, s[1] = t1, s[2] = t2, s[3] = t3
+    rock_coords = [
         [
-            (s[j] * (p[0][i] + s[0] * v[0][i]) - s[0] * (p[j][i] + s[j] * v[j][i]))
-            / (s[j] - s[0])
+            (s[k] * (p[0][i] + s[0] * v[0][i]) - s[0] * (p[k][i] + s[k] * v[k][i]))
+            / (s[k] - s[0])
             for i in range(3)
         ]
-        for j in range(1, 4)
+        for k in range(1, 4)
     ]
 
     # Any t1 or t2 or t1 can be used with t0
-    sum_rocks = [sum(rock) for rock in rocks]
+    sum_rocks = [sum(rock) for rock in rock_coords]
 
     assert sum_rocks[0] == sum_rocks[1]
     assert sum_rocks[0] == sum_rocks[2]

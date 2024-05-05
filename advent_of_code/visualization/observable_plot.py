@@ -135,6 +135,8 @@ def build_base_xarray_plot(
     *,
     dark_mode: bool = True,
     scale: float = 1,
+    width: int = 140 * 4,
+    **kwargs,
 ):
     # Callback is a consumer of list of marks that enrich it.
     grid = (xda == ord("#")).astype(int) * 255
@@ -166,15 +168,20 @@ def build_base_xarray_plot(
 
     return op(  # type:ignore
         {
-            # weight seems to break aspectRatio
-            # whereas width does not, hence it is kept.
-            # "height": 140 * 4 * scale,
-            "width": 140 * 4 * scale,
-            "color": {"scheme": "magma"},
-            "x": {"domain": [0, grid.col.size], "label": "column"},
-            "y": {"domain": [grid.row.size, 0], "label": "row"},
-            "marks": marks,
-            "style": style,
-            "aspectRatio": 1,
+            **{
+                # weight seems to break aspectRatio
+                # whereas width does not, hence it is kept.
+                # "height": 140 * 4 * scale,
+                "width": width * scale
+                + kwargs.get("marginRight", 0)
+                + kwargs.get("marginRight", 0),
+                "color": {"scheme": "magma"},
+                "x": {"domain": [0, grid.col.size], "label": "column"},
+                "y": {"domain": [grid.row.size, 0], "label": "row"},
+                "marks": marks,
+                "style": style,
+                "aspectRatio": 1,
+            },
+            **kwargs,
         }
     )
