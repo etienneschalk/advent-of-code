@@ -185,3 +185,62 @@ def build_base_xarray_plot(
             **kwargs,
         }
     )
+
+
+def build_base_xarray_plot_bis(
+    xda: xr.DataArray,
+    callback: Callable[[list[Any]], None],
+    *,
+    dark_mode: bool = True,
+    scale: float = 1,
+    width: int = 140 * 4,
+    **kwargs,
+):
+    # Callback is a consumer of list of marks that enrich it.
+    # grid = (xda == ord("#")).astype(int) * 255
+    grid = xda
+    marks = []
+    marks.append(
+        Plot.axisX({"anchor": "top"}),  # type:ignore
+    )
+
+    marks.append(
+        Plot.raster(  # type:ignore
+            grid.values.reshape(-1).tolist(),
+            {
+                "width": grid.col.size,
+                "height": grid.row.size,
+                "imageRendering": "pixelated",
+            },
+        ),
+    )
+
+    callback(marks)
+
+    if dark_mode:
+        style = {
+            "backgroundColor": "#111111",
+            "color": "#eeeeee",
+        }
+    else:
+        style = {}
+
+    mr = kwargs.get("marginRight", 0)
+    ml = kwargs.get("marginLeft", 0)
+    return op(  # type:ignore
+        {
+            **{
+                # weight seems to break aspectRatio
+                # whereas width does not, hence it is kept.
+                # "height": 140 * 4 * scale,
+                "width": width * scale + mr + ml,
+                "color": {"scheme": "magma"},
+                "x": {"domain": [0, grid.col.size], "label": "column"},
+                "y": {"domain": [grid.row.size, 0], "label": "row"},
+                "marks": marks,
+                "style": style,
+                "aspectRatio": 1,
+            },
+            **kwargs,
+        }
+    )
