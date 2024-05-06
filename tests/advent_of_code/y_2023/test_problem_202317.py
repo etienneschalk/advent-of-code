@@ -34,7 +34,7 @@ def test_problem_202317_part_1(example_inputs_2023: ExampleInputsStore):
     start = (0, 0)
     end = tuple((parsed_input.shape[0] - 1, parsed_input.shape[1] - 1))
     end = (end[0], end[1])
-    least_heat_loss = dijkstra(parsed_input, start, end, 1, 3)
+    least_heat_loss, _ = dijkstra(parsed_input, start, end, 1, 3)
     assert least_heat_loss == 102
 
 
@@ -45,7 +45,7 @@ def test_problem_202317_part_2_a(example_inputs_2023: ExampleInputsStore):
     start = (0, 0)
     end = tuple((parsed_input.shape[0] - 1, parsed_input.shape[1] - 1))
     end = (end[0], end[1])
-    least_heat_loss = dijkstra(parsed_input, start, end, 4, 10)
+    least_heat_loss, _ = dijkstra(parsed_input, start, end, 4, 10)
     assert least_heat_loss == 94
 
 
@@ -56,5 +56,5 @@ def test_problem_202317_part_2_b(example_inputs_2023: ExampleInputsStore):
     start = (0, 0)
     end = tuple((parsed_input.shape[0] - 1, parsed_input.shape[1] - 1))
     end = (end[0], end[1])
-    least_heat_loss = dijkstra(parsed_input, start, end, 4, 10)
+    least_heat_loss, _ = dijkstra(parsed_input, start, end, 4, 10)
     assert least_heat_loss == 71

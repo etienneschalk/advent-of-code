@@ -87,8 +87,8 @@ def compute_steps_for_part_2(
     for source_node in source_nodes:
         histories[source_node] = detect_loop(network, source_node, target_end_letter)
 
-    # Find lowest common multiple for all loop lengths
-    steps = np.lcm.reduce([len(h) for h in histories.values()])
+    # Find lowest common multiple for all loop lengths (ignoring target node)
+    steps = np.lcm.reduce([len(h[:-1]) for h in histories.values()])
     return steps
 
 
@@ -99,19 +99,17 @@ def detect_loop(network: Network, starting_node: str, target_end_letter: str):
         list(inst == "R" for inst in network.instructions), dtype=np.uint8
     )
     i = steps = 0
-    found_target_node = None
     history: list[tuple[str, int]] = []
     while True:
-        if current_node.endswith(target_end_letter):
-            found_target_node = current_node
-        if current_node == found_target_node:
-            return history
-
         history.append((current_node, i))
         instruction: np.uint8 = instructions[i]
         current_node = network.nodes[current_node][instruction]
         steps += 1
         i = steps % instructions_length
+
+        if current_node.endswith(target_end_letter):
+            history.append((current_node, i))  # for visualization purposes
+            return history
 
 
 def parse_input_text_file() -> PuzzleInput:

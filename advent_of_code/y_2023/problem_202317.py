@@ -22,6 +22,7 @@ from advent_of_code.common.protocols import AdventOfCodeProblem
 
 type HeatMap = npt.NDArray[np.uint8]
 type PuzzleInput = HeatMap
+type VisitedStates = dict[int, State]
 
 
 @dataclass(kw_only=True)
@@ -49,7 +50,7 @@ class AdventOfCodeProblem202317(AdventOfCodeProblem[PuzzleInput]):
         start = (0, 0)
         end = tuple((puzzle_input.shape[0] - 1, puzzle_input.shape[1] - 1))
         end = (end[0], end[1])  # make type system happy
-        least_heat_loss = dijkstra(
+        least_heat_loss, _ = dijkstra(
             puzzle_input, start, end, min_step, max_step, max_iter=max_iter
         )
         return least_heat_loss
@@ -84,7 +85,7 @@ def dijkstra(
     max_step: int = 3,
     *,
     max_iter: int = 2000,
-) -> int:
+) -> tuple[int, VisitedStates]:
     """Compute the shortest path from start to end in given heatmap,
     using min and max steps.
 
@@ -106,16 +107,17 @@ def dijkstra(
         Guard not to be stuck if an infinite loop
     Returns
     -------
-        The path with the least heat loss from start to end in the heatmap.
+        The path with the least heat loss from start to end in the heatmap,
+        as well as the visited states.
     """
     # Visited states is a set backed by a dict of manually hashed state keys
-    visited_states: dict[int, State] = {}
+    visited_states: VisitedStates = {}
 
     # Queue of State (note: least heat = most priority)
     q: queue.PriorityQueue[State] = queue.PriorityQueue()
 
     for next_direction in NEIGHBOUR_MOVES.keys():
-        q.put(State((0), start, next_direction, (1)))
+        q.put(State(0, start, next_direction, 1))
 
     iter_count = 0
     while not q.empty() and iter_count < max_iter:
@@ -124,7 +126,7 @@ def dijkstra(
 
         # Destination is reached with permitted amount of steps
         if state.position == end and state.step >= min_step:
-            return state.heat
+            return state.heat, visited_states
 
         for next_direction, move in NEIGHBOUR_MOVES.items():
             # An immediate U-turn is illegal
@@ -161,13 +163,7 @@ def dijkstra(
                 visited_states[next_state_hash] = next_state
                 q.put(next_state)
 
-    return -1
-
-
-# def parse_text_input(text: str) -> HeatMap:
-#     lines = text.strip().split("\n")
-#     input_array = np.array([[int(c) for c in line] for line in lines])
-#     return input_array
+    return -1, visited_states
 
 
 if __name__ == "__main__":
