@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from itertools import combinations
+from typing import Any
 
 import numpy as np
 import numpy.typing as npt
@@ -45,8 +46,8 @@ class AdventOfCodeProblem202324(AdventOfCodeProblem[PuzzleInput]):
 
 @dataclass(frozen=True, kw_only=True)
 class Hailstone:
-    position: npt.NDArray[np.int32]
-    velocity: npt.NDArray[np.int32]
+    position: npt.NDArray[np.int64]
+    velocity: npt.NDArray[np.int64]
 
     def __str__(self):
         p_str = ", ".join(str(i) for i in self.position)
@@ -168,8 +169,6 @@ def solve_part_2(
     The sum of the coordinates of the initial position
     """
 
-    # TODO eschalk Write latex expr in a notebook.
-
     # All vector positions are aligned at their own time when crossing the thrown hailstone.
     # The equation solver solves this
     # h_i = p_i + t_i b_i
@@ -177,6 +176,31 @@ def solve_part_2(
     p = [[h.px, h.py, h.pz] for h in hailstones[:4]]
     v = [[h.vx, h.vy, h.vz] for h in hailstones[:4]]
 
+    s = solve_equation_system(p, v)
+
+    # s[0] = t0, s[1] = t1, s[2] = t2, s[3] = t3
+    # Compute rock coords for hailstones 1,2,3: they are identical
+    rock_coords = [compute_rock_coords(s, k, p, v) for k in range(1, 4)]
+
+    # Any t1 or t2 or t1 can be used with t0
+    sum_rocks = [sum(rock) for rock in rock_coords]
+
+    assert sum_rocks[0] == sum_rocks[1]
+    assert sum_rocks[0] == sum_rocks[2]
+
+    return sum_rocks[0]
+
+
+def compute_rock_coords(s: Any, k: int, p: list[list[int]], v: list[list[int]]):
+    # k: hailstone identifier
+    return [
+        (s[k] * (p[0][i] + s[0] * v[0][i]) - s[0] * (p[k][i] + s[k] * v[k][i]))
+        / (s[k] - s[0])
+        for i in range(3)
+    ]
+
+
+def solve_equation_system(p: list[list[int]], v: list[list[int]]) -> Any:
     t0, t1, t2, t3, l2, l3 = sym.symbols("t0, t1, t2, t3, l2, l3")
 
     p0t0 = [p[0][i] + t0 * v[0][i] for i in range(3)]
@@ -191,24 +215,7 @@ def solve_part_2(
 
     solution = sym.solve(eqs, [t0, t1, t2, t3, l2, l3])
     s = solution[0]
-
-    # s[0] = t0, s[1] = t1, s[2] = t2, s[3] = t3
-    rock_coords = [
-        [
-            (s[k] * (p[0][i] + s[0] * v[0][i]) - s[0] * (p[k][i] + s[k] * v[k][i]))
-            / (s[k] - s[0])
-            for i in range(3)
-        ]
-        for k in range(1, 4)
-    ]
-
-    # Any t1 or t2 or t1 can be used with t0
-    sum_rocks = [sum(rock) for rock in rock_coords]
-
-    assert sum_rocks[0] == sum_rocks[1]
-    assert sum_rocks[0] == sum_rocks[2]
-
-    return sum_rocks[0]
+    return s
 
 
 def check_intersection_in_future(hailstone: Hailstone, x_sol: float):
