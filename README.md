@@ -119,7 +119,22 @@ poetry run sphinx-autobuild -E source _build/html # clear cache (not advised wit
 poetry run sphinx-serve -h 127.0.0.1 -p 8080 # just serve
 ```
 
+Commonly used to test the doc before a deployment on GitHub Pages:
+
+```bash
+cd docs
+poetry run sphinx-build -E source _build/html # clear cache with -E
+poetry run sphinx-serve -h 127.0.0.1 -p 8080 # just serve
+```
+
 #### About pre-running the Notebooks
+
+Clear non-interactively all notebooks for a glob path:
+
+```bash
+YEAR=2023
+jupyter nbconvert --inplace --clear-output /home/tselano/dev/advent-of-code/docs/source/notebooks/$YEAR/notebook_problem_*.ipynb
+```
 
 Run non-interactively all notebooks for a glob path:
 
