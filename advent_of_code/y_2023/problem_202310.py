@@ -28,6 +28,7 @@ class AdventOfCodeProblem202310(AdventOfCodeProblem[PuzzleInput]):
     config_save_img: bool = False
     config_save_txt: bool = False
     config_save_img_for_video: bool = False
+    config_accumulate_outputs: bool = False
 
     @staticmethod
     def parse_text_input(text: str) -> PuzzleInput:
@@ -62,7 +63,7 @@ class AdventOfCodeProblem202310(AdventOfCodeProblem[PuzzleInput]):
             )
 
         minimum_distances = self.compute_minimum_distances(maze)
-        result = self.compute_tiles_enclosed_by_loop_part_2(maze, minimum_distances)
+        result, _ = self.compute_tiles_enclosed_by_loop_part_2(maze, minimum_distances)
         return result
 
     def compute_minimum_distances(self, maze: PuzzleInput) -> npt.NDArray[np.int32]:
@@ -101,6 +102,12 @@ class AdventOfCodeProblem202310(AdventOfCodeProblem[PuzzleInput]):
     def compute_tiles_enclosed_by_loop_part_2(
         self, maze: PuzzleInput, minimum_distances: npt.NDArray[np.int32]
     ):
+        outputs_accumulator = {}
+
+        if self.config_accumulate_outputs:
+            outputs_accumulator["maze"] = maze
+            outputs_accumulator["minimum_distances"] = minimum_distances
+
         # Keep only the main loop, remove everything else
         main_loop = np.where(minimum_distances != 0, maze, "░")
 
@@ -116,6 +123,9 @@ class AdventOfCodeProblem202310(AdventOfCodeProblem[PuzzleInput]):
                 __file__,
                 output_subdir="text",
             )
+        if self.config_accumulate_outputs:
+            outputs_accumulator["main_loop"] = main_loop
+
         # Prepare the upscale of the main_loop
         raster_3x = self.rasterize_main_loop(main_loop)
 
@@ -124,6 +134,8 @@ class AdventOfCodeProblem202310(AdventOfCodeProblem[PuzzleInput]):
             print(render_2d_array_to_text(image))
         if self.config_save_img:
             save_img(raster_3x, "arr_3x_1.png", __file__)
+        if self.config_accumulate_outputs:
+            outputs_accumulator["raster_3x"] = raster_3x
 
         # Use the Flood Fill algorithm to fill the loop from the exterior.
         # Start from a corner (here upper-left), as the array was padded,
@@ -133,6 +145,8 @@ class AdventOfCodeProblem202310(AdventOfCodeProblem[PuzzleInput]):
         filled: npt.NDArray[np.uint8] = flood_fill(image, (0, 0), 128, tolerance=1)
         if self.config_save_img:
             save_img(filled, "arr_3x_2.png", __file__)
+        if self.config_accumulate_outputs:
+            outputs_accumulator["filled"] = filled
 
         # Coarsen to keep any filled macro-cell, then negate to get hole count.
         coarsened_xda: npt.NDArray[np.uint8] = ~(
@@ -143,9 +157,12 @@ class AdventOfCodeProblem202310(AdventOfCodeProblem[PuzzleInput]):
         if self.config_save_img:
             coarsened_img = (coarsened_xda).astype(np.uint8) * np.uint8(255)
             save_img(coarsened_img, "arr_1x_result_3.png", __file__)
+        if self.config_accumulate_outputs:
+            coarsened_img = (coarsened_xda).astype(np.uint8) * np.uint8(255)
+            outputs_accumulator["coarsened_img"] = coarsened_img
 
         result = np.sum(coarsened_xda).item()
-        return result
+        return result, outputs_accumulator
 
     def rasterize_main_loop(self, main_loop: npt.NDArray[Any]):
         raster_3x = np.zeros(3 * np.array(main_loop.shape), dtype=np.bool_)

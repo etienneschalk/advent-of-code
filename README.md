@@ -24,6 +24,7 @@
     - [Code quality](#code-quality)
       - [pre-commit](#pre-commit)
     - [Troubleshooting](#troubleshooting)
+      - [Revert the y-axis when plotting a (row-col) DataArray with matplotlib](#revert-the-y-axis-when-plotting-a-row-col-dataarray-with-matplotlib)
     - [(Legacy) Template Files](#legacy-template-files)
 
 <!-- start include sphinx -->
@@ -361,7 +362,15 @@ TODO eschalk as pytest is not yet included, nor integration tests.
 
 ### Troubleshooting
 
-Nothing yet.
+#### Revert the y-axis when plotting a (row-col) DataArray with matplotlib
+
+Use [`yincrease=False`](https://docs.xarray.dev/en/stable/generated/xarray.plot.imshow.html)
+
+```python
+mapping_xda.plot(y="row", x="col", col="pipe", yincrease=False)
+```
+
+Example in notebook_problem_202310
 
 ### (Legacy) Template Files
 
