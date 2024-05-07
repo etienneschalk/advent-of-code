@@ -1,4 +1,5 @@
-from typing import Any, Callable, Literal
+from dataclasses import dataclass, field, replace
+from typing import Any, Callable, Literal, Self
 
 import numpy as np
 import pandas as pd
@@ -21,7 +22,7 @@ def create_obsplot_instance(
 # This is a singleton instance of observable plot, allowing further customization like
 # changing the renderer from 'widget' to 'json'.
 
-op = create_obsplot_instance(renderer="jsdom", theme="dark")
+op_instance = create_obsplot_instance(renderer="jsdom", theme="dark")
 
 
 def visualize_puzzle_input_202311(
@@ -136,6 +137,36 @@ def visualize_puzzle_input_202311(
                 )
 
     return build_base_xarray_plot(space_xda, callback, **kwargs)
+
+
+def visualize_puzzle_input_202310(
+    xda: xr.DataArray,
+    *,
+    text_xda: xr.DataArray | None = None,
+    **kwargs: Any,
+):
+    def callback(marks: list[Any]) -> None:
+        if text_xda is not None:
+            df = text_xda.stack(z=("row", "col")).to_pandas()
+            data = df.values.tolist()
+            rows = [idx[0] + 0.5 for idx in df.index]
+            cols = [idx[1] + 0.5 for idx in df.index]
+            marks.append(
+                Plot.text(  # type:ignore
+                    data,
+                    {
+                        "text": Plot.identity,  # type: ignore
+                        "x": cols,
+                        "y": rows,
+                        "color": "white",
+                        "fontSize": 38 * kwargs["width"] / 600 * 13 / xda["col"].size,
+                    },
+                )
+            )
+
+    return build_base_xarray_plot(
+        xda, callback, margin=0, do_convert_ascii_array_to_uint8=False, **kwargs
+    )
 
 
 def visualize_puzzle_input_202324(
@@ -292,7 +323,7 @@ def visualize_puzzle_input_202324(
             ]
         )
 
-    return op(  # type: ignore
+    return op_instance(  # type: ignore
         dict(
             grid=True,
             x=dict(
@@ -316,6 +347,102 @@ def visualize_puzzle_input_202324(
             title=title,
         )
     )
+
+
+MarkProducerSignature = Callable[[], list[Any]]
+
+
+@dataclass(kw_only=True, frozen=True)
+class ObservablePlotXarrayBuilder:
+    _marks_producers: list[MarkProducerSignature] = field(default_factory=list)
+    _op: Obsplot = op_instance
+    raster_xda: xr.DataArray
+    initial_kwargs: dict[str, Any]
+
+    def copy(self, *, raster_xda: xr.DataArray, **kwargs: Any) -> Self:
+        # For convenience, allow to alter the initial_kwargs when copying.
+        # Any passed kwarg will override any existing one on the original builder.
+        updated_kwargs = {**self.initial_kwargs, **kwargs}
+        return replace(
+            self,
+            raster_xda=raster_xda,
+            initial_kwargs=updated_kwargs,
+        )
+
+    def build_marks(self) -> list[Any]:
+        marks = []
+        for marks_producer in self._marks_producers:
+            produced_marks = marks_producer()
+            marks.extend(produced_marks)
+        return marks
+
+    def append(self, mark_producer: MarkProducerSignature) -> Self:
+        self._marks_producers.append(mark_producer)
+        return self
+
+    def plot(
+        self,
+        dark_mode: bool = True,
+        scale: float = 1,
+        width: int = 140 * 4,
+        do_convert_ascii_array_to_uint8: bool = True,
+        **kwargs: Any,
+    ) -> Obsplot:
+        raster_xda = self.raster_xda
+
+        if do_convert_ascii_array_to_uint8 and raster_xda.dtype == np.uint8:
+            raster_xda = (raster_xda == ord("#")).astype(int)  # * 255
+
+        raster_width = raster_xda["col"].size
+        raster_height = raster_xda["row"].size
+
+        marks = []
+        marks.append(
+            Plot.axisX({"anchor": "top"}),  # type:ignore
+        )
+        marks.append(
+            Plot.raster(  # type:ignore
+                raster_xda.values.reshape(-1).tolist(),
+                {
+                    "width": raster_width,
+                    "height": raster_height,
+                    "imageRendering": "pixelated",
+                },
+            ),
+        )
+
+        marks.extend(self.build_marks())
+
+        style = {}
+        if dark_mode:
+            style.update(
+                {
+                    "backgroundColor": "#111111",
+                    "color": "#eeeeee",
+                }
+            )
+
+        # Note: height seems to break aspectRatio
+        # whereas width does not, hence it is kept.
+        # The best way for a pixel-perfect display is margin=0
+        # + defining the width and height manually
+        margin_right = kwargs.get("marginRight", 0)
+        margin_left = kwargs.get("marginLeft", 0)
+        width_with_margins = width * scale + margin_right + margin_left
+
+        # Note that by default the y-axis is descending.
+        default_kwargs = {
+            "width": width_with_margins,
+            "color": {"scheme": "magma"},
+            "x": {"domain": [0, raster_width], "label": "column"},
+            "y": {"domain": [raster_height, 0], "label": "row"},
+            "marks": marks,
+            "style": style,
+            "aspectRatio": 1,
+        }
+        initial_kwargs = self.initial_kwargs
+        merged_kwargs = {**default_kwargs, **initial_kwargs, **kwargs}
+        return op_instance(merged_kwargs)  # type:ignore
 
 
 def build_base_xarray_plot(
@@ -362,7 +489,7 @@ def build_base_xarray_plot(
 
     mr = kwargs.get("marginRight", 0)
     ml = kwargs.get("marginLeft", 0)
-    return op(  # type:ignore
+    return op_instance(  # type:ignore
         {
             **{
                 # weight seems to break aspectRatio
