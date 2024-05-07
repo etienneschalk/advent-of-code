@@ -2,6 +2,12 @@
 
 📰
 
+```{note}
+There is no article yet.
+
+See the [Notebooks section](/notebooks/2023/index) of this site for details about a particular problem. Good example: [Notebook for Problem 202304](/notebooks/2023/notebook_problem_202324)
+```
+
 ```{toctree}
 :maxdepth: 1
 
@@ -161,14 +167,14 @@ Run the simulation for long enough then "smart pattern/cycle" to dramatically si
   - Tags: 2D-array, graph, adjacency-matrix, chunks
   - This problem deserves its place in the "Pure Math" category as the step from step 1 to step 2 is generalizing a formula, and applying the same function but with different arguments.
   - Trying the bruteforce approach is pointless
-- **Day 18**
+- **Day 18**: Lavaduct Lagoon
   - Tags: polygon, area
   - The problem is to compute the area of a large polygon
   - The coding part is limited to translating the mathematical formulae into Python code.
 
 ##### Pure Math
 
-- **Day 06**:
+- **Day 06**: Wait For It
   - Tags: formula
   - The problem requires solving quadratic equations
   - Beware of the floats...
