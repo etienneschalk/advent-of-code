@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Self
 
 import numpy as np
 import numpy.typing as npt
@@ -44,7 +45,7 @@ class DigInstruction:
     color: str
 
     @classmethod
-    def from_string(cls, string: str) -> "DigInstruction":
+    def from_string(cls, string: str) -> Self:
         split = string.split(" ")
         direction = WELL_KNOW_DIRECTION_MAPPING[split[0]]
         meters = int(split[1])
@@ -52,7 +53,7 @@ class DigInstruction:
         return cls(direction=direction, meters=meters, color=color)
 
     @classmethod
-    def from_hexadecimal_string(cls, string: str) -> "DigInstruction":
+    def from_hexadecimal_string(cls, string: str) -> Self:
         mapping: dict[int, Direction] = {
             0: RIGHT,
             1: DOWN,
@@ -66,9 +67,11 @@ class DigInstruction:
 
 
 def compute_area(dig_plan: list[DigInstruction]) -> int:
+    interior_points_count = compute_shoelace_formula(compute_polygon_coords(dig_plan))
+    boundary_points_count = compute_internal_perimeter(dig_plan) + 4
+
     pick_area_including_exterior = compute_pick_polygon_area_formula(
-        compute_shoelace_formula(compute_polygon_coords(dig_plan)),
-        compute_internal_perimeter(dig_plan) + 4,
+        interior_points_count, boundary_points_count
     )
     return pick_area_including_exterior
 
@@ -76,12 +79,53 @@ def compute_area(dig_plan: list[DigInstruction]) -> int:
 def compute_pick_polygon_area_formula(
     interior_points_count: int, boundary_points_count: int
 ):
+    """Compute the area of a polygon using the Pick's formula
+
+    .. math::
+
+        A = i + \frac{b}{2} - 1
+
+    See `Pick's theorem <https://en.wikipedia.org/wiki/Pick%27s_theorem>`_ on Wikipedia
+
+    Parameters
+    ----------
+    interior_points_count
+        the number of integer points interior to the polygon
+    boundary_points_count
+        the number of integer points on its boundary
+
+    Returns
+    -------
+        The area of the polygon
+    """
     i = interior_points_count
     b = boundary_points_count
     return i + b // 2 - 1
 
 
 def compute_shoelace_formula(coords: npt.NDArray[np.int32]):
+    r"""Compute the area of a polygon using the shoelace formula
+
+    Note
+    ----
+    The trapezoid formula variant is used.
+
+    .. math::
+
+        A = \frac 1 2 \sum_{i=1}^n (y_i + y_{i+1})(x_i - x_{i+1})
+
+    See `Shoelace formula <https://en.wikipedia.org/wiki/Shoelace_formula>`_ on Wikipedia
+
+    Parameters
+    ----------
+    coords
+        Numpy array of shape (N, 2) containing the (x, y) couples of coordinates for the N points
+        defining the polygon.
+
+    Returns
+    -------
+        The area of the polygon defined by ``coords``
+    """
     xcoords = coords[0]
     ycoords = coords[1]
     return np.abs(

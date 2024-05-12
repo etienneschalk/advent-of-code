@@ -380,15 +380,17 @@ class ObservablePlotXarrayBuilder:
         self._marks_producers.append(mark_producer)
         return self
 
-    def plot(
-        self,
-        dark_mode: bool = True,
-        scale: float = 1,
-        width: int = 140 * 4,
-        do_convert_ascii_array_to_uint8: bool = True,
-        **kwargs: Any,
-    ) -> Obsplot:
+    def plot(self, **kwargs: Any) -> Obsplot:
         raster_xda = self.raster_xda
+
+        dark_mode: bool = self.initial_kwargs.get("dark_mode", True)
+        scale: float = self.initial_kwargs.get("scale", 1)
+        width: int = self.initial_kwargs.get("width", 140 * 4)
+        height: int = self.initial_kwargs.get("height", None)
+        do_convert_ascii_array_to_uint8: bool = self.initial_kwargs.get(
+            "do_convert_ascii_array_to_uint8", True
+        )
+        ascending_y_axis = self.initial_kwargs.get("ascending_y_axis", False)
 
         if do_convert_ascii_array_to_uint8 and raster_xda.dtype == np.uint8:
             raster_xda = (raster_xda == ord("#")).astype(int)  # * 255
@@ -428,20 +430,43 @@ class ObservablePlotXarrayBuilder:
         # + defining the width and height manually
         margin_right = kwargs.get("marginRight", 0)
         margin_left = kwargs.get("marginLeft", 0)
+        margin_top = kwargs.get("marginTop", 0)
+        margin_bottom = kwargs.get("marginBottom", 0)
         width_with_margins = width * scale + margin_right + margin_left
+        height_with_margins = (
+            (height * scale + margin_top + margin_bottom) if height else None
+        )
 
         # Note that by default the y-axis is descending.
+        # It can be changed via kwarg 'ascending_y_axis'
+        x_domain = [0, raster_width]
+        y_domain = [0, raster_height]
+
         default_kwargs = {
-            "width": width_with_margins,
             "color": {"scheme": "magma"},
-            "x": {"domain": [0, raster_width], "label": "column"},
-            "y": {"domain": [raster_height, 0], "label": "row"},
+            "x": {
+                "domain": x_domain,
+                "label": "column",
+                "ticks": self.initial_kwargs.pop("x_ticks", None),
+            },
+            "y": {
+                "domain": y_domain if ascending_y_axis else list(reversed(y_domain)),
+                "label": "row",
+                "ticks": self.initial_kwargs.pop("y_ticks", None),
+            },
             "marks": marks,
             "style": style,
             "aspectRatio": 1,
         }
-        initial_kwargs = self.initial_kwargs
-        merged_kwargs = {**default_kwargs, **initial_kwargs, **kwargs}
+        merged_kwargs = {
+            **default_kwargs,
+            **self.initial_kwargs,
+            **{
+                "width": width_with_margins,
+                "height": height_with_margins,
+            },
+            **kwargs,
+        }
         return op_instance(merged_kwargs)  # type:ignore
 
 
@@ -489,7 +514,8 @@ def build_base_xarray_plot(
 
     mr = kwargs.get("marginRight", 0)
     ml = kwargs.get("marginLeft", 0)
-    return op_instance(  # type:ignore
+    path = kwargs.pop("path", None)
+    plot = op_instance(  # type:ignore
         {
             **{
                 # weight seems to break aspectRatio
@@ -504,5 +530,7 @@ def build_base_xarray_plot(
                 "aspectRatio": 1,
             },
             **kwargs,
-        }
+        },
+        path=path,
     )
+    return plot
