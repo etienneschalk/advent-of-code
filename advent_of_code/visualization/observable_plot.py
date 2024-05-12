@@ -367,6 +367,7 @@ class ObservablePlotXarrayBuilder:
             self,
             raster_xda=raster_xda,
             initial_kwargs=updated_kwargs,
+            _marks_producers=[*self._marks_producers],
         )
 
     def build_marks(self) -> list[Any]:
@@ -391,6 +392,7 @@ class ObservablePlotXarrayBuilder:
             "do_convert_ascii_array_to_uint8", True
         )
         ascending_y_axis = self.initial_kwargs.get("ascending_y_axis", False)
+        legend: bool = self.initial_kwargs.get("legend", False)
 
         if do_convert_ascii_array_to_uint8 and raster_xda.dtype == np.uint8:
             raster_xda = (raster_xda == ord("#")).astype(int)  # * 255
@@ -443,7 +445,7 @@ class ObservablePlotXarrayBuilder:
         y_domain = [0, raster_height]
 
         default_kwargs = {
-            "color": {"scheme": "magma"},
+            "color": {"scheme": "magma", "legend": legend},
             "x": {
                 "domain": x_domain,
                 "label": "column",
