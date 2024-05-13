@@ -412,16 +412,20 @@ class ObservablePlotXarrayBuilder(ObservablePlotBuilder):
     raster_xda: xr.DataArray
 
     @override
-    def copy(self, *, raster_xda: xr.DataArray, **kwargs: Any) -> Self:
-        # For convenience, allow to alter the initial_kwargs when copying.
-        # Any passed kwarg will override any existing one on the original builder.
-        updated_kwargs = {**self.initial_kwargs, **kwargs}
-        return replace(
-            self,
-            raster_xda=raster_xda,
-            initial_kwargs=updated_kwargs,
-            _marks_producers=[*self._marks_producers],
-        )
+    def copy(self, *, raster_xda: xr.DataArray | None = None, **kwargs: Any) -> Self:
+        new_builder = super().copy(**kwargs)
+        if raster_xda is None:
+            return new_builder
+        return replace(new_builder, raster_xda=raster_xda)
+        # # For convenience, allow to alter the initial_kwargs when copying.
+        # # Any passed kwarg will override any existing one on the original builder.
+        # updated_kwargs = {**self.initial_kwargs, **kwargs}
+        # return replace(
+        #     self,
+        #     raster_xda=raster_xda,
+        #     initial_kwargs=updated_kwargs,
+        #     _marks_producers=[*self._marks_producers],
+        # )
 
     @override
     def plot(self, **kwargs: Any) -> Obsplot:
