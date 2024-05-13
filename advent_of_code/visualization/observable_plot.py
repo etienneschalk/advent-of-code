@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field, replace
-from typing import Any, Callable, Literal, Self
+from typing import Any, Callable, Literal, Self, override
 
 import numpy as np
 import pandas as pd
@@ -353,19 +353,17 @@ MarkProducerSignature = Callable[[], list[Any]]
 
 
 @dataclass(kw_only=True, frozen=True)
-class ObservablePlotXarrayBuilder:
+class ObservablePlotBuilder:
     _marks_producers: list[MarkProducerSignature] = field(default_factory=list)
     _op: Obsplot = op_instance
-    raster_xda: xr.DataArray
     initial_kwargs: dict[str, Any]
 
-    def copy(self, *, raster_xda: xr.DataArray, **kwargs: Any) -> Self:
+    def copy(self, **kwargs: Any) -> Self:
         # For convenience, allow to alter the initial_kwargs when copying.
         # Any passed kwarg will override any existing one on the original builder.
         updated_kwargs = {**self.initial_kwargs, **kwargs}
         return replace(
             self,
-            raster_xda=raster_xda,
             initial_kwargs=updated_kwargs,
             _marks_producers=[*self._marks_producers],
         )
@@ -377,10 +375,55 @@ class ObservablePlotXarrayBuilder:
             marks.extend(produced_marks)
         return marks
 
+    def prepend(self, mark_producer: MarkProducerSignature) -> Self:
+        self._marks_producers.insert(0, mark_producer)
+        return self
+
     def append(self, mark_producer: MarkProducerSignature) -> Self:
         self._marks_producers.append(mark_producer)
         return self
 
+    def stack(self, mark_producer: MarkProducerSignature) -> Self:
+        self.append(mark_producer)
+        return self
+
+    def unstack(self) -> Self:
+        self.pop()
+        return self
+
+    def pop(self) -> MarkProducerSignature:
+        return self._marks_producers.pop()
+
+    def plot(self, **kwargs: Any) -> Obsplot:
+        # Priority:
+        # Initial kwargs passed on builder creation,
+        # overridable by kwargs in this method call,
+        # and finally the marks is built in this method.
+        merged_kwargs = {
+            **self.initial_kwargs,
+            **kwargs,
+            **dict(marks=self.build_marks()),
+        }
+        return self._op(merged_kwargs)  # type:ignore
+
+
+@dataclass(kw_only=True, frozen=True)
+class ObservablePlotXarrayBuilder(ObservablePlotBuilder):
+    raster_xda: xr.DataArray
+
+    @override
+    def copy(self, *, raster_xda: xr.DataArray, **kwargs: Any) -> Self:
+        # For convenience, allow to alter the initial_kwargs when copying.
+        # Any passed kwarg will override any existing one on the original builder.
+        updated_kwargs = {**self.initial_kwargs, **kwargs}
+        return replace(
+            self,
+            raster_xda=raster_xda,
+            initial_kwargs=updated_kwargs,
+            _marks_producers=[*self._marks_producers],
+        )
+
+    @override
     def plot(self, **kwargs: Any) -> Obsplot:
         raster_xda = self.raster_xda
 
@@ -469,7 +512,7 @@ class ObservablePlotXarrayBuilder:
             },
             **kwargs,
         }
-        return op_instance(merged_kwargs)  # type:ignore
+        return self._op(merged_kwargs)  # type:ignore
 
 
 def build_base_xarray_plot(
