@@ -3,7 +3,7 @@ default_language_version:
     python: python3.12
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v4.6.0
     hooks:
       - id: check-added-large-files
       - id: check-ast
@@ -39,7 +39,7 @@ repos:
       - id: sort-simple-yaml
       - id: trailing-whitespace
   - repo: https://github.com/PyCQA/autoflake
-    rev: v2.2.1
+    rev: v2.3.1
     hooks:
     - id: autoflake
       args: [--remove-all-unused-imports, --in-place]
@@ -59,7 +59,7 @@ repos:
       - id: blackdoc
   - repo: https://github.com/astral-sh/ruff-pre-commit
   # Ruff version.
-    rev: v0.1.13
+    rev: v0.4.4
     hooks:
       # Run the linter.
       - id: ruff
@@ -82,10 +82,10 @@ repos:
   #       ]
   # Pyright can replace mypy
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.351
+    rev: v1.1.362
     hooks:
     - id: pyright
-      language: python_venv
+      language: python
       language_version: python3.12
   - repo: local
     hooks:

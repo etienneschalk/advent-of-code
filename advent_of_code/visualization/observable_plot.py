@@ -696,54 +696,63 @@ def create_indicative_dots_layer(
 
 
 def create_boundary_points_layer(
-    boundary_points_coords: pd.DataFrame, **kwargs: Any
+    boundary_points_coords: pd.DataFrame,
+    *,
+    with_discs: bool = True,
+    x_name: str = "x",
+    y_name: str = "y",
+    **kwargs: Any,
 ) -> Callable[[], list[Any]]:
     def callback() -> list[Any]:
-        marks = [
+        marks = []
+        marks.append(
             Plot.dot(  # type:ignore
                 boundary_points_coords,
-                {"x": "x", "y": "y", "stroke": "stroke", **kwargs},
+                {"x": x_name, "y": y_name, "stroke": "stroke", **kwargs},
             ),
-            Plot.dot(  # type:ignore
-                boundary_points_coords,
-                {
-                    "x": "x",
-                    "y": "y",
-                    "stroke": "stroke",
-                    **kwargs,
-                    "r": kwargs["r"] // 4,
-                    "symbol": "disc",
-                    "strokeWidth": 2,
-                },
-            ),
-        ]
+        )
+        if with_discs:
+            marks.append(
+                Plot.dot(  # type:ignore
+                    boundary_points_coords,
+                    {
+                        "x": x_name,
+                        "y": y_name,
+                        "stroke": "stroke",
+                        **kwargs,
+                        "r": kwargs["r"] // 4,
+                        "symbol": "disc",
+                        "strokeWidth": 2,
+                    },
+                )
+            )
         return marks
 
     return callback
 
 
-def create_boundary_and_interior_points_layer(
-    filled_df: pd.DataFrame, **kwargs: Any
-) -> Callable[[], list[Any]]:
-    def callback() -> list[Any]:
-        marks = [
-            Plot.dot(  # type:ignore
-                filled_df,
-                {"x": "col", "y": "row", "stroke": {"value": "stroke"}, **kwargs},
-            ),
-            Plot.dot(  # type:ignore
-                filled_df,
-                {
-                    "x": "col",
-                    "y": "row",
-                    "stroke": "stroke",
-                    **kwargs,
-                    "r": kwargs["r"] // 4,
-                    "symbol": "disc",
-                    "strokeWidth": 2,
-                },
-            ),
-        ]
-        return marks
+# def create_boundary_and_interior_points_layer(
+#     filled_df: pd.DataFrame, **kwargs: Any
+# ) -> Callable[[], list[Any]]:
+#     def callback() -> list[Any]:
+#         marks = [
+#             Plot.dot(  # type:ignore
+#                 filled_df,
+#                 {"x": "col", "y": "row", "stroke": "stroke", **kwargs},
+#             ),
+#             Plot.dot(  # type:ignore
+#                 filled_df,
+#                 {
+#                     "x": "col",
+#                     "y": "row",
+#                     "stroke": "stroke",
+#                     **kwargs,
+#                     "r": kwargs["r"] // 4,
+#                     "symbol": "disc",
+#                     "strokeWidth": 2,
+#                 },
+#             ),
+#         ]
+#         return marks
 
-    return callback
+#     return callback

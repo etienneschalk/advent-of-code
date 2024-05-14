@@ -23,5 +23,4 @@ def test_problem_202324_part_1(example_inputs_2023: ExampleInputsStore):
     assert len(qualified) == 2
 
 
-def test_problem_202324_part_2():
-    ...
+def test_problem_202324_part_2(): ...
