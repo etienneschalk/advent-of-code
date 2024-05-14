@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field, replace
-from typing import Any, Callable, Literal, Self, override
+from typing import Any, Callable, Iterable, Literal, Self, override
 
 import numpy as np
 import pandas as pd
@@ -149,8 +149,8 @@ def visualize_puzzle_input_202310(
         if text_xda is not None:
             df = text_xda.stack(z=("row", "col")).to_pandas()
             data = df.values.tolist()
-            rows = [idx[0] + 0.5 for idx in df.index]
-            cols = [idx[1] + 0.5 for idx in df.index]
+            rows = [idx[0] + 0.5 for idx in df.index]  # type: ignore
+            cols = [idx[1] + 0.5 for idx in df.index]  # type: ignore
             marks.append(
                 Plot.text(  # type:ignore
                     data,
@@ -383,6 +383,10 @@ class ObservablePlotBuilder:
         self._marks_producers.append(mark_producer)
         return self
 
+    def extend(self, mark_producers: Iterable[MarkProducerSignature]) -> Self:
+        self._marks_producers.extend(mark_producers)
+        return self
+
     def stack(self, mark_producer: MarkProducerSignature) -> Self:
         self.append(mark_producer)
         return self
@@ -411,21 +415,20 @@ class ObservablePlotBuilder:
 class ObservablePlotXarrayBuilder(ObservablePlotBuilder):
     raster_xda: xr.DataArray
 
+    @property
+    def raster_width(self) -> int:
+        return self.raster_xda["col"].size
+
+    @property
+    def raster_height(self) -> int:
+        return self.raster_xda["row"].size
+
     @override
     def copy(self, *, raster_xda: xr.DataArray | None = None, **kwargs: Any) -> Self:
         new_builder = super().copy(**kwargs)
         if raster_xda is None:
             return new_builder
         return replace(new_builder, raster_xda=raster_xda)
-        # # For convenience, allow to alter the initial_kwargs when copying.
-        # # Any passed kwarg will override any existing one on the original builder.
-        # updated_kwargs = {**self.initial_kwargs, **kwargs}
-        # return replace(
-        #     self,
-        #     raster_xda=raster_xda,
-        #     initial_kwargs=updated_kwargs,
-        #     _marks_producers=[*self._marks_producers],
-        # )
 
     @override
     def plot(self, **kwargs: Any) -> Obsplot:
@@ -444,23 +447,7 @@ class ObservablePlotXarrayBuilder(ObservablePlotBuilder):
         if do_convert_ascii_array_to_uint8 and raster_xda.dtype == np.uint8:
             raster_xda = (raster_xda == ord("#")).astype(int)  # * 255
 
-        raster_width = raster_xda["col"].size
-        raster_height = raster_xda["row"].size
-
-        marks = []
-        marks.append(
-            Plot.axisX({"anchor": "top"}),  # type:ignore
-        )
-        marks.append(
-            Plot.raster(  # type:ignore
-                raster_xda.values.reshape(-1).tolist(),
-                {
-                    "width": raster_width,
-                    "height": raster_height,
-                    "imageRendering": "pixelated",
-                },
-            ),
-        )
+        marks = self.create_raster_background_marks()
 
         marks.extend(self.build_marks())
 
@@ -488,8 +475,8 @@ class ObservablePlotXarrayBuilder(ObservablePlotBuilder):
 
         # Note that by default the y-axis is descending.
         # It can be changed via kwarg 'ascending_y_axis'
-        x_domain = [0, raster_width]
-        y_domain = [0, raster_height]
+        x_domain = [0, self.raster_width]
+        y_domain = [0, self.raster_height]
 
         default_kwargs = {
             "color": {"scheme": "magma", "legend": legend},
@@ -516,7 +503,26 @@ class ObservablePlotXarrayBuilder(ObservablePlotBuilder):
             },
             **kwargs,
         }
-        return self._op(merged_kwargs)  # type:ignore
+        return self._op(merged_kwargs)  # type: ignore
+
+    def create_raster_background_marks(self) -> list[Any]:
+        marks = []
+
+        marks.append(
+            Plot.axisX({"anchor": "top"}),  # type:ignore
+        )
+        marks.append(
+            Plot.raster(  # type:ignore
+                self.raster_xda.values.reshape(-1).tolist(),
+                {
+                    "width": self.raster_width,
+                    "height": self.raster_height,
+                    "imageRendering": "pixelated",
+                },
+            ),
+        )
+
+        return marks  # type:ignore
 
 
 def build_base_xarray_plot(
@@ -583,3 +589,161 @@ def build_base_xarray_plot(
         path=path,
     )
     return plot
+
+
+def create_polygon_layer(
+    links_df: pd.DataFrame,
+    *,
+    color: str = "red",
+    stroke_width: int = 2,
+    offset: float = 0,
+    x1_target: str = "x1",
+    x2_target: str = "x2",
+    y1_target: str = "y1",
+    y2_target: str = "y2",
+) -> Callable[[], list[Any]]:
+    def callback() -> list[Any]:
+        return [
+            Plot.link(  # type:ignore
+                links_df + offset,
+                {
+                    x1_target: "x1",
+                    y1_target: "y1",
+                    x2_target: "x2",
+                    y2_target: "y2",
+                    "stroke": color,
+                    "strokeWidth": stroke_width,
+                    "markerEnd": "arrow",
+                },
+            )
+        ]
+
+    return callback
+
+
+def create_indicative_dots_layer(
+    raster_xda: xr.DataArray,
+    *,
+    radius: int = 100,
+    color: str = "white",
+    opacity: float = 1,
+    highlight_origin: bool = False,
+) -> Callable[[], list[Any]]:
+    def callback() -> list[Any]:
+        offset = 1
+        data = np.zeros(
+            (
+                raster_xda.shape[0] + offset,
+                raster_xda.shape[1] + offset,
+            ),
+            dtype=int,
+        )
+        xda_with_borders = xr.DataArray(
+            data=data,
+            dims=("row", "col"),
+            coords=dict(
+                row=np.arange(data.shape[0]),
+                col=np.arange(data.shape[1]),
+            ),
+        )
+        xda = xda_with_borders
+        # Convert a MultiIndex to a DataFrame:
+        # See https://pandas.pydata.org/docs/reference/api/pandas.MultiIndex.to_frame.html
+        df = xda.stack({"z": ("row", "col")}).to_pandas().index.to_frame()
+        marks = [
+            Plot.dot(  # type:ignore
+                df,
+                {"x": "col", "y": "row", "color": color, "opacity": 0.05, "r": radius},
+            ),
+            Plot.dot(  # type:ignore
+                df,
+                {
+                    "x": "col",
+                    "y": "row",
+                    "color": color,
+                    "opacity": opacity,
+                    "r": radius // 4,
+                },
+            ),
+            Plot.dot(  # type:ignore
+                df,
+                {
+                    "x": "col",
+                    "y": "row",
+                    "color": color,
+                    "opacity": opacity,
+                    "r": radius,
+                    "symbol": "square",
+                },
+            ),
+        ]
+        if highlight_origin:
+            new_marks = [
+                # Origin at (0, 0)
+                Plot.dot(  # type:ignore
+                    [(0, 0)], {"stroke": "#0f0", "r": radius}
+                ),
+                # Origin at (0, 0)
+                Plot.dot(  # type:ignore
+                    [(0, 0)], {"stroke": "#0f0", "r": radius // 4}
+                ),
+            ]
+
+            marks.extend(new_marks)
+        return marks
+
+    return callback
+
+
+def create_boundary_points_layer(
+    boundary_points_coords: pd.DataFrame, **kwargs: Any
+) -> Callable[[], list[Any]]:
+    def callback() -> list[Any]:
+        marks = [
+            Plot.dot(  # type:ignore
+                boundary_points_coords,
+                {"x": "x", "y": "y", "stroke": "stroke", **kwargs},
+            ),
+            Plot.dot(  # type:ignore
+                boundary_points_coords,
+                {
+                    "x": "x",
+                    "y": "y",
+                    "stroke": "stroke",
+                    **kwargs,
+                    "r": kwargs["r"] // 4,
+                    "symbol": "disc",
+                    "strokeWidth": 2,
+                },
+            ),
+        ]
+        return marks
+
+    return callback
+
+
+def create_boundary_and_interior_points_layer(
+    filled_df: pd.DataFrame, **kwargs: Any
+) -> Callable[[], list[Any]]:
+    def callback() -> list[Any]:
+        marks = [
+            Plot.dot(  # type:ignore
+                filled_df,
+                {"x": "col", "y": "row", "stroke": {"value": "stroke"}, **kwargs},
+            ),
+            Plot.dot(  # type:ignore
+                filled_df,
+                {
+                    "x": "col",
+                    "y": "row",
+                    "stroke": "stroke",
+                    **kwargs,
+                    "r": kwargs["r"] // 4,
+                    "symbol": "disc",
+                    "strokeWidth": 2,
+                },
+            ),
+        ]
+        return marks
+
+    return callback
