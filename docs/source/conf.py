@@ -6,6 +6,12 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import importlib
+import inspect
+from pathlib import Path
+
+import advent_of_code
+
 project = "advent-of-code-blog"
 copyright = "2024, Etienne Schalk"
 author = "Etienne Schalk"
@@ -22,6 +28,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.intersphinx",
     "sphinx.ext.autodoc",
+    "sphinx.ext.linkcode",
     "autoapi.extension",
     # "sphinx.ext.autosummary",
     "nbsphinx",
@@ -30,6 +37,7 @@ extensions = [
     # "sphinx_mdinclude",
     "sphinxcontrib.youtube",
     "sphinx_favicon",
+    # "sphinxcontrib.github",  # The links to GitHub [source] in API Reference
 ]
 
 favicons = [{"href": "img/favicon.png"}]
@@ -116,3 +124,68 @@ intersphinx_mapping = {
 }
 
 myst_enable_extensions = ["deflist", "tasklist"]
+
+
+# based on https://github.com/pydata/xarray/blob/main/doc/conf.py
+def linkcode_resolve(domain, info):
+    """
+    Determine the URL corresponding to Python object
+    """
+    if domain != "py":
+        return None
+
+    modulename = info["module"]
+    fullname = info["fullname"]
+
+    print(f"{info=}")
+    print(f"{modulename=}")
+    print(f"{fullname=}")
+
+    submodule = importlib.import_module(modulename)
+    if submodule is None:
+        return None
+
+    print(f"{submodule=}")
+
+    object = submodule
+    for part in fullname.split("."):
+        try:
+            object = getattr(object, part)
+        except AttributeError:
+            return None
+
+    print(f"{object=}")
+
+    try:
+        fn = inspect.getsourcefile(inspect.unwrap(object))
+    except TypeError:
+        fn = None
+    if not fn:
+        return None
+
+    print(f"{fn=}")
+
+    try:
+        source, lineno = inspect.getsourcelines(object)
+    except OSError:
+        lineno = None
+
+    if lineno:
+        linespec = f"#L{lineno}-L{lineno + len(source) - 1}"
+    else:
+        linespec = ""
+
+    try:
+        fn_path = Path(fn).relative_to(Path(advent_of_code.__file__).parent.parent)
+    except Exception:
+        return None
+
+    print(f"{fn_path=}")
+
+    prefix = "https://github.com/etienneschalk/advent-of-code/tree/main"
+
+    url = f"{prefix}/{str(fn_path)}{linespec}"
+
+    print(f"{url=}")
+
+    return url

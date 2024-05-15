@@ -22,7 +22,7 @@ def create_obsplot_instance(
 # This is a singleton instance of observable plot, allowing further customization like
 # changing the renderer from 'widget' to 'json'.
 
-op_instance = create_obsplot_instance(renderer="jsdom", theme="dark")
+op_instance = create_obsplot_instance(renderer="jsdom", theme="current")
 
 
 def visualize_puzzle_input_202311(
@@ -503,6 +503,7 @@ class ObservablePlotXarrayBuilder(ObservablePlotBuilder):
             },
             **kwargs,
         }
+        # print(merged_kwargs)
         return self._op(merged_kwargs)  # type: ignore
 
     def create_raster_background_marks(self) -> list[Any]:
