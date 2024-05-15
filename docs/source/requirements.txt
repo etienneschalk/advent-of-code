@@ -1,3 +1,7 @@
+
+# DO NOT UPDATE MANUALLY
+# AUTO-GENERATED FROM scripts/docs_pyproject_to_requirements_txt.py
+
 # Workaround: adapted from pyproject.toml as poetry groups are non standard.
 
 furo==2024.1.29
@@ -15,7 +19,6 @@ sphinx-serve==1.0.1
 sphinxcontrib-youtube==1.4.1
 sphinxemoji==0.3.1
 sphinx-favicon==1.0.1
-plotly==5.19.0
 pyobsplot==0.4.2
 pythreejs==2.4.2
-kaleido==0.2.1
+plotly==5.19.0
