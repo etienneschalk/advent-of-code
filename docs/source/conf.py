@@ -131,8 +131,11 @@ def linkcode_resolve(domain, info):
     """
     Determine the URL corresponding to Python object
     """
+
     if domain != "py":
         return None
+
+    prefix = "https://github.com/etienneschalk/advent-of-code/tree/main"
 
     modulename = info["module"]
     fullname = info["fullname"]
@@ -141,7 +144,21 @@ def linkcode_resolve(domain, info):
     print(f"{modulename=}")
     print(f"{fullname=}")
 
-    submodule = importlib.import_module(modulename)
+    try:
+        submodule = importlib.import_module(modulename)
+        # raise Exception
+    except Exception:
+        print("If submodule cannot be imported, eg because of missing dependency,")
+        print("fallback on single URL for whole file")
+        # Note: it means that to build the doc with this autolink too,
+        # the docs group must be equal to all the dependencies used in the project,
+        # making de facto the docs group useless
+        url = f"{prefix}/{str(modulename.replace(".", "/"))}.py"
+
+        print(f"{url=}")
+
+        return url
+
     if submodule is None:
         return None
 
@@ -181,8 +198,6 @@ def linkcode_resolve(domain, info):
         return None
 
     print(f"{fn_path=}")
-
-    prefix = "https://github.com/etienneschalk/advent-of-code/tree/main"
 
     url = f"{prefix}/{str(fn_path)}{linespec}"
 
