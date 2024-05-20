@@ -752,8 +752,8 @@ def text_mark_producer(
 
         df = text_xda.stack(z=("row", "col")).to_pandas()
         data = df.values.tolist()
-        rows = [idx[0] + 0.5 for idx in df.index]
-        cols = [idx[1] + 0.5 for idx in df.index]
+        rows = [idx[0] + 0.5 for idx in df.index]  # type: ignore
+        cols = [idx[1] + 0.5 for idx in df.index]  # type: ignore
         return [
             Plot.text(  # type:ignore
                 data,
