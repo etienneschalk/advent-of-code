@@ -90,18 +90,26 @@ class AdventOfCodeProblem202316(AdventOfCodeProblem[PuzzleInput]):
     def log_part_1(self, puzzle_input: PuzzleInput, max_depth: int):
         adapt_recursion_limit(5000)
 
-        board = puzzle_input
-        initial_beam = Beam(np.array((1, 0)), MOVE_EAST)
-        _ = do_part_1(board, initial_beam=initial_beam, max_depth=max_depth)
-
-        # Explore the initial Beam
-        history = explore_beam_breadth_first(initial_beam, max_depth=max_depth)
+        history = self.compute_history(puzzle_input, max_depth)
         output_file_path = self.get_visualizations_instructions_for_part_1_file_path()
         import json
 
         text = ",\n".join([json.dumps((line)) for line in history])
         output_file_path.write_text(f"[\n{text}\n]")
         print(f"Saved text to {output_file_path}")
+
+    def compute_history(
+        self, puzzle_input: PuzzleInput, max_depth: int, *, verbose: bool = False
+    ) -> list[tuple[int, list[int], list[int]]]:
+        board = puzzle_input
+        initial_beam = Beam(np.array((1, 0)), MOVE_EAST)
+        _ = do_part_1(board, initial_beam=initial_beam, max_depth=max_depth)
+
+        # Explore the initial Beam
+        history = explore_beam_breadth_first(
+            initial_beam, max_depth=max_depth, verbose=verbose
+        )
+        return history
 
     def get_visualizations_instructions_for_part_1_file_path(self) -> Path:
         return create_output_file_path("history.json", "", self.year, self.day)
@@ -123,7 +131,7 @@ class PrioritizedBeam:
 
 
 def explore_beam_breadth_first(
-    root_beam: Beam, max_depth: int = 2501
+    root_beam: Beam, max_depth: int = 2501, *, verbose: bool = True
 ) -> list[tuple[int, list[int], list[int]]]:
     history = []
     q: queue.PriorityQueue[PrioritizedBeam] = queue.PriorityQueue()
@@ -134,7 +142,8 @@ def explore_beam_breadth_first(
         depth = pr_beam.priority
         beam = pr_beam.item
         # [visu] this log can be used to control
-        print(f"{" " * (depth//50)} | {depth=}, {beam.position=}, {beam.speed=}")
+        if verbose:
+            print(f"{" " * (depth//50)} | {depth=}, {beam.position=}, {beam.speed=}")
         history.append(
             (
                 depth,

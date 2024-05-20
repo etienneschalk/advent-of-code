@@ -87,7 +87,8 @@ def render_central_input_path(year: int, day: int):
 
 
 def render_central_output_dir(year: int, day: int):
-    return f"generated/advent_of_code/year_{year}/output_problem_{year}{day:02d}"
+    return f"generated/advent_of_code/year_{year}/day_{day:02d}"
+    # return f"generated/advent_of_code/year_{year}/output_problem_{year}{day:02d}"
 
 
 def adapt_recursion_limit(new_value: int = 15000, *, silent: bool = False):

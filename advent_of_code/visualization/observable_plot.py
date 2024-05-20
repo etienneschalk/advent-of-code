@@ -391,12 +391,12 @@ class ObservablePlotBuilder:
         self.append(mark_producer)
         return self
 
-    def unstack(self) -> Self:
-        self.pop()
+    def unstack(self, index: int = -1) -> Self:
+        self.pop(index)
         return self
 
-    def pop(self) -> MarkProducerSignature:
-        return self._marks_producers.pop()
+    def pop(self, index: int = -1) -> MarkProducerSignature:
+        return self._marks_producers.pop(index)
 
     def plot(self, **kwargs: Any) -> Obsplot:
         # Priority:
@@ -423,9 +423,14 @@ class ObservablePlotXarrayBuilder(ObservablePlotBuilder):
     def raster_height(self) -> int:
         return self.raster_xda["row"].size
 
+    def __post_init__(self):
+        marks = self.create_raster_background_marks()
+        self.stack(marks)
+
     @override
     def copy(self, *, raster_xda: xr.DataArray | None = None, **kwargs: Any) -> Self:
         new_builder = super().copy(**kwargs)
+        new_builder.unstack()  # Remove raster background
         if raster_xda is None:
             return new_builder
         return replace(new_builder, raster_xda=raster_xda)
@@ -447,9 +452,7 @@ class ObservablePlotXarrayBuilder(ObservablePlotBuilder):
         if do_convert_ascii_array_to_uint8 and raster_xda.dtype == np.uint8:
             raster_xda = (raster_xda == ord("#")).astype(int)  # * 255
 
-        marks = self.create_raster_background_marks()
-
-        marks.extend(self.build_marks())
+        marks = self.build_marks()
 
         style = {}
         if dark_mode:
@@ -472,6 +475,7 @@ class ObservablePlotXarrayBuilder(ObservablePlotBuilder):
         height_with_margins = (
             (height * scale + margin_top + margin_bottom) if height else None
         )
+        label = self.initial_kwargs.get("label", False)
 
         # Note that by default the y-axis is descending.
         # It can be changed via kwarg 'ascending_y_axis'
@@ -482,12 +486,12 @@ class ObservablePlotXarrayBuilder(ObservablePlotBuilder):
             "color": {"scheme": "magma", "legend": legend},
             "x": {
                 "domain": x_domain,
-                "label": "column",
+                "label": "column" if label else None,
                 "ticks": self.initial_kwargs.pop("x_ticks", None),
             },
             "y": {
                 "domain": y_domain if ascending_y_axis else list(reversed(y_domain)),
-                "label": "row",
+                "label": "row" if label else None,
                 "ticks": self.initial_kwargs.pop("y_ticks", None),
             },
             "marks": marks,
@@ -506,24 +510,27 @@ class ObservablePlotXarrayBuilder(ObservablePlotBuilder):
         # print(merged_kwargs)
         return self._op(merged_kwargs)  # type: ignore
 
-    def create_raster_background_marks(self) -> list[Any]:
-        marks = []
+    def create_raster_background_marks(self) -> MarkProducerSignature:
+        def callback() -> list[Any]:
+            marks = []
 
-        marks.append(
-            Plot.axisX({"anchor": "top"}),  # type:ignore
-        )
-        marks.append(
-            Plot.raster(  # type:ignore
-                self.raster_xda.values.reshape(-1).tolist(),
-                {
-                    "width": self.raster_width,
-                    "height": self.raster_height,
-                    "imageRendering": "pixelated",
-                },
-            ),
-        )
+            marks.append(
+                Plot.axisX({"anchor": "top"}),  # type:ignore
+            )
+            marks.append(
+                Plot.raster(  # type:ignore
+                    self.raster_xda.values.reshape(-1).tolist(),
+                    {
+                        "width": self.raster_width,
+                        "height": self.raster_height,
+                        "imageRendering": "pixelated",
+                    },
+                ),
+            )
 
-        return marks  # type:ignore
+            return marks  # type:ignore
+
+        return callback
 
 
 def build_base_xarray_plot(
@@ -732,28 +739,84 @@ def create_boundary_points_layer(
     return callback
 
 
-# def create_boundary_and_interior_points_layer(
-#     filled_df: pd.DataFrame, **kwargs: Any
-# ) -> Callable[[], list[Any]]:
-#     def callback() -> list[Any]:
-#         marks = [
-#             Plot.dot(  # type:ignore
-#                 filled_df,
-#                 {"x": "col", "y": "row", "stroke": "stroke", **kwargs},
-#             ),
-#             Plot.dot(  # type:ignore
-#                 filled_df,
-#                 {
-#                     "x": "col",
-#                     "y": "row",
-#                     "stroke": "stroke",
-#                     **kwargs,
-#                     "r": kwargs["r"] // 4,
-#                     "symbol": "disc",
-#                     "strokeWidth": 2,
-#                 },
-#             ),
-#         ]
-#         return marks
+# Based on visualize_puzzle_input_202310
+def text_mark_producer(
+    xda: xr.DataArray,
+    *,
+    text_xda: xr.DataArray | None = None,
+    width: int,
+) -> Callable[[], list[Any]]:
+    def callback() -> list[Any]:
+        if text_xda is None:
+            return []
 
-#     return callback
+        df = text_xda.stack(z=("row", "col")).to_pandas()
+        data = df.values.tolist()
+        rows = [idx[0] + 0.5 for idx in df.index]
+        cols = [idx[1] + 0.5 for idx in df.index]
+        return [
+            Plot.text(  # type:ignore
+                data,
+                {
+                    "text": Plot.identity,  # type: ignore
+                    "x": cols,
+                    "y": rows,
+                    "color": "white",
+                    "fontSize": 38 * width / 600 * 13 / xda["col"].size,
+                },
+            )
+        ]
+
+    return callback
+
+
+def ascii_2d_numpy_array_plotter(
+    xda: xr.DataArray,
+    *,
+    obfuscate: bool = True,
+    text: bool = True,
+    scheme: str = "Tableau10",
+    legend: bool = True,
+    **kwargs: Any,
+) -> ObservablePlotXarrayBuilder:
+    if xda.dtype == np.uint8:
+        simplified_xda = xda.where(
+            ~xda.isin(list(range(ord("1"), ord("9") + 1))), ord("N")
+        )
+    else:
+        simplified_xda = xda
+
+    text_xda = None
+
+    if text:
+        if obfuscate:
+            text_xda = simplified_xda
+        else:
+            text_xda = xda
+
+        if text_xda.dtype != np.dtype("<U1"):
+            # Convert ASCII uint8 to str (S1) then str (for it to be serializable)
+            text_xda = text_xda.copy(data=text_xda.values.view("S1").astype("str"))
+
+    if xda.dtype == np.uint8:
+        simplified_xda = simplified_xda.copy(
+            data=simplified_xda.values.view("S1").astype("str")
+        )
+    kwargs = {
+        **dict(
+            margin=0,
+            do_convert_ascii_array_to_uint8=False,
+            color={"type": "categorical", "scheme": scheme, "legend": legend},
+        ),
+        **kwargs,
+    }
+
+    plotter = ObservablePlotXarrayBuilder(
+        raster_xda=simplified_xda, initial_kwargs=kwargs
+    )
+    text_callback = text_mark_producer(
+        simplified_xda, text_xda=text_xda, width=kwargs["width"]
+    )
+    plotter.stack(text_callback)
+
+    return plotter
