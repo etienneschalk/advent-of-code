@@ -23,6 +23,7 @@ def create_obsplot_instance(
 # changing the renderer from 'widget' to 'json'.
 
 op_instance = create_obsplot_instance(renderer="jsdom", theme="current")
+# op_instance_dark = create_obsplot_instance(renderer="jsdom", theme="dark")
 
 
 def visualize_puzzle_input_202311(
@@ -323,7 +324,16 @@ def visualize_puzzle_input_202324(
             ]
         )
 
+    style = {}
+    style.update(
+        {
+            "backgroundColor": "#111111",
+            "color": "#eeeeee",
+        }
+    )
+
     return op_instance(  # type: ignore
+        # return op_instance_dark(  # type: ignore
         dict(
             grid=True,
             x=dict(
@@ -345,6 +355,7 @@ def visualize_puzzle_input_202324(
             aspectRatio=1,
             width=width,
             title=title,
+            style=style,
         )
     )
 
@@ -377,6 +388,10 @@ class ObservablePlotBuilder:
 
     def prepend(self, mark_producer: MarkProducerSignature) -> Self:
         self._marks_producers.insert(0, mark_producer)
+        return self
+
+    def insert(self, mark_producer: MarkProducerSignature, index: int) -> Self:
+        self._marks_producers.insert(index, mark_producer)
         return self
 
     def append(self, mark_producer: MarkProducerSignature) -> Self:
@@ -425,20 +440,29 @@ class ObservablePlotXarrayBuilder(ObservablePlotBuilder):
 
     def __post_init__(self):
         marks = self.create_raster_background_marks()
-        self.stack(marks)
+        self.prepend(marks)
 
     @override
     def copy(self, *, raster_xda: xr.DataArray | None = None, **kwargs: Any) -> Self:
+        # This code is inefficient as it can create two raster layers for no use...
         new_builder = super().copy(**kwargs)
-        new_builder.unstack()  # Remove raster background
+        new_builder.unstack(
+            1
+        )  # Remove old raster background, now in second position in the layers
         if raster_xda is None:
             return new_builder
-        return replace(new_builder, raster_xda=raster_xda)
+
+        replaced = replace(new_builder, raster_xda=raster_xda)
+        replaced.unstack(
+            1
+        )  # Remove old raster background, now in second position in the layers
+        return replaced
 
     @override
     def plot(self, **kwargs: Any) -> Obsplot:
         raster_xda = self.raster_xda
 
+        verbose: bool = self.initial_kwargs.get("verbose", True)
         dark_mode: bool = self.initial_kwargs.get("dark_mode", True)
         scale: float = self.initial_kwargs.get("scale", 1)
         width: int = self.initial_kwargs.get("width", 140 * 4)
@@ -507,6 +531,9 @@ class ObservablePlotXarrayBuilder(ObservablePlotBuilder):
             },
             **kwargs,
         }
+        if verbose:
+            for idx, mark_producer in enumerate(self._marks_producers):
+                print(f"Layer #{idx}", mark_producer)
         # print(merged_kwargs)
         return self._op(merged_kwargs)  # type: ignore
 
