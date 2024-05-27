@@ -9,7 +9,9 @@
   - [Documentation](#documentation)
     - [Deploy on GitHub Pages](#deploy-on-github-pages)
     - [Local](#local)
+    - [Misc](#misc)
       - [About pre-running the Notebooks](#about-pre-running-the-notebooks)
+      - [Convert SVGs to PNGs](#convert-svgs-to-pngs)
     - [Miscellaneous](#miscellaneous)
   - [Installation](#installation)
     - [Sources](#sources)
@@ -127,6 +129,8 @@ poetry run sphinx-build -E source _build/html # clear cache with -E
 poetry run sphinx-serve -h 127.0.0.1 -p 8080 # just serve
 ```
 
+### Misc
+
 #### About pre-running the Notebooks
 
 Clear non-interactively all notebooks for a glob path:
@@ -142,6 +146,22 @@ Run non-interactively all notebooks for a glob path:
 YEAR=2023
 jupyter nbconvert --inplace --execute /home/tselano/dev/advent-of-code/docs/source/notebooks/$YEAR/notebook_problem_*.ipynb
 ```
+
+#### Convert SVGs to PNGs
+
+If not installed, install inkscape
+
+```bash
+apt install inkscape
+```
+
+Run inkscape on all PNG files contained in a directory
+
+```bash
+for filename in docs/source/_static/img/thumbnails/*.svg; do inkscape -h 1024 $filename --export-png "${filename:0:-4}.png" --export-background black; done
+```
+
+Note: the `--export-background black` replaces the default transparent background by a black background. As dark-mode are the majority among plots, this is a safety net to avoid unreadables plots on a white background.
 
 ### Miscellaneous
 
@@ -303,13 +323,13 @@ Integration tests:
 pytest --with-integration -k integration --durations=0
 ```
 
-All tests : unit + integration tests. Slow tests are excluded.
+All tests : unit + integration tests. **Slow tests are excluded.**
 
 ```bash
 poetry run pytest -v --with-integration --durations=0
 ```
 
-Only slow tests, using multiple workers (requires `pytest-xdist`).
+**Only slow tests**, using multiple workers (requires `pytest-xdist`).
 
 ```bash
 poetry run pytest -v --with-integration -m slow --durations=0 -n 4
@@ -326,9 +346,9 @@ poetry run pytest -vv --with-integration -m slow --durations=0 -n 4
 See [Stack Overflow - Show durations of tests for pytest](https://stackoverflow.com/questions/27884404/printing-test-execution-times-and-pinning-down-slow-tests-with-py-test)
 
 ```bash
-pytest --durations=0 # Show all times for tests and setup and teardown
-pytest --durations=1 # Slowest test
-pytest --durations=50 # Slowest 50 tests
+pytest --durations=0   # Show all times for tests and setup and teardown
+pytest --durations=1   # Slowest test
+pytest --durations=50  # Slowest 50 tests
 ```
 
 ### Code quality

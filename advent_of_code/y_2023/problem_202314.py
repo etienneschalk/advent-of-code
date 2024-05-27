@@ -38,8 +38,10 @@ class AdventOfCodeProblem202314(AdventOfCodeProblem[PuzzleInput]):
         return compute_total_load_for_north(puzzle_input)
 
     def solve_part_2(self, puzzle_input: PuzzleInput):
+        return self.solve_part_2_details(puzzle_input)["total_load"]
         # Kind of related to advent_of_code/year_2023/problem_202308.py (detect a cycle)
 
+    def solve_part_2_details(self, puzzle_input: PuzzleInput):
         init_rot = 4
         max_iter = 1200
         state = puzzle_input
@@ -48,21 +50,41 @@ class AdventOfCodeProblem202314(AdventOfCodeProblem[PuzzleInput]):
         start, period, state_history = search_result
         print(start, period, state_history)
 
-        state_wanted = attain_wanted_state(1000000000, start, period, state_history)
+        target_cycle_count = 1000000000
+        state_wanted = attain_wanted_state(
+            target_cycle_count, start, period, state_history
+        )
         state_lines = get_list_of_str(state_wanted, 0)
         total_load = compute_total_load_from_state_lines(state_lines)
+
+        return {
+            "init_rot": init_rot,
+            "max_iter": max_iter,
+            "target_cycle_count": target_cycle_count,
+            "start": start,
+            "period": period,
+            "total_load": total_load,
+        }
         return total_load
 
     def write_visualizations_instructions_for_part_2(self):
         self.log_part_2(self.parse_input_text_file(), max_full_rotations_count=150)
 
-    def log_part_2(self, puzzle_input: PuzzleInput, max_full_rotations_count: int):
+    def log_part_2(
+        self,
+        puzzle_input: PuzzleInput,
+        max_full_rotations_count: int,
+        *,
+        verbose: bool = True,
+        save_zarr: bool = True,
+    ):
         init_rot = 4
         next_board = puzzle_input
         next_board_xda = xr.DataArray(data=next_board, dims=["row", "col"])
         board_history = [next_board_xda]
         for full_rotation_count in range(max_full_rotations_count):
-            print(full_rotation_count)
+            if verbose:
+                print(full_rotation_count)
             for d in range(1, 5):
                 k = init_rot - d
                 next_board = np.rot90(
@@ -78,12 +100,14 @@ class AdventOfCodeProblem202314(AdventOfCodeProblem[PuzzleInput]):
             next_board_xda.shape[1],
         )
         data_cube = xr.Dataset({"board_history": xr.concat(board_history, dim="time")})
-        data_cube.to_zarr(
-            store=output_file_path,
-            mode="w",
-            encoding=dict(board_history=dict(chunks=chunks)),
-        )
-        print(f"Saved zarr to {output_file_path}")
+        if save_zarr:
+            data_cube.to_zarr(
+                store=output_file_path,
+                mode="w",
+                encoding=dict(board_history=dict(chunks=chunks)),
+            )
+            print(f"Saved zarr to {output_file_path}")
+        return data_cube
 
     def get_visualizations_instructions_for_part_2_file_path(self) -> Path:
         return create_output_file_path("history.zarr", "", self.year, self.day)
