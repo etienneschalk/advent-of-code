@@ -107,8 +107,8 @@ def dijkstra(
         Guard not to be stuck if an infinite loop
     Returns
     -------
-        The path with the least heat loss from start to end in the heatmap,
-        as well as the visited states.
+    The path with the least heat loss from start to end in the heatmap,
+    as well as the visited states.
     """
     # Visited states is a set backed by a dict of manually hashed state keys
     visited_states: VisitedStates = {}
