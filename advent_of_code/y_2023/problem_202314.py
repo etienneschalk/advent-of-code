@@ -48,7 +48,7 @@ class AdventOfCodeProblem202314(AdventOfCodeProblem[PuzzleInput]):
         search_result = detect_cycle(init_rot, max_iter, state)
         assert search_result is not None
         start, period, state_history = search_result
-        print(start, period, state_history)
+        # print(start, period, state_history)
 
         target_cycle_count = 1000000000
         state_wanted = attain_wanted_state(
@@ -136,7 +136,7 @@ def detect_cycle(
 ) -> tuple[int, int, list[PuzzleInput]] | None:
     state_history: list[PuzzleInput] = [state]
     for i in range(max_iter):
-        print(i)
+        # print(i)
         state = update_state_for_one_full_rotation(state, init_rot)
         state_history.append(state)
         if sum(int(np.all(state_history[i] == h)) for h in state_history) > 1:

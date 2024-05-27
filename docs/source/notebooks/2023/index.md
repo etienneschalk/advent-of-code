@@ -166,23 +166,23 @@ notebook_problem_202325
 
 ---
 
-<!-- ```{figure} /_static/img/thumbnails/thumbnail_202314.png
+```{figure} /_static/img/thumbnails/thumbnail_202314.png
 :alt: Preview 202314 (not available)
 :height: 200px
 :align: center
 
 [Notebook 202314](/notebooks/2023/notebook_problem_202314)
-``` -->
+```
 
 ---
 
-<!-- ```{figure} /_static/img/thumbnails/thumbnail_202315.png
+```{figure} /_static/img/thumbnails/thumbnail_202315.png
 :alt: Preview 202315 (not available)
 :height: 200px
 :align: center
 
 [Notebook 202315](/notebooks/2023/notebook_problem_202315)
-``` -->
+```
 
 ---
 
