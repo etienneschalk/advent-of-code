@@ -8,15 +8,18 @@ from pyobsplot import Obsplot, Plot
 
 from advent_of_code.y_2023.problem_202311 import get_compartiments
 
+MarkProducerSignature = Callable[[], list[Any]]
+
 
 def create_obsplot_instance(
     *,
     renderer: Literal["jsdom", "widget"] = "jsdom",
     theme: Literal["current", "light", "dark"] = "dark",
+    debug: bool = True,
 ):
     # See https://juba.github.io/pyobsplot/usage.html#renderers
 
-    return Obsplot(renderer=renderer, theme=theme)
+    return Obsplot(renderer=renderer, theme=theme, debug=debug)
 
 
 # This is a singleton instance of observable plot, allowing further customization like
@@ -26,7 +29,7 @@ op_instance = create_obsplot_instance(renderer="jsdom", theme="current")
 # op_instance_dark = create_obsplot_instance(renderer="jsdom", theme="dark")
 
 
-def visualize_puzzle_input_202311(
+def create_marks_puzzle_input_202311(
     space_xda: xr.DataArray,
     *,
     with_rules: bool = False,
@@ -34,9 +37,10 @@ def visualize_puzzle_input_202311(
     coord_array: xr.DataArray | None = None,
     edge_density: float | None = None,
     with_chunk_graph: bool = False,
-    **kwargs: Any,
-):
-    def callback(marks: list[Any]) -> None:
+) -> MarkProducerSignature:
+    def callback() -> list[Any]:
+        marks = []
+
         if with_graph:
             if coord_array is None:
                 raise ValueError(
@@ -137,7 +141,9 @@ def visualize_puzzle_input_202311(
                     ),
                 )
 
-    return build_base_xarray_plot(space_xda, callback, **kwargs)
+        return marks
+
+    return callback
 
 
 def visualize_puzzle_input_202310(
@@ -360,9 +366,6 @@ def visualize_puzzle_input_202324(
     )
 
 
-MarkProducerSignature = Callable[[], list[Any]]
-
-
 @dataclass(kw_only=True, frozen=True)
 class ObservablePlotBuilder:
     _marks_producers: list[MarkProducerSignature] = field(default_factory=list)
@@ -460,22 +463,13 @@ class ObservablePlotXarrayBuilder(ObservablePlotBuilder):
 
     @override
     def plot(self, **kwargs: Any) -> Obsplot:
-        raster_xda = self.raster_xda
-
         verbose: bool = self.initial_kwargs.get("verbose", True)
         dark_mode: bool = self.initial_kwargs.get("dark_mode", True)
         scale: float = self.initial_kwargs.get("scale", 1)
         width: int = self.initial_kwargs.get("width", 140 * 4)
         height: int = self.initial_kwargs.get("height", None)
-        do_convert_ascii_array_to_uint8: bool = self.initial_kwargs.get(
-            "do_convert_ascii_array_to_uint8", True
-        )
         ascending_y_axis = self.initial_kwargs.get("ascending_y_axis", False)
         legend: bool = self.initial_kwargs.get("legend", False)
-
-        if do_convert_ascii_array_to_uint8 and raster_xda.dtype == np.uint8:
-            raster_xda = (raster_xda == ord("#")).astype(int)  # * 255
-
         marks = self.build_marks()
 
         style = {}
@@ -491,14 +485,18 @@ class ObservablePlotXarrayBuilder(ObservablePlotBuilder):
         # whereas width does not, hence it is kept.
         # The best way for a pixel-perfect display is margin=0
         # + defining the width and height manually
-        margin_right = kwargs.get("marginRight", 0)
-        margin_left = kwargs.get("marginLeft", 0)
-        margin_top = kwargs.get("marginTop", 0)
-        margin_bottom = kwargs.get("marginBottom", 0)
+        margin = self.initial_kwargs.get("margin", 0)
+        margin_right = self.initial_kwargs.get("marginRight", margin)
+        margin_left = self.initial_kwargs.get("marginLeft", margin)
+        margin_top = self.initial_kwargs.get("marginTop", margin)
+        margin_bottom = self.initial_kwargs.get("marginBottom", margin)
         width_with_margins = width * scale + margin_right + margin_left
         height_with_margins = (
             (height * scale + margin_top + margin_bottom) if height else None
         )
+        if height_with_margins is None:
+            if verbose:
+                print("Warning: potential issue with no given height")
         label = self.initial_kwargs.get("label", False)
 
         # Note that by default the y-axis is descending.
@@ -534,6 +532,7 @@ class ObservablePlotXarrayBuilder(ObservablePlotBuilder):
         if verbose:
             for idx, mark_producer in enumerate(self._marks_producers):
                 print(f"Layer #{idx}", mark_producer)
+        # if verbose:
         # print(merged_kwargs)
         return self._op(merged_kwargs)  # type: ignore
 
