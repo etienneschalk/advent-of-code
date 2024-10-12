@@ -150,7 +150,7 @@ class AdventOfCodeProblem202310(AdventOfCodeProblem[PuzzleInput]):
 
         # Coarsen to keep any filled macro-cell, then negate to get hole count.
         coarsened_xda: npt.NDArray[np.uint8] = ~(
-            xr.DataArray(filled, dims=("i", "j")).coarsen(i=3, j=3).any()  # pyright: ignore[reportGeneralTypeIssues]
+            xr.DataArray(filled, dims=("i", "j")).coarsen(i=3, j=3).any()  # pyright: ignore[reportAttributeAccessIssue]
         )
         # Note: coarsen seems not to be typed very well yet
 

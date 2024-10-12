@@ -256,7 +256,7 @@ def evaluate_quadratic_equation(
     # Evaluate the quadratic equation at the given target value
     result = np.polyval(coefficients, target)
 
-    return round(result)  # pyright: ignore[reportGeneralTypeIssues]
+    return round(result)  # pyright: ignore[reportArgumentType]
 
 
 def parse_text_input(text: str) -> PuzzleInput:

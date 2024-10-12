@@ -174,7 +174,7 @@ def linkcode_resolve(domain, info):
     print(f"{object=}")
 
     try:
-        fn = inspect.getsourcefile(inspect.unwrap(object))
+        fn = inspect.getsourcefile(inspect.unwrap(object))  # pyright: ignore[reportArgumentType]
     except TypeError:
         fn = None
     if not fn:
@@ -186,6 +186,7 @@ def linkcode_resolve(domain, info):
         source, lineno = inspect.getsourcelines(object)
     except OSError:
         lineno = None
+        source = []
 
     if lineno:
         linespec = f"#L{lineno}-L{lineno + len(source) - 1}"
