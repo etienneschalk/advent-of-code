@@ -1,3 +1,3 @@
 """
-Advent of Code - init
+Advent of Code - Year 2022
 """
