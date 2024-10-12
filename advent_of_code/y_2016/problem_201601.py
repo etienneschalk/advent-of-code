@@ -29,7 +29,27 @@ class AdventOfCodeProblem201601(AdventOfCodeProblem[PuzzleInput]):
         return result
 
     def solve_part_2(self, puzzle_input: PuzzleInput):
-        return 0
+        orientation = 0  # 0 N, 1 E, 2 S, 3 W, increases when turning right (clockwise)
+        # Bruteforce :-)
+        location = key = (0, 0)
+        history: dict[tuple[int, int], None] = dict.fromkeys([location])  # ordered set
+        for direction, quantity in puzzle_input:
+            sign = 1 if direction == "R" else -1
+            orientation = (orientation + sign) % 4
+
+            sign = 1 if (orientation // 2) == 0 else -1
+            for i in range(1, quantity + 1):
+                dp = i * sign
+                if orientation % 2 == 0:
+                    key = location[0], location[1] + dp
+                else:
+                    key = location[0] + dp, location[1]
+                if key in history:
+                    result = sum(abs(c) for c in key)
+                    return result
+                history[key] = None
+            location = key
+        return -1
 
 
 if __name__ == "__main__":
