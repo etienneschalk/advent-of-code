@@ -4,6 +4,11 @@ from advent_of_code.common.store import ExampleInputsStore, ExpectedAnswersStore
 
 
 @pytest.fixture(scope="session")
+def example_inputs_2016() -> ExampleInputsStore:
+    return ExampleInputsStore.from_private_resources_repository(2016)
+
+
+@pytest.fixture(scope="session")
 def example_inputs_2022() -> ExampleInputsStore:
     return ExampleInputsStore.from_private_resources_repository(2022)
 
