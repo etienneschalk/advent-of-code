@@ -21,6 +21,7 @@
         - [How-to: Obliterate private files from GitHub history](#how-to-obliterate-private-files-from-github-history)
       - [Create your own Test Data](#create-your-own-test-data)
   - [Development](#development)
+    - [Update routine](#update-routine)
     - [Testing](#testing)
       - [pytest](#pytest)
     - [Code quality](#code-quality)
@@ -303,18 +304,26 @@ Note: the expected answers would still need to be filled manually.
 
 ## Development
 
+### Update routine
+
+```bash
+poetry update
+pre-commit autoupdate
+pre-commit run --all
+pre-commit run --all --hook-stage manual
+```
+
 ### Testing
 
 #### pytest
 
-TODO eschalk include pytest to pre-commit (ut, it, and slow)
+TODO: include pytest to pre-commit (ut, it, and slow)
 
 ````{note}
 pytest is included in the `dev` dependency group of poetry in `pyproject.toml`
 
 ```bash
 poetry install --with dev
-```
 ````
 
 Integration tests:
