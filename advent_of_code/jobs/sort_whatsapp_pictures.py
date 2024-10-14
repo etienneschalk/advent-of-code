@@ -1,3 +1,4 @@
+# yes, this script has nothing to do here.
 import shutil
 from collections import defaultdict
 from pathlib import Path

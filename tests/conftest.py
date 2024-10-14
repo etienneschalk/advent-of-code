@@ -19,6 +19,11 @@ def example_inputs_2023() -> ExampleInputsStore:
 
 
 @pytest.fixture(scope="session")
+def expected_answers_2016() -> ExpectedAnswersStore:
+    return ExpectedAnswersStore.from_private_resources_repository(2016)
+
+
+@pytest.fixture(scope="session")
 def expected_answers_2022() -> ExpectedAnswersStore:
     return ExpectedAnswersStore.from_private_resources_repository(2022)
 
