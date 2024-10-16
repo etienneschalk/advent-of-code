@@ -1,5 +1,13 @@
-from advent_of_code.common.store import ExampleInputsStore
+import pytest
+
+from advent_of_code.common.store import ExampleInputsStore, ExpectedAnswersStore
 from advent_of_code.y_2016.problem_201602 import AdventOfCodeProblem201602
+
+
+@pytest.mark.integration
+def test_integration_201602(expected_answers_2016: ExpectedAnswersStore):
+    problem = AdventOfCodeProblem201602()
+    assert problem.solve() == expected_answers_2016.retrieve(problem)
 
 
 def test_problem_202201_part_1(example_inputs_2016: ExampleInputsStore):
