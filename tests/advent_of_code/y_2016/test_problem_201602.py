@@ -10,7 +10,7 @@ def test_integration_201602(expected_answers_2016: ExpectedAnswersStore):
     assert problem.solve() == expected_answers_2016.retrieve(problem)
 
 
-def test_problem_202201_part_1(example_inputs_2016: ExampleInputsStore):
+def test_problem_202202_part_1(example_inputs_2016: ExampleInputsStore):
     example_input = example_inputs_2016.retrieve(__file__, "example_input")
     # 1 2 3
     # 4 5 6
@@ -19,7 +19,7 @@ def test_problem_202201_part_1(example_inputs_2016: ExampleInputsStore):
     assert result == "1985"
 
 
-def test_problem_202201_part_2(example_inputs_2016: ExampleInputsStore):
+def test_problem_202202_part_2(example_inputs_2016: ExampleInputsStore):
     example_input = example_inputs_2016.retrieve(__file__, "example_input")
     #     1
     #   2 3 4
