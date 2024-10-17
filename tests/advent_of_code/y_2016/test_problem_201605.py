@@ -15,15 +15,15 @@ def test_problem_202205_part_2(puzzle_input: str, expected: str):
     assert result == expected
 
 
-@pytest.mark.integration
 @pytest.mark.parametrize("puzzle_input,expected", [("abbhdwsy", "801b56a7")])
+@pytest.mark.integration
 def test_problem_202205_part_1_integration(puzzle_input: str, expected: str):
     result = AdventOfCodeProblem201605().solve_part_1(puzzle_input)
     assert result == expected
 
 
-@pytest.mark.integration
 @pytest.mark.parametrize("puzzle_input,expected", [("abbhdwsy", "424a0197")])
+@pytest.mark.integration
 def test_problem_202205_part_2_integration(puzzle_input: str, expected: str):
     result = AdventOfCodeProblem201605().solve_part_2(puzzle_input)
     assert result == expected
