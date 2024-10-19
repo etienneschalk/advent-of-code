@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import override
 
 import numpy as np
 import numpy.typing as npt
@@ -26,6 +27,14 @@ class AdventOfCodeProblem202225(AdventOfCodeProblem[PuzzleInput]):
 
     def solve_part_2(self, puzzle_input: PuzzleInput):
         return "Part 2 of Day 25 is having solved all the 49 previous problems!"
+
+    @override
+    def solve(self, part_1: bool = True, part_2: bool = True):
+        # There is no part 2 for Christmas Day problems.
+        result_part_1 = (
+            self.solve_part_1(self.parse_input_text_file()) if part_1 else None
+        )
+        return {1: result_part_1}
 
 
 def convert_snafu_to_decimal(snafu: str) -> int:

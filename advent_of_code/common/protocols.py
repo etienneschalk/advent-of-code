@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import Protocol
+from typing import Mapping, Protocol
 
 from advent_of_code.common.common import load_puzzle_input_text_file
 
@@ -29,7 +29,9 @@ class AdventOfCodeProblem[PuzzleInputT](Protocol):
         parsed = self.parse_text_input(text)
         return parsed
 
-    def solve(self, part_1: bool = True, part_2: bool = True):
+    def solve(
+        self, part_1: bool = True, part_2: bool = True
+    ) -> Mapping[int, int | str | None]:
         # Be safe and parse twice the input, in case logic require input mutation
         # This is less efficient than reusing the input, but can help keep independence
         # in part solving, when it is easier to mutate the puzzle input inplace.

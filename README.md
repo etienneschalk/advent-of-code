@@ -332,7 +332,7 @@ Integration tests:
 pytest --with-integration -k integration --durations=0
 ```
 
-All tests : unit + integration tests. **Slow tests are excluded.**
+Run all tests : unit + integration tests. **Slow tests are excluded.**
 
 ```bash
 poetry run pytest -v --with-integration --durations=0
