@@ -119,7 +119,8 @@ class AdventOfCodeProblem201608(AdventOfCodeProblem[PuzzleInput]):
             for split_array in split_arrays
         ]
         result = "".join(FONT_TO_LETTER[letter] for letter in letters)
-        return result
+        # wrap in str for easier auto download input as part 2 is str
+        return str(result)
 
     def execute_instructions(
         self, instructions: PuzzleInput, screen: npt.NDArray[np.uint8]
