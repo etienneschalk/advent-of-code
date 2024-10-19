@@ -80,7 +80,7 @@ exclude = ["tests/"] # Be lenient for tests.
 reportUnknownArgumentType = false
 reportUnknownMemberType = false
 reportUnknownVariableType = false
-venv = "advent-of-code-CEbbwEIT-py3.12"
+venv = "advent-of-code-CEbbwEIT-py3.13" # Update me when update python.
 venvPath = "/home/tselano/.cache/pypoetry/virtualenvs/"
 
 [tool.pytest.ini_options]
