@@ -1,16 +1,15 @@
+"""
+Note about re.match vs re.search on StackOverflow:
+https://stackoverflow.com/questions/20236775/python-python-re-search-speed-optimization-for-long-string-lines
+"""
+
 import re
 from dataclasses import dataclass
 from typing import Iterator, Self
 
 from advent_of_code.common.protocols import AdventOfCodeProblem
 
-type PuzzleInput = ProblemData
-
-
-@dataclass(kw_only=True, frozen=True)
-class ProblemData:
-    instructions: list["Instruction"]
-    content: str
+type PuzzleInput = str
 
 
 @dataclass(kw_only=True, frozen=True)
@@ -54,25 +53,22 @@ class AdventOfCodeProblem201609(AdventOfCodeProblem[PuzzleInput]):
 
     @staticmethod
     def parse_text_input(text: str) -> PuzzleInput:
-        text = text.strip()
-        instructions = Instruction.parse_list_from_text(text)
-        return ProblemData(instructions=instructions, content=text)
+        return text.strip()
 
     def solve_part_1(self, puzzle_input: PuzzleInput):
-        concat = self.solve_part_1_internal(puzzle_input)
+        instructions = Instruction.parse_list_from_text(puzzle_input)
+        concat = self.solve_part_1_internal(instructions, puzzle_input)
         return len(concat)
 
-    def solve_part_1_internal(self, puzzle_input: PuzzleInput) -> str:
-        instructions = puzzle_input.instructions
-        content = puzzle_input.content
-
+    def solve_part_1_internal(
+        self, instructions: list[Instruction], content: str
+    ) -> str:
         cursor: int = 0
         decoded: list[str] = []
         instr_iter: Iterator[Instruction] = iter(instructions)
         instr = next(instr_iter, None)
 
         while instr and (cursor < len(content)):
-            print(instr)
             decoded.append(content[cursor : instr.span[0]])
             start = instr.span[1]
             cursor = start + instr.width
@@ -84,95 +80,33 @@ class AdventOfCodeProblem201609(AdventOfCodeProblem[PuzzleInput]):
 
         # Add the rest of the text.
         decoded.append(content[cursor:])
-        print(decoded)
-        concat = "".join(decoded)
-        return concat
+        return "".join(decoded)
 
     def solve_part_2(self, puzzle_input: PuzzleInput):
         # Do not use the pre-parsed instruction, re-match them on the fly.
-        decompressed_length = self.solve_part_2_internal(puzzle_input.content)
+        decompressed_length = self.solve_part_2_internal(puzzle_input)
         return decompressed_length
 
-    def solve_part_2_internal(self, content: str, cursor: int = 0) -> int:
-        zone_end = len(content)
-
+    def solve_part_2_internal(self, content: str) -> int:
         total: int = 0
+
         while content:
-            # https://stackoverflow.com/questions/20236775/
-            # python-python-re-search-speed-optimization-for-long-string-lines
-            # res = re.search(r"(\((\d+)x(\d+)\))+?", content)
-            res = re.match(r"(.*?)(\((\d+)x(\d+)\))", content)
-            if res is None:
-                # Leaf case, return just the length of content
-                return zone_end
-            instr = Instruction.from_match_search(res)
-            # Note: because of the usage of match instead of find, the span includes the prefix.
-            data_segment_start = instr.span[1]
-            data_segment_end = data_segment_start + instr.width
-            prefix_len = data_segment_start - instr.span[0] - len(instr.representation)
-            data_segment = content[data_segment_start:data_segment_end]
-            recursive_result = self.solve_part_2_internal(data_segment)
-            total += prefix_len + instr.repeat * recursive_result
-            content = content[data_segment_end:]
+            # Note the (.*?) to consume the beginning of the string.
+            _match = re.match(r"(.*?)(\((\d+)x(\d+)\))", content)
+
+            if _match is None:
+                return total + len(content)  # Leaf case, no more instructions.
+
+            # Note: Because of the usage of re.match instead of find, the span includes the prefix.
+            instr = Instruction.from_match_search(_match)
+            start = instr.span[1]
+            end = start + instr.width
+            prefix = start - instr.span[0] - len(instr.representation)
+            decompressed = self.solve_part_2_internal(content[start:end])
+            total += prefix + instr.repeat * decompressed
+            content = content[end:]
+
         return total
-        # total: int = 0
-        # cursor: int = 0
-        # instr_idx: int = 0
-        # instr = instructions[instr_idx]
-        # prefix_length = instr.span[0] - cursor
-        # start = instr.span[1]
-        # end = start + instr.width
-        # suffix = zone_end - cursor
-        # # Recursive but look ahead next instr to check if valid
-        # # to avoid looping when should not
-        # decoded_length = prefix_length + total * instr.repeat + suffix
-        # return decoded_length
-
-
-# def solve_part_2_internal(self, puzzle_input: PuzzleInput) -> str:
-#     instructions = puzzle_input.instructions
-#     content = puzzle_input.content
-
-#     cursor: int = 0
-#     decoded: list[str] = []
-#     instr_iter: Iterator[Instruction] = iter(instructions)
-#     instr = next(instr_iter, None)
-
-#     decoded_length, cursor = self.decode_recursive(
-#         puzzle_input, cursor, len(content), instr, instr_iter
-#     )
-#     # assert cursor == len(content)
-#     return decoded_length
-
-# def decode_recursive(
-#     self,
-#     puzzle_input: PuzzleInput,
-#     cursor: int,
-#     zone_end: int,
-#     instr: Instruction,
-#     instr_iter: Iterator[Instruction],
-# ) -> int:
-#     if instr is None:
-#         return zone_end - cursor, zone_end
-#     prefix_length = instr.span[0] - cursor
-#     start = instr.span[1]
-#     cursor = start + instr.width
-#     total = 0
-#     c = start
-#     print(
-#         f"Outer {instr=} {prefix_length=} {start=} {zone_end=} {cursor=} {total=} {c=}"
-#     )
-#     while c < cursor:
-#         instr = next(instr_iter, None)
-#         ll, c = self.decode_recursive(puzzle_input, c, cursor, instr, instr_iter)
-#         total += ll
-#         print(
-#             f"Inner {prefix_length=} {start=} {zone_end=} {cursor=} {total=} {c=} {ll=}"
-#         )
-
-#     suffix = zone_end - cursor
-#     decoded_length = prefix_length + total * instr.repeat + suffix
-#     return decoded_length, cursor
 
 
 if __name__ == "__main__":
