@@ -102,7 +102,8 @@ class AdventOfCodeProblem201608(AdventOfCodeProblem[PuzzleInput]):
         screen = np.zeros((6, 50), dtype=np.uint8)
         self.execute_instructions(puzzle_input, screen)
         print(np.array2string(screen, separator="").replace("0", ".").replace("1", "#"))
-        return screen.sum()
+        # wrap in str for easier auto download input as part 2 is str
+        return str(screen.sum())
 
     def solve_part_2(self, puzzle_input: PuzzleInput):
         screen = np.zeros((6, 50), dtype=np.uint8)
@@ -119,8 +120,7 @@ class AdventOfCodeProblem201608(AdventOfCodeProblem[PuzzleInput]):
             for split_array in split_arrays
         ]
         result = "".join(FONT_TO_LETTER[letter] for letter in letters)
-        # wrap in str for easier auto download input as part 2 is str
-        return str(result)
+        return result
 
     def execute_instructions(
         self, instructions: PuzzleInput, screen: npt.NDArray[np.uint8]

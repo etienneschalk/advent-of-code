@@ -1,8 +1,9 @@
 # advent-of-code
 
+![python version](https://img.shields.io/badge/python-3.13-blue)
 ![publish-documentation-github-pages](https://github.com/etienneschalk/advent-of-code/actions/workflows/publish-documentation-github-pages.yml/badge.svg)
 ![docstring coverage](./docs/docstr_coverage_badge.svg)
-![python version](https://img.shields.io/badge/python-3.13-blue)
+![pytest-cov](https://img.shields.io/badge/coverage-61%25-purple)
 
 <!-- Output from download_score.py BEGIN -->
 
@@ -377,6 +378,15 @@ pytest --durations=0   # Show all times for tests and setup and teardown
 pytest --durations=1   # Slowest test
 pytest --durations=50  # Slowest 50 tests
 ```
+
+Pytest coverage with `pytest-cov`:
+
+```bash
+poetry run pytest -v --cov=advent_of_code
+poetry run pytest -v --cov=advent_of_code --with-integration
+```
+
+Note: coverage seems incompatible with using the `--durations` option.
 
 ### Code quality
 
