@@ -17,26 +17,33 @@ class AdventOfCodeProblem201625(AdventOfCodeProblem[PuzzleInput]):
         return instructions
 
     def solve_part_1(self, puzzle_input: PuzzleInput):
-        a = 0
-        registers = {"a": a, "b": 0, "c": 0, "d": 0}
-        return run_program(puzzle_input, registers)
+        # Good old bruteforce works this one, no need to detect some permanent state loop!
+        for a in range(200):
+            registers = {"a": a, "b": 0, "c": 0, "d": 0}
+            success = run_program(puzzle_input, registers)
+            if success:
+                print(f"Success for {a=}")
+                return a
+        return -1
 
     def solve_part_2(self, puzzle_input: PuzzleInput):
         return "No part 2"
 
 
-def run_program(instructions: PuzzleInput, registers: dict[str, int]) -> int:
+def run_program(
+    instructions: PuzzleInput, registers: dict[str, int], *, verbose: bool = False
+) -> int:
     cursor = 0
     exec_count = 0
     program_length = len(instructions)
-    out = -1
+    out = 1  # we want a sequence of 0, 1, 0, 1... so start at 1 for comparison
 
     MAX_EXEC_COUNT = 40000
     while cursor < program_length and (exec_count < MAX_EXEC_COUNT):
         instr = instructions[cursor]
         cursor += 1
         exec_count += 1
-        if exec_count % 100 == 0:
+        if verbose and exec_count % 100 == 0:
             print(
                 f"    {exec_count:05d} {cursor:02d} {" ".join(instr):<12} "
                 f"{"|".join(f"{k}:{v:>5}" for k,v in registers.items())}"
@@ -69,10 +76,11 @@ def run_program(instructions: PuzzleInput, registers: dict[str, int]) -> int:
                     value = int(value_or_register)
                 else:
                     value = registers[value_or_register]
+                if value == out:
+                    return False  # same value :/
                 out = value
-                print(out)
 
-    return registers["a"]
+    return True
 
 
 if __name__ == "__main__":
