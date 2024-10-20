@@ -29,6 +29,8 @@ pytest = "^7.4.4"
 pytest-integration-mark = "^0.2.0"
 pytest-optional-tests = "^0.1.1"
 pytest-xdist = "^3.5.0"
+docstr-coverage = "^2.3.2"
+
 
 [tool.poetry.group.docs]
 optional = true

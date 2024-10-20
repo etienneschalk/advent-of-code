@@ -1,5 +1,9 @@
 # advent-of-code
 
+![publish-documentation-github-pages](https://github.com/etienneschalk/advent-of-code/actions/workflows/publish-documentation-github-pages.yml/badge.svg)
+
+![docstring coverage](./docs/docstr_coverage_badge.svg)
+
 ## Table of Contents
 
 - [advent-of-code](#advent-of-code)

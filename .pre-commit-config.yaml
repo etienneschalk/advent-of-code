@@ -26,6 +26,7 @@ repos:
       # - id: detect-aws-credentials
       # - id: double-quote-string-fixer # taken care of by ruff
       - id: end-of-file-fixer
+        exclude: '.svg'
       # - id: file-contents-sorter
       - id: fix-byte-order-marker
       # - id: fix-encoding-pragma
@@ -50,10 +51,6 @@ repos:
       - id: isort
         # Crucial otherwise the pre-commit hook will indefinitely update the files
         args: ["--profile", "black"]
-  # - repo: https://github.com/psf/black
-  #   rev: 23.12.1
-  #   hooks:
-  #     - id: black
   - repo: https://github.com/keewis/blackdoc
     rev: v0.3.9
     hooks:
@@ -67,27 +64,17 @@ repos:
         args: [ --fix ]
       # Run the formatter.
       - id: ruff-format
-  # - repo: https://github.com/PyCQA/flake8
-  #   rev: 7.0.0
-  #   hooks:
-  #     - id: flake8
-    # MyPy is too aggressive, and does not support valid Python >=3.10 code
-    # eg "dict" is not subscriptable, use "typing.Dict" instead  [misc]
-  # - repo: https://github.com/pre-commit/mirrors-mypy
-  #   rev: v1.8.0
-  #   hooks:
-  #     - id: mypy
-  #       additional_dependencies: [
-  #         numpy,
-  #         typing-extensions>=4.1.0,
-  #       ]
-  # Pyright can replace mypy
   - repo: https://github.com/RobertCraigie/pyright-python
     rev: v1.1.385
     hooks:
     - id: pyright
       language: python
-      language_version: python3.12
+      language_version: python3.13
+  - repo: https://github.com/HunterMcGushion/docstr_coverage
+    rev: v2.3.2 # most recent docstr-coverage release or commit sha
+    hooks:
+      - id: docstr-coverage
+        args: ["--verbose", "1"] # override the .docstr.yaml to see less output
   - repo: local
     hooks:
     - id: pytest-bare-minimum

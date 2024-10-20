@@ -1,0 +1,16 @@
+paths: # list or string
+  - advent_of_code
+badge: docs # Path
+exclude: .*/test # regex
+verbose: 3 # int (0-4)
+skip_magic: True # Boolean
+# skip_file_doc: True # Boolean
+skip_init: True # Boolean
+skip_class_def: True # Boolean
+skip_private: True # Boolean
+follow_links: True # Boolean
+# accept_empty: True # Boolean
+ignore_names_file: .*/test # regex
+fail_under: 80 # int
+# percentage_only: True # Boolean
+percentage_only: False # Boolean
