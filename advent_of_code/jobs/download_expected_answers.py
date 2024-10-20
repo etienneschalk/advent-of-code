@@ -1,13 +1,17 @@
 import json
 import re
-from datetime import datetime
 from pathlib import Path
 
 import click
 import requests
 
-FIRST_AVAILABLE_YEAR = 2015
-DEFAULT_SESSION_COOKIE_VALUE_PATH = Path.home() / ".advent-of-code-session-cookie-value"
+from advent_of_code.common.job_utilities import (
+    DEFAULT_SESSION_COOKIE_VALUE_PATH,
+    determine_first_aoc_available_year,
+    determine_last_aoc_available_year,
+    get_cookies,
+)
+
 DEFAULT_USERNAME = "eschalk"
 DEFAULT_EXPECTED_ANSWERS_LOCATION = (
     Path.home()
@@ -73,8 +77,8 @@ def download_expected_answers(
     """
 
     if year is None:
-        first_year = FIRST_AVAILABLE_YEAR
-        last_year = determine_latest_available_year()
+        first_year = determine_first_aoc_available_year()
+        last_year = determine_last_aoc_available_year()
     else:
         # One turn of loop only for the desired year!
         first_year = last_year = year
@@ -147,41 +151,6 @@ def download_expected_answers_internal(
             json.dumps(existing_year_expected_answers, indent=4, sort_keys=True)
         )
         click.echo(expected_answers_file_path)
-
-
-def get_cookies(session_cookie_value_path: Path) -> dict[str, str]:
-    """
-    Get a cookies dict containing the session cookie.
-
-    How to retrieve the cookies:
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-    After having successfully logged in advent of code,
-    get the cookie session value and store it in home.
-    This cookie can later be used to retrieve authentication-protected
-    data from the advent of code website, in an automated way.
-
-    Parameters
-    ----------
-    session_cookie_value_path
-        Path to a file containing the session, by default DEFAULT_SESSION_COOKIE_VALUE_PATH
-
-    Returns
-    -------
-        Cookies dict to be passed to the requests.
-    """
-    session_cookie_value = session_cookie_value_path.read_text()
-    cookies = {"session": session_cookie_value}
-    return cookies
-
-
-def determine_latest_available_year() -> int:
-    now = datetime.now()
-    if now.month == 12:
-        latest_available_year = now.year
-    else:
-        latest_available_year = now.year - 1
-    return latest_available_year
 
 
 if __name__ == "__main__":

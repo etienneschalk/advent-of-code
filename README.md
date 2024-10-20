@@ -1,8 +1,28 @@
 # advent-of-code
 
 ![publish-documentation-github-pages](https://github.com/etienneschalk/advent-of-code/actions/workflows/publish-documentation-github-pages.yml/badge.svg)
-
 ![docstring coverage](./docs/docstr_coverage_badge.svg)
+![python version](https://img.shields.io/badge/python-3.13-blue)
+
+<!-- Output from download_score.py BEGIN -->
+
+![AOC 2015](https://img.shields.io/badge/AOC%202015-0%20%E2%AD%90-CB0E0E)
+![AOC 2016](https://img.shields.io/badge/AOC%202016-18%20%E2%AD%90-85450A)
+![AOC 2017](https://img.shields.io/badge/AOC%202017-0%20%E2%AD%90-CB0E0E)
+![AOC 2018](https://img.shields.io/badge/AOC%202018-0%20%E2%AD%90-CB0E0E)
+![AOC 2019](https://img.shields.io/badge/AOC%202019-0%20%E2%AD%90-CB0E0E)
+![AOC 2020](https://img.shields.io/badge/AOC%202020-0%20%E2%AD%90-CB0E0E)
+![AOC 2021](https://img.shields.io/badge/AOC%202021-0%20%E2%AD%90-CB0E0E)
+![AOC 2022](https://img.shields.io/badge/AOC%202022-11%20%E2%AD%90-A42D0C)
+![AOC 2023](https://img.shields.io/badge/AOC%202023-50%20%E2%AD%90-08A802)
+
+<!-- Output from download_score.py END -->
+
+---
+
+:arrow_right: [:blue_book: Documentation Blog](https://etienneschalk.github.io/advent-of-code/) :arrow_left:
+
+---
 
 ## Table of Contents
 
