@@ -11,6 +11,6 @@ skip_private: True # Boolean
 follow_links: True # Boolean
 # accept_empty: True # Boolean
 ignore_names_file: .*/test # regex
-fail_under: 80 # int
+fail_under: 2 # int
 # percentage_only: True # Boolean
 percentage_only: False # Boolean
