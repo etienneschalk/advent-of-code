@@ -202,7 +202,7 @@ def download_scores(
     scores: dict[int, int] = {}
     for year in range(first_year, last_year + 1):
         result = requests.get(f"https://adventofcode.com/{year}", cookies=cookies)
-        print(result.status_code, year)
+        click.echo(f"{result.status_code}, {year}")
         if (result.status_code) == 200:
             _match = re.search(
                 r'<span class="star-count">(\d+)\*</span>',
@@ -211,17 +211,19 @@ def download_scores(
             score = 0 if _match is None else int(_match.group(1))
             scores[year] = score
         else:
-            print(f"Non-200 status code for {year=} ({result.status_code=})")
+            click.echo(f"Non-200 status code for {year=} ({result.status_code=})")
 
-    print(scores)
-    print("-----")
+    click.echo(scores)
+    click.echo("-----")
     for year, score in scores.items():
-        badge_md_img = (
-            f"![AOC {year}]"
-            "(https://img.shields.io/badge/AOC%20"
-            f"{year}-{score}%20%E2%AD%90-{color_gradient_red_to_green_hex_26[score//2]})"
-        )
-        print(badge_md_img)
+        if score > 0:
+            # Do not generate badges for unstarted years.
+            badge_md_img = (
+                f"![AOC {year}]"
+                "(https://img.shields.io/badge/AOC%20"
+                f"{year}-{score}%20%E2%AD%90-{color_gradient_red_to_green_hex_26[score//2]})"
+            )
+            click.echo(badge_md_img)
 
 
 def download_expected_answers(
@@ -290,12 +292,14 @@ def download_puzzle_inputs(
             result = requests.get(
                 f"https://adventofcode.com/{year}/day/{day}/input", cookies=cookies
             )
-            print(result.status_code)
+            click.echo(result.status_code)
             if (result.status_code) == 200:
                 puzzle_input_file_path.write_bytes(result.content)
-                print(puzzle_input_file_path)
+                click.echo(puzzle_input_file_path)
             else:
-                print(f"Non-200 status code for {year=} {day=} ({result.status_code=})")
+                click.echo(
+                    f"Non-200 status code for {year=} {day=} ({result.status_code=})"
+                )
 
 
 if __name__ == "__main__":
