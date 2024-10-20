@@ -3,10 +3,10 @@ Note about re.match vs re.search on StackOverflow:
 https://stackoverflow.com/questions/20236775/python-python-re-search-speed-optimization-for-long-string-lines
 """
 
-from collections import defaultdict
 import re
+from collections import defaultdict
 from dataclasses import dataclass
-from typing import Iterator, Literal, Self
+from typing import Literal
 
 from advent_of_code.common.protocols import AdventOfCodeProblem
 
@@ -50,16 +50,13 @@ class AdventOfCodeProblem201610(AdventOfCodeProblem[PuzzleInput]):
 
     @staticmethod
     def parse_text_input(text: str) -> PuzzleInput:
-        text text.strip()
         regexp_1 = r"value (\d+) goes to bot (\d+)"
         regexp_2 = (
             r"bot (\d+) gives low to (output|bot) (\d+) and high to (output|bot) (\d+)"
         )
         regexp = rf"({regexp_1}|{regexp_2})"
-        print(regexp)
-        _matches = list(re.finditer(regexp, puzzle_input))
-        print(puzzle_input)
-        print(_matches)
+
+        _matches = re.finditer(regexp, text.strip())
         instructions = []
         for m in _matches:
             if m.group(4) is None:
@@ -68,55 +65,51 @@ class AdventOfCodeProblem201610(AdventOfCodeProblem[PuzzleInput]):
                 instr = BotInstruction(
                     m.group(0),
                     int(m.group(4)),
-                    m.group(5),
+                    str(m.group(5)),  # type: ignore
                     int(m.group(6)),
-                    m.group(7),
+                    str(m.group(7)),  # type: ignore
                     int(m.group(8)),
                 )
-            print(instr)
             instructions.append(instr)
+
         return instructions
 
     def solve_part_1(self, puzzle_input: PuzzleInput):
-        instructions = puzzle_input
-
-        wanted_low_value = 2
-        wanted_high_value = 5
-
         wanted_low_value = 17
         wanted_high_value = 61
+        return self.solve_internal(puzzle_input, wanted_low_value, wanted_high_value, 1)
 
+    def solve_part_2(self, puzzle_input: PuzzleInput):
+        wanted_low_value = 17
+        wanted_high_value = 61
+        return self.solve_internal(puzzle_input, wanted_low_value, wanted_high_value, 2)
+
+    def solve_internal(
+        self,
+        instructions: PuzzleInput,
+        wanted_low_value: int,
+        wanted_high_value: int,
+        part: int,
+    ) -> int:
         bot_dict: dict[int, Bot] = defaultdict(lambda: Bot([]))
         output_dict: dict[int, int] = {}
 
-        found = None
-        remaining_instructions = []
+        bot_instructions: list[BotInstruction]
+        remaining_instructions: list[BotInstruction] = []
 
         # Execute init instructions first, bot instructions second.
         for instr in instructions:
             if not isinstance(instr, InitInstruction):
                 remaining_instructions.append(instr)
                 continue
-            print()
-            print("#", instr)
-            print(dict(bot_dict))
-            print(output_dict)
-
             bot_dict[instr.bot_id].values.append(instr.value)
-        print(f"{bot_dict=}")
-        print("-----")
 
         while remaining_instructions:
-            instructions = remaining_instructions
+            bot_instructions = remaining_instructions
             remaining_instructions = []
-            for instr in instructions:
-                print()
-                print("Execute instruction:", instr)
-                print(f"{dict(bot_dict)}=")
-                print(f"{output_dict=}")
 
+            for instr in bot_instructions:
                 giving_bot = bot_dict[instr.bot_id]
-                print(f"{giving_bot=}")
 
                 if len(giving_bot.values) < 2:
                     remaining_instructions.append(instr)
@@ -134,22 +127,16 @@ class AdventOfCodeProblem201610(AdventOfCodeProblem[PuzzleInput]):
                 else:
                     output_dict[instr.high_target_id] = high_value
 
-                print(f"{low_value=} {high_value=}")
                 if low_value == wanted_low_value and high_value == wanted_high_value:
                     print(f"Found #{instr.bot_id}: {giving_bot}")
-                    found = instr.bot_id
+
+                    if part == 1:
+                        return instr.bot_id
 
                 giving_bot.values.clear()
 
-        print(dict(bot_dict))
-        print(output_dict)
-        print(f"{found=}")
-
-        part_2 = output_dict[0] * output_dict[1] * output_dict[2]
-        print(f"{part_2=}")
-
-    def solve_part_2(self, puzzle_input: PuzzleInput):
-        return -1
+        product = output_dict[0] * output_dict[1] * output_dict[2]
+        return product
 
 
 if __name__ == "__main__":

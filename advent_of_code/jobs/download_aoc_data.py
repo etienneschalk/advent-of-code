@@ -63,8 +63,9 @@ DEFAULT_PUZZLE_INPUTS_LOCATION = DEFAULT_PERSONALIZED_DATA_LOCATION / "puzzle_in
 
 @click.command()
 @click.option(
-    "--choices",
-    help="Choices of mode of execution of the downloader tool.",
+    "--mode",
+    "choice_list",
+    help="Choice of mode of execution of the downloader tool",
     type=click.Choice(ALL_CHOICES),
     required=True,
     multiple=True,
@@ -109,7 +110,7 @@ DEFAULT_PUZZLE_INPUTS_LOCATION = DEFAULT_PERSONALIZED_DATA_LOCATION / "puzzle_in
     help="Dry Run",
 )
 def download_aoc_data(
-    choices: list[str],
+    choice_list: list[str],
     year: int | None,
     day: int | None,
     expected_answers_location: Path,
@@ -119,13 +120,15 @@ def download_aoc_data(
 ):
     """Example usages:
 
-    python advent_of_code/jobs/download_expected_answers.py
+    python advent_of_code/jobs/download_aoc_data.py
 
-    python advent_of_code/jobs/download_expected_answers.py --dry_run
+    python advent_of_code/jobs/download_aoc_data.py --dry_run
 
-    python advent_of_code/jobs/download_expected_answers.py --year 2016 --day 9
+    python advent_of_code/jobs/download_aoc_data.py --year 2016 --day 9
 
-    python advent_of_code/jobs/download_expected_answers.py --year 2016 --day 09
+    python advent_of_code/jobs/download_aoc_data.py --year 2016 --day 09
+
+    python advent_of_code/jobs/download_aoc_data.py --mode expected_answers --year 2016 --day 10
 
     """
 
@@ -149,10 +152,10 @@ def download_aoc_data(
     if dry_run:
         click.echo("Quitting because dry run enabled.")
 
-    click.echo(f"Request: {choices=}")
+    click.echo(f"Request: {choice_list=}")
 
     cookies = get_cookies(session_cookie_value_path)
-    for choice in choices:
+    for choice in choice_list:
         if choice == "expected_answers":
             click.echo(
                 f"[{choice}] "
