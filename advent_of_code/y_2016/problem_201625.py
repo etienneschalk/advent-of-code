@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import override
 
 from advent_of_code.common.protocols import AdventOfCodeProblem
 
@@ -15,6 +16,14 @@ class AdventOfCodeProblem201625(AdventOfCodeProblem[PuzzleInput]):
         text = text.strip()
         instructions = [line.split(" ") for line in text.split("\n")]
         return instructions
+
+    @override
+    def solve(self, part_1: bool = True, part_2: bool = True):
+        # There is no part 2 for Christmas Day problems.
+        result_part_1 = (
+            self.solve_part_1(self.parse_input_text_file()) if part_1 else None
+        )
+        return {1: result_part_1}
 
     def solve_part_1(self, puzzle_input: PuzzleInput):
         # Good old bruteforce works this one, no need to detect some permanent state loop!
