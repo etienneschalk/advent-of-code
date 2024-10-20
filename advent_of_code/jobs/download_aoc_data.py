@@ -93,7 +93,7 @@ DEFAULT_PUZZLE_INPUTS_LOCATION = DEFAULT_PERSONALIZED_DATA_LOCATION / "puzzle_in
     "--puzzle_inputs_location",
     type=click.Path(path_type=Path),
     help="Root directory into which download the puzzle inputs.",
-    default=DEFAULT_EXPECTED_ANSWERS_LOCATION,
+    default=DEFAULT_PUZZLE_INPUTS_LOCATION,
 )
 @click.option(
     "--session_cookie_value_path",
@@ -255,10 +255,13 @@ def download_expected_answers(
                     f"Non-200 status code for {year=} {day=} ({result.status_code=})"
                 )
 
-        existing_year_expected_answers = json.loads(
-            expected_answers_file_path.read_text()
-        )
-        existing_year_expected_answers.update(year_expected_answers)
+        if expected_answers_file_path.is_file():
+            existing_year_expected_answers = json.loads(
+                expected_answers_file_path.read_text()
+            )
+            existing_year_expected_answers.update(year_expected_answers)
+        else:
+            existing_year_expected_answers = year_expected_answers
         expected_answers_file_path.write_text(
             json.dumps(existing_year_expected_answers, indent=4, sort_keys=True)
         )
