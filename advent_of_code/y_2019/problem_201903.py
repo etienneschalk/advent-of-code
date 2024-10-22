@@ -22,7 +22,22 @@ class AdventOfCodeProblem201903(AdventOfCodeProblem[PuzzleInput]):
     def solve_part_1(self, puzzle_input: PuzzleInput):
         print(puzzle_input)
         # Step 1: Compute segments sets for two wires (get abs coords from rel movements)
+        wire_coords = self.compute_coords_set(puzzle_input)
 
+        # Step 2: Bruteforce cartesian product of two segment sets.
+        centres, all_combined_steps = self.extreme_unhinged_bruteforce(wire_coords)
+
+        print(centres)
+        print(all_combined_steps)
+        result_part_1 = min(sum(abs(p) for p in c) for c in centres)
+        print(result_part_1)  # part 1
+
+        # part 2
+        result_part_2 = min(all_combined_steps)
+        print(f"{result_part_2=}")
+        return result_part_1
+
+    def compute_coords_set(self, puzzle_input):
         wire_coords = []
         for wire_moves in puzzle_input:
             coords = [np.array((0, 0))]
@@ -40,44 +55,62 @@ class AdventOfCodeProblem201903(AdventOfCodeProblem[PuzzleInput]):
             wire_coords.append(coords)
 
         print(wire_coords)
+        return wire_coords
 
-        # Step 2: Bruteforce cartesian product of two segment sets.
+    def extreme_unhinged_bruteforce(self, wire_coords):
         centres = []
+        all_combined_steps = []
+        steps_0 = 0
         for start_0, end_0 in zip(wire_coords[0][:-1], wire_coords[0][1:]):
+            vec_0 = end_0 - start_0
+            steps_0 += abs(sum(vec_0))
+            steps_1 = 0
             for start_1, end_1 in zip(wire_coords[1][:-1], wire_coords[1][1:]):
-                vec_0 = end_0 - start_0
                 vec_1 = end_1 - start_1
+                steps_1 += abs(sum(vec_1))
+
                 dot = np.dot(vec_0, vec_1)
                 # bypass parallel segments
                 # ignore case where two segments are superposed.
                 if dot == 0:
-                    if vec_1[0] == 0:
-                        start_h, end_h = start_0, end_0
-                        start_v, end_v = start_1, end_1
-                    else:
-                        start_v, end_v = start_0, end_0
-                        start_h, end_h = start_1, end_1
-
-                    hmin = min(start_h[0], end_h[0])
-                    hmax = max(start_h[0], end_h[0])
-                    hy = start_h[1]
-
-                    vmin = min(start_v[1], end_v[1])
-                    vmax = max(start_v[1], end_v[1])
-                    vx = start_v[0]
-
+                    i = int(vec_1[1] == 0)
                     # ignore edges (strict comparison only)
-                    if (vmin < hy < vmax) and (hmin < vx < hmax):
-                        centre = vx, hy
-                        print(f"found centre {centre=}")
+                    if (
+                        min(start_1[1 - i], end_1[1 - i])
+                        < start_0[1 - i]
+                        < max(start_1[1 - i], end_1[1 - i])
+                    ) and (
+                        min(start_0[i], end_0[i])
+                        < start_1[i]
+                        < max(start_0[i], end_0[i])
+                    ):
+                        centre = start_1[i], start_0[1 - i]
+                        if i == 1:  # y, x coords are reversed
+                            centre = centre[1], centre[0]
+                        centre = np.array(centre)
+                        print(f"found {centre=} {steps_0=} {steps_1=}")
                         centres.append(centre)
-        print(centres)
-        result = min(sum(abs(p) for p in c) for c in centres)
-        print(result)
-        return result
+
+                        # Remove excess steps with centre:
+                        excess = sum(abs(end_0 - centre)) + sum(abs(end_1 - centre))
+                        print("excess", excess)
+                        print(end_0, centre, end_1)
+                        combined_steps = steps_0 + steps_1 - excess
+                        all_combined_steps.append(combined_steps)
+        return centres, all_combined_steps
 
     def solve_part_2(self, puzzle_input: PuzzleInput):
-        return -1
+        print(puzzle_input)
+        # Step 1: Compute segments sets for two wires (get abs coords from rel movements)
+        wire_coords = self.compute_coords_set(puzzle_input)
+
+        # Step 2: Bruteforce cartesian product of two segment sets.
+        centres, all_combined_steps = self.extreme_unhinged_bruteforce(wire_coords)
+
+        # part 2
+        result_part_2 = min(all_combined_steps)
+        print(f"{result_part_2=}")
+        return result_part_2
 
 
 def run_program(program):
