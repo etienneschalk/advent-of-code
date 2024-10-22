@@ -1,11 +1,9 @@
 from dataclasses import dataclass
-from typing import Literal
 
 import numpy as np
 
 from advent_of_code.common.protocols import AdventOfCodeProblem
 
-type Direction = Literal["L", "R"]
 type PuzzleInput = list[int]
 
 
