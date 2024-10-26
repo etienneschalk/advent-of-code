@@ -19,39 +19,72 @@ class AdventOfCodeProblem201905(AdventOfCodeProblem[PuzzleInput]):
 
     def solve_part_1(self, puzzle_input: PuzzleInput):
         program = puzzle_input
-        program[1] = 12
-        program[2] = 2
+        print(program)
         run_program(program)
-        output = program[0]
-        return output
+        return -1
 
     def solve_part_2(self, puzzle_input: PuzzleInput):
-        target = 19690720
-        for noun in range(100):
-            for verb in range(100):
-                program = puzzle_input.copy()
-                program[1] = noun
-                program[2] = verb
-                run_program(program)
-                output = program[0]
-                if output == target:
-                    return 100 * noun + verb
         return -1
 
 
 def run_program(program):
+    the_input = 1  # the ID for the ship's air conditioner unit.
+    the_output = []
+
     pc = 0  # Program Counter
-    while program[pc] != 99:
-        if program[pc] == 1:
-            program[program[pc + 3]] = (
-                program[program[pc + 1]] + program[program[pc + 2]]
-            )
+
+    # c should always be 0 for opcode 1 and 2, as 3rd param is dest.
+    while True:
+        instruction = program[pc]
+        opcode = instruction % 100
+        c = (instruction % 1000) // 100
+        b = (instruction % 10000) // 1000
+        a = (instruction % 100000) // 10000
+
+        print("-----")
+        print(f"{instruction:05d}", a, b, c, f"{opcode:02d}")
+
+        if opcode == 99:
+            break
+
+        address_1 = program[pc + 1]
+        if c == 0:
+            value_1 = program[address_1]
+        else:
+            value_1 = address_1
+
+        print(address_1, value_1)
+
+        if opcode == 1 or opcode == 2:
+            address_2 = program[pc + 2]
+            if b == 0:
+                value_2 = program[address_2]
+            else:
+                value_2 = address_2
+
+            address_3 = program[pc + 3]
+            if a == 0:
+                value_3 = program[address_3]
+            else:
+                value_3 = address_3
+
+            print(address_2, value_2)
+            print(address_3, value_3)
+
+        if opcode == 1:
+            program[address_3] = value_1 + value_2  # type: ignore
             pc += 4
-        elif program[pc] == 2:
-            program[program[pc + 3]] = (
-                program[program[pc + 1]] * program[program[pc + 2]]
-            )
+        elif opcode == 2:
+            program[address_3] = value_1 * value_2  # type: ignore
             pc += 4
+        elif opcode == 3:
+            program[address_1] = the_input
+            pc += 2
+        elif opcode == 4:
+            the_output.append(value_1)
+            pc += 2
+
+    print(the_output)
 
 
 if __name__ == "__main__":
