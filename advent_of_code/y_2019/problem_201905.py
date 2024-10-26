@@ -20,17 +20,17 @@ class AdventOfCodeProblem201905(AdventOfCodeProblem[PuzzleInput]):
     def solve_part_1(self, puzzle_input: PuzzleInput):
         program = puzzle_input
         the_input = 1  # the ID for the ship's air conditioner unit.
-        run_program(program, the_input)
-        return -1
+        the_output = run_program(program, the_input)
+        return the_output[-1]
 
     def solve_part_2(self, puzzle_input: PuzzleInput):
         program = puzzle_input
         the_input = 5  # the ID for the ship's thermal radiator controller.
-        run_program(program, the_input)
-        return -1
+        the_output = run_program(program, the_input)
+        return the_output[-1]
 
 
-def run_program(program, the_input: int):
+def run_program(program, the_input: int) -> list[int]:
     the_output = []
 
     pc = 0  # Program Counter
@@ -64,13 +64,13 @@ def run_program(program, the_input: int):
                 value_2 = address_2
             print(address_2, value_2)
 
-            if opcode in (1, 2, 7, 8):
-                address_3 = program[pc + 3]
-                if a == 0:
-                    value_3 = program[address_3]
-                else:
-                    value_3 = address_3
-                print(address_3, value_3)
+        if opcode in (1, 2, 7, 8):
+            address_3 = program[pc + 3]
+            if a == 0:
+                value_3 = program[address_3]
+            else:
+                value_3 = address_3
+            print(address_3, value_3)
 
         if opcode == 1:
             program[address_3] = value_1 + value_2  # type: ignore
@@ -104,8 +104,10 @@ def run_program(program, the_input: int):
             # equals
             program[address_3] = int(value_1 == value_2)  # type: ignore
             pc += 4
+
     print(the_output)
     print("END")
+    return the_output
 
 
 if __name__ == "__main__":
