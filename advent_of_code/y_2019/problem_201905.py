@@ -19,16 +19,18 @@ class AdventOfCodeProblem201905(AdventOfCodeProblem[PuzzleInput]):
 
     def solve_part_1(self, puzzle_input: PuzzleInput):
         program = puzzle_input
-        print(program)
-        run_program(program)
+        the_input = 1  # the ID for the ship's air conditioner unit.
+        run_program(program, the_input)
         return -1
 
     def solve_part_2(self, puzzle_input: PuzzleInput):
+        program = puzzle_input
+        the_input = 5  # the ID for the ship's thermal radiator controller.
+        run_program(program, the_input)
         return -1
 
 
-def run_program(program):
-    the_input = 1  # the ID for the ship's air conditioner unit.
+def run_program(program, the_input: int):
     the_output = []
 
     pc = 0  # Program Counter
@@ -52,24 +54,23 @@ def run_program(program):
             value_1 = program[address_1]
         else:
             value_1 = address_1
-
         print(address_1, value_1)
 
-        if opcode == 1 or opcode == 2:
+        if opcode in (1, 2, 5, 6, 7, 8):
             address_2 = program[pc + 2]
             if b == 0:
                 value_2 = program[address_2]
             else:
                 value_2 = address_2
-
-            address_3 = program[pc + 3]
-            if a == 0:
-                value_3 = program[address_3]
-            else:
-                value_3 = address_3
-
             print(address_2, value_2)
-            print(address_3, value_3)
+
+            if opcode in (1, 2, 7, 8):
+                address_3 = program[pc + 3]
+                if a == 0:
+                    value_3 = program[address_3]
+                else:
+                    value_3 = address_3
+                print(address_3, value_3)
 
         if opcode == 1:
             program[address_3] = value_1 + value_2  # type: ignore
@@ -83,8 +84,28 @@ def run_program(program):
         elif opcode == 4:
             the_output.append(value_1)
             pc += 2
-
+        elif opcode == 5:
+            # jump-if-true
+            if value_1:
+                pc = value_2  # type: ignore
+            else:
+                pc += 3
+        elif opcode == 6:
+            # jump-if-false
+            if value_1:
+                pc += 3
+            else:
+                pc = value_2  # type: ignore
+        elif opcode == 7:
+            # less than
+            program[address_3] = int(value_1 < value_2)  # type: ignore
+            pc += 4
+        elif opcode == 8:
+            # equals
+            program[address_3] = int(value_1 == value_2)  # type: ignore
+            pc += 4
     print(the_output)
+    print("END")
 
 
 if __name__ == "__main__":
