@@ -21,7 +21,6 @@ class AdventOfCodeProblem201907(AdventOfCodeProblem[PuzzleInput]):
         return np.array([int(word) for word in text.strip().split(",")], dtype=int)
 
     def solve_part_1(self, puzzle_input: PuzzleInput) -> int:
-        return -1
         program = puzzle_input.copy()
         max_input = -1  # assume not negative...
         max_setting_sequence = None
