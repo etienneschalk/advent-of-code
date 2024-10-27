@@ -21,6 +21,7 @@ class AdventOfCodeProblem201907(AdventOfCodeProblem[PuzzleInput]):
         return np.array([int(word) for word in text.strip().split(",")], dtype=int)
 
     def solve_part_1(self, puzzle_input: PuzzleInput) -> int:
+        return -1
         program = puzzle_input.copy()
         max_input = -1  # assume not negative...
         max_setting_sequence = None
@@ -39,27 +40,62 @@ class AdventOfCodeProblem201907(AdventOfCodeProblem[PuzzleInput]):
     def solve_part_2(self, puzzle_input: PuzzleInput):
         print("-------part2")
         store = ExampleInputsStore.from_private_resources_repository(2019)
-        puzzle_input = self.parse_text_input(
+        example_puzzle_input = self.parse_text_input(
             store.retrieve("test_problem_201907", "example_input_part_2_1")
+            # store.retrieve("test_problem_201907", "example_input_part_2_2")
         )
+        # puzzle_input = example_puzzle_input
         result = represent_program(puzzle_input.copy())
         print("\n".join(result))
-        return -1
-        program = puzzle_input.copy()
+        # return -1
+
         # TODO unit tests
-        max_input = -1  # assume not negative...
+        max_output = -1  # assume not negative...
         max_setting_sequence = None
         for setting_sequence in itertools.permutations(range(5, 9 + 1), 5):
-            input = [0]
-            for amplifier in range(4 + 1):
-                the_inputs = [setting_sequence[amplifier], input[0]]
-                input = run_program([*program], the_inputs)
-            if (max_input is None) or (input[0] > max_input):
+            # for setting_sequence in [[9, 8, 7, 6, 5]]: # example 1
+            # for setting_sequence in [[9, 7, 8, 5, 6]]:  # example 2
+
+            # Instanciate once the programs, keep them running in the amplifiers.
+            programs = [
+                puzzle_input.copy(),
+                puzzle_input.copy(),
+                puzzle_input.copy(),
+                puzzle_input.copy(),
+                puzzle_input.copy(),
+            ]
+            amplifier = -1
+            pcs = [0, 0, 0, 0, 0]
+            inputs = [
+                [setting_sequence[0], 0],
+                [setting_sequence[1]],
+                [setting_sequence[2]],
+                [setting_sequence[3]],
+                [setting_sequence[4]],
+            ]
+            terminated = [False] * 5
+            output = []
+            while True:
+                amplifier = (amplifier + 1) % 5
+                inputs[amplifier].extend(output)
+                print(amplifier, pcs, inputs, output)
+                output = run_program(
+                    programs[amplifier], inputs[amplifier], pcs[amplifier]
+                )
+                opcode = output.pop(-1)
+                pc = output.pop(-1)
+                pcs[amplifier] = pc
+                if opcode == 99:
+                    print("halt")
+                    terminated[amplifier] = True
+                    if all(terminated):
+                        break
+            if (max_output is None) or (output[0] > max_output):
                 max_setting_sequence = setting_sequence
-                max_input = input[0]
-            print(setting_sequence, input)
+                max_output = output[0]
+            print(setting_sequence, output)
         print(max_setting_sequence)
-        return max_input
+        return max_output
 
 
 def represent_program(program) -> list[str]:
@@ -116,6 +152,8 @@ def represent_program(program) -> list[str]:
         elif opcode == 3:
             # input
             sb.append("in_ " f"{"&" if c == 0 else " "}{address_1}")
+            # note: should wait if no input available, and give turn to the next program
+            # in a round-robin fashion
             pc += 2
         elif opcode == 4:
             # output
@@ -171,10 +209,10 @@ def represent_program(program) -> list[str]:
     return sb
 
 
-def run_program(program, the_inputs: list[int]) -> list[int]:
+def run_program(program, the_inputs: list[int], pc: int = 0) -> list[int]:
     the_output = []
 
-    pc = 0  # Program Counter
+    # pc: Program Counter
 
     # c should always be 0 for opcode 1 and 2, as 3rd param is dest.
     while True:
@@ -223,8 +261,17 @@ def run_program(program, the_inputs: list[int]) -> list[int]:
             pc += 4
         elif opcode == 3:
             # input
-            program[address_1] = the_inputs.pop(0)
-            pc += 2
+            # note: should wait if no input available, and give turn to the next program
+            # in a round-robin fashion
+            if the_inputs:
+                program[address_1] = the_inputs.pop(0)
+                pc += 2
+            else:
+                break
+                # # give hand to the next processor
+                # # remember pc, add it last
+                # the_output.append(pc)
+                # return the_output
         elif opcode == 4:
             # output
             the_output.append(value_1)
@@ -252,6 +299,11 @@ def run_program(program, the_inputs: list[int]) -> list[int]:
 
     # print(the_output)
     # print("END")
+
+    # give hand to the next processor
+    # remember pc, add it last
+    the_output.append(pc)
+    the_output.append(opcode)
     return the_output
 
 
