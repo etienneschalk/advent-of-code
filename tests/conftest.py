@@ -9,6 +9,11 @@ def example_inputs_2016() -> ExampleInputsStore:
 
 
 @pytest.fixture(scope="session")
+def example_inputs_2019() -> ExampleInputsStore:
+    return ExampleInputsStore.from_private_resources_repository(2019)
+
+
+@pytest.fixture(scope="session")
 def example_inputs_2022() -> ExampleInputsStore:
     return ExampleInputsStore.from_private_resources_repository(2022)
 
