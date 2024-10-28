@@ -11,9 +11,9 @@ type PuzzleInput = npt.NDArray[np.integer[Any]]
 
 
 @dataclass(kw_only=True)
-class AdventOfCodeProblem201907(AdventOfCodeProblem[PuzzleInput]):
+class AdventOfCodeProblem201909(AdventOfCodeProblem[PuzzleInput]):
     year: int = 2019
-    day: int = 7
+    day: int = 9
 
     @staticmethod
     def parse_text_input(text: str) -> PuzzleInput:
@@ -204,7 +204,7 @@ def run_program(program, the_inputs: list[int], pc: int = 0) -> list[int]:
         # a = (instruction % 100000) // 10000
 
         # print("-----")
-        # print(f"{instruction:07d}", a, b, c, f"{opcode:02d}")
+        # print(f"{instruction:09d}", a, b, c, f"{opcode:02d}")
 
         if opcode == 99:
             break
@@ -289,4 +289,4 @@ def run_program(program, the_inputs: list[int], pc: int = 0) -> list[int]:
 
 
 if __name__ == "__main__":
-    print(AdventOfCodeProblem201907().solve())
+    print(AdventOfCodeProblem201909().solve())
