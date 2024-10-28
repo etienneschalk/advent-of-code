@@ -21,67 +21,51 @@ class AdventOfCodeProblem201907(AdventOfCodeProblem[PuzzleInput]):
         return np.array([int(word) for word in text.strip().split(",")], dtype=int)
 
     def solve_part_1(self, puzzle_input: PuzzleInput) -> int:
-        program = puzzle_input.copy()
-        max_input = -1  # assume not negative...
+        program = puzzle_input
+        max_output = -1  # assume not negative
         max_setting_sequence = None
-        for setting_sequence in itertools.permutations(range(4 + 1), 5):
-            input = [0]
+        for setting_sequence in itertools.permutations(range(0, 4 + 1), 5):
+            output = [0]
             for amplifier in range(4 + 1):
-                the_inputs = [setting_sequence[amplifier], input[0]]
-                input = run_program([*program], the_inputs)
-            if (max_input is None) or (input[0] > max_input):
+                the_inputs = [setting_sequence[amplifier], output[0]]
+                output = run_program(program.copy(), the_inputs)
+            if output[0] > max_output:
                 max_setting_sequence = setting_sequence
-                max_input = input[0]
-            print(setting_sequence, input)
+                max_output = output[0]
+            print(setting_sequence, output)
         print(max_setting_sequence)
-        return max_input
+        return max_output
 
     def solve_part_2(self, puzzle_input: PuzzleInput):
-        print("-------part2")
-        store = ExampleInputsStore.from_private_resources_repository(2019)
-        example_puzzle_input = self.parse_text_input(
-            store.retrieve("test_problem_201907", "example_input_part_2_1")
-            # store.retrieve("test_problem_201907", "example_input_part_2_2")
-        )
-        # puzzle_input = example_puzzle_input
-        result = represent_program(puzzle_input.copy())
-        print("\n".join(result))
-        # return -1
-
-        # TODO unit tests
-        max_output = -1  # assume not negative...
+        print("\n".join(represent_program(puzzle_input.copy())))
+        max_output = -1  # assume not negative
         max_setting_sequence = None
         for setting_sequence in itertools.permutations(range(5, 9 + 1), 5):
-            # for setting_sequence in [[9, 8, 7, 6, 5]]: # example 1
-            # for setting_sequence in [[9, 7, 8, 5, 6]]:  # example 2
-
             # Instanciate once the programs, keep them running in the amplifiers.
-            programs = [
-                puzzle_input.copy(),
-                puzzle_input.copy(),
-                puzzle_input.copy(),
-                puzzle_input.copy(),
-                puzzle_input.copy(),
-            ]
+            programs = [puzzle_input.copy() for _ in range(5)]
+            # Start with negative offset as inc of amplifier ID is first instr in the loop.
             amplifier = -1
-            pcs = [0, 0, 0, 0, 0]
-            inputs = [
-                [setting_sequence[0], 0],
-                [setting_sequence[1]],
-                [setting_sequence[2]],
-                [setting_sequence[3]],
-                [setting_sequence[4]],
-            ]
+            # Store program pointers of each amplifier for context switching
+            pcs = [0] * 5
+            # The simulation terminates when all amplifiers alt.
             terminated = [False] * 5
+            # Initial signals are made up of the setting sequence.
+            signals = [[value] for value in setting_sequence]
+            # An initial signal of value is injected one for the first amplifier.
+            signals[0].append(0)
+            # Filled after each amplifier program run, output of amp N is input of amp N+1
             output = []
             while True:
                 amplifier = (amplifier + 1) % 5
-                inputs[amplifier].extend(output)
-                print(amplifier, pcs, inputs, output)
+                signals[amplifier].extend(output)
+                print(amplifier, pcs, signals, output)
                 output = run_program(
-                    programs[amplifier], inputs[amplifier], pcs[amplifier]
+                    programs[amplifier], signals[amplifier], pcs[amplifier]
                 )
+                # Should contain something like: [output_signal, opcode, pc]
+                # Retrieve the last opcode to know if the program did halt
                 opcode = output.pop(-1)
+                # Retrieve the pc for later context switching (round robin)
                 pc = output.pop(-1)
                 pcs[amplifier] = pc
                 if opcode == 99:
@@ -89,10 +73,9 @@ class AdventOfCodeProblem201907(AdventOfCodeProblem[PuzzleInput]):
                     terminated[amplifier] = True
                     if all(terminated):
                         break
-            if (max_output is None) or (output[0] > max_output):
+            if output[0] > max_output:
                 max_setting_sequence = setting_sequence
                 max_output = output[0]
-            print(setting_sequence, output)
         print(max_setting_sequence)
         return max_output
 
