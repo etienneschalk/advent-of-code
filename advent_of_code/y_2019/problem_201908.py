@@ -3,8 +3,9 @@ from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-from advent_of_code.common.protocols import AdventOfCodeProblem
 import xarray as xr
+
+from advent_of_code.common.protocols import AdventOfCodeProblem
 
 type PuzzleInput = npt.NDArray[np.integer[Any]]
 
