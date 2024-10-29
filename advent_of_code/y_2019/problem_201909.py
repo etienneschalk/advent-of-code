@@ -35,14 +35,14 @@ class AdventOfCodeProblem201909(AdventOfCodeProblem[PuzzleInput]):
         assert output[0] == program[1]
 
         program = puzzle_input
-        program = np.pad(program, (0, 1000))
+        program = np.pad(program, (0, 973))
         output = run_program(program.copy(), [1])
 
         return output
 
     def solve_part_2(self, puzzle_input: PuzzleInput):
         program = puzzle_input
-        program = np.pad(program, (0, 1000))
+        program = np.pad(program, (0, 1073))
         output = run_program(program.copy(), [2])
         return output
 
