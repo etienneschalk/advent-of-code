@@ -112,72 +112,72 @@ def represent_program(program) -> list[str]:
             # addition
             sb.append(
                 "add "
-                f"{"&" if c == 0 else " "}{address_1}"
+                f"{"&" if c == 0 else " "}{address_1}"  # type: ignore
                 " "
-                f"{"&" if b == 0 else " "}{address_2}"
+                f"{"&" if b == 0 else " "}{address_2}"  # type: ignore
                 " "
-                f"{"&" if a == 0 else " "}{address_3}"
+                f"{"&" if a == 0 else " "}{address_3}"  # type: ignore
             )
             pc += 4
         elif opcode == 2:
             # multiplication
             sb.append(
                 "mul "
-                f"{"&" if c == 0 else " "}{address_1}"
+                f"{"&" if c == 0 else " "}{address_1}"  # type: ignore
                 " "
-                f"{"&" if b == 0 else " "}{address_2}"
+                f"{"&" if b == 0 else " "}{address_2}"  # type: ignore
                 " "
-                f"{"&" if a == 0 else " "}{address_3}"
+                f"{"&" if a == 0 else " "}{address_3}"  # type: ignore
             )
             pc += 4
         elif opcode == 3:
             # input
-            sb.append("in_ " f"{"&" if c == 0 else " "}{address_1}")
+            sb.append("in_ " f"{"&" if c == 0 else " "}{address_1}")  # type: ignore
             # note: should wait if no input available, and give turn to the next program
             # in a round-robin fashion
             pc += 2
         elif opcode == 4:
             # output
-            sb.append("out " f"{"&" if c == 0 else " "}{address_1}")
+            sb.append("out " f"{"&" if c == 0 else " "}{address_1}")  # type: ignore
             pc += 2
         elif opcode == 5:
             # jump-if-true
             sb.append(
                 "jnz "
-                f"{"&" if c == 0 else " "}{address_1}"
+                f"{"&" if c == 0 else " "}{address_1}"  # type: ignore
                 " "
-                f"{"&" if b == 0 else " "}{address_2}"
+                f"{"&" if b == 0 else " "}{address_2}"  # type: ignore
             )
             pc += 3
         elif opcode == 6:
             # jump-if-false
             sb.append(
-                "jnz "
-                f"{"&" if c == 0 else " "}{address_1}"
+                "jnz "  # type: ignore
+                f"{"&" if c == 0 else " "}{address_1}"  # type: ignore
                 " "
-                f"{"&" if b == 0 else " "}{address_2}"
+                f"{"&" if b == 0 else " "}{address_2}"  # type: ignore
             )
             pc += 3
         elif opcode == 7:
             # less than
             sb.append(
                 "lt_ "
-                f"{"&" if c == 0 else " "}{address_1}"
+                f"{"&" if c == 0 else " "}{address_1}"  # type: ignore
                 " "
-                f"{"&" if b == 0 else " "}{address_2}"
+                f"{"&" if b == 0 else " "}{address_2}"  # type: ignore
                 " "
-                f"{"&" if a == 0 else " "}{address_3}"
+                f"{"&" if a == 0 else " "}{address_3}"  # type: ignore
             )
             pc += 4
         elif opcode == 8:
             # equals
             sb.append(
                 "eq_ "
-                f"{"&" if c == 0 else " "}{address_1}"
+                f"{"&" if c == 0 else " "}{address_1}"  # type: ignore
                 " "
-                f"{"&" if b == 0 else " "}{address_2}"
+                f"{"&" if b == 0 else " "}{address_2}"  # type: ignore
                 " "
-                f"{"&" if a == 0 else " "}{address_3}"
+                f"{"&" if a == 0 else " "}{address_3}"  # type: ignore
             )
             pc += 4
         elif opcode == 99 and instruction == 99:  # avoid interpreting 99999:

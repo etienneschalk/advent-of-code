@@ -49,7 +49,7 @@ class AdventOfCodeProblem201903(AdventOfCodeProblem[PuzzleInput]):
                     new_coord = (coords[-1][0] - quantity, coords[-1][1])
                 elif direction == "D":
                     new_coord = (coords[-1][0], coords[-1][1] - quantity)
-                elif direction == "U":
+                else:  # "U":
                     new_coord = (coords[-1][0], coords[-1][1] + quantity)
                 coords.append(np.array(new_coord))
             wire_coords.append(coords)
