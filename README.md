@@ -167,6 +167,13 @@ YEAR=2023
 jupyter nbconvert --inplace --execute /home/tselano/dev/advent-of-code/docs/source/notebooks/$YEAR/notebook_problem_*.ipynb
 ```
 
+Run non-interactively all notebooks for a glob path, continuing even if errors do occur:
+
+```bash
+YEAR=2023
+jupyter nbconvert --inplace --execute --allow-errors /home/tselano/dev/advent-of-code/docs/source/notebooks/$YEAR/notebook_problem_*.ipynb
+```
+
 #### Convert SVGs to PNGs
 
 If not installed, install inkscape

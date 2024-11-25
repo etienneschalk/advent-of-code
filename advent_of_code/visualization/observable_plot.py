@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 from pyobsplot import Obsplot, Plot
+from pyobsplot.widget import ObsplotWidget
 
 from advent_of_code.y_2023.problem_202311 import get_compartiments
 
@@ -13,20 +14,18 @@ MarkProducerSignature = Callable[[], list[Any]]
 
 def create_obsplot_instance(
     *,
-    renderer: Literal["jsdom", "widget"] = "jsdom",
+    format: Literal["widget", "html", "svg", "png"] = "html",
     theme: Literal["current", "light", "dark"] = "dark",
     debug: bool = True,
 ):
     # See https://juba.github.io/pyobsplot/usage.html#renderers
-
-    return Obsplot(renderer=renderer, theme=theme, debug=debug)
+    return Obsplot(format, theme=theme, debug=debug)
 
 
 # This is a singleton instance of observable plot, allowing further customization like
 # changing the renderer from 'widget' to 'json'.
 
-op_instance = create_obsplot_instance(renderer="jsdom", theme="current")
-# op_instance_dark = create_obsplot_instance(renderer="jsdom", theme="dark")
+op_instance = create_obsplot_instance(format="html", theme="current")
 
 
 def create_marks_puzzle_input_202311(
@@ -185,7 +184,6 @@ def visualize_puzzle_input_202324(
     strokeOpacity: float = 1,
     x_domain_test_area: tuple[float, float] = (7, 27),
     y_domain_test_area: tuple[float, float] = (7, 27),
-    do_highlight_text: bool = False,
     scheme: str = "Observable10",
     rock_text_fill: str = "#faa",
     rock_strokeWidth: float = 2,
@@ -215,8 +213,6 @@ def visualize_puzzle_input_202324(
         x-domain of the test area, materialized by a box in the plot
     y_domain_test_area
         x-domain of the test area, materialized by a box in the plot
-    do_highlight_text
-        De-clutter text mark by removing some of them. Useful for busy plots with many vectors
     scheme
         Categorical color scheme used to draw vectors. The colors depends of its time
     rock_text_fill
@@ -281,19 +277,19 @@ def visualize_puzzle_input_202324(
                 "stroke": "currentColor",
             },
         ),
-        Plot.text(  # type:ignore
-            lines_df,
-            {
-                x_target: lines_df["x2"].to_list(),
-                y_target: lines_df["y2"].to_list(),
-                "text": lines_df["time_in_ns"].to_list(),
-                "fill": "currentColor",
-                "stroke": "black",
-                "dy": -12,
-                # Only keep some text to avoid clutter
-                "filter": "highlight" if do_highlight_text else None,
-            },
-        ),
+        # Plot.text(  # type:ignore
+        #     lines_df,
+        #     {
+        #         **{
+        #             x_target: lines_df["x2"].to_list(),
+        #             y_target: lines_df["y2"].to_list(),
+        #             "tickFormat": ".0s",
+        #             "fill": "currentColor",
+        #             "stroke": "black",
+        #             "dy": -12,
+        #         },
+        #     },
+        # ),
     ]
 
     if rock_df is not None:
@@ -568,7 +564,7 @@ def build_base_xarray_plot(
     width: int = 140 * 4,
     do_convert_ascii_array_to_uint8: bool = True,
     **kwargs: Any,
-) -> Obsplot:
+) -> ObsplotWidget | None:
     # Callback is a consumer of list of marks that enrich it.
 
     grid = xda
@@ -622,6 +618,8 @@ def build_base_xarray_plot(
         },
         path=path,
     )
+    # if plot is None:
+    # raise RuntimeError("plot instanciation failed (is None)")
     return plot
 
 
