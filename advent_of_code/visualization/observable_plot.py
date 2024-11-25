@@ -753,7 +753,7 @@ def create_boundary_points_layer(
                         "stroke": "stroke",
                         **kwargs,
                         "r": kwargs["r"] // 4,
-                        "symbol": "disc",
+                        "symbol": "circle",  # disc -> circle
                         "strokeWidth": 2,
                     },
                 )
