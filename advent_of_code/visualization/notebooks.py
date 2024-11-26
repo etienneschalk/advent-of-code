@@ -6,7 +6,7 @@ def attempt_interactive(
     i_want_interactive_plots: bool,
     backend: Literal["plotly", "hvplot"],
     renderer_interactive: str = "vscode",
-    renderer_static: str = "svg",
+    renderer_static: str = "sphinx_gallery",
 ):
     # See https://github.com/microsoft/vscode-jupyter/issues/6999
     # pio.renderers.default = "plotly_mimetype+notebook"
